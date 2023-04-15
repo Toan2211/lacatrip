@@ -1,0 +1,10 @@
+const ADMINID = 1
+const EMPLOYEEID = 2
+const SERVICEMANAGERID = 3
+const AUTHENTICATEDID = 4
+module.exports = {
+    ADMINID,
+    EMPLOYEEID,
+    SERVICEMANAGERID,
+    AUTHENTICATEDID
+}

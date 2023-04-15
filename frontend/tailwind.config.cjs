@@ -2,7 +2,10 @@
 module.exports = {
     content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
     theme: {
-        extend: {}
+        extend: {},
+        backgroundImage: {
+            'auth-layout': 'url(\'../src/assets/img/login_bg.jpg\')'
+        }
     },
     plugins: []
 }
