@@ -1,10 +1,11 @@
 import axios from 'axios'
+import LocalStorage from '@constants/localStorage'
 import { toast } from 'react-toastify'
 
 class Http {
     constructor() {
         this.instance = axios.create({
-            baseURL: process.env.REACT_APP_API,
+            baseURL: import.meta.env.VITE_BASE_URL,
             timeout: 10000,
             headers: {
                 'Content-Type': 'application/json'
@@ -36,7 +37,7 @@ class Http {
         this.instance.interceptors.request.use(
             config => {
                 const accessToken = localStorage.getItem(
-                    process.env.ACCESS_TOKEN_LocalStorage
+                    LocalStorage.ACCESS_TOKEN
                 )
                 if (accessToken) {
                     config.headers.authorization = accessToken

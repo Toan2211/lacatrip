@@ -8,15 +8,13 @@ const verifyConfirmTokenUser = async (req, res) => {
             confirmToken
         )
         if (result)
-            return res.status(200).json({
-                msg: 'Verify successful !'
-            })
+            return res.redirect(`${process.env.REACT_API}/signin`)
         else
             return res.status(400).json({
-                msg: 'Verify error !'
+                message: 'Verify error !'
             })
     } catch (err) {
-        return res.status(500).json({ msg: err.message })
+        return res.status(500).json({ message: err.message })
     }
 }
 const changePassword = async (req, res) => {
@@ -24,11 +22,11 @@ const changePassword = async (req, res) => {
         const user = await userService.findOne(req.params.id)
         if (!user)
             return res.status(400).json({
-                msg: 'User is not found!'
+                message: 'User is not found!'
             })
         if (!await authService.checkPassword(req.body.oldPassword, user.password))
             return res.status(400).json({
-                msg: 'Password is not match !'
+                message: 'Password is not match !'
             })
         const password = await bcrypt.hash(
             req.body.newPassword,
@@ -40,14 +38,14 @@ const changePassword = async (req, res) => {
         )
         if (updateResult)
             return res.status(200).json({
-                msg: 'Change password successful !'
+                message: 'Change password successful !'
             })
         else
             return res.status(400).json({
-                msg: 'Can not update password. Maybe password does not exit or data is empty !'
+                message: 'Can not update password. Maybe password does not exit or data is empty !'
             })
     } catch (err) {
-        return res.status(500).json({ msg: err.message })
+        return res.status(500).json({ message: err.message })
     }
 }
 module.exports = {

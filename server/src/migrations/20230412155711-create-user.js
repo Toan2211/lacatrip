@@ -31,7 +31,6 @@ module.exports = {
             },
             phone: {
                 type: Sequelize.STRING,
-                allowNull: false,
             },
             confirm: {
                 type: Sequelize.BOOLEAN,

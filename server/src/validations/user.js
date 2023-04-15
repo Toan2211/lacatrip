@@ -11,7 +11,7 @@ const create = () => [
     body('firstname').notEmpty().isString(),
     body('lastname').notEmpty().isString(),
     body('gender').notEmpty().isBoolean(),
-    body('phone').notEmpty().isString(),
+    body('phone').optional().isString(),
     body('country').notEmpty().isString()
 ]
 const findById = () => [param('id').notEmpty().isUUID()]

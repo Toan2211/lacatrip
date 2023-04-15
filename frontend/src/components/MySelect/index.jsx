@@ -2,7 +2,7 @@ import React from 'react'
 import { Controller } from 'react-hook-form'
 import Select from 'react-select'
 function MySelect(props) {
-    const { form, name, options, placeholder } = props
+    const { form, name, options, placeholder, defaultValue } = props
     const {
         formState: { errors }
     } = form
@@ -12,10 +12,16 @@ function MySelect(props) {
         <div className="flex flex-col">
             <Controller
                 control={form.control}
-                // defaultValue={default_value}
+                defaultValue={defaultValue}
                 name={name}
                 render={({ field: { onChange, value, ref } }) => (
                     <Select
+                        styles={{
+                            control: (base) => ({
+                                ...base,
+                                border: `${error && '1px solid red' }`
+                            })
+                        }}
                         inputRef={ref}
                         classNamePrefix="addl-class"
                         placeholder={placeholder}

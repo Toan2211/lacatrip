@@ -5,15 +5,20 @@ import Signup from '@pages/Auth/Signup'
 import ForgotPassword from '@pages/Auth/ForgotPassword'
 import React from 'react'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
+import LandingPage from '@pages/LandingPage'
+import UnauthenticatedGuard from '@guards/UnauthenticatedGuard'
 
 function RoutesComponent() {
     return (
         <BrowserRouter>
             <Routes>
-                <Route element={<AuthLayout />}>
-                    <Route path={path.signin} element={<Signin />} />
-                    <Route path={path.signup} element={<Signup />} />
-                    <Route path={path.forgotPass} element={<ForgotPassword />} />
+                <Route path = {path.landingPage} element = {<LandingPage />}/>
+                <Route element = {<UnauthenticatedGuard />}>
+                    <Route element={<AuthLayout />}>
+                        <Route path={path.signin} element={<Signin />} />
+                        <Route path={path.signup} element={<Signup />} />
+                        <Route path={path.forgotPass} element={<ForgotPassword />} />
+                    </Route>
                 </Route>
             </Routes>
         </BrowserRouter>

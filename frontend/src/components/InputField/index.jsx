@@ -22,7 +22,7 @@ function InputField(props) {
                         onChange={field.onChange}
                         value={form.getValues(name)}
                         disabled = {disabled}
-                        className="border-0 px-2 py-2 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+                        className={`${error ? ' border-red-500 border': ''} border-0 px-2 py-2 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150`}
                     />
                 )}
             />

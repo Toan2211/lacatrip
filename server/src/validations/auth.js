@@ -9,6 +9,10 @@ const signin = () => [
         minSymbols: 1
     })
 ]
+const forgotPass = () => [
+    body('email').notEmpty().isString(),
+]
 module.exports = {
-    signin
+    signin,
+    forgotPass
 }

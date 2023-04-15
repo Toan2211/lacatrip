@@ -1,6 +1,6 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import logo from '@assets/img/logo.svg'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { path } from '@constants/path'
 import { useForm } from 'react-hook-form'
 import * as yup from 'yup'
@@ -9,10 +9,14 @@ import InputField from '@components/InputField'
 import Mybutton from '@components/MyButton'
 import MySelect from '@components/MySelect'
 import countrys from '@constants/countrys'
-const countrysData = countrys.map(country =>
-    Object({ value: country, label: country })
-)
+import { useDispatch, useSelector } from 'react-redux'
+import { selectLoadingAuth, signup } from '../auth.slice'
+import { unwrapResult } from '@reduxjs/toolkit'
+import { toast } from 'react-toastify'
 function Signup() {
+    const dispatch = useDispatch()
+    const navigate = useNavigate()
+    const loading = useSelector(selectLoadingAuth)
     const schema = yup.object().shape({
         email: yup
             .string()
@@ -21,16 +25,18 @@ function Signup() {
         password: yup
             .string()
             .required('Password is required')
-            .min(
-                8,
-                'Password is too short - should be 8 chars minimum.'
+            .matches(
+                // eslint-disable-next-line
+                /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/,
+                'Must Contain 8 Characters, One Uppercase, One Lowercase, One Number and One Special Case Character'
             ),
         firstname: yup.string().required('Firstname is required'),
         lastname: yup.string().required('Lastname is required'),
-        gender: yup.boolean().required('Password is required'),
+        gender: yup.string().required('Gender is required'),
         country: yup.string().required('Country is required'),
         confirmpassword: yup
             .string()
+            .required('ConfirmPassword is required')
             .oneOf(
                 [yup.ref('password'), null],
                 'Passwords must match'
@@ -48,8 +54,23 @@ function Signup() {
         },
         resolver: yupResolver(schema)
     })
-    const handleSubmit = () => {
+    const [dialog, setDialog] = useState(false)
+    const handleSubmit = async data => {
+        try {
+            const res = await dispatch(signup(data))
+            unwrapResult(res)
+            setDialog(true)
+        } catch (error) {
+            toast.error(error.message, {
+                position: toast.POSITION.BOTTOM_CENTER,
+                autoClose: 1000,
+                hideProgressBar: true
+            })
+        }
     }
+    useEffect(() => {
+        document.title = 'Signup'
+    }, [])
     return (
         <div className="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded-lg bg-slate-50 border-0">
             <div className="rounded-t mb-0 px-6 py-6">
@@ -107,13 +128,60 @@ function Signup() {
                             className="block uppercase text-xs font-bold mb-2"
                             htmlFor="grid-password"
                         >
+                            Gender
+                        </label>
+                        <div className="flex space-x-4">
+                            <label
+                                htmlFor="male"
+                                className="cursor-pointer"
+                            >
+                                <input
+                                    {...form.register('gender')}
+                                    type="radio"
+                                    value="1"
+                                    id="male"
+                                />
+                                Male
+                            </label>
+                            <label
+                                htmlFor="female"
+                                className="cursor-pointer"
+                            >
+                                <input
+                                    {...form.register('gender')}
+                                    type="radio"
+                                    value="0"
+                                    id="female"
+                                />
+                                Female
+                            </label>
+                        </div>
+                        {form.formState.errors['gender'] && (
+                            <span className="text-[14px] text-red-500 pl-2 mt-1">
+                                {
+                                    form.formState.errors['gender']
+                                        .message
+                                }
+                            </span>
+                        )}
+                    </div>
+                    <div className="relative w-full mb-2">
+                        <label
+                            className="block uppercase text-xs font-bold mb-2"
+                            htmlFor="grid-password"
+                        >
                             Country
                         </label>
                         <MySelect
                             placeholder="Country"
                             form={form}
                             name="country"
-                            options={countrysData}
+                            options={countrys.map(country =>
+                                Object({
+                                    value: country,
+                                    label: country
+                                })
+                            )}
                         />
                     </div>
                     <div className="relative w-full mb-2">
@@ -148,6 +216,7 @@ function Signup() {
                         <Mybutton
                             className=" bg-blue-500 text-white active:bg-blue-800 text-sm font-bold uppercase px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 w-full ease-linear transition-all duration-150"
                             type="submit"
+                            isloading={+loading}
                         >
                             Signup
                         </Mybutton>
@@ -172,6 +241,31 @@ function Signup() {
                     </div>
                 </div>
             </div>
+            {dialog && (
+                <div className="fixed left-0 top-0 h-screen w-screen bg-white flex items-center justify-center">
+                    <div className="relative flex flex-col min-w-0 break-words w-full lg:w-1/3 md:w-1/2 mb-6 shadow-lg rounded-lg bg-slate-50 border-0 p-4 mx-4">
+                        <div className="text-center">
+                            <h1 className="text-2xl font-bold mb-4">
+                                Signup Successfully
+                            </h1>
+                            <h2>
+                                Congratulations, your account has been
+                                successfully created. Please check
+                                inbox mail and verify account. Thanks
+                                you !
+                            </h2>
+                        </div>
+                        <div className="mt-4 flex justify-end">
+                            <button
+                                className="bg-blue-500 text-white active:bg-blue-800 text-sm font-bold uppercase px-3 py-2 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 w-1/4 ease-linear transition-all duration-150"
+                                onClick={() => navigate(path.signin)}
+                            >
+                                start now
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
         </div>
     )
 }

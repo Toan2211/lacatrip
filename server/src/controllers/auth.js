@@ -1,15 +1,16 @@
 const { AUTHENTICATEDID } = require('../constants/variable')
 const { checkEmailExist, checkPassword, createAccessToken } = require('../services/auth')
 const crypto = require('crypto')
-const { sendEmailConfirm } = require('../services/mail')
+const { sendEmailConfirm, sendEmailResetPassword } = require('../services/mail')
 const userService = require('../services/user')
+const authService = require('../services/auth')
 const signup = async (req, res) => {
     try {
         const { email, firstname, lastname } = req.body
         if (await checkEmailExist(email))
             return res
                 .status(400)
-                .json({ msg: 'This email already exists.' })
+                .json({ message: 'This email already exists.' })
         req.body.roleId = AUTHENTICATEDID
         req.body.confirmtoken = crypto.randomBytes(64).toString('hex')
         const user = await userService.create(req.body)
@@ -18,12 +19,12 @@ const signup = async (req, res) => {
             receive: email,
             redirectLink: `${process.env.NODE_API}/api/user/verifyUser?confirmToken=${req.body.confirmtoken}`
         })
-        res.status(201).json({
-            msg: 'Create user successfuly',
+        return res.status(201).json({
+            message: 'Create user successfuly',
             data: user
         })
     } catch (err) {
-        return res.status(500).json({ msg: err.message })
+        return res.status(500).json({ message: err.message })
     }
 }
 const signin = async (req, res) => {
@@ -37,19 +38,19 @@ const signin = async (req, res) => {
                 user.password
             )
         if (!user || !passwordIsMatch)
-            res.status(400).json({
-                msg: 'Invalid email or password',
+            return res.status(400).json({
+                message: 'Invalid email or password',
                 data: {}
             })
         if (!user.confirm)
-            res.status(400).json({
-                msg: 'Account is not confirmed or blocked',
+            return res.status(400).json({
+                message: 'Account is not confirmed or blocked',
                 data: {}
             })
         delete user.password
         const access_token = createAccessToken(user)
         return res.status(200).json({
-            msg: 'Login successful',
+            message: 'Login successful',
             data:{
                 access_token,
                 user
@@ -57,10 +58,35 @@ const signin = async (req, res) => {
         })
         
     } catch (err) {
-        return res.status(500).json({ msg: err.message })
+        return res.status(500).json({ message: err.message })
+    }
+}
+const forgotPassword = async (req, res) => {
+    try {
+        const { email } = req.body
+        const user = await checkEmailExist(email)
+        if (!user) {
+            return res.status(400).json({
+                message: 'Email does not exist',
+                data: {}
+            })
+        }
+        const newPass = await authService.forgotPassword(email)
+        await sendEmailResetPassword({
+            name: `${user.firstname} ${user.lastname}`,
+            receive: email,
+            redirectLink: `${process.env.REACT_API}/signin`,
+            newPassword: newPass
+        })
+        return res.status(201).json({
+            message: 'Reset password successfully'
+        })
+    } catch (err) {
+        return res.status(500).json({ message: err.message })
     }
 }
 module.exports = {
     signup,
-    signin
+    signin,
+    forgotPassword
 }
