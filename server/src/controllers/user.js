@@ -1,6 +1,7 @@
 const userService = require('../services/user')
 const bcrypt = require('bcrypt')
 const authService = require('../services/auth')
+const { avatarDefault } = require('../constants/images')
 const verifyConfirmTokenUser = async (req, res) => {
     const { confirmToken } = req.query
     try {
@@ -48,7 +49,45 @@ const changePassword = async (req, res) => {
         return res.status(500).json({ message: err.message })
     }
 }
+const update = async (req, res) => {
+    try {
+        if (req.file) req.body.avatar = req.file.path
+        else req.body.avatar = avatarDefault
+        const user = await userService.update(req.params.id, req.body)
+        if (user)
+            return res.status(200).json({
+                message: 'Update employees successful !',
+                data: {
+                    user
+                }
+            })
+        else
+            return res.status(400).json({
+                message: 'Can not update employee. Maybe user does not exit or data is empty !'
+            })
+    } catch (err) {
+        return res.status(500).json({ message: err.message })
+    }
+}
+const toggleBlock = async (req, res) => {
+    try {
+        const user = await userService.toggleBlock(req.params.id)
+        if (user)
+            return res.status(200).json({
+                message: 'Change status successful !',
+                data: user
+            })
+        else
+            return res.status(400).json({
+                message: 'Can not update user. Maybe user does not exit or data is empty !'
+            })
+    } catch (err) {
+        return res.status(500).json({ message: err.message })
+    }
+}
 module.exports = {
     verifyConfirmTokenUser,
-    changePassword
+    changePassword,
+    update,
+    toggleBlock
 }

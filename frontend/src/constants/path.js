@@ -4,6 +4,8 @@ class Path {
         this.signin = '/signin'
         this.signup = '/signup'
         this.forgotPass = '/forgotPassWord'
+        this.system = '/system'
+        this.employees = '/system/employees'
     }
 }
 
