@@ -1,31 +1,97 @@
 import Mybutton from '@components/MyButton'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import {
     employeesSelector,
     getEmployees,
-    paginationEmployeeSelector
+    paginationEmployeeSelector,
+    setCurrentEmployee,
+    toggleStatusEmployee
 } from './employee.slice.js'
-import _ from 'lodash'
 import EmployeeForm from './EmployeeForm/index.jsx'
+import queryString from 'query-string'
+import { useLocation, useNavigate } from 'react-router-dom'
+import ToggleButton from '@components/ToggleButton/index.jsx'
+import { toast } from 'react-toastify'
+import { unwrapResult } from '@reduxjs/toolkit'
 function Employees() {
     const dispath = useDispatch()
+    const navigate = useNavigate()
     const employees = useSelector(employeesSelector)
     const pagination = useSelector(paginationEmployeeSelector)
     const [openForm, setOpenForm] = useState(false)
+    const location = useLocation()
+    const queryParams = useMemo(() => {
+        const params = queryString.parse(location.search)
+        return {
+            page: Number.parseInt(params.page) || 1,
+            limit: Number.parseInt(params.limit) || 10,
+            key: params.key || ''
+        }
+    }, [location.search])
     useEffect(() => {
-        if (_.isEmpty(employees)) dispath(getEmployees())
-    }, [dispath, employees])
+        dispath(getEmployees())
+    }, [dispath])
     const showDrawer = () => {
         setOpenForm(true)
     }
 
     const onClose = () => {
         setOpenForm(false)
+        dispath(setCurrentEmployee({}))
+    }
+    const handleSelectEmployee = employee => {
+        dispath(setCurrentEmployee(employee))
+        setOpenForm(true)
+    }
+    const handleCreateEmployee = () => {
+        showDrawer()
+    }
+    const nextPage = () => {
+        if (pagination.page < pagination.totalPages) {
+            const filters = {
+                ...queryParams,
+                page: +pagination.page + 1
+            }
+            navigate(`?${queryString.stringify(filters)}`)
+        }
+    }
+    const prevPage = () => {
+        if (pagination.page > 1) {
+            const filters = {
+                ...queryParams,
+                page: +pagination.page - 1
+            }
+            navigate(`?${queryString.stringify(filters)}`)
+        }
+    }
+    const handlePageChange = page => {
+        const filters = { ...queryParams, page: page }
+        navigate(`?${queryString.stringify(filters)}`)
+    }
+    useEffect(() => {
+        dispath(getEmployees(queryParams))
+    }, [queryParams, dispath])
+    const handleToggleStatusEmployee = employeeId => {
+        try {
+            const res = dispath(toggleStatusEmployee(employeeId))
+            unwrapResult(res)
+            toast.success('Change status employee successful', {
+                position: toast.POSITION.BOTTOM_CENTER,
+                autoClose: 1000,
+                hideProgressBar: true
+            })
+        } catch (error) {
+            toast.error(error.message, {
+                position: toast.POSITION.BOTTOM_CENTER,
+                autoClose: 1000,
+                hideProgressBar: true
+            })
+        }
     }
     return (
         <div>
-            <div className="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded bg-white">
+            <div className="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded bg-white min-h-[70vh]">
                 <div className="rounded-t mb-0 px-4 py-3 border-0">
                     <div className="flex flex-wrap items-center">
                         <div className="relative w-full px-4 max-w-full flex">
@@ -33,8 +99,11 @@ function Employees() {
                                 Manage Employees
                             </h3>
                             <div className="relative flex flex-col items-center group w-10">
-                                <button className="inline-flex items-center justify-center w-6 h-6 mr-2 text-indigo-100 transition-colors duration-150  bg-green-700 rounded-lg focus:shadow-outline hover:bg-green-500 ml-4"
-                                    onClick={showDrawer}
+                                <button
+                                    className="inline-flex items-center justify-center w-6 h-6 mr-2 text-indigo-100 transition-colors duration-150  bg-green-700 rounded-lg focus:shadow-outline hover:bg-green-500 ml-4"
+                                    onClick={() =>
+                                        handleCreateEmployee()
+                                    }
                                 >
                                     <svg
                                         className="w-4 h-4 fill-current"
@@ -57,7 +126,7 @@ function Employees() {
                         </div>
                     </div>
                 </div>
-                <div className="block w-full overflow-x-auto">
+                <div className="block w-full overflow-x-auto h-[66vh]">
                     <table className="items-center w-full bg-transparent border-collapse">
                         <thead>
                             <tr>
@@ -102,22 +171,26 @@ function Employees() {
                                                 : 'Female'}
                                         </td>
                                         <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                                            <label className="relative inline-flex items-center mr-5 cursor-pointer">
-                                                <input
-                                                    type="checkbox"
-                                                    value="false"
-                                                    className="sr-only peer"
-                                                    checked
-                                                    readOnly
-                                                />
-                                                <div className="w-11 h-6 bg-gray-200 rounded-full peer dark:bg-gray-700 peer-focus:ring-4 peer-focus:ring-green-300 dark:peer-focus:ring-green-800 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-green-600"></div>
-                                                <span className="ml-3 text-sm font-medium text-gray-900 dark:text-gray-300">
-                                                    Green
-                                                </span>
-                                            </label>
+                                            <ToggleButton
+                                                status={
+                                                    !employee.block
+                                                }
+                                                onClick={() =>
+                                                    handleToggleStatusEmployee(
+                                                        employee.id
+                                                    )
+                                                }
+                                            />
                                         </td>
                                         <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-right">
-                                            <Mybutton className="flex p-0.5 bg-yellow-500 rounded-lg hover:bg-yellow-600 transition-all duration-300 text-white">
+                                            <Mybutton
+                                                className="flex p-0.5 bg-yellow-500 rounded-lg hover:bg-yellow-600 transition-all duration-300 text-white"
+                                                onClick={() =>
+                                                    handleSelectEmployee(
+                                                        employee
+                                                    )
+                                                }
+                                            >
                                                 <svg
                                                     xmlns="http://www.w3.org/2000/svg"
                                                     className="h-6 w-6"
@@ -146,7 +219,10 @@ function Employees() {
             >
                 <ul className="inline-flex -space-x-px">
                     <li>
-                        <div className="block px-3 py-2 ml-0 leading-tight text-gray-500 bg-white border border-gray-300 rounded-l-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white cursor-pointer">
+                        <div
+                            onClick={prevPage}
+                            className="block px-3 py-2 ml-0 leading-tight text-gray-500 bg-white border border-gray-300 rounded-l-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white cursor-pointer"
+                        >
                             <span className="sr-only">Previous</span>
                             <svg
                                 aria-hidden="true"
@@ -166,17 +242,32 @@ function Employees() {
                     {Array.from(
                         { length: pagination.totalPages },
                         (value, key) => (
-                            <div
-                                href="#"
+                            <li
                                 key={key + 1}
-                                className="px-3 py-2 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white cursor-pointer"
+                                className={`${
+                                    pagination.page === key + 1
+                                        ? 'border-blue-500 bg-blue-500'
+                                        : ''
+                                } `}
                             >
-                                {key + 1}
-                            </div>
+                                <div
+                                    onClick={() =>
+                                        handlePageChange(key + 1)
+                                    }
+                                    className={
+                                        'px-3 py-2 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white cursor-pointer'
+                                    }
+                                >
+                                    {key + 1}
+                                </div>
+                            </li>
                         )
                     )}
                     <li>
-                        <div className="block px-3 py-2 leading-tight text-gray-500 bg-white border border-gray-300 rounded-r-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white cursor-pointer">
+                        <div
+                            onClick={nextPage}
+                            className="block px-3 py-2 leading-tight text-gray-500 bg-white border border-gray-300 rounded-r-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white cursor-pointer"
+                        >
                             <span className="sr-only">Next</span>
                             <svg
                                 aria-hidden="true"
@@ -195,7 +286,7 @@ function Employees() {
                     </li>
                 </ul>
             </nav>
-            <EmployeeForm open={openForm} onClose={onClose}/>
+            <EmployeeForm open={openForm} onClose={onClose} />
         </div>
     )
 }

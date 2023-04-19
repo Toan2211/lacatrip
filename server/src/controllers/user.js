@@ -52,7 +52,6 @@ const changePassword = async (req, res) => {
 const update = async (req, res) => {
     try {
         if (req.file) req.body.avatar = req.file.path
-        else req.body.avatar = avatarDefault
         const user = await userService.update(req.params.id, req.body)
         if (user)
             return res.status(200).json({
