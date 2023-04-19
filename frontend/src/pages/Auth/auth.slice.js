@@ -76,6 +76,7 @@ const authSlice = createSlice({
     }
 })
 export const selectLoadingAuth = (state) => state.auth.loading
+export const selectUser = (state) => state.auth.profile
 const { actions, reducer } = authSlice
 export const { logout } = actions
 export default reducer

@@ -5,7 +5,8 @@ const route = require('./src/routes')
 const http = require('http')
 const server = http.createServer(app)
 const multer = require('multer')
-const upload = multer()
+var bodyParser = require('body-parser')
+// const upload = multer()
 require('dotenv').config()
 
 const db = require('./src/models')
@@ -24,10 +25,11 @@ app.use(function (req, res, next) {
     next()
 })
 db.sequelize.sync()
+app.use(cors())
 app.use(express.json())
-
 app.use(express.urlencoded({ extended: true }))
-app.use(upload.array())
+// app.use(upload.array())
+
 app.use('/api', route)
 const PORT = process.env.PORT || 8080
 server.listen(PORT, () => {

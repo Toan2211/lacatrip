@@ -6,10 +6,15 @@ const crypto = require('crypto')
 require('dotenv').config()
 const checkEmailExist = async email => {
     const user = await db.User.findOne({
+        include: {
+            model: db.Role,
+            required: true,
+            as: 'role'
+        },
         where: {
             email
         },
-        raw: true
+        // raw: true,
     })
     if (user) return user
     return false
@@ -20,7 +25,7 @@ const checkPassword = async (password, passwordHash) => {
     return false
 }
 const createAccessToken = payload =>
-    jwt.sign(payload, secretJWT, { expiresIn: '30d' })
+    jwt.sign(payload.toJSON(), secretJWT, { expiresIn: '30d' })
 const forgotPassword = async email => {
     try {
         const user = await db.User.findOne({

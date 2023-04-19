@@ -33,10 +33,7 @@ const signin = async (req, res) => {
         const user = await checkEmailExist(email)
         let passwordIsMatch = false
         if (user)
-            passwordIsMatch = await checkPassword(
-                password,
-                user.password
-            )
+            passwordIsMatch = await checkPassword(password, user.password)
         if (!user || !passwordIsMatch)
             return res.status(400).json({
                 message: 'Invalid email or password',
@@ -47,7 +44,6 @@ const signin = async (req, res) => {
                 message: 'Account is not confirmed or blocked',
                 data: {}
             })
-        delete user.password
         const access_token = createAccessToken(user)
         return res.status(200).json({
             message: 'Login successful',
