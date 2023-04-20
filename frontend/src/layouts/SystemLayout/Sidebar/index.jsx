@@ -1,7 +1,8 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
+import { NavLink } from 'react-router-dom'
 import logo from '@assets/img/logo.svg'
 import { BsFillPersonFill } from 'react-icons/bs'
+import { path } from '@constants/path'
 export default function Sidebar() {
     const [collapseShow, setCollapseShow] = React.useState('hidden')
     return (
@@ -36,16 +37,13 @@ export default function Sidebar() {
                         </h6>
                         <ul className="md:flex-col md:min-w-full flex flex-col list-none text-bl">
                             <li className="items-center ">
-                                <Link
-                                    className={
-                                        'text-xs uppercase py-3 font-bold flex ' +
-                                        (window.location.href.indexOf(
-                                            '/system/employees'
-                                        ) !== -1
-                                            ? ' text-blue-600 hover:opacity-75'
-                                            : 'hover:text-blue-600')
+                                <NavLink
+                                    className={({ isActive }) =>
+                                        isActive
+                                            ? 'text-blue-600 hover:opacity-75 text-xs uppercase py-3 font-bold flex'
+                                            : 'hover:text-blue-600 text-xs uppercase py-3 font-bold flex'
                                     }
-                                    to="/system/employees"
+                                    to={path.employees}
                                 >
                                     <span
                                         className={
@@ -60,7 +58,7 @@ export default function Sidebar() {
                                         <BsFillPersonFill />
                                     </span>
                                     Employees
-                                </Link>
+                                </NavLink>
                             </li>
                         </ul>
                     </div>
