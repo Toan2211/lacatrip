@@ -11,7 +11,7 @@ const create = async (req, res) => {
         if (await checkEmailExist(email))
             return res
                 .status(400)
-                .json({ msg: 'This email already exists.' })
+                .json({ message: 'This email already exists.' })
         const newPass = crypto.randomBytes(3).toString('hex') + '1A@'
 
         req.body.password = newPass

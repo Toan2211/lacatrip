@@ -10,6 +10,7 @@ import UnauthenticatedGuard from '@guards/UnauthenticatedGuard'
 import SystemAuthenticated from '@guards/SystemAuthenticated'
 import SystemLayout from '@layouts/SystemLayout'
 import Employees from '@pages/System/Employees'
+import Clients from '@pages/System/Clients'
 
 function RoutesComponent() {
     return (
@@ -19,6 +20,7 @@ function RoutesComponent() {
                 <Route element = {<SystemAuthenticated />}>
                     <Route path = {path.system} element = {<SystemLayout />}>
                         <Route path = {path.employees} element = {<Employees />}/>
+                        <Route path = {path.clients} element = {<Clients />}/>
                     </Route>
                 </Route>
                 <Route element = {<UnauthenticatedGuard />}>
