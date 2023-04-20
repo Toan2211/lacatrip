@@ -12,6 +12,10 @@ module.exports = (sequelize, DataTypes) => {
                 foreignKey: 'roleId',
                 as: 'role'
             })
+            this.hasOne(models.ServiceManager, {
+                foreignKey: 'userId',
+                as: 'servicemanager'
+            })
         }
     }
     User.init(
