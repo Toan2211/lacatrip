@@ -45,19 +45,25 @@ export default function Sidebar() {
                                     }
                                     to={path.employees}
                                 >
-                                    <span
-                                        className={
-                                            'mr-2 w-[40px]' +
-                                            (window.location.href.indexOf(
-                                                '/system/employees'
-                                            ) !== -1
-                                                ? 'text-blue-600 hover:opacity-75'
-                                                : 'hover:text-blue-600')
-                                        }
-                                    >
+                                    <span>
                                         <BsFillPersonFill />
                                     </span>
                                     Employees
+                                </NavLink>
+                            </li>
+                            <li className="items-center ">
+                                <NavLink
+                                    className={({ isActive }) =>
+                                        isActive
+                                            ? 'text-blue-600 hover:opacity-75 text-xs uppercase py-3 font-bold flex'
+                                            : 'hover:text-blue-600 text-xs uppercase py-3 font-bold flex'
+                                    }
+                                    to={path.clients}
+                                >
+                                    <span>
+                                        <BsFillPersonFill />
+                                    </span>
+                                    Clients
                                 </NavLink>
                             </li>
                         </ul>

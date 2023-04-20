@@ -55,14 +55,14 @@ const update = async (req, res) => {
         const user = await userService.update(req.params.id, req.body)
         if (user)
             return res.status(200).json({
-                message: 'Update employees successful !',
+                message: 'Update user successful !',
                 data: {
                     user
                 }
             })
         else
             return res.status(400).json({
-                message: 'Can not update employee. Maybe user does not exit or data is empty !'
+                message: 'Can not user employee. Maybe user does not exit or data is empty !'
             })
     } catch (err) {
         return res.status(500).json({ message: err.message })

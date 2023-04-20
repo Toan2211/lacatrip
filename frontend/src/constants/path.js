@@ -6,6 +6,7 @@ class Path {
         this.forgotPass = '/forgotPassWord'
         this.system = '/system'
         this.employees = '/system/employees'
+        this.clients = '/system/clients'
     }
 }
 

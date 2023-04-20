@@ -1,26 +1,27 @@
-import Mybutton from '@components/MyButton'
+import { Pagination, Table } from 'flowbite-react'
 import React, { useEffect, useMemo, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import {
-    employeesSelector,
-    getEmployees,
-    paginationEmployeeSelector,
-    setCurrentEmployee,
-    toggleStatusEmployee
-} from './employee.slice.js'
-import EmployeeForm from './EmployeeForm/index.jsx'
+    clientsSelector,
+    getClients,
+    paginationClientSelector,
+    setCurrentClient,
+    toggleStatusClient
+} from './client.slice'
+import { useLocation, useNavigate } from 'react-router'
 import queryString from 'query-string'
-import { useLocation, useNavigate } from 'react-router-dom'
-import ToggleButton from '@components/ToggleButton/index.jsx'
 import { toast } from 'react-toastify'
 import { unwrapResult } from '@reduxjs/toolkit'
-import { Pagination, Table, Tooltip } from 'flowbite-react'
-function Employees() {
+import ToggleButton from '@components/ToggleButton'
+import Mybutton from '@components/MyButton'
+import ClientForm from './ClientForm'
+
+function Clients() {
     const dispatch = useDispatch()
-    const navigate = useNavigate()
-    const employees = useSelector(employeesSelector)
-    const pagination = useSelector(paginationEmployeeSelector)
+    const pagination = useSelector(paginationClientSelector)
+    const clients = useSelector(clientsSelector)
     const [openForm, setOpenForm] = useState(false)
+    const navigate = useNavigate()
     const location = useLocation()
     const queryParams = useMemo(() => {
         const params = queryString.parse(location.search)
@@ -30,21 +31,6 @@ function Employees() {
             key: params.key || ''
         }
     }, [location.search])
-    const showDrawer = () => {
-        setOpenForm(true)
-    }
-
-    const onClose = () => {
-        setOpenForm(false)
-        dispatch(setCurrentEmployee({}))
-    }
-    const handleSelectEmployee = employee => {
-        dispatch(setCurrentEmployee(employee))
-        setOpenForm(true)
-    }
-    const handleCreateEmployee = () => {
-        showDrawer()
-    }
     const handlePageChange = page => {
         if (!page <= 1 || !page >= pagination.totalPages) {
             const filters = { ...queryParams, page: page }
@@ -52,13 +38,13 @@ function Employees() {
         }
     }
     useEffect(() => {
-        dispatch(getEmployees(queryParams))
-    }, [queryParams, dispatch])
-    const handleToggleStatusEmployee = employeeId => {
+        dispatch(getClients(queryParams))
+    }, [dispatch, queryParams])
+    const handleToggleStatusClient = clientId => {
         try {
-            const res = dispatch(toggleStatusEmployee(employeeId))
+            const res = dispatch(toggleStatusClient(clientId))
             unwrapResult(res)
-            toast.success('Change status employee successful', {
+            toast.success('Change status client successful', {
                 position: toast.POSITION.BOTTOM_CENTER,
                 autoClose: 1000,
                 hideProgressBar: true
@@ -71,6 +57,14 @@ function Employees() {
             })
         }
     }
+    const handleSelectClient = client => {
+        dispatch(setCurrentClient(client))
+        setOpenForm(true)
+    }
+    const onClose = () => {
+        setOpenForm(false)
+        dispatch(setCurrentClient({}))
+    }
     return (
         <div>
             <div className="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded bg-white min-h-[70vh]">
@@ -78,29 +72,8 @@ function Employees() {
                     <div className="flex flex-wrap items-center">
                         <div className="relative w-full px-4 max-w-full flex">
                             <h3 className="font-semibold text-lg text-blue-600">
-                                Manage Employees
+                                Manage Clients
                             </h3>
-                            <div className="relative flex flex-col items-center group w-10">
-                                <Tooltip content="Create" style="light">
-                                    <button
-                                        className="inline-flex items-center justify-center w-6 h-6 mr-2 text-indigo-100 transition-colors duration-150  bg-green-700 rounded-lg focus:shadow-outline hover:bg-green-500 ml-4"
-                                        onClick={() =>
-                                            handleCreateEmployee()
-                                        }
-                                    >
-                                        <svg
-                                            className="w-4 h-4 fill-current"
-                                            viewBox="0 0 20 20"
-                                        >
-                                            <path
-                                                d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z"
-                                                clipRule="evenodd"
-                                                fillRule="evenodd"
-                                            ></path>
-                                        </svg>
-                                    </button>
-                                </Tooltip>
-                            </div>
                         </div>
                     </div>
                 </div>
@@ -117,34 +90,32 @@ function Employees() {
                             <Table.HeadCell>Action</Table.HeadCell>
                         </Table.Head>
                         <Table.Body className="divide-y">
-                            {employees &&
-                                employees.map(employee => (
+                            {clients &&
+                                clients.map(client => (
                                     <Table.Row
                                         className="bg-white dark:border-gray-700 dark:bg-gray-800"
-                                        key={employee.id}
+                                        key={client.id}
                                     >
                                         <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
-                                            {`${employee.firstname} ${employee.lastname}`}
+                                            {`${client.firstname} ${client.lastname}`}
                                         </Table.Cell>
                                         <Table.Cell>
-                                            {employee.email}
+                                            {client.email}
                                         </Table.Cell>
                                         <Table.Cell>
-                                            {employee.phone}
+                                            {client.phone}
                                         </Table.Cell>
                                         <Table.Cell>
-                                            {employee.gender
+                                            {client.gender
                                                 ? 'Male'
                                                 : 'Female'}
                                         </Table.Cell>
                                         <Table.Cell>
                                             <ToggleButton
-                                                status={
-                                                    !employee.block
-                                                }
+                                                status={!client.block}
                                                 onClick={() =>
-                                                    handleToggleStatusEmployee(
-                                                        employee.id
+                                                    handleToggleStatusClient(
+                                                        client.id
                                                     )
                                                 }
                                             />
@@ -153,24 +124,44 @@ function Employees() {
                                             <Mybutton
                                                 className="flex p-0.5 bg-yellow-500 rounded-lg hover:bg-yellow-600 transition-all duration-300 text-white"
                                                 onClick={() =>
-                                                    handleSelectEmployee(
-                                                        employee
+                                                    handleSelectClient(
+                                                        client
                                                     )
                                                 }
                                             >
                                                 <svg
+                                                    fill="#000000"
+                                                    version="1.1"
+                                                    id="Capa_1"
                                                     xmlns="http://www.w3.org/2000/svg"
+                                                    viewBox="0 0 442.04 442.04"
+                                                    xmlSpace="preserve"
                                                     className="h-6 w-6"
-                                                    fill="none"
-                                                    viewBox="0 0 24 24"
-                                                    stroke="currentColor"
-                                                    strokeWidth="2"
                                                 >
-                                                    <path
-                                                        strokeLinecap="round"
-                                                        strokeLinejoin="round"
-                                                        d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
-                                                    />
+                                                    <g>
+                                                        <g>
+                                                            <path
+                                                                d="M221.02,341.304c-49.708,0-103.206-19.44-154.71-56.22C27.808,257.59,4.044,230.351,3.051,229.203
+			c-4.068-4.697-4.068-11.669,0-16.367c0.993-1.146,24.756-28.387,63.259-55.881c51.505-36.777,105.003-56.219,154.71-56.219
+			c49.708,0,103.207,19.441,154.71,56.219c38.502,27.494,62.266,54.734,63.259,55.881c4.068,4.697,4.068,11.669,0,16.367
+			c-0.993,1.146-24.756,28.387-63.259,55.881C324.227,321.863,270.729,341.304,221.02,341.304z M29.638,221.021
+			c9.61,9.799,27.747,27.03,51.694,44.071c32.83,23.361,83.714,51.212,139.688,51.212s106.859-27.851,139.688-51.212
+			c23.944-17.038,42.082-34.271,51.694-44.071c-9.609-9.799-27.747-27.03-51.694-44.071
+			c-32.829-23.362-83.714-51.212-139.688-51.212s-106.858,27.85-139.688,51.212C57.388,193.988,39.25,211.219,29.638,221.021z"
+                                                            />
+                                                        </g>
+                                                        <g>
+                                                            <path
+                                                                d="M221.02,298.521c-42.734,0-77.5-34.767-77.5-77.5c0-42.733,34.766-77.5,77.5-77.5c18.794,0,36.924,6.814,51.048,19.188
+			c5.193,4.549,5.715,12.446,1.166,17.639c-4.549,5.193-12.447,5.714-17.639,1.166c-9.564-8.379-21.844-12.993-34.576-12.993
+			c-28.949,0-52.5,23.552-52.5,52.5s23.551,52.5,52.5,52.5c28.95,0,52.5-23.552,52.5-52.5c0-6.903,5.597-12.5,12.5-12.5
+			s12.5,5.597,12.5,12.5C298.521,263.754,263.754,298.521,221.02,298.521z"
+                                                            />
+                                                        </g>
+                                                        <g>
+                                                            <path d="M221.02,246.021c-13.785,0-25-11.215-25-25s11.215-25,25-25c13.786,0,25,11.215,25,25S234.806,246.021,221.02,246.021z" />
+                                                        </g>
+                                                    </g>
                                                 </svg>
                                             </Mybutton>
                                         </Table.Cell>
@@ -189,9 +180,9 @@ function Employees() {
                     />
                 </div>
             )}
-            <EmployeeForm open={openForm} onClose={onClose} />
+            <ClientForm open={openForm} onClose={onClose} />
         </div>
     )
 }
 
-export default Employees
+export default Clients
