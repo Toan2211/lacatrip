@@ -10,13 +10,19 @@ module.exports = (sequelize, DataTypes) => {
         static associate(models) {
             // define association here
             this.belongsTo(models.User, {
-                foreignKey: 'UserId',
+                foreignKey: 'userId',
                 as: 'user'
             })
         }
     }
     ServiceManager.init(
         {
+            id: {
+                type: DataTypes.UUID,
+                primaryKey: true,
+                defaultValue: DataTypes.UUIDV4,
+                allowNull: false
+            },
             userId: DataTypes.UUID
         },
         {

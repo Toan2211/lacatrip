@@ -7,6 +7,7 @@ class Path {
         this.system = '/system'
         this.employees = '/system/employees'
         this.clients = '/system/clients'
+        this.serviceManagers = 'system/serviceManagers'
     }
 }
 

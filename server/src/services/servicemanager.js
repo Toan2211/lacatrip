@@ -45,7 +45,7 @@ const find = async (key, page, limit) => {
 }
 const create = async userId => {
     try {
-        let serviceManager = await db.ServiceManager.create({ userId })
+        let serviceManager = await db.ServiceManager.create({ userId: userId })
         return serviceManager
     } catch (err) {
         throw new Error(err)
@@ -53,14 +53,11 @@ const create = async userId => {
 }
 const update = async (id, data) => {
     try {
-        let servicemanager = db.serviceManager.findByPk(id, {
+        let servicemanager = await db.ServiceManager.findByPk(id, {
             include: {
                 model: db.User,
                 required: true,
-                as: 'user',
-                attributes: {
-                    exclude: ['password', 'confirmtoken']
-                },
+                as: 'user'
             }
         })
         if (!servicemanager)
@@ -71,7 +68,7 @@ const update = async (id, data) => {
                 id: servicemanager.userId
             }
         })
-        servicemanager = db.serviceManager.findByPk(id, {
+        servicemanager = await db.ServiceManager.findByPk(id, {
             include: {
                 model: db.User,
                 required: true,

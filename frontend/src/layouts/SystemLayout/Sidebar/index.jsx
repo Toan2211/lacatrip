@@ -66,6 +66,21 @@ export default function Sidebar() {
                                     Clients
                                 </NavLink>
                             </li>
+                            <li className="items-center ">
+                                <NavLink
+                                    className={({ isActive }) =>
+                                        isActive
+                                            ? 'text-blue-600 hover:opacity-75 text-xs uppercase py-3 font-bold flex'
+                                            : 'hover:text-blue-600 text-xs uppercase py-3 font-bold flex'
+                                    }
+                                    to={path.serviceManagers}
+                                >
+                                    <span>
+                                        <BsFillPersonFill />
+                                    </span>
+                                    ServiceManagers
+                                </NavLink>
+                            </li>
                         </ul>
                     </div>
                 </div>
