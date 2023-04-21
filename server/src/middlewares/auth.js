@@ -6,31 +6,31 @@ const verifyToken = (req, res, next) => {
     if (!token)
         return res
             .status(400)
-            .json({ msg: 'Invalid Authentication.' })
+            .json({ message: 'Invalid Authentication.' })
     const decoded = jwt.verify(token, secretJWT)
     if (!decoded)
         return res
             .status(400)
-            .json({ msg: 'Invalid Authentication.' })
+            .json({ message: 'Invalid Authentication.' })
     req.user = decoded
     next()
 }
 const isAuthenticatedUser = (req, res, next) => {
     if (req.user.confirm)
         return next()
-    return res.status(403).json({ msg: 'Account is not confirm or blocked !' })
+    return res.status(403).json({ message: 'Account is not confirm or blocked !' })
 }
 const isAdmin = (req, res, next) => {
     if (req.user.roleId === ADMINID) {
         return next()
     }
-    return res.status(403).json({ msg: 'Forbidden: required Admin !' })
+    return res.status(403).json({ message: 'Forbidden: required Admin !' })
 }
 const isAdminOrEmployee = (req, res, next) => {
     if (req.user.roleId === ADMINID || req.user.roleId === EMPLOYEEID) {
         return next()
     }
-    return res.status(403).json({ msg: 'Forbidden: required Admin or Employee !' })
+    return res.status(403).json({ message: 'Forbidden: required Admin or Employee !' })
 }
 module.exports = {
     verifyToken,
