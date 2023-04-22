@@ -66,7 +66,7 @@ const handleChangePassPending = state => {
     state.loadingChangePass = true
 }
 const handleChangePasswordFulfilled = state => {
-    state.loading = false
+    state.loadingChangePass = false
 }
 const handlechangePassReject = state => {
     state.loadingChangePass = false
