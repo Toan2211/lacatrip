@@ -2,6 +2,7 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import authApi from '@api/authApi'
 import LocalStorage from '@constants/localStorage'
 import { payloadCreator } from '@utils/helper'
+import userApi from '@api/userApi'
 export const signin = createAsyncThunk(
     'auth/signin',
     payloadCreator(authApi.signin)
@@ -13,6 +14,14 @@ export const signup = createAsyncThunk(
 export const forgotPassword = createAsyncThunk(
     'auth/forgotPassword',
     payloadCreator(authApi.forgotPassword)
+)
+export const updateUser = createAsyncThunk(
+    'auth/updateProfile',
+    payloadCreator(userApi.update)
+)
+export const changePassword = createAsyncThunk(
+    'auth/changepassword',
+    payloadCreator(userApi.changePassword)
 )
 const handleSigninPending = state => {
     state.loading = true
@@ -48,13 +57,28 @@ const handleForgotPasswordFulfilled = state => {
 const handleForgotPasswordReject = state => {
     state.loading = false
 }
+const handleUpdateUserFulfilled = (state, action) => {
+    state.profile = action.payload.data.user
+    localStorage.setItem(LocalStorage.PROFILE, JSON.stringify(action.payload.data.user))
+    state.loading = false
+}
+const handleChangePassPending = state => {
+    state.loadingChangePass = true
+}
+const handleChangePasswordFulfilled = state => {
+    state.loading = false
+}
+const handlechangePassReject = state => {
+    state.loadingChangePass = false
+}
 const authSlice = createSlice({
     name: 'auth',
     initialState: {
         profile:
             JSON.parse(localStorage.getItem(LocalStorage.PROFILE)) ||
             {},
-        loading: false
+        loading: false,
+        loadingChangePass: false
     },
     reducers: {
         logout(state) {
@@ -72,11 +96,18 @@ const authSlice = createSlice({
         [signup.rejected]: handleSignupReject,
         [forgotPassword.pending]: handleForgotPasswordPending,
         [forgotPassword.fulfilled]: handleForgotPasswordFulfilled,
-        [forgotPassword.rejected]: handleForgotPasswordReject
+        [forgotPassword.rejected]: handleForgotPasswordReject,
+        [updateUser.pending]: handleSigninPending,
+        [updateUser.fulfilled]: handleUpdateUserFulfilled,
+        [updateUser.rejected]: handleSigninReject,
+        [changePassword.pending]: handleChangePassPending,
+        [changePassword.fulfilled]: handleChangePasswordFulfilled,
+        [changePassword.rejected]: handlechangePassReject
     }
 })
-export const selectLoadingAuth = (state) => state.auth.loading
-export const selectUser = (state) => state.auth.profile
+export const selectLoadingAuth = state => state.auth.loading
+export const selectUser = state => state.auth.profile
+export const loadingChangePassSelector = state => state.auth.loadingChangePass
 const { actions, reducer } = authSlice
 export const { logout } = actions
 export default reducer

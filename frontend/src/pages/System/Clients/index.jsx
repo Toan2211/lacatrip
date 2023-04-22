@@ -65,6 +65,9 @@ function Clients() {
         setOpenForm(false)
         dispatch(setCurrentClient({}))
     }
+    useEffect(() => {
+        document.title = 'System Clients'
+    }, [])
     return (
         <div>
             <div className="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded bg-white min-h-[70vh]">

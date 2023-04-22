@@ -32,9 +32,14 @@ const isAdminOrEmployee = (req, res, next) => {
     }
     return res.status(403).json({ message: 'Forbidden: required Admin or Employee !' })
 }
+const isYourSelf = (req, res, next) => {
+    if ((req.user.id === req.body?.data?.user_id) || (req.user.id === req.params.id)) return next()
+    return res.status(403).json({ msg: 'Forbidden !' })
+}
 module.exports = {
     verifyToken,
     isAuthenticatedUser,
     isAdmin,
-    isAdminOrEmployee
+    isAdminOrEmployee,
+    isYourSelf
 }
