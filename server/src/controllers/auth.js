@@ -39,7 +39,7 @@ const signin = async (req, res) => {
                 message: 'Invalid email or password',
                 data: {}
             })
-        if (!user.confirm)
+        if (!user.confirm || user.block)
             return res.status(400).json({
                 message: 'Account is not confirmed or blocked',
                 data: {}
