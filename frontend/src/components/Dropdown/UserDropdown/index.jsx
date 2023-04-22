@@ -3,11 +3,15 @@ import { createPopper } from '@popperjs/core'
 import { logout } from '@pages/Auth/auth.slice'
 import { useDispatch, useSelector } from 'react-redux'
 import { selectUser } from '@pages/Auth/auth.slice'
+import ROLE from '@constants/ROLE'
+import { useNavigate } from 'react-router-dom'
+import { path } from '@constants/path'
 
 const UserDropdown = () => {
     // dropdown props
     const user = useSelector(selectUser)
     const dispatch = useDispatch()
+    const navigate = useNavigate()
     const [dropdownPopoverShow, setDropdownPopoverShow] = useState(false)
     const btnDropdownRef = useRef()
     const popoverDropdownRef = useRef()
@@ -16,6 +20,11 @@ const UserDropdown = () => {
         setDropdownPopoverShow(true)
     }
     const closeDropdownPopover = () => {
+        setDropdownPopoverShow(false)
+    }
+    const handleClickProfile = () => {
+        if (user.role.name !== ROLE.AUTHENTICATED)
+            navigate(path.profileSystem)
         setDropdownPopoverShow(false)
     }
     return (
@@ -30,6 +39,7 @@ const UserDropdown = () => {
                 }}
             >
                 <div className="items-center flex">
+                    <span className='mr-4 font-medium'>{user.firstname} {user.lastname}</span>
                     <span className="w-10 h-10 text-sm text-white bg-blueGray-200 inline-flex items-center justify-center rounded-full">
                         <img
                             alt="..."
@@ -50,7 +60,7 @@ const UserDropdown = () => {
                     className={
                         'text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent cursor-pointer'
                     }
-                    onClick={() => dispatch(logout())}
+                    onClick={handleClickProfile}
                 >
                     Profile
                 </div>

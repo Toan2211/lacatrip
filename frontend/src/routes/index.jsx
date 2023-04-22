@@ -12,6 +12,7 @@ import SystemLayout from '@layouts/SystemLayout'
 import Employees from '@pages/System/Employees'
 import Clients from '@pages/System/Clients'
 import ServiceManger from '@pages/System/ServiceManagers'
+import Profile from '@pages/System/Profile'
 
 function RoutesComponent() {
     return (
@@ -22,7 +23,8 @@ function RoutesComponent() {
                     <Route path = {path.system} element = {<SystemLayout />}>
                         <Route path = {path.employees} element = {<Employees />}/>
                         <Route path = {path.clients} element = {<Clients />}/>
-                        <Route path={path.serviceManagers} element = {<ServiceManger />}/>
+                        <Route path = {path.serviceManagers} element = {<ServiceManger />}/>
+                        <Route path = {path.profileSystem} element = {<Profile />}/>
                     </Route>
                 </Route>
                 <Route element = {<UnauthenticatedGuard />}>

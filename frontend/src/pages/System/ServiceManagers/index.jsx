@@ -52,6 +52,9 @@ function ServiceManger() {
         setOpenForm(false)
         dispatch(setCurrentServicemanager({}))
     }
+    useEffect(() => {
+        document.title = 'System Service Managers'
+    }, [])
     return (
         <div>
             <div className="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded bg-white min-h-[70vh]">

@@ -62,7 +62,7 @@ const update = async (req, res) => {
             })
         else
             return res.status(400).json({
-                message: 'Can not user employee. Maybe user does not exit or data is empty !'
+                message: 'Can not user. Maybe user does not exit or data is empty !'
             })
     } catch (err) {
         return res.status(500).json({ message: err.message })
