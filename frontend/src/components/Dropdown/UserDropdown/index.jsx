@@ -12,11 +12,16 @@ const UserDropdown = () => {
     const user = useSelector(selectUser)
     const dispatch = useDispatch()
     const navigate = useNavigate()
-    const [dropdownPopoverShow, setDropdownPopoverShow] = useState(false)
+    const [dropdownPopoverShow, setDropdownPopoverShow] =
+        useState(false)
     const btnDropdownRef = useRef()
     const popoverDropdownRef = useRef()
     const openDropdownPopover = () => {
-        createPopper(btnDropdownRef.current, popoverDropdownRef.current, { placement: 'bottom-end' })
+        createPopper(
+            btnDropdownRef.current,
+            popoverDropdownRef.current,
+            { placement: 'bottom-end' }
+        )
         setDropdownPopoverShow(true)
     }
     const closeDropdownPopover = () => {
@@ -25,12 +30,17 @@ const UserDropdown = () => {
     const handleClickProfile = () => {
         if (user.role.name !== ROLE.AUTHENTICATED)
             navigate(path.profileSystem)
+        else navigate(path.profile)
+        setDropdownPopoverShow(false)
+    }
+    const handleClickChangePassword = () => {
+        navigate(path.changePassword)
         setDropdownPopoverShow(false)
     }
     return (
         <>
             <div
-                className="text-blueGray-500 block cursor-pointer"
+                className="block cursor-pointer"
                 ref={btnDropdownRef}
                 onClick={() => {
                     dropdownPopoverShow
@@ -39,7 +49,6 @@ const UserDropdown = () => {
                 }}
             >
                 <div className="items-center flex">
-                    <span className='mr-4 font-medium'>{user.firstname} {user.lastname}</span>
                     <span className="w-10 h-10 text-sm text-white bg-blueGray-200 inline-flex items-center justify-center rounded-full">
                         <img
                             alt="..."
@@ -64,6 +73,17 @@ const UserDropdown = () => {
                 >
                     Profile
                 </div>
+                {user.role.name === ROLE.AUTHENTICATED && (
+                    <div
+                        className={
+                            'text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent cursor-pointer'
+                        }
+                        onClick={handleClickChangePassword}
+                    >
+                        Change Password
+                    </div>
+                )}
+
                 <div className="h-0 my-2 border border-solid border-blueGray-100" />
                 <div
                     className={

@@ -10,7 +10,10 @@ function LandingPage() {
         if (isSystem)
             navigate(path.system)
     }, [navigate, isSystem])
-    return <div>LandingPage</div>
+    useEffect(() => {
+        document.title = 'Lacatrip'
+    }, [])
+    return <div >kaka</div>
 }
 
 export default LandingPage
