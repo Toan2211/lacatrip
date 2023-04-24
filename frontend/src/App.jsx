@@ -1,4 +1,9 @@
 import 'react-toastify/dist/ReactToastify.css'
+// Import Swiper styles
+import 'swiper/css'
+import 'swiper/css/effect-fade'
+import 'swiper/css/navigation'
+import 'swiper/css/pagination'
 import { React } from 'react'
 import RoutesComponent from '@routes'
 import { ToastContainer } from 'react-toastify'

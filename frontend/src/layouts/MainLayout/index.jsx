@@ -2,6 +2,7 @@ import Header from '@components/Header'
 import React from 'react'
 import { Outlet } from 'react-router-dom'
 import PropTypes from 'prop-types'
+import Footer from '@components/Footer'
 MainLayout.propTypes = {
     children: PropTypes.oneOfType([
         PropTypes.element,
@@ -12,9 +13,10 @@ function MainLayout() {
     return (
         <>
             <Header />
-            <div className='mt-[80px] px-10 max-w-[1535px]'>
+            <div className='mt-[80px] max-w-[1535px]'>
                 <Outlet />
             </div>
+            <Footer />
         </>
     )
 }
