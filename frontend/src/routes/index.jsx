@@ -13,25 +13,73 @@ import Employees from '@pages/System/Employees'
 import Clients from '@pages/System/Clients'
 import ServiceManger from '@pages/System/ServiceManagers'
 import Profile from '@pages/System/Profile'
-
+import MainLayout from '@layouts/MainLayout'
+import ProfileClients from '@pages/Profile'
+import AuthenticatedGuard from '@guards/AuthenticatedGuard'
+import ChangePassword from '@pages/ChangePassword'
 function RoutesComponent() {
     return (
         <BrowserRouter>
             <Routes>
-                <Route path = {path.landingPage} element = {<LandingPage />}/>
-                <Route element = {<SystemAuthenticated />}>
-                    <Route path = {path.system} element = {<SystemLayout />}>
-                        <Route path = {path.employees} element = {<Employees />}/>
-                        <Route path = {path.clients} element = {<Clients />}/>
-                        <Route path = {path.serviceManagers} element = {<ServiceManger />}/>
-                        <Route path = {path.profileSystem} element = {<Profile />}/>
+                <Route element={<MainLayout />}>
+                    <Route
+                        path={path.landingPage}
+                        element={<LandingPage />}
+                    />
+                    <Route
+                        path={path.profile}
+                        element={<ProfileClients />}
+                    />
+                </Route>
+                <Route element={<AuthenticatedGuard />}>
+                    <Route element={<MainLayout />}>
+                        <Route
+                            path={path.profile}
+                            element={<ProfileClients />}
+                        />
+                        <Route
+                            path={path.changePassword}
+                            element={<ChangePassword />}
+                        />
                     </Route>
                 </Route>
-                <Route element = {<UnauthenticatedGuard />}>
+                <Route element={<SystemAuthenticated />}>
+                    <Route
+                        path={path.system}
+                        element={<SystemLayout />}
+                    >
+                        <Route
+                            path={path.employees}
+                            element={<Employees />}
+                        />
+                        <Route
+                            path={path.clients}
+                            element={<Clients />}
+                        />
+                        <Route
+                            path={path.serviceManagers}
+                            element={<ServiceManger />}
+                        />
+                        <Route
+                            path={path.profileSystem}
+                            element={<Profile />}
+                        />
+                    </Route>
+                </Route>
+                <Route element={<UnauthenticatedGuard />}>
                     <Route element={<AuthLayout />}>
-                        <Route path={path.signin} element={<Signin />} />
-                        <Route path={path.signup} element={<Signup />} />
-                        <Route path={path.forgotPass} element={<ForgotPassword />} />
+                        <Route
+                            path={path.signin}
+                            element={<Signin />}
+                        />
+                        <Route
+                            path={path.signup}
+                            element={<Signup />}
+                        />
+                        <Route
+                            path={path.forgotPass}
+                            element={<ForgotPassword />}
+                        />
                     </Route>
                 </Route>
             </Routes>

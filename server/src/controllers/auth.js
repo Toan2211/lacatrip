@@ -4,6 +4,7 @@ const crypto = require('crypto')
 const { sendEmailConfirm, sendEmailResetPassword } = require('../services/mail')
 const userService = require('../services/user')
 const authService = require('../services/auth')
+const { avatarDefault } = require('../constants/images')
 const signup = async (req, res) => {
     try {
         const { email, firstname, lastname } = req.body
@@ -13,6 +14,7 @@ const signup = async (req, res) => {
                 .json({ message: 'This email already exists.' })
         req.body.roleId = AUTHENTICATEDID
         req.body.confirmtoken = crypto.randomBytes(64).toString('hex')
+        req.avatar = avatarDefault
         const user = await userService.create(req.body)
         await sendEmailConfirm({
             name: `${firstname} ${lastname}`,
