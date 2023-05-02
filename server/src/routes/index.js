@@ -7,6 +7,7 @@ const serviceManager = require('./serviceManager')
 const province = require('./province')
 const amenitiesHotel = require('./amenitiesHotel')
 const hotel = require('./hotel')
+const image = require('./image')
 router.get('/status', (req, res) => {
     res.status(200).json({ status: 'Status OKE' })
 })
@@ -18,4 +19,5 @@ router.use('/service-manager', serviceManager)
 router.use('/province', province)
 router.use('/amenitiesHotel', amenitiesHotel)
 router.use('/hotel', hotel)
+router.use('/image', image)
 module.exports = router

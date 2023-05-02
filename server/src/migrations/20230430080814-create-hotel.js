@@ -54,7 +54,7 @@ module.exports = {
             provinceId: {
                 type: Sequelize.INTEGER
             },
-            seriveManagerId: {
+            serviceManagerId: {
                 type: Sequelize.UUID
             },
             createdAt: {

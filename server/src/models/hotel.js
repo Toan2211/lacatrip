@@ -10,7 +10,7 @@ module.exports = (sequelize, DataTypes) => {
         static associate(models) {
             // define association here
             this.belongsTo(models.ServiceManager, {
-                foreignKey: 'seriveManagerId',
+                foreignKey: 'serviceManagerId',
                 as: 'serviceManager'
             })
             this.hasMany(models.Image, {
@@ -49,7 +49,7 @@ module.exports = (sequelize, DataTypes) => {
             public: DataTypes.BOOLEAN,
             cheapestPrice: DataTypes.FLOAT,
             provinceId: DataTypes.INTEGER,
-            seriveManagerId: DataTypes.UUID
+            serviceManagerId: DataTypes.UUID
         },
         {
             sequelize,
