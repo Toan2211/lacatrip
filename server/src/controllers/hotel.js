@@ -61,15 +61,15 @@ const findOne = async (req, res) => {
     try {
         const hotel = await hotelService.findOne(req.params.id)
         if (hotel) {
-            if (
-                req.user.id !== hotel.serviceManager.userId &&
-                req.user.role.id === SERVICEMANAGERID
-            )
-                return res.status(403).json({
-                    message: 'Forbidden: Hotel is not your own'
-                })
             return res.status(200).json({
                 message: 'Get hotel successful',
+                data: hotel
+            })
+        }
+        else
+        {
+            return res.status(400).json({
+                message: 'Hotel Not found',
                 data: hotel
             })
         }
@@ -93,11 +93,29 @@ const togglePublic = async (req, res) => {
         return res.status(500).json({ message: error.message })
     }
 }
+const findByProvince = async (req, res) => {
+    try {
+        const page = req.query.page ? +req.query.page : 1
+        const limit = req.query.limit ? +req.query.limit : 10
+        const hotels = await hotelService.findByProvince(
+            req.params.provinceId,
+            page,
+            limit
+        )
+        return res.status(200).json({
+            message: 'Get list hotel successful !',
+            data: hotels
+        })
+    } catch (error) {
+        return res.status(500).json({ message: error.message })
+    }
+}
 module.exports = {
     create,
     findOne,
     togglePublic,
     update,
     find,
-    findByServiceManager
+    findByServiceManager,
+    findByProvince
 }
