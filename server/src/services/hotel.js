@@ -162,6 +162,46 @@ const findByServiceManager = async (serviceManagerId, page, limit) => {
         throw new Error(error)
     }
 }
+const findByProvince = async (provinceId, page, limit) => {
+    try {
+        const { count, rows } = await db.Hotel.findAndCountAll({
+            offset: (page - 1) * limit,
+            limit: +limit,
+            include: [
+                {
+                    model: db.AmenitiesHotel,
+                    as: 'amenitieshotel'
+                },
+                {
+                    model: db.ServiceManager,
+                    as: 'serviceManager',
+                },
+                {
+                    model: db.Image,
+                    as: 'images'
+                },
+                {
+                    model: db.Province,
+                    as: 'province',
+                    where: {
+                        id: provinceId
+                    }
+                }
+            ],
+        })
+        return {
+            hotels: rows,
+            pagination: {
+                page: page,
+                totalPages: Math.ceil(count / limit),
+                totalElements: count,
+                size: limit
+            }
+        }
+    } catch (error) {
+        throw new Error(error)
+    }
+}
 const findOne = async id => {
     try {
         const hotel = await db.Hotel.findByPk(id, {
@@ -258,5 +298,6 @@ module.exports = {
     togglePublic,
     update,
     find,
-    findByServiceManager
+    findByServiceManager,
+    findByProvince
 }

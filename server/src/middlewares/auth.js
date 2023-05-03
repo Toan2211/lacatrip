@@ -38,6 +38,12 @@ const isSystemUser = (req, res, next) => {
     }
     return res.status(403).json({ message: 'Forbidden: required system user !' })
 }
+const isServiceManager = (req, res, next) => {
+    if (req.user.roleId === SERVICEMANAGERID) {
+        return next()
+    }
+    return res.status(403).json({ message: 'Forbidden: required servicemanare' })
+}
 const isYourSelf = (req, res, next) => {
     if ((req.user.id === req.body?.data?.user_id) || (req.user.id === req.params.id)) return next()
     return res.status(403).json({ msg: 'Forbidden !' })
@@ -48,5 +54,6 @@ module.exports = {
     isAdmin,
     isAdminOrEmployee,
     isYourSelf,
-    isSystemUser
+    isSystemUser,
+    isServiceManager
 }
