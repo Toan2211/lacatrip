@@ -1,3 +1,4 @@
+const { SERVICEMANAGERID } = require('../constants/variable')
 const hotelService = require('../services/hotel')
 const create = async (req, res) => {
     try {
@@ -25,12 +26,53 @@ const update = async (req, res) => {
         return res.status(500).json({ message: error.message })
     }
 }
+const find = async (req, res) => {
+    try {
+        const key = req.query.key ? +req.query.key : ''
+        const page = req.query.page ? +req.query.page : 1
+        const limit = req.query.limit ? +req.query.limit : 10
+        const hotels = await hotelService.find(key, page, limit)
+        return res.status(200).json({
+            message: 'Get list hotel successful !',
+            data: hotels
+        })
+    } catch (error) {
+        return res.status(500).json({ message: error.message })
+    }
+}
+const findByServiceManager = async (req, res) => {
+    try {
+        const page = req.query.page ? +req.query.page : 1
+        const limit = req.query.limit ? +req.query.limit : 10
+        const hotels = await hotelService.findByServiceManager(
+            req.params.serviceManagerId,
+            page,
+            limit
+        )
+        return res.status(200).json({
+            message: 'Get list hotel successful !',
+            data: hotels
+        })
+    } catch (error) {
+        return res.status(500).json({ message: error.message })
+    }
+}
 const findOne = async (req, res) => {
     try {
         const hotel = await hotelService.findOne(req.params.id)
-        return res
-            .status(200)
-            .json({ message: 'Get hotel successful', data: hotel })
+        if (hotel) {
+            if (
+                req.user.id !== hotel.serviceManager.userId &&
+                req.user.role.id === SERVICEMANAGERID
+            )
+                return res.status(403).json({
+                    message: 'Forbidden: Hotel is not your own'
+                })
+            return res.status(200).json({
+                message: 'Get hotel successful',
+                data: hotel
+            })
+        }
     } catch (error) {
         return res.status(500).json({ message: error.message })
     }
@@ -55,5 +97,7 @@ module.exports = {
     create,
     findOne,
     togglePublic,
-    update
+    update,
+    find,
+    findByServiceManager
 }

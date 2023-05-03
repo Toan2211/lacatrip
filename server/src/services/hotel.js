@@ -102,7 +102,52 @@ const find = async (key, page, limit) => {
                     model: db.Province,
                     as: 'province'
                 }
-            ]
+            ],
+            where: {
+                name: {
+                    [Op.like]: `%${key}%`
+                }
+            }
+        })
+        return {
+            hotels: rows,
+            pagination: {
+                page: page,
+                totalPages: Math.ceil(count / limit),
+                totalElements: count,
+                size: limit
+            }
+        }
+    } catch (error) {
+        throw new Error(error)
+    }
+}
+const findByServiceManager = async (serviceManagerId, page, limit) => {
+    try {
+        const { count, rows } = await db.Hotel.findAndCountAll({
+            offset: (page - 1) * limit,
+            limit: +limit,
+            include: [
+                {
+                    model: db.AmenitiesHotel,
+                    as: 'amenitieshotel'
+                },
+                {
+                    model: db.ServiceManager,
+                    as: 'serviceManager',
+                    where: {
+                        id: serviceManagerId
+                    }
+                },
+                {
+                    model: db.Image,
+                    as: 'images'
+                },
+                {
+                    model: db.Province,
+                    as: 'province'
+                }
+            ],
         })
         return {
             hotels: rows,
@@ -139,8 +184,7 @@ const findOne = async id => {
                 }
             ]
         })
-
-        return hotel
+        return hotel        
     } catch (error) {
         throw new Error(error)
     }
@@ -213,5 +257,6 @@ module.exports = {
     findOne,
     togglePublic,
     update,
-    find
+    find,
+    findByServiceManager
 }

@@ -1,6 +1,6 @@
 const jwt = require('jsonwebtoken')
 const { secretJWT } = require('../config/auth.config')
-const { ADMINID, EMPLOYEEID } = require('../constants/variable')
+const { ADMINID, EMPLOYEEID, SERVICEMANAGERID } = require('../constants/variable')
 const verifyToken = (req, res, next) => {
     const token = req.header('Authorization')?.split(' ')[1]
     if (!token)
@@ -32,6 +32,12 @@ const isAdminOrEmployee = (req, res, next) => {
     }
     return res.status(403).json({ message: 'Forbidden: required Admin or Employee !' })
 }
+const isSystemUser = (req, res, next) => {
+    if (req.user.roleId === ADMINID || req.user.roleId === EMPLOYEEID || req.user.roleId === SERVICEMANAGERID) {
+        return next()
+    }
+    return res.status(403).json({ message: 'Forbidden: required system user !' })
+}
 const isYourSelf = (req, res, next) => {
     if ((req.user.id === req.body?.data?.user_id) || (req.user.id === req.params.id)) return next()
     return res.status(403).json({ msg: 'Forbidden !' })
@@ -41,5 +47,6 @@ module.exports = {
     isAuthenticatedUser,
     isAdmin,
     isAdminOrEmployee,
-    isYourSelf
+    isYourSelf,
+    isSystemUser
 }
