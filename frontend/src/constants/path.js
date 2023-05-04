@@ -8,9 +8,11 @@ class Path {
         this.profileSystem = '/system/profile'
         this.employees = '/system/employees'
         this.clients = '/system/clients'
-        this.serviceManagers = 'system/serviceManagers'
+        this.serviceManagers = '/system/serviceManagers'
         this.profile = '/profile'
         this.changePassword = '/changePassword'
+        this.hotels = '/system/hotels'
+        this.formHotel = '/system/hotels/form'
     }
 }
 
