@@ -14,7 +14,7 @@ const create = async (req, res) => {
         const newPass = crypto.randomBytes(3).toString('hex') + '1A@'
 
         req.body.password = newPass
-        req.body.roleId = 2
+        req.body.roleId = 3
         if (req.file) req.body.avatar = req.file.path
         else req.body.avatar = avatarDefault
         const user = await userService.create(req.body)
