@@ -13,6 +13,7 @@ class Path {
         this.changePassword = '/changePassword'
         this.hotels = '/system/hotels'
         this.formHotel = '/system/hotels/form'
+        this.formUpdateHotel = '/system/hotels/form/:id'
     }
 }
 

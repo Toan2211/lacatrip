@@ -39,6 +39,10 @@ export const togglePublic = createAsyncThunk(
     'hotels/togglePublic',
     payloadCreator(hotelApi.togglePublic)
 )
+export const getHotelById = createAsyncThunk(
+    'hotels/getDetailHotel',
+    payloadCreator(hotelApi.getDetail)
+)
 const togglePublicFulfilled = (state, action) => {
     const hotel = state.hotels.find(hotel => hotel.id === action.payload.data.id)
     hotel.public = !hotel.public
@@ -47,6 +51,9 @@ const getHotelsFulfilled = (state, action) => {
     const { hotels, pagination } = action.payload.data
     state.hotels = hotels
     state.pagination = pagination
+}
+const getHotelByIdFulfilled = (state, action) => {
+    state.currentHotel = action.payload.data
 }
 const hotelSlice = createSlice({
     name: 'hotels',
@@ -65,6 +72,7 @@ const hotelSlice = createSlice({
         builder
             .addCase(getHotels.fulfilled, getHotelsFulfilled)
             .addCase(togglePublic.fulfilled, togglePublicFulfilled)
+            .addCase(getHotelById.fulfilled, getHotelByIdFulfilled)
             .addMatcher(
                 action => action.type.endsWith('/pending'),
                 state => {

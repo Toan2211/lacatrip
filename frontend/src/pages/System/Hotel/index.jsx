@@ -35,7 +35,7 @@ function Hotel() {
     }
     const handleSelectItem = (hotel) => {
         dispatch(setCurrentHotel(hotel))
-        navigate(path.formHotel)
+        navigate(`${path.formHotel}/${hotel.id}`)
     }
     const handleTogglePublic = hotelId => {
         try {

@@ -21,13 +21,14 @@ import MySelect from '@components/MySelect'
 import {
     createHotel,
     currentHotelSelector,
+    getHotelById,
     loadingHotel,
     updateHotel
 } from '../hotel.slice'
 import { unwrapResult } from '@reduxjs/toolkit'
 import _ from 'lodash'
 import { provincesSelector } from '@pages/CommonProperty/baseproperty'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { path } from '@constants/path'
 function FormHotel() {
     const dispatch = useDispatch()
@@ -37,6 +38,10 @@ function FormHotel() {
     const provinces = useSelector(provincesSelector)
     const navigate = useNavigate()
     const loading = useSelector(loadingHotel)
+    const id = useParams().id
+    useEffect(() => {
+        if (id && !currentHotel.id) dispatch(getHotelById(id))
+    }, [id, currentHotel, dispatch])
     useEffect(() => {
         document.title = 'Form Hotel'
         dispatch(getServiceManagers({ limit: 1000 }))
@@ -133,6 +138,42 @@ function FormHotel() {
         },
         resolver: yupResolver(schema)
     })
+    useEffect(() => {
+        if (!_.isEmpty(currentHotel)) {
+            form.setValue('name', currentHotel.name)
+            form.setValue('name', currentHotel.name)
+            form.setValue('description', currentHotel.description)
+            form.setValue('phone', currentHotel.phone)
+            form.setValue('website', currentHotel.website)
+            form.setValue('hotelClass', currentHotel.hotelClass)
+            form.setValue('cheapestPrice', currentHotel.cheapestPrice)
+            form.setValue('address', currentHotel.address)
+            form.setValue('longtitude', currentHotel.longtitude)
+            form.setValue('latitude', currentHotel.latitude)
+            form.setValue(
+                'serviceManagerId',
+                currentHotel.serviceManagerId
+            )
+            form.setValue('provinceId', currentHotel.provinceId)
+            setAmenityIds(
+                currentHotel.amenitieshotel.map(item => ({
+                    value: item.id,
+                    label: item.name
+                }))
+            )
+            setImages(
+                currentHotel.images.map(image => ({
+                    id: image.id,
+                    url: image.url
+                }))
+            )
+            setHotelStyles(
+                currentHotel.hotelStyle
+                    .split(',')
+                    .map(item => ({ value: item, label: item }))
+            )
+        }
+    }, [form, currentHotel])
     const handleOnChangeImage = data => {
         setImages(data)
     }

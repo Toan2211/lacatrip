@@ -7,6 +7,9 @@ const hotelApi = {
     create(data, config) {
         return http.post('/hotel', data, config)
     },
+    getDetail(hotelId) {
+        return http.get(`/hotel/${hotelId}`)
+    },
     update(data, config) {
         return http.put(`/hotel/${data.get('id')}`, data, config)
     },

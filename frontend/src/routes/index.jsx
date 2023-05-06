@@ -74,6 +74,10 @@ function RoutesComponent() {
                             path={path.formHotel}
                             element = {<FormHotel />}
                         />
+                        <Route
+                            path={path.formUpdateHotel}
+                            element = {<FormHotel />}
+                        />
                     </Route>
                 </Route>
                 <Route element={<UnauthenticatedGuard />}>
