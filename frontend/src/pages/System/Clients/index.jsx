@@ -174,7 +174,7 @@ function Clients() {
                     </Table>
                 </div>
             </div>
-            {pagination.page > 1 && (
+            {pagination.totalPages > 1 && (
                 <div className="flex items-center justify-center text-center">
                     <Pagination
                         currentPage={Number(pagination.page)}

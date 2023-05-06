@@ -1,10 +1,62 @@
 import { path } from '@constants/path'
-import { Tooltip } from 'flowbite-react'
-import React from 'react'
-import { useNavigate } from 'react-router-dom'
+import { Pagination, Table, Tooltip } from 'flowbite-react'
+import React, { useEffect, useMemo } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { useLocation, useNavigate } from 'react-router-dom'
+import { getHotels, hotelsSelector, paginationHotel, setCurrentHotel, togglePublic } from './hotel.slice'
+import queryString from 'query-string'
+import ToggleButton from '@components/ToggleButton'
+import Mybutton from '@components/MyButton'
+import { unwrapResult } from '@reduxjs/toolkit'
+import { toast } from 'react-toastify'
 
 function Hotel() {
     const navigate = useNavigate()
+    const dispatch = useDispatch()
+    const hotels = useSelector(hotelsSelector)
+    const pagination = useSelector(paginationHotel)
+    const location = useLocation()
+    const queryParams = useMemo(() => {
+        const params = queryString.parse(location.search)
+        return {
+            page: Number.parseInt(params.page) || 1,
+            limit: Number.parseInt(params.limit) || 10,
+            key: params.key || ''
+        }
+    }, [location.search])
+    useEffect(() => {
+        dispatch(getHotels(queryParams))
+    }, [queryParams, dispatch])
+    const handlePageChange = page => {
+        if (!page <= 1 || !page >= pagination.totalPages) {
+            const filters = { ...queryParams, page: page }
+            navigate(`?${queryString.stringify(filters)}`)
+        }
+    }
+    const handleSelectItem = (hotel) => {
+        dispatch(setCurrentHotel(hotel))
+        navigate(path.formHotel)
+    }
+    const handleTogglePublic = hotelId => {
+        try {
+            const res = dispatch(togglePublic(hotelId))
+            unwrapResult(res)
+            toast.success('Change status hotel successful', {
+                position: toast.POSITION.BOTTOM_CENTER,
+                autoClose: 1000,
+                hideProgressBar: true
+            })
+        } catch (error) {
+            toast.error(error.message, {
+                position: toast.POSITION.BOTTOM_CENTER,
+                autoClose: 1000,
+                hideProgressBar: true
+            })
+        }
+    }
+    useEffect(() => {
+        document.title = 'Hotels'
+    }, [])
     return (
         <div>
             <div className="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded bg-white min-h-[70vh]">
@@ -42,58 +94,47 @@ function Hotel() {
                     </div>
                 </div>
                 <div className="block w-full overflow-x-auto h-[66vh]">
-                    {/* <Table hoverable={true}>
+                    <Table hoverable={true}>
                         <Table.Head>
-                            <Table.HeadCell>Fullname</Table.HeadCell>
-                            <Table.HeadCell>Email</Table.HeadCell>
+                            <Table.HeadCell>Name</Table.HeadCell>
+                            <Table.HeadCell>Service Manager</Table.HeadCell>
                             <Table.HeadCell>
-                                PhoneNumber
+                                Province
                             </Table.HeadCell>
-                            <Table.HeadCell>Gender</Table.HeadCell>
-                            <Table.HeadCell>Status</Table.HeadCell>
+                            <Table.HeadCell>Rating</Table.HeadCell>
+                            <Table.HeadCell>Public</Table.HeadCell>
                             <Table.HeadCell>Action</Table.HeadCell>
                         </Table.Head>
                         <Table.Body className="divide-y">
-                            {serviceManagers &&
-                                serviceManagers.map(
-                                    serviceManager => (
+                            {hotels &&
+                                hotels.map(
+                                    hotel => (
                                         <Table.Row
                                             className="bg-white dark:border-gray-700 dark:bg-gray-800"
                                             key={
-                                                serviceManager.user.id
+                                                hotel.id
                                             }
                                         >
                                             <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
-                                                {`${serviceManager.user.firstname} ${serviceManager.user.lastname}`}
+                                                {hotel.name}
                                             </Table.Cell>
                                             <Table.Cell>
-                                                {
-                                                    serviceManager
-                                                        .user.email
-                                                }
+                                                {hotel.serviceManager.user.firstname + hotel.serviceManager.user.lastname}
                                             </Table.Cell>
                                             <Table.Cell>
-                                                {
-                                                    serviceManager
-                                                        .user.phone
-                                                }
+                                                {hotel.province.name}
                                             </Table.Cell>
                                             <Table.Cell>
-                                                {serviceManager.user
-                                                    .gender
-                                                    ? 'Male'
-                                                    : 'Female'}
+                                                {hotel.rating}
                                             </Table.Cell>
                                             <Table.Cell>
                                                 <ToggleButton
                                                     status={
-                                                        !serviceManager
-                                                            .user
-                                                            .block
+                                                        hotel.public
                                                     }
                                                     onClick={() =>
-                                                        toggleServiceManagerStatus(
-                                                            serviceManager.userId
+                                                        handleTogglePublic(
+                                                            hotel.id
                                                         )
                                                     }
                                                 />
@@ -102,8 +143,8 @@ function Hotel() {
                                                 <Mybutton
                                                     className="flex p-0.5 bg-yellow-500 rounded-lg hover:bg-yellow-600 transition-all duration-300 text-white"
                                                     onClick={() =>
-                                                        handleSelectServiceManager(
-                                                            serviceManager
+                                                        handleSelectItem(
+                                                            hotel
                                                         )
                                                     }
                                                 >
@@ -127,9 +168,18 @@ function Hotel() {
                                     )
                                 )}
                         </Table.Body>
-                    </Table> */}
+                    </Table>
                 </div>
             </div>
+            {pagination.totalPages > 1 && (
+                <div className="flex items-center justify-center text-center">
+                    <Pagination
+                        currentPage={Number(pagination.page)}
+                        onPageChange={handlePageChange}
+                        totalPages={Number(pagination.totalPages)}
+                    />
+                </div>
+            )}
         </div>
     )
 }

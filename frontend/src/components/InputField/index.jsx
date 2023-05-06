@@ -2,7 +2,7 @@ import React from 'react'
 import { Controller } from 'react-hook-form'
 
 function InputField(props) {
-    const { form, type, name, placeholder, accept, disabled, className } = props
+    const { form, type, name, placeholder, accept, disabled, className, min, max } = props
     const {
         formState: { errors }
     } = form
@@ -15,6 +15,8 @@ function InputField(props) {
                 control={form.control}
                 render={({ field }) => (
                     <input
+                        min={min}
+                        max={max}
                         accept={accept}
                         type={type}
                         name={name}

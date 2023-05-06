@@ -2,6 +2,7 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import { payloadCreator } from '@utils/helper'
 import provinceApi from '@api/provinceApi'
 import amenitieshotelApi from '@api/amenitieshotelApi'
+import imageApi from '@api/imageApi'
 export const getProvinces = createAsyncThunk(
     'provinces/getAllProvinces',
     payloadCreator(provinceApi.getAllProvince)
@@ -12,6 +13,10 @@ const handlegetAllProvincesFulfilled = (state, action) => {
 export const getAmenitiesHotel = createAsyncThunk(
     'amenitieshotel/getAll',
     payloadCreator(amenitieshotelApi.getAll)
+)
+export const deleteImage = createAsyncThunk(
+    'images/deleteImage',
+    payloadCreator(imageApi.delete)
 )
 const handlegetAllAmenitiesHotelFulfilled = (state, action) => {
     state.amenitiesHotel = action.payload.data
@@ -41,12 +46,14 @@ const basepropertySlice = createSlice({
                         action.type.endsWith('/fulfilled') ||
                         action.type.endsWith('/rejected'),
                     (state, action) => {
-                        state.status = action.payload.status
                         state.loading = state.loading - 1
                     }
                 )
         }
     }
 })
-const { actions, reducer } = basepropertySlice
+export const provincesSelector = (state) => state.propertys.provinces
+export const amenitiesHotelSelector = state => state.propertys.amenitiesHotel
+export const loadingPropertySelector = state => state.propertys.loading
+const { reducer } = basepropertySlice
 export default reducer
