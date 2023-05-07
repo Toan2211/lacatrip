@@ -18,7 +18,7 @@ const update = async (req, res) => {
         if (req.files) {
             req.body.images = req.files
         }
-        const hotel = await hotelService.update(req.body)
+        const hotel = await hotelService.update(req.params.id, req.body)
         return res
             .status(200)
             .json({ message: 'Update hotel successful', data: hotel })

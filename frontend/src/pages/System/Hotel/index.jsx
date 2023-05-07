@@ -1,25 +1,20 @@
-import React, { useEffect, useMemo, useState } from 'react'
+import { path } from '@constants/path'
+import { Pagination, Table, Tooltip } from 'flowbite-react'
+import React, { useEffect, useMemo } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useLocation, useNavigate } from 'react-router-dom'
-import {
-    getServiceManagers,
-    paginationServiceManagerSelector,
-    serviceManagersSelector,
-    setCurrentServicemanager,
-    toggleStatusServiceManager
-} from './servicemanager.slice'
+import { getHotels, hotelsSelector, paginationHotel, setCurrentHotel, togglePublic } from './hotel.slice'
 import queryString from 'query-string'
-import { Pagination, Table, Tooltip } from 'flowbite-react'
-import Mybutton from '@components/MyButton'
 import ToggleButton from '@components/ToggleButton'
-import ServiceManagerForm from './ServiceManagerForm'
+import Mybutton from '@components/MyButton'
+import { unwrapResult } from '@reduxjs/toolkit'
+import { toast } from 'react-toastify'
 
-function ServiceManger() {
-    const dispatch = useDispatch()
+function Hotel() {
     const navigate = useNavigate()
-    const serviceManagers = useSelector(serviceManagersSelector)
-    const pagination = useSelector(paginationServiceManagerSelector)
-    const [openForm, setOpenForm] = useState(false)
+    const dispatch = useDispatch()
+    const hotels = useSelector(hotelsSelector)
+    const pagination = useSelector(paginationHotel)
     const location = useLocation()
     const queryParams = useMemo(() => {
         const params = queryString.parse(location.search)
@@ -30,7 +25,7 @@ function ServiceManger() {
         }
     }, [location.search])
     useEffect(() => {
-        dispatch(getServiceManagers(queryParams))
+        dispatch(getHotels(queryParams))
     }, [queryParams, dispatch])
     const handlePageChange = page => {
         if (!page <= 1 || !page >= pagination.totalPages) {
@@ -38,22 +33,29 @@ function ServiceManger() {
             navigate(`?${queryString.stringify(filters)}`)
         }
     }
-    const handleCreateServiceManager = () => {
-        setOpenForm(true)
+    const handleSelectItem = (hotel) => {
+        dispatch(setCurrentHotel(hotel))
+        navigate(`${path.formHotel}/${hotel.id}`)
     }
-    const handleSelectServiceManager = serviceManager => {
-        dispatch(setCurrentServicemanager(serviceManager))
-        setOpenForm(true)
-    }
-    const toggleServiceManagerStatus = userId => {
-        dispatch(toggleStatusServiceManager(userId))
-    }
-    const onClose = () => {
-        setOpenForm(false)
-        dispatch(setCurrentServicemanager({}))
+    const handleTogglePublic = hotelId => {
+        try {
+            const res = dispatch(togglePublic(hotelId))
+            unwrapResult(res)
+            toast.success('Change status hotel successful', {
+                position: toast.POSITION.BOTTOM_CENTER,
+                autoClose: 1000,
+                hideProgressBar: true
+            })
+        } catch (error) {
+            toast.error(error.message, {
+                position: toast.POSITION.BOTTOM_CENTER,
+                autoClose: 1000,
+                hideProgressBar: true
+            })
+        }
     }
     useEffect(() => {
-        document.title = 'System Service Managers'
+        document.title = 'Hotels'
     }, [])
     return (
         <div>
@@ -62,7 +64,7 @@ function ServiceManger() {
                     <div className="flex flex-wrap items-center">
                         <div className="relative w-full px-4 max-w-full flex">
                             <h3 className="font-semibold text-lg text-blue-600">
-                                Manage ServiceManagers
+                                Manage Hotels
                             </h3>
                             <div className="relative flex flex-col items-center group w-10">
                                 <Tooltip
@@ -72,7 +74,7 @@ function ServiceManger() {
                                     <button
                                         className="inline-flex items-center justify-center w-6 h-6 mr-2 text-indigo-100 transition-colors duration-150  bg-green-700 rounded-lg focus:shadow-outline hover:bg-green-500 ml-4"
                                         onClick={() =>
-                                            handleCreateServiceManager()
+                                            navigate(path.formHotel)
                                         }
                                     >
                                         <svg
@@ -94,56 +96,45 @@ function ServiceManger() {
                 <div className="block w-full overflow-x-auto h-[66vh]">
                     <Table hoverable={true}>
                         <Table.Head>
-                            <Table.HeadCell>Fullname</Table.HeadCell>
-                            <Table.HeadCell>Email</Table.HeadCell>
+                            <Table.HeadCell>Name</Table.HeadCell>
+                            <Table.HeadCell>Service Manager</Table.HeadCell>
                             <Table.HeadCell>
-                                PhoneNumber
+                                Province
                             </Table.HeadCell>
-                            <Table.HeadCell>Gender</Table.HeadCell>
-                            <Table.HeadCell>Status</Table.HeadCell>
+                            <Table.HeadCell>Rating</Table.HeadCell>
+                            <Table.HeadCell>Public</Table.HeadCell>
                             <Table.HeadCell>Action</Table.HeadCell>
                         </Table.Head>
                         <Table.Body className="divide-y">
-                            {serviceManagers &&
-                                serviceManagers.map(
-                                    serviceManager => (
+                            {hotels &&
+                                hotels.map(
+                                    hotel => (
                                         <Table.Row
                                             className="bg-white dark:border-gray-700 dark:bg-gray-800"
                                             key={
-                                                serviceManager.user.id
+                                                hotel.id
                                             }
                                         >
                                             <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
-                                                {`${serviceManager.user.firstname} ${serviceManager.user.lastname}`}
+                                                {hotel.name}
                                             </Table.Cell>
                                             <Table.Cell>
-                                                {
-                                                    serviceManager
-                                                        .user.email
-                                                }
+                                                {hotel.serviceManager.user.firstname + hotel.serviceManager.user.lastname}
                                             </Table.Cell>
                                             <Table.Cell>
-                                                {
-                                                    serviceManager
-                                                        .user.phone
-                                                }
+                                                {hotel.province.name}
                                             </Table.Cell>
                                             <Table.Cell>
-                                                {serviceManager.user
-                                                    .gender
-                                                    ? 'Male'
-                                                    : 'Female'}
+                                                {hotel.rating}
                                             </Table.Cell>
                                             <Table.Cell>
                                                 <ToggleButton
                                                     status={
-                                                        !serviceManager
-                                                            .user
-                                                            .block
+                                                        hotel.public
                                                     }
                                                     onClick={() =>
-                                                        toggleServiceManagerStatus(
-                                                            serviceManager.userId
+                                                        handleTogglePublic(
+                                                            hotel.id
                                                         )
                                                     }
                                                 />
@@ -152,8 +143,8 @@ function ServiceManger() {
                                                 <Mybutton
                                                     className="flex p-0.5 bg-yellow-500 rounded-lg hover:bg-yellow-600 transition-all duration-300 text-white"
                                                     onClick={() =>
-                                                        handleSelectServiceManager(
-                                                            serviceManager
+                                                        handleSelectItem(
+                                                            hotel
                                                         )
                                                     }
                                                 >
@@ -189,9 +180,8 @@ function ServiceManger() {
                     />
                 </div>
             )}
-            <ServiceManagerForm open={openForm} onClose={onClose} />
         </div>
     )
 }
 
-export default ServiceManger
+export default Hotel

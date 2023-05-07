@@ -12,6 +12,6 @@ router.get('/:id', validateHotel.findOne(), validate, controller.findOne)
 router.get('/service-manager/:serviceManagerId', verifyToken, isSystemUser, validateHotel.findOne(), validate, controller.findByServiceManager)
 router.post('/', verifyToken, isAdminOrEmployee, uploadCloud.array('images'), validateHotel.create(), validate, controller.create)
 router.put('/public/:id',verifyToken, isAdminOrEmployee, validateHotel.findOne(), validate, controller.togglePublic)
-router.put('/:id', verifyToken, isAdminOrEmployee, validateHotel.update(), validate, controller.update)
+router.put('/:id', verifyToken, isAdminOrEmployee, uploadCloud.array('images'), validateHotel.update(), validate, controller.update)
 
 module.exports = router

@@ -19,6 +19,8 @@ const create = async data => {
         }
         const hotel = await db.Hotel.create(dataHotel)
         if (data.amenitiesIds) {
+            if(typeof data.amenitiesIds !== 'object')
+                data.amenitiesIds = [data.amenitiesIds]
             await addAmenitiesOfHotel(hotel.id, data.amenitiesIds)
         }
         if (data.images) {
@@ -35,7 +37,7 @@ const create = async data => {
 const update = async (id, data) => {
     try {
         let temp
-        const hotel = await data.Hotel.findByPk(id, {
+        const hotel = await db.Hotel.findByPk(id, {
             include: [
                 {
                     model: db.AmenitiesHotel,
@@ -50,8 +52,10 @@ const update = async (id, data) => {
                 }
             }
             if (data.amenitiesIds) {
+                if (typeof data.amenitiesIds !== 'object')
+                    data.amenitiesIds = [data.amenitiesIds]
                 for (let element of hotel.amenitieshotel) {
-                    if (!data.amenitiesIds.include(element.id)) {
+                    if (!data.amenitiesIds.includes(element.id)) {
                         temp = await db.AmenitiesHotel.findOne({
                             where: { id: element.id }
                         })
@@ -59,7 +63,7 @@ const update = async (id, data) => {
                     }
                 }
                 for (let id of data.amenitiesIds) {
-                    if (!hotel.amenitieshotel.include(id)) {
+                    if (!hotel.amenitieshotel.includes(id)) {
                         temp = await db.AmenitiesHotel.findOne({
                             where: { id: id }
                         })
@@ -72,8 +76,8 @@ const update = async (id, data) => {
                     id: id
                 }
             })
-            const hotel = await findOne(id)
-            return hotel
+            const hotelUpdated = await findOne(id)
+            return hotelUpdated
         }
         return false
     } catch (error) {
@@ -92,7 +96,15 @@ const find = async (key, page, limit) => {
                 },
                 {
                     model: db.ServiceManager,
-                    as: 'serviceManager'
+                    as: 'serviceManager',
+                    include: {
+                        model: db.User,
+                        required: true,
+                        as: 'user',
+                        attributes: {
+                            exclude: ['password', 'confirmtoken']
+                        },
+                    }
                 },
                 {
                     model: db.Image,

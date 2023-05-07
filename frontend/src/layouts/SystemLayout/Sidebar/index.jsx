@@ -3,6 +3,7 @@ import { NavLink } from 'react-router-dom'
 import logo from '@assets/img/logo.svg'
 import { BsFillPersonFill } from 'react-icons/bs'
 import { path } from '@constants/path'
+import { FaHotel } from 'react-icons/fa'
 export default function Sidebar() {
     const [collapseShow, setCollapseShow] = React.useState('hidden')
     return (
@@ -45,7 +46,7 @@ export default function Sidebar() {
                                     }
                                     to={path.employees}
                                 >
-                                    <span>
+                                    <span className='mr-2'>
                                         <BsFillPersonFill />
                                     </span>
                                     Employees
@@ -60,7 +61,7 @@ export default function Sidebar() {
                                     }
                                     to={path.clients}
                                 >
-                                    <span>
+                                    <span className='mr-2'>
                                         <BsFillPersonFill />
                                     </span>
                                     Clients
@@ -75,10 +76,25 @@ export default function Sidebar() {
                                     }
                                     to={path.serviceManagers}
                                 >
-                                    <span>
+                                    <span className='mr-2'>
                                         <BsFillPersonFill />
                                     </span>
                                     ServiceManagers
+                                </NavLink>
+                            </li>
+                            <li className="items-center ">
+                                <NavLink
+                                    className={({ isActive }) =>
+                                        isActive
+                                            ? 'text-blue-600 hover:opacity-75 text-xs uppercase py-3 font-bold flex'
+                                            : 'hover:text-blue-600 text-xs uppercase py-3 font-bold flex'
+                                    }
+                                    to={path.hotels}
+                                >
+                                    <span className='mr-2'>
+                                        <FaHotel />
+                                    </span>
+                                    Hotels
                                 </NavLink>
                             </li>
                         </ul>

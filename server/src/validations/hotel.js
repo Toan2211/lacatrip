@@ -9,7 +9,7 @@ const create = () => [
     body('cheapestPrice').notEmpty().isFloat(),
     body('provinceId').notEmpty().isInt(),
     body('serviceManagerId').notEmpty().isString(),
-    body('amenitiesIds').notEmpty().isArray(),
+    body('amenitiesIds').notEmpty(),
     body('longtitude').notEmpty().isFloat(),
     body('latitude').notEmpty().isFloat(),
     body('address').notEmpty().isString()
@@ -25,7 +25,7 @@ const update = () => [
     body('cheapestPrice').optional().isFloat(),
     body('provinceId').optional().isInt(),
     body('serviceManagerId').optional().isString(),
-    body('amenitiesIds').optional().isArray(),
+    // body('amenitiesIds').optional().isArray(),
     body('longtitude').optional().isFloat(),
     body('latitude').optional().isFloat(),
     body('address').optional().isString()
