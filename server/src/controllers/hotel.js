@@ -28,10 +28,7 @@ const update = async (req, res) => {
 }
 const find = async (req, res) => {
     try {
-        const key = req.query.key ? +req.query.key : ''
-        const page = req.query.page ? +req.query.page : 1
-        const limit = req.query.limit ? +req.query.limit : 10
-        const hotels = await hotelService.find(key, page, limit)
+        const hotels = await hotelService.find(req.query)
         return res.status(200).json({
             message: 'Get list hotel successful !',
             data: hotels

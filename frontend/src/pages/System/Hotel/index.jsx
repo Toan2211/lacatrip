@@ -3,12 +3,23 @@ import { Pagination, Table, Tooltip } from 'flowbite-react'
 import React, { useEffect, useMemo } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useLocation, useNavigate } from 'react-router-dom'
-import { getHotels, hotelsSelector, paginationHotel, setCurrentHotel, togglePublic } from './hotel.slice'
+import {
+    getHotels,
+    hotelsSelector,
+    paginationHotel,
+    setCurrentHotel,
+    togglePublic
+} from './hotel.slice'
 import queryString from 'query-string'
 import ToggleButton from '@components/ToggleButton'
 import Mybutton from '@components/MyButton'
 import { unwrapResult } from '@reduxjs/toolkit'
 import { toast } from 'react-toastify'
+import { useForm } from 'react-hook-form'
+import InputField from '@components/InputField'
+import MySelect from '@components/MySelect'
+import { provincesSelector } from '@pages/CommonProperty/baseproperty'
+import { serviceManagersSelector } from '../ServiceManagers/servicemanager.slice'
 
 function Hotel() {
     const navigate = useNavigate()
@@ -16,12 +27,16 @@ function Hotel() {
     const hotels = useSelector(hotelsSelector)
     const pagination = useSelector(paginationHotel)
     const location = useLocation()
+    const provinces = useSelector(provincesSelector)
+    const serviceManagers = useSelector(serviceManagersSelector)
     const queryParams = useMemo(() => {
         const params = queryString.parse(location.search)
         return {
             page: Number.parseInt(params.page) || 1,
             limit: Number.parseInt(params.limit) || 10,
-            key: params.key || ''
+            key: params.key || '',
+            provinceId: params.provinceId || null,
+            serviceManagerId: params.serviceManagerId || ''
         }
     }, [location.search])
     useEffect(() => {
@@ -33,7 +48,7 @@ function Hotel() {
             navigate(`?${queryString.stringify(filters)}`)
         }
     }
-    const handleSelectItem = (hotel) => {
+    const handleSelectItem = hotel => {
         dispatch(setCurrentHotel(hotel))
         navigate(`${path.formHotel}/${hotel.id}`)
     }
@@ -54,6 +69,28 @@ function Hotel() {
             })
         }
     }
+    const form = useForm({
+        defaultValues: {
+            serviceManagerId: '',
+            provinceId: undefined,
+            key: ''
+        }
+    })
+    const handleResetSearch = () => {
+        form.setValue('serviceManagerId', '')
+        form.setValue('provinceId', '')
+        form.setValue('key', '')
+    }
+    const handleSubmitSearch = data => {
+        const filters = {
+            ...queryParams,
+            serviceManagerId: data.serviceManagerId,
+            provinceId: data.provinceId,
+            key: data.key
+        }
+        navigate(`?${queryString.stringify(filters)}`)
+    }
+
     useEffect(() => {
         document.title = 'Hotels'
     }, [])
@@ -91,82 +128,145 @@ function Hotel() {
                                 </Tooltip>
                             </div>
                         </div>
+                        <form
+                            className="flex gap-5 w-full mt-4"
+                            onSubmit={form.handleSubmit(
+                                handleSubmitSearch
+                            )}
+                        >
+                            <div className="flex-1">
+                                <InputField
+                                    placeholder="Name Hotel"
+                                    form={form}
+                                    name="key"
+                                />
+                            </div>
+
+                            <div className="flex-1">
+                                <MySelect
+                                    placeholder="Service Manager"
+                                    form={form}
+                                    name="serviceManagerId"
+                                    options={serviceManagers.map(
+                                        servicemanager => ({
+                                            value: servicemanager.id,
+                                            label:
+                                                servicemanager.user
+                                                    .firstname +
+                                                servicemanager.user
+                                                    .lastname
+                                        })
+                                    )}
+                                />
+                            </div>
+                            <div className="flex-1">
+                                <MySelect
+                                    placeholder="Province"
+                                    form={form}
+                                    name="provinceId"
+                                    options={provinces.map(
+                                        province => ({
+                                            value: province.id,
+                                            label: province.name
+                                        })
+                                    )}
+                                />
+                            </div>
+                            <div className="flex-1 flex gap-3">
+                                <div className="flex-1">
+                                    <Mybutton
+                                        type="submit"
+                                        className="bg-blue-500 text-white active:bg-blue-800 text-sm font-bold uppercase px-3 py-2 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 w-full ease-linear transition-all duration-150"
+                                    >
+                                        Search
+                                    </Mybutton>
+                                </div>
+                                <div className="flex-1">
+                                    <Mybutton
+                                        type="submit"
+                                        onClick={() =>
+                                            handleResetSearch()
+                                        }
+                                        className="bg-blue-500 text-white active:bg-blue-800 text-sm font-bold uppercase px-3 py-2 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 w-full ease-linear transition-all duration-150"
+                                    >
+                                        Reset
+                                    </Mybutton>
+                                </div>
+                            </div>
+                        </form>
                     </div>
                 </div>
                 <div className="block w-full overflow-x-auto h-[66vh]">
                     <Table hoverable={true}>
                         <Table.Head>
                             <Table.HeadCell>Name</Table.HeadCell>
-                            <Table.HeadCell>Service Manager</Table.HeadCell>
                             <Table.HeadCell>
-                                Province
+                                Service Manager
                             </Table.HeadCell>
+                            <Table.HeadCell>Province</Table.HeadCell>
                             <Table.HeadCell>Rating</Table.HeadCell>
                             <Table.HeadCell>Public</Table.HeadCell>
                             <Table.HeadCell>Action</Table.HeadCell>
                         </Table.Head>
                         <Table.Body className="divide-y">
                             {hotels &&
-                                hotels.map(
-                                    hotel => (
-                                        <Table.Row
-                                            className="bg-white dark:border-gray-700 dark:bg-gray-800"
-                                            key={
-                                                hotel.id
-                                            }
-                                        >
-                                            <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
-                                                {hotel.name}
-                                            </Table.Cell>
-                                            <Table.Cell>
-                                                {hotel.serviceManager.user.firstname + hotel.serviceManager.user.lastname}
-                                            </Table.Cell>
-                                            <Table.Cell>
-                                                {hotel.province.name}
-                                            </Table.Cell>
-                                            <Table.Cell>
-                                                {hotel.rating}
-                                            </Table.Cell>
-                                            <Table.Cell>
-                                                <ToggleButton
-                                                    status={
-                                                        hotel.public
-                                                    }
-                                                    onClick={() =>
-                                                        handleTogglePublic(
-                                                            hotel.id
-                                                        )
-                                                    }
-                                                />
-                                            </Table.Cell>
-                                            <Table.Cell>
-                                                <Mybutton
-                                                    className="flex p-0.5 bg-yellow-500 rounded-lg hover:bg-yellow-600 transition-all duration-300 text-white"
-                                                    onClick={() =>
-                                                        handleSelectItem(
-                                                            hotel
-                                                        )
-                                                    }
+                                hotels.map(hotel => (
+                                    <Table.Row
+                                        className="bg-white dark:border-gray-700 dark:bg-gray-800"
+                                        key={hotel.id}
+                                    >
+                                        <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
+                                            {hotel.name}
+                                        </Table.Cell>
+                                        <Table.Cell>
+                                            {hotel.serviceManager.user
+                                                .firstname +
+                                                hotel.serviceManager
+                                                    .user.lastname}
+                                        </Table.Cell>
+                                        <Table.Cell>
+                                            {hotel.province.name}
+                                        </Table.Cell>
+                                        <Table.Cell>
+                                            {hotel.rating}
+                                        </Table.Cell>
+                                        <Table.Cell>
+                                            <ToggleButton
+                                                status={hotel.public}
+                                                onClick={() =>
+                                                    handleTogglePublic(
+                                                        hotel.id
+                                                    )
+                                                }
+                                            />
+                                        </Table.Cell>
+                                        <Table.Cell>
+                                            <Mybutton
+                                                className="flex p-0.5 bg-yellow-500 rounded-lg hover:bg-yellow-600 transition-all duration-300 text-white"
+                                                onClick={() =>
+                                                    handleSelectItem(
+                                                        hotel
+                                                    )
+                                                }
+                                            >
+                                                <svg
+                                                    xmlns="http://www.w3.org/2000/svg"
+                                                    className="h-6 w-6"
+                                                    fill="none"
+                                                    viewBox="0 0 24 24"
+                                                    stroke="currentColor"
+                                                    strokeWidth="2"
                                                 >
-                                                    <svg
-                                                        xmlns="http://www.w3.org/2000/svg"
-                                                        className="h-6 w-6"
-                                                        fill="none"
-                                                        viewBox="0 0 24 24"
-                                                        stroke="currentColor"
-                                                        strokeWidth="2"
-                                                    >
-                                                        <path
-                                                            strokeLinecap="round"
-                                                            strokeLinejoin="round"
-                                                            d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
-                                                        />
-                                                    </svg>
-                                                </Mybutton>
-                                            </Table.Cell>
-                                        </Table.Row>
-                                    )
-                                )}
+                                                    <path
+                                                        strokeLinecap="round"
+                                                        strokeLinejoin="round"
+                                                        d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
+                                                    />
+                                                </svg>
+                                            </Mybutton>
+                                        </Table.Cell>
+                                    </Table.Row>
+                                ))}
                         </Table.Body>
                     </Table>
                 </div>
