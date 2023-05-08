@@ -45,15 +45,17 @@ const basepropertySlice = createSlice({
                     action =>
                         action.type.endsWith('/fulfilled') ||
                         action.type.endsWith('/rejected'),
-                    (state, action) => {
+                    state => {
                         state.loading = state.loading - 1
                     }
                 )
         }
     }
 })
-export const provincesSelector = (state) => state.propertys.provinces
-export const amenitiesHotelSelector = state => state.propertys.amenitiesHotel
-export const loadingPropertySelector = state => state.propertys.loading
+export const provincesSelector = state => state.propertys.provinces
+export const amenitiesHotelSelector = state =>
+    state.propertys.amenitiesHotel
+export const loadingPropertySelector = state =>
+    state.propertys.loading
 const { reducer } = basepropertySlice
 export default reducer

@@ -9,22 +9,25 @@ module.exports = {
                 type: Sequelize.UUID,
                 defaultValue: Sequelize.UUIDV4
             },
-            hotelId: {
-                type: Sequelize.UUID
-            },
-            name: {
+            title: {
                 type: Sequelize.STRING
             },
             description: {
-                type: Sequelize.STRING
+                type: Sequelize.TEXT
+            },
+            price: {
+                type: Sequelize.FLOAT
             },
             originalPrice: {
                 type: Sequelize.FLOAT
             },
-            salePrice: {
-                type: Sequelize.FLOAT
-            },
             maxPeople: {
+                type: Sequelize.INTEGER
+            },
+            hotelId: {
+                type: Sequelize.UUID
+            },
+            roomNo: {
                 type: Sequelize.INTEGER
             },
             createdAt: {
