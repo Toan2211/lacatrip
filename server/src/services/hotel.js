@@ -1,4 +1,4 @@
-const { Op } = require('sequelize')
+const { Op, where } = require('sequelize')
 const db = require('../models')
 const imageService = require('./image')
 const create = async data => {
@@ -19,7 +19,7 @@ const create = async data => {
         }
         const hotel = await db.Hotel.create(dataHotel)
         if (data.amenitiesIds) {
-            if(typeof data.amenitiesIds !== 'object')
+            if (typeof data.amenitiesIds !== 'object')
                 data.amenitiesIds = [data.amenitiesIds]
             await addAmenitiesOfHotel(hotel.id, data.amenitiesIds)
         }
@@ -84,42 +84,76 @@ const update = async (id, data) => {
         throw new Error(error)
     }
 }
-const find = async (key, page, limit) => {
+const find = async params => {
     try {
+        let { key, page, limit, serviceManagerId, provinceId } =
+            params
+        key = key ? key : ''
+        page = page ? +page : 1
+        limit = limit ? +limit : 10
+        console.log(key, page, limit)
+        const includeModels = [
+            {
+                model: db.AmenitiesHotel,
+                as: 'amenitieshotel'
+            },
+            {
+                model: db.Image,
+                as: 'images'
+            }
+        ]
+        if (serviceManagerId)
+            includeModels.push({
+                model: db.ServiceManager,
+                as: 'serviceManager',
+                include: {
+                    model: db.User,
+                    required: true,
+                    as: 'user',
+                    attributes: {
+                        exclude: ['password', 'confirmtoken']
+                    }
+                },
+                where: {
+                    id: serviceManagerId
+                }
+            })
+        else
+            includeModels.push({
+                model: db.ServiceManager,
+                as: 'serviceManager',
+                include: {
+                    model: db.User,
+                    required: true,
+                    as: 'user',
+                    attributes: {
+                        exclude: ['password', 'confirmtoken']
+                    }
+                }
+            })
+        if (provinceId)
+            includeModels.push({
+                model: db.Province,
+                as: 'province',
+                where: {
+                    id: provinceId
+                }
+            })
+        else
+            includeModels.push({
+                model: db.Province,
+                as: 'province'
+            })
         const { count, rows } = await db.Hotel.findAndCountAll({
             offset: (page - 1) * limit,
             limit: +limit,
-            include: [
-                {
-                    model: db.AmenitiesHotel,
-                    as: 'amenitieshotel'
-                },
-                {
-                    model: db.ServiceManager,
-                    as: 'serviceManager',
-                    include: {
-                        model: db.User,
-                        required: true,
-                        as: 'user',
-                        attributes: {
-                            exclude: ['password', 'confirmtoken']
-                        },
-                    }
-                },
-                {
-                    model: db.Image,
-                    as: 'images'
-                },
-                {
-                    model: db.Province,
-                    as: 'province'
-                }
-            ],
+            include: [...includeModels],
             where: {
                 name: {
                     [Op.like]: `%${key}%`
                 }
-            }
+            },
+            distinct: true
         })
         return {
             hotels: rows,
@@ -134,7 +168,11 @@ const find = async (key, page, limit) => {
         throw new Error(error)
     }
 }
-const findByServiceManager = async (serviceManagerId, page, limit) => {
+const findByServiceManager = async (
+    serviceManagerId,
+    page,
+    limit
+) => {
     try {
         const { count, rows } = await db.Hotel.findAndCountAll({
             offset: (page - 1) * limit,
@@ -159,7 +197,7 @@ const findByServiceManager = async (serviceManagerId, page, limit) => {
                     model: db.Province,
                     as: 'province'
                 }
-            ],
+            ]
         })
         return {
             hotels: rows,
@@ -186,7 +224,7 @@ const findByProvince = async (provinceId, page, limit) => {
                 },
                 {
                     model: db.ServiceManager,
-                    as: 'serviceManager',
+                    as: 'serviceManager'
                 },
                 {
                     model: db.Image,
@@ -199,7 +237,7 @@ const findByProvince = async (provinceId, page, limit) => {
                         id: provinceId
                     }
                 }
-            ],
+            ]
         })
         return {
             hotels: rows,
@@ -236,7 +274,7 @@ const findOne = async id => {
                 }
             ]
         })
-        return hotel        
+        return hotel
     } catch (error) {
         throw new Error(error)
     }

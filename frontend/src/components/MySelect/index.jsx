@@ -17,16 +17,21 @@ function MySelect(props) {
                 render={({ field: { onChange, value, ref } }) => (
                     <Select
                         styles={{
-                            control: (base) => ({
+                            control: base => ({
                                 ...base,
-                                border: `${error && '1px solid red' }`
+                                border: `${error && '1px solid red'}`
                             })
                         }}
                         inputRef={ref}
                         classNamePrefix="addl-class"
                         placeholder={placeholder}
                         options={options}
-                        value={options.find(c => c.value === value)}
+                        value={
+                            options.find(c => c.value === value) || {
+                                value: '',
+                                label: placeholder || 'Select...'
+                            }
+                        }
                         onChange={val => onChange(val.value)}
                     />
                 )}
