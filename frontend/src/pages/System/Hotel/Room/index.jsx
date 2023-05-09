@@ -1,28 +1,55 @@
-// import { path } from '@constants/path'
-// import Mybutton from '@components/MyButton'
-import { Table, Tooltip } from 'flowbite-react'
-import React, { useEffect, useState } from 'react'
-import { useNavigate, useParams } from 'react-router-dom'
+import { Pagination, Table, Tooltip } from 'flowbite-react'
+import React, { useEffect, useMemo, useState } from 'react'
+import { useLocation, useNavigate, useParams } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { currentHotelSelector, getHotelById } from '../hotel.slice'
 import RoomForm from './Form'
+import { getRooms, paginationRoom, roomsSelector, setCurrentRoom } from './room.slice'
+import queryString from 'query-string'
+import Mybutton from '@components/MyButton'
 
 function Rooms() {
-    const navigate = useNavigate()
     const dispatch = useDispatch()
+    const navigate = useNavigate()
     const currentHotel = useSelector(currentHotelSelector)
+
+    const rooms = useSelector(roomsSelector)
+    const pagination = useSelector(paginationRoom)
     const [openForm, setOpenForm] = useState(false)
     const showDrawer = () => {
         setOpenForm(true)
     }
     const onClose = () => {
         setOpenForm(false)
+        dispatch(setCurrentRoom({}))
+        dispatch(getRooms(queryParams))
     }
-    const id = useParams().id
+    const hotelId = useParams().hotelId
     useEffect(() => {
-        if (id) dispatch(getHotelById(id))
-    }, [id, dispatch])
-
+        if (hotelId) dispatch(getHotelById(hotelId))
+    }, [hotelId, dispatch])
+    const location = useLocation()
+    const queryParams = useMemo(() => {
+        const params = queryString.parse(location.search)
+        return {
+            page: Number.parseInt(params.page) || 1,
+            limit: Number.parseInt(params.limit) || 10,
+            hotelId: hotelId
+        }
+    }, [location.search, hotelId])
+    useEffect(() => {
+        dispatch(getRooms(queryParams))
+    }, [queryParams, dispatch])
+    const handlePageChange = page => {
+        if (!page <= 1 || !page >= pagination.totalPages) {
+            const filters = { ...queryParams, page: page }
+            navigate(`?${queryString.stringify(filters)}`)
+        }
+    }
+    const handleSelectItem = room => {
+        dispatch(setCurrentRoom(room))
+        showDrawer()
+    }
     return (
         <div>
             <div className="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded bg-white min-h-[70vh]">
@@ -74,37 +101,30 @@ function Rooms() {
                             </Table.HeadCell>
                             <Table.HeadCell>Action</Table.HeadCell>
                         </Table.Head>
-                        {/* <Table.Body className="divide-y">
-                            {hotels &&
-                                hotels.map(hotel => (
+                        <Table.Body className="divide-y">
+                            {rooms &&
+                                rooms.map(room => (
                                     <Table.Row
                                         className="bg-white dark:border-gray-700 dark:bg-gray-800"
-                                        key={hotel.id}
+                                        key={room.id}
                                     >
                                         <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
-                                            {hotel.name}
+                                            {room.roomNo}
                                         </Table.Cell>
                                         <Table.Cell>
-                                            {hotel.serviceManager.user
-                                                .firstname +
-                                                hotel.serviceManager
-                                                    .user.lastname}
+                                            {room.title}
                                         </Table.Cell>
                                         <Table.Cell>
-                                            {hotel.province.name}
+                                            {room.description}
                                         </Table.Cell>
                                         <Table.Cell>
-                                            {hotel.rating}
+                                            {room.price}
                                         </Table.Cell>
                                         <Table.Cell>
-                                            <ToggleButton
-                                                status={hotel.public}
-                                                onClick={() =>
-                                                    handleTogglePublic(
-                                                        hotel.id
-                                                    )
-                                                }
-                                            />
+                                            {room.originalPrice}
+                                        </Table.Cell>
+                                        <Table.Cell>
+                                            {room.maxPeople}
                                         </Table.Cell>
                                         <Table.Cell className="flex gap-4">
                                             <Tooltip
@@ -114,8 +134,8 @@ function Rooms() {
                                                 <Mybutton
                                                     className="flex p-0.5 bg-yellow-500 rounded-lg hover:bg-yellow-600 transition-all duration-300 text-white"
                                                     onClick={() =>
-                                                        handleSelectRoom(
-                                                            hotel
+                                                        handleSelectItem(
+                                                            room
                                                         )
                                                     }
                                                 >
@@ -139,11 +159,11 @@ function Rooms() {
                                         </Table.Cell>
                                     </Table.Row>
                                 ))}
-                        </Table.Body> */}
+                        </Table.Body>
                     </Table>
                 </div>
             </div>
-            {/* {pagination.totalPages > 1 && (
+            {pagination.totalPages > 1 && (
                 <div className="flex items-center justify-center text-center">
                     <Pagination
                         currentPage={Number(pagination.page)}
@@ -151,7 +171,7 @@ function Rooms() {
                         totalPages={Number(pagination.totalPages)}
                     />
                 </div>
-            )} */}
+            )}
             <RoomForm open={openForm} onClose={onClose} />
         </div>
     )

@@ -20,11 +20,13 @@ import InputField from '@components/InputField'
 import MySelect from '@components/MySelect'
 import { provincesSelector } from '@pages/CommonProperty/baseproperty'
 import { serviceManagersSelector } from '../ServiceManagers/servicemanager.slice'
+import { selectUser } from '@pages/Auth/auth.slice'
 
 function Hotel() {
     const navigate = useNavigate()
     const dispatch = useDispatch()
     const hotels = useSelector(hotelsSelector)
+    const profile = useSelector(selectUser)
     const pagination = useSelector(paginationHotel)
     const location = useLocation()
     const provinces = useSelector(provincesSelector)
@@ -40,8 +42,15 @@ function Hotel() {
         }
     }, [location.search])
     useEffect(() => {
-        dispatch(getHotels(queryParams))
-    }, [queryParams, dispatch])
+        if (profile.serviceManagerId)
+            dispatch(
+                getHotels({
+                    queryParams,
+                    serviceManagerId: profile.serviceManagerId
+                })
+            )
+        else dispatch(getHotels({ queryParams }))
+    }, [queryParams, dispatch, profile])
     const handlePageChange = page => {
         if (!page <= 1 || !page >= pagination.totalPages) {
             const filters = { ...queryParams, page: page }
@@ -52,9 +61,9 @@ function Hotel() {
         dispatch(setCurrentHotel(hotel))
         navigate(`${path.formHotel}/${hotel.id}`)
     }
-    const handleTogglePublic = hotelId => {
+    const handleTogglePublic = async hotelId => {
         try {
-            const res = dispatch(togglePublic(hotelId))
+            const res = await dispatch(togglePublic(hotelId))
             unwrapResult(res)
             toast.success('Change status hotel successful', {
                 position: toast.POSITION.BOTTOM_CENTER,
@@ -141,24 +150,27 @@ function Hotel() {
                                     name="key"
                                 />
                             </div>
+                            {!profile.serviceManagerId && (
+                                <div className="flex-1">
+                                    <MySelect
+                                        placeholder="Service Manager"
+                                        form={form}
+                                        name="serviceManagerId"
+                                        options={serviceManagers.map(
+                                            servicemanager => ({
+                                                value: servicemanager.id,
+                                                label:
+                                                    servicemanager
+                                                        .user
+                                                        .firstname +
+                                                    servicemanager
+                                                        .user.lastname
+                                            })
+                                        )}
+                                    />
+                                </div>
+                            )}
 
-                            <div className="flex-1">
-                                <MySelect
-                                    placeholder="Service Manager"
-                                    form={form}
-                                    name="serviceManagerId"
-                                    options={serviceManagers.map(
-                                        servicemanager => ({
-                                            value: servicemanager.id,
-                                            label:
-                                                servicemanager.user
-                                                    .firstname +
-                                                servicemanager.user
-                                                    .lastname
-                                        })
-                                    )}
-                                />
-                            </div>
                             <div className="flex-1">
                                 <MySelect
                                     placeholder="Province"
@@ -277,7 +289,10 @@ function Hotel() {
                                                 <Mybutton
                                                     className="flex p-0.5 bg-yellow-500 rounded-lg hover:bg-yellow-600 transition-all duration-300 text-white"
                                                     // eslint-disable-next-line quotes
-                                                    onClick={() => navigate(`/system/hotels/${hotel.id}/rooms`)
+                                                    onClick={() =>
+                                                        navigate(
+                                                            `/system/hotels/${hotel.id}/rooms`
+                                                        )
                                                     }
                                                 >
                                                     <svg

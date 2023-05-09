@@ -8,6 +8,7 @@ const province = require('./province')
 const amenitiesHotel = require('./amenitiesHotel')
 const hotel = require('./hotel')
 const image = require('./image')
+const room = require('./room')
 router.get('/status', (req, res) => {
     res.status(200).json({ status: 'Status OKE' })
 })
@@ -20,4 +21,5 @@ router.use('/province', province)
 router.use('/amenitiesHotel', amenitiesHotel)
 router.use('/hotel', hotel)
 router.use('/image', image)
+router.use('/room', room)
 module.exports = router

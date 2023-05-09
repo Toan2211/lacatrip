@@ -2,12 +2,23 @@ import React from 'react'
 import { Controller } from 'react-hook-form'
 
 function InputField(props) {
-    const { form, type, name, placeholder, accept, disabled, className, min, max } = props
+    const {
+        form,
+        type,
+        name,
+        placeholder,
+        accept,
+        disabled,
+        className,
+        min,
+        max,
+        onKeyUp,
+        onKeyDown
+    } = props
     const {
         formState: { errors }
     } = form
     const error = errors[name]
-
     return (
         <div className="flex flex-col">
             <Controller
@@ -21,10 +32,16 @@ function InputField(props) {
                         type={type}
                         name={name}
                         placeholder={placeholder}
-                        onChange={field.onChange}
+                        onKeyUp={onKeyUp}
+                        onKeyDown={onKeyDown}
+                        onChange={e => {
+                            field.onChange(e)
+                        }}
                         value={form.getValues(name)}
-                        disabled = {disabled}
-                        className={`${error ? ' border-red-500': ''} border border-gray-300 px-2 py-2 bg-white rounded text-sm focus:outline-none focus:ring w-full ease-linear transition-all duration-150 ${className}`}
+                        disabled={disabled}
+                        className={`${
+                            error ? ' border-red-500' : ''
+                        } border border-gray-300 px-2 py-2 bg-white rounded text-sm focus:outline-none focus:ring w-full ease-linear transition-all duration-150 ${className}`}
                     />
                 )}
             />

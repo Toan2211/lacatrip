@@ -91,7 +91,6 @@ const find = async params => {
         key = key ? key : ''
         page = page ? +page : 1
         limit = limit ? +limit : 10
-        console.log(key, page, limit)
         const includeModels = [
             {
                 model: db.AmenitiesHotel,

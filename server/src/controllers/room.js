@@ -41,8 +41,8 @@ const findByHotelId = async (req, res) => {
     try {
         const page = req.query.page ? +req.query.page : 1
         const limit = req.query.limit ? +req.query.limit : 10
-        const rooms = roomService.findByHotelId(
-            req.params.hotelId,
+        const rooms = await roomService.findByHotelId(
+            req.query.hotelId,
             page,
             limit
         )
