@@ -20,11 +20,13 @@ import InputField from '@components/InputField'
 import MySelect from '@components/MySelect'
 import { provincesSelector } from '@pages/CommonProperty/baseproperty'
 import { serviceManagersSelector } from '../ServiceManagers/servicemanager.slice'
+import { selectUser } from '@pages/Auth/auth.slice'
 
 function Hotel() {
     const navigate = useNavigate()
     const dispatch = useDispatch()
     const hotels = useSelector(hotelsSelector)
+    const profile = useSelector(selectUser)
     const pagination = useSelector(paginationHotel)
     const location = useLocation()
     const provinces = useSelector(provincesSelector)
@@ -40,8 +42,15 @@ function Hotel() {
         }
     }, [location.search])
     useEffect(() => {
-        dispatch(getHotels(queryParams))
-    }, [queryParams, dispatch])
+        if (profile.serviceManagerId)
+            dispatch(
+                getHotels({
+                    queryParams,
+                    serviceManagerId: profile.serviceManagerId
+                })
+            )
+        else dispatch(getHotels({ queryParams }))
+    }, [queryParams, dispatch, profile])
     const handlePageChange = page => {
         if (!page <= 1 || !page >= pagination.totalPages) {
             const filters = { ...queryParams, page: page }
@@ -52,9 +61,9 @@ function Hotel() {
         dispatch(setCurrentHotel(hotel))
         navigate(`${path.formHotel}/${hotel.id}`)
     }
-    const handleTogglePublic = hotelId => {
+    const handleTogglePublic = async hotelId => {
         try {
-            const res = dispatch(togglePublic(hotelId))
+            const res = await dispatch(togglePublic(hotelId))
             unwrapResult(res)
             toast.success('Change status hotel successful', {
                 position: toast.POSITION.BOTTOM_CENTER,
@@ -141,24 +150,27 @@ function Hotel() {
                                     name="key"
                                 />
                             </div>
+                            {!profile.serviceManagerId && (
+                                <div className="flex-1">
+                                    <MySelect
+                                        placeholder="Service Manager"
+                                        form={form}
+                                        name="serviceManagerId"
+                                        options={serviceManagers.map(
+                                            servicemanager => ({
+                                                value: servicemanager.id,
+                                                label:
+                                                    servicemanager
+                                                        .user
+                                                        .firstname +
+                                                    servicemanager
+                                                        .user.lastname
+                                            })
+                                        )}
+                                    />
+                                </div>
+                            )}
 
-                            <div className="flex-1">
-                                <MySelect
-                                    placeholder="Service Manager"
-                                    form={form}
-                                    name="serviceManagerId"
-                                    options={serviceManagers.map(
-                                        servicemanager => ({
-                                            value: servicemanager.id,
-                                            label:
-                                                servicemanager.user
-                                                    .firstname +
-                                                servicemanager.user
-                                                    .lastname
-                                        })
-                                    )}
-                                />
-                            </div>
                             <div className="flex-1">
                                 <MySelect
                                     placeholder="Province"
@@ -240,30 +252,64 @@ function Hotel() {
                                                 }
                                             />
                                         </Table.Cell>
-                                        <Table.Cell>
-                                            <Mybutton
-                                                className="flex p-0.5 bg-yellow-500 rounded-lg hover:bg-yellow-600 transition-all duration-300 text-white"
-                                                onClick={() =>
-                                                    handleSelectItem(
-                                                        hotel
-                                                    )
-                                                }
+                                        <Table.Cell className="flex gap-4">
+                                            <Tooltip
+                                                content="Detail Hotel"
+                                                style="light"
                                             >
-                                                <svg
-                                                    xmlns="http://www.w3.org/2000/svg"
-                                                    className="h-6 w-6"
-                                                    fill="none"
-                                                    viewBox="0 0 24 24"
-                                                    stroke="currentColor"
-                                                    strokeWidth="2"
+                                                <Mybutton
+                                                    className="flex p-0.5 bg-yellow-500 rounded-lg hover:bg-yellow-600 transition-all duration-300 text-white"
+                                                    onClick={() =>
+                                                        handleSelectItem(
+                                                            hotel
+                                                        )
+                                                    }
                                                 >
-                                                    <path
-                                                        strokeLinecap="round"
-                                                        strokeLinejoin="round"
-                                                        d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
-                                                    />
-                                                </svg>
-                                            </Mybutton>
+                                                    <svg
+                                                        xmlns="http://www.w3.org/2000/svg"
+                                                        className="h-6 w-6"
+                                                        fill="none"
+                                                        viewBox="0 0 24 24"
+                                                        stroke="currentColor"
+                                                        strokeWidth="2"
+                                                    >
+                                                        <path
+                                                            strokeLinecap="round"
+                                                            strokeLinejoin="round"
+                                                            d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
+                                                        />
+                                                    </svg>
+                                                </Mybutton>
+                                            </Tooltip>
+
+                                            <Tooltip
+                                                content="Manage Rooms"
+                                                style="light"
+                                            >
+                                                <Mybutton
+                                                    className="flex p-0.5 bg-yellow-500 rounded-lg hover:bg-yellow-600 transition-all duration-300 text-white"
+                                                    // eslint-disable-next-line quotes
+                                                    onClick={() =>
+                                                        navigate(
+                                                            `/system/hotels/${hotel.id}/rooms`
+                                                        )
+                                                    }
+                                                >
+                                                    <svg
+                                                        fill="#000000"
+                                                        viewBox="0 0 512 512"
+                                                        version="1.1"
+                                                        className="h-6 w-6"
+                                                        xmlns="http://www.w3.org/2000/svg"
+                                                    >
+                                                        <g id="bed-hotel-heart-love-valentine">
+                                                            <path d="M440,358.242V312c0-16.36-9.898-30.419-24-36.609V200c0-22.055-17.945-40-40-40H271.72l30.042-30.37   c11.85-11.979,13.889-31.23,3.614-44.605C292.961,68.863,269.847,67.782,256,81.78c-13.847-13.998-36.961-12.917-49.375,3.245   c-10.275,13.376-8.235,32.626,3.614,44.605L240.28,160H136c-22.055,0-40,17.945-40,40v75.391C81.898,281.581,72,295.64,72,312   v46.242c-4.875,4.396-8,10.692-8,17.758v8c0,10.416,6.708,19.212,16,22.525V424c0,13.234,10.766,24,24,24h16   c13.234,0,24-10.766,24-24v-16h224v16c0,13.234,10.766,24,24,24h16c13.234,0,24-10.766,24-24v-17.474   c9.292-3.313,16-12.11,16-22.526v-8C448,368.935,444.875,362.638,440,358.242z M112,200c0-13.234,10.766-24,24-24h240   c13.234,0,24,10.766,24,24v72h-24v-16c0-13.234-10.766-24-24-24h-48c-13.234,0-24,10.766-24,24v16h-48v-16   c0-13.234-10.766-24-24-24h-48c-13.234,0-24,10.766-24,24v16h-24V200z M432,384c0,4.414-3.59,8-8,8h-48H136H88c-4.41,0-8-3.586-8-8   v-8c0-4.711,4.193-8,8-8h336c3.917,0,8,3.375,8,8V384z" />
+                                                        </g>
+
+                                                        <g id="Layer_1" />
+                                                    </svg>
+                                                </Mybutton>
+                                            </Tooltip>
                                         </Table.Cell>
                                     </Table.Row>
                                 ))}

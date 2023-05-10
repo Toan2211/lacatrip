@@ -4,8 +4,12 @@ import logo from '@assets/img/logo.svg'
 import { BsFillPersonFill } from 'react-icons/bs'
 import { path } from '@constants/path'
 import { FaHotel } from 'react-icons/fa'
+import { useSelector } from 'react-redux'
+import { selectUser } from '@pages/Auth/auth.slice'
+import ROLE from '@constants/ROLE'
 export default function Sidebar() {
     const [collapseShow, setCollapseShow] = React.useState('hidden')
+    const currentUser = useSelector(selectUser)
     return (
         <>
             <nav className="md:left-0 md:block md:fixed md:top-0 md:bottom-0 md:overflow-y-auto md:flex-row md:flex-nowrap md:overflow-hidden shadow-xl bg-white flex flex-wrap items-center justify-between relative md:w-64 z-10 py-4 px-6">
@@ -32,9 +36,73 @@ export default function Sidebar() {
                             collapseShow
                         }
                     >
+                        {(currentUser.role.name ===
+                            ROLE.ADMIN ||
+                            currentUser.role.name ===
+                                ROLE.EMPLOYEE) && (
+                            <>
+                                <hr className="my-2 md:min-w-full" />
+                                <h6 className="md:min-w-full text-blueGray-500 text-xs uppercase font-bold block pt-1 pb-4 no-underline">
+                                    Manage Users
+                                </h6>
+                                <ul className="md:flex-col md:min-w-full flex flex-col list-none text-bl">
+                                    <li className="items-center ">
+                                        <NavLink
+                                            className={({
+                                                isActive
+                                            }) =>
+                                                isActive
+                                                    ? 'text-blue-600 hover:opacity-75 text-xs uppercase py-3 font-bold flex'
+                                                    : 'hover:text-blue-600 text-xs uppercase py-3 font-bold flex'
+                                            }
+                                            to={path.employees}
+                                        >
+                                            <span className="mr-2">
+                                                <BsFillPersonFill />
+                                            </span>
+                                            Employees
+                                        </NavLink>
+                                    </li>
+                                    <li className="items-center ">
+                                        <NavLink
+                                            className={({
+                                                isActive
+                                            }) =>
+                                                isActive
+                                                    ? 'text-blue-600 hover:opacity-75 text-xs uppercase py-3 font-bold flex'
+                                                    : 'hover:text-blue-600 text-xs uppercase py-3 font-bold flex'
+                                            }
+                                            to={path.clients}
+                                        >
+                                            <span className="mr-2">
+                                                <BsFillPersonFill />
+                                            </span>
+                                            Clients
+                                        </NavLink>
+                                    </li>
+                                    <li className="items-center ">
+                                        <NavLink
+                                            className={({
+                                                isActive
+                                            }) =>
+                                                isActive
+                                                    ? 'text-blue-600 hover:opacity-75 text-xs uppercase py-3 font-bold flex'
+                                                    : 'hover:text-blue-600 text-xs uppercase py-3 font-bold flex'
+                                            }
+                                            to={path.serviceManagers}
+                                        >
+                                            <span className="mr-2">
+                                                <BsFillPersonFill />
+                                            </span>
+                                            ServiceManagers
+                                        </NavLink>
+                                    </li>
+                                </ul>
+                            </>
+                        )}
                         <hr className="my-2 md:min-w-full" />
                         <h6 className="md:min-w-full text-blueGray-500 text-xs uppercase font-bold block pt-1 pb-4 no-underline">
-                            Manage Users
+                            Manage Property
                         </h6>
                         <ul className="md:flex-col md:min-w-full flex flex-col list-none text-bl">
                             <li className="items-center ">
@@ -44,54 +112,9 @@ export default function Sidebar() {
                                             ? 'text-blue-600 hover:opacity-75 text-xs uppercase py-3 font-bold flex'
                                             : 'hover:text-blue-600 text-xs uppercase py-3 font-bold flex'
                                     }
-                                    to={path.employees}
-                                >
-                                    <span className='mr-2'>
-                                        <BsFillPersonFill />
-                                    </span>
-                                    Employees
-                                </NavLink>
-                            </li>
-                            <li className="items-center ">
-                                <NavLink
-                                    className={({ isActive }) =>
-                                        isActive
-                                            ? 'text-blue-600 hover:opacity-75 text-xs uppercase py-3 font-bold flex'
-                                            : 'hover:text-blue-600 text-xs uppercase py-3 font-bold flex'
-                                    }
-                                    to={path.clients}
-                                >
-                                    <span className='mr-2'>
-                                        <BsFillPersonFill />
-                                    </span>
-                                    Clients
-                                </NavLink>
-                            </li>
-                            <li className="items-center ">
-                                <NavLink
-                                    className={({ isActive }) =>
-                                        isActive
-                                            ? 'text-blue-600 hover:opacity-75 text-xs uppercase py-3 font-bold flex'
-                                            : 'hover:text-blue-600 text-xs uppercase py-3 font-bold flex'
-                                    }
-                                    to={path.serviceManagers}
-                                >
-                                    <span className='mr-2'>
-                                        <BsFillPersonFill />
-                                    </span>
-                                    ServiceManagers
-                                </NavLink>
-                            </li>
-                            <li className="items-center ">
-                                <NavLink
-                                    className={({ isActive }) =>
-                                        isActive
-                                            ? 'text-blue-600 hover:opacity-75 text-xs uppercase py-3 font-bold flex'
-                                            : 'hover:text-blue-600 text-xs uppercase py-3 font-bold flex'
-                                    }
                                     to={path.hotels}
                                 >
-                                    <span className='mr-2'>
+                                    <span className="mr-2">
                                         <FaHotel />
                                     </span>
                                     Hotels

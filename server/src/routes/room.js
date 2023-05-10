@@ -1,12 +1,13 @@
 const express = require('express')
 const router = express.Router()
-
+const validate = require('../middlewares/validate')
+const validateRoom = require('../validations/room')
 const controller = require('../controllers/room')
 const { verifyToken, isSystemUser } = require('../middlewares/auth')
-router.get('/:id', controller.findOne)
-router.get('/hotel/:hotelId', controller.findByHotelId)
-router.post('/', verifyToken, isSystemUser, controller.create)
-router.put('/:id', verifyToken, isSystemUser, controller.update)
-router.delete('/:id', verifyToken, isSystemUser, controller.destroy)
+router.get('/hotel', controller.findByHotelId)
+router.get('/:id', validateRoom.findOne(), validate, controller.findOne)
+router.post('/', verifyToken, isSystemUser, validateRoom.create(), validate, controller.create)
+router.put('/:id', verifyToken, isSystemUser, validateRoom.update(), validate, controller.update)
+router.delete('/:id', verifyToken, isSystemUser,validateRoom.findOne(), validate, controller.destroy)
 
 module.exports = router

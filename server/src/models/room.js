@@ -9,7 +9,7 @@ module.exports = (sequelize, DataTypes) => {
          */
         static associate(models) {
             // define association here
-            this.belongsTo(models.Room, {
+            this.belongsTo(models.Hotel, {
                 foreignKey: 'hotelId',
                 as: 'hotel'
             })
@@ -23,12 +23,13 @@ module.exports = (sequelize, DataTypes) => {
                 defaultValue: DataTypes.UUIDV4,
                 allowNull: false
             },
-            hotelId: DataTypes.UUID,
-            name: DataTypes.STRING,
-            description: DataTypes.STRING,
+            title: DataTypes.STRING,
+            description: DataTypes.TEXT,
+            price: DataTypes.FLOAT,
             originalPrice: DataTypes.FLOAT,
-            salePrice: DataTypes.FLOAT,
-            maxPeople: DataTypes.INTEGER
+            maxPeople: DataTypes.INTEGER,
+            hotelId: DataTypes.UUID,
+            roomNo: DataTypes.INTEGER
         },
         {
             sequelize,

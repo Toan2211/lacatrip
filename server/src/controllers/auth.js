@@ -1,10 +1,21 @@
-const { AUTHENTICATEDID } = require('../constants/variable')
-const { checkEmailExist, checkPassword, createAccessToken } = require('../services/auth')
+const {
+    AUTHENTICATEDID,
+    SERVICEMANAGERID
+} = require('../constants/variable')
+const {
+    checkEmailExist,
+    checkPassword,
+    createAccessToken
+} = require('../services/auth')
 const crypto = require('crypto')
-const { sendEmailConfirm, sendEmailResetPassword } = require('../services/mail')
+const {
+    sendEmailConfirm,
+    sendEmailResetPassword
+} = require('../services/mail')
 const userService = require('../services/user')
 const authService = require('../services/auth')
 const { avatarDefault } = require('../constants/images')
+const serviceManagerService = require('../services/servicemanager')
 const signup = async (req, res) => {
     try {
         const { email, firstname, lastname } = req.body
@@ -35,7 +46,10 @@ const signin = async (req, res) => {
         const user = await checkEmailExist(email)
         let passwordIsMatch = false
         if (user)
-            passwordIsMatch = await checkPassword(password, user.password)
+            passwordIsMatch = await checkPassword(
+                password,
+                user.password
+            )
         if (!user || !passwordIsMatch)
             return res.status(400).json({
                 message: 'Invalid email or password',
@@ -46,15 +60,19 @@ const signin = async (req, res) => {
                 message: 'Account is not confirmed or blocked',
                 data: {}
             })
+        if (user.roleId === SERVICEMANAGERID) {
+            const servicemanager =
+                await serviceManagerService.findByUserId(user.id)
+            user.dataValues.serviceManagerId = servicemanager.id
+        }
         const access_token = createAccessToken(user)
         return res.status(200).json({
             message: 'Login successful',
-            data:{
+            data: {
                 access_token,
                 user
             }
         })
-        
     } catch (err) {
         return res.status(500).json({ message: err.message })
     }

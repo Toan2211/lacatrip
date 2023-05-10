@@ -1,5 +1,6 @@
 const { SERVICEMANAGERID } = require('../constants/variable')
 const hotelService = require('../services/hotel')
+const servicemanagerService = require('../services/servicemanager')
 const create = async (req, res) => {
     try {
         if (req.files) {
@@ -18,7 +19,10 @@ const update = async (req, res) => {
         if (req.files) {
             req.body.images = req.files
         }
-        const hotel = await hotelService.update(req.params.id, req.body)
+        const hotel = await hotelService.update(
+            req.params.id,
+            req.body
+        )
         return res
             .status(200)
             .json({ message: 'Update hotel successful', data: hotel })
@@ -62,9 +66,7 @@ const findOne = async (req, res) => {
                 message: 'Get hotel successful',
                 data: hotel
             })
-        }
-        else
-        {
+        } else {
             return res.status(400).json({
                 message: 'Hotel Not found',
                 data: hotel

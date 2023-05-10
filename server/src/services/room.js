@@ -1,8 +1,22 @@
 const db = require('../models')
 const create = async data => {
     try {
-        const room = await db.Room.create(data)
-        return room
+        const roomArr = []
+        for (const roomNo of data.roomNo) {
+            if (roomNo) {
+                const room = await db.Room.create({
+                    roomNo: roomNo,
+                    hotelId: data.hotelId,
+                    title: data.title,
+                    description: data.description,
+                    price: data.price,
+                    originalPrice: data.originalPrice,
+                    maxPeople: data.maxPeople
+                })
+                roomArr.push(room)
+            }
+        }
+        return roomArr
     } catch (error) {
         throw new Error(error)
     }
@@ -15,8 +29,7 @@ const update = async (id, data) => {
             }
         })
         let room = false
-        if(result)
-            room = await findOne(id)
+        if (result) room = await findOne(id)
         return room
     } catch (error) {
         throw new Error(error)
@@ -39,7 +52,7 @@ const findOne = async id => {
         throw new Error(error)
     }
 }
-const findByHotelId = async (hoteId, page, limit) => {
+const findByHotelId = async (hotelId, page, limit) => {
     try {
         const { count, rows } = await db.Room.findAndCountAll({
             offset: (page - 1) * limit,
@@ -49,9 +62,9 @@ const findByHotelId = async (hoteId, page, limit) => {
                 as: 'hotel'
             },
             where: {
-                hoteId: hoteId
-            }
-
+                hotelId: hotelId
+            },
+            distinct: true
         })
         return {
             rooms: rows,
