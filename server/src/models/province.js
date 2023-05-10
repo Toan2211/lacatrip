@@ -12,6 +12,10 @@ module.exports = (sequelize, DataTypes) => {
                 foreignKey: 'provinceId',
                 as: 'hotels'
             })
+            this.hasMany(models.Restaurant, {
+                foreignKey: 'provinceId',
+                as: 'restaurants'
+            })
         }
     }
     Province.init(

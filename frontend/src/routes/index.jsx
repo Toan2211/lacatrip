@@ -20,6 +20,8 @@ import ChangePassword from '@pages/ChangePassword'
 import Hotel from '@pages/System/Hotel'
 import FormHotel from '@pages/System/Hotel/Form'
 import Rooms from '@pages/System/Hotel/Room'
+import Restaurants from '@pages/System/Restaurant'
+import RestaurantForm from '@pages/System/Restaurant/Form'
 function RoutesComponent() {
     return (
         <BrowserRouter>
@@ -82,6 +84,14 @@ function RoutesComponent() {
                         <Route
                             path={path.rooms}
                             element={<Rooms />}
+                        />
+                        <Route
+                            path={path.restaurants}
+                            element={<Restaurants />}
+                        />
+                        <Route
+                            path={path.formRestaurant}
+                            element={<RestaurantForm />}
                         />
                     </Route>
                 </Route>

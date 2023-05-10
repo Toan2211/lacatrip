@@ -15,6 +15,9 @@ class Path {
         this.formHotel = '/system/hotels/form'
         this.formUpdateHotel = '/system/hotels/form/:id'
         this.rooms = '/system/hotels/:hotelId/rooms'
+        this.restaurants = '/system/restaurants'
+        this.formRestaurant = '/system/restaurants/form'
+        this.formUpdateRestaurant = '/system/restaurants/form/:id'
     }
 }
 
