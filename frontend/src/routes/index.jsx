@@ -17,6 +17,9 @@ import MainLayout from '@layouts/MainLayout'
 import ProfileClients from '@pages/Profile'
 import AuthenticatedGuard from '@guards/AuthenticatedGuard'
 import ChangePassword from '@pages/ChangePassword'
+import Hotel from '@pages/System/Hotel'
+import FormHotel from '@pages/System/Hotel/Form'
+import Rooms from '@pages/System/Hotel/Room'
 function RoutesComponent() {
     return (
         <BrowserRouter>
@@ -63,6 +66,22 @@ function RoutesComponent() {
                         <Route
                             path={path.profileSystem}
                             element={<Profile />}
+                        />
+                        <Route
+                            path={path.hotels}
+                            element={<Hotel />}
+                        />
+                        <Route
+                            path={path.formHotel}
+                            element={<FormHotel />}
+                        />
+                        <Route
+                            path={path.formUpdateHotel}
+                            element={<FormHotel />}
+                        />
+                        <Route
+                            path={path.rooms}
+                            element={<Rooms />}
                         />
                     </Route>
                 </Route>

@@ -45,7 +45,9 @@ const find = async (key, page, limit) => {
 }
 const create = async userId => {
     try {
-        let serviceManager = await db.ServiceManager.create({ userId: userId })
+        let serviceManager = await db.ServiceManager.create({
+            userId: userId
+        })
         return serviceManager
     } catch (err) {
         throw new Error(err)
@@ -60,8 +62,7 @@ const update = async (id, data) => {
                 as: 'user'
             }
         })
-        if (!servicemanager)
-            return false
+        if (!servicemanager) return false
         // delete data.email
         await db.User.update(data, {
             where: {
@@ -75,7 +76,7 @@ const update = async (id, data) => {
                 as: 'user',
                 attributes: {
                     exclude: ['password', 'confirmtoken']
-                },
+                }
             }
         })
         return servicemanager
@@ -83,8 +84,21 @@ const update = async (id, data) => {
         throw new Error(err)
     }
 }
+const findByUserId = async userId => {
+    try {
+        let [servicemanager] = await db.ServiceManager.findAll({
+            where: {
+                userId: userId
+            }
+        })
+        return servicemanager
+    } catch (error) {
+        throw new Error(error)
+    }
+}
 module.exports = {
     find,
     create,
-    update
+    update,
+    findByUserId
 }

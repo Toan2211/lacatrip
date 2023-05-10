@@ -53,7 +53,10 @@ const handleGetAllServiceManagers = (state, action) => {
     state.pagination = pagination
 }
 const handleToggleStatusFulfilled = (state, action) => {
-    const serviceManagerChange = state.serviceManagers.find(serviceManager => serviceManager.userId === action.payload.data.id)
+    const serviceManagerChange = state.serviceManagers.find(
+        serviceManager =>
+            serviceManager.userId === action.payload.data.id
+    )
     serviceManagerChange.user.block = !serviceManagerChange.user.block
 }
 const serviceManagerSlice = createSlice({
@@ -79,13 +82,16 @@ const serviceManagerSlice = createSlice({
         [updateServiceManager.pending]: handleLoadingTrue,
         [updateServiceManager.fulfilled]: handleLoadingFalse,
         [updateServiceManager.rejected]: handleLoadingFalse,
-        [toggleStatusServiceManager.fulfilled]: handleToggleStatusFulfilled
+        [toggleStatusServiceManager.fulfilled]:
+            handleToggleStatusFulfilled
     }
 })
-export const serviceManagersSelector = state => state.serviceManagers.serviceManagers
+export const serviceManagersSelector = state =>
+    state.serviceManagers.serviceManagers
 export const paginationServiceManagerSelector = state =>
     state.serviceManagers.pagination
-export const loadingServiceManager = state => state.serviceManagers.loading
+export const loadingServiceManager = state =>
+    state.serviceManagers.loading
 export const currentServiceManagerSelector = state =>
     state.serviceManagers.currentServiceManager
 const { actions, reducer } = serviceManagerSlice
