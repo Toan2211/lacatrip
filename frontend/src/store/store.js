@@ -7,6 +7,7 @@ import baseProperty from '@pages/CommonProperty/baseproperty'
 import hotelsReducer from '@pages/System/Hotel/hotel.slice.js'
 import roomsReducer from '@pages/System/Hotel/Room/room.slice.js'
 import restaurantsReducer from '@pages/System/Restaurant/restaurant.slice.js'
+
 const rootReducer = {
     propertys: baseProperty,
     auth: authReducer,
