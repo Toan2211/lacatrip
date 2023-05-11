@@ -44,7 +44,9 @@ module.exports = (sequelize, DataTypes) => {
             provinceId: DataTypes.INTEGER,
             serviceManagerId: DataTypes.UUID,
             limitBookPerDay: DataTypes.INTEGER,
-            public: DataTypes.BOOLEAN
+            public: DataTypes.BOOLEAN,
+            rating: DataTypes.FLOAT,
+            totalRating: DataTypes.FLOAT,
         },
         {
             sequelize,

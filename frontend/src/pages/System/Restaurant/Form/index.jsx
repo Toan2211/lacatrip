@@ -28,6 +28,8 @@ import {
     loadingRestaurant,
     updateRestaurant
 } from '../restaurant.slice'
+import { cusinesRestaurant } from '@constants/cusinesRestaurant'
+import { specialDietsRestaurant } from '@constants/specialDietsRestaurant'
 function RestaurantForm() {
     const dispatch = useDispatch()
     const serviceManagers = useSelector(serviceManagersSelector)
@@ -39,9 +41,23 @@ function RestaurantForm() {
     const [images, setImages] = useState(() =>
         currentRestaurant.images
             ? currentRestaurant.images.map(image => ({
-                  id: image.id,
-                  url: image.url
-              }))
+                id: image.id,
+                url: image.url
+            }))
+            : []
+    )
+    const [cusines, setCusines] = useState(() =>
+        currentRestaurant.cusines
+            ? currentRestaurant.cusines
+                .split(',')
+                .map(item => ({ value: item, label: item }))
+            : []
+    )
+    const [specialDiets, setSpecialDiets] = useState(() =>
+        currentRestaurant.specialDiets
+            ? currentRestaurant.specialDiets
+                .split(',')
+                .map(item => ({ value: item, label: item }))
             : []
     )
     useEffect(() => {
@@ -71,7 +87,7 @@ function RestaurantForm() {
                 'Input Address and generate map to get longtitude'
             ),
         latitude: yup
-            .number()
+            .string()
             .typeError(
                 'Input Address and generate map to get latitude'
             )
@@ -81,7 +97,22 @@ function RestaurantForm() {
         serviceManagerId: yup
             .string()
             .required('Service Manager is required'),
-        provinceId: yup.string().required('Province is required')
+        provinceId: yup
+            .string()
+            .typeError('Province is required')
+            .required('Province is required'),
+        minPrice: yup
+            .string()
+            .typeError('Min Price is required')
+            .required('Min Price  is required'),
+        maxPrice: yup
+            .string()
+            .typeError('Max Price is required')
+            .required('Max Price is required'),
+        limitBookPerDay: yup
+            .string()
+            .typeError('Limit book is required')
+            .required('Limit book is required')
     })
     const form = useForm({
         defaultValues: {
@@ -111,13 +142,21 @@ function RestaurantForm() {
                 : '',
             provinceId: currentRestaurant.provinceId
                 ? currentRestaurant.provinceId
-                : ''
+                : null,
+            minPrice: currentRestaurant.minPrice
+                ? currentRestaurant.minPrice
+                : null,
+            maxPrice: currentRestaurant.maxPrice
+                ? currentRestaurant.maxPrice
+                : null,
+            limitBookPerDay: currentRestaurant.limitBookPerDay
+                ? currentRestaurant.limitBookPerDay
+                : null
         },
         resolver: yupResolver(schema)
     })
     useEffect(() => {
         if (!_.isEmpty(currentRestaurant)) {
-            form.setValue('name', currentRestaurant.name)
             form.setValue('name', currentRestaurant.name)
             form.setValue(
                 'description',
@@ -125,11 +164,6 @@ function RestaurantForm() {
             )
             form.setValue('phone', currentRestaurant.phone)
             form.setValue('website', currentRestaurant.website)
-            form.setValue('hotelClass', currentRestaurant.hotelClass)
-            form.setValue(
-                'cheapestPrice',
-                currentRestaurant.cheapestPrice
-            )
             form.setValue('address', currentRestaurant.address)
             form.setValue('longtitude', currentRestaurant.longtitude)
             form.setValue('latitude', currentRestaurant.latitude)
@@ -138,11 +172,27 @@ function RestaurantForm() {
                 currentRestaurant.serviceManagerId
             )
             form.setValue('provinceId', currentRestaurant.provinceId)
+            form.setValue('minPrice', currentRestaurant.minPrice)
+            form.setValue('maxPrice', currentRestaurant.maxPrice)
+            form.setValue(
+                'limitBookPerDay',
+                currentRestaurant.limitBookPerDay
+            )
             setImages(
                 currentRestaurant.images.map(image => ({
                     id: image.id,
                     url: image.url
                 }))
+            )
+            setCusines(
+                currentRestaurant.cusines
+                    .split(',')
+                    .map(item => ({ value: item, label: item }))
+            )
+            setSpecialDiets(
+                currentRestaurant.specialDiets
+                    .split(',')
+                    .map(item => ({ value: item, label: item }))
             )
         }
     }, [form, currentRestaurant])
@@ -151,22 +201,28 @@ function RestaurantForm() {
     }
     const handleButtonForm = async data => {
         try {
-            if (
-                !images.length
-            )
-                return
+            if (!images.length) return
             const formData = new FormData()
             formData.append('name', data.name)
             formData.append('description', data.description)
             formData.append('phone', data.phone)
             formData.append('website', data.website)
-            formData.append('hotelClass', data.hotelClass)
-            formData.append('cheapestPrice', data.cheapestPrice)
             formData.append('address', data.address)
             formData.append('longtitude', data.longtitude)
             formData.append('latitude', data.latitude)
             formData.append('serviceManagerId', data.serviceManagerId)
             formData.append('provinceId', data.provinceId)
+            formData.append('minPrice', data.minPrice)
+            formData.append('maxPrice', data.maxPrice)
+            formData.append('limitBookPerDay', data.limitBookPerDay)
+            formData.append(
+                'cusines',
+                cusines.map(cusine => cusine.value).toString()
+            )
+            formData.append(
+                'specialDiets',
+                specialDiets.map(specialDiet => specialDiet.value).toString()
+            )
             for (const image of images) {
                 if (image.file) formData.append('images', image.file)
             }
@@ -298,15 +354,96 @@ function RestaurantForm() {
                                 className="block uppercase text-sm font-bold mb-2"
                                 htmlFor="grid-password"
                             >
-                                Hotel Class
+                                Cusines Restaurant
+                            </label>
+                            <Select
+                                styles={{
+                                    control: baseStyles => ({
+                                        ...baseStyles,
+                                        borderColor:
+                                            cusines.length === 0 &&
+                                            !isFirstTime
+                                                ? '#F05252'
+                                                : '#D1D5DB'
+                                    })
+                                }}
+                                onChange={data => setCusines(data)}
+                                value={cusines}
+                                closeMenuOnSelect={false}
+                                placeholder={
+                                    'Cusines of restaurant...'
+                                }
+                                components={animatedComponents}
+                                isMulti
+                                options={cusinesRestaurant.map(
+                                    style => ({
+                                        value: style,
+                                        label: style
+                                    })
+                                )}
+                            />
+                            {cusines.length === 0 && !isFirstTime && (
+                                <span className="text-[14px] text-red-500 pl-2 mt-1">
+                                    Please select cusines of
+                                    restaurant
+                                </span>
+                            )}
+                        </div>
+                        <div className="relative w-full mb-3">
+                            <label
+                                className="block uppercase text-sm font-bold mb-2"
+                                htmlFor="grid-password"
+                            >
+                                SPECIAL DIETS
+                            </label>
+                            <Select
+                                styles={{
+                                    control: baseStyles => ({
+                                        ...baseStyles,
+                                        borderColor:
+                                            cusines.length === 0 &&
+                                            !isFirstTime
+                                                ? '#F05252'
+                                                : '#D1D5DB'
+                                    })
+                                }}
+                                onChange={data =>
+                                    setSpecialDiets(data)
+                                }
+                                value={specialDiets}
+                                closeMenuOnSelect={false}
+                                placeholder={
+                                    'SPECIAL DIETS of restaurant...'
+                                }
+                                components={animatedComponents}
+                                isMulti
+                                options={specialDietsRestaurant.map(
+                                    style => ({
+                                        value: style,
+                                        label: style
+                                    })
+                                )}
+                            />
+                            {specialDiets.length === 0 &&
+                                !isFirstTime && (
+                                <span className="text-[14px] text-red-500 pl-2 mt-1">
+                                        Please select SPECIAL DIETS of
+                                        restaurant
+                                </span>
+                            )}
+                        </div>
+                        <div className="relative w-full mb-3">
+                            <label
+                                className="block uppercase text-sm font-bold mb-2"
+                                htmlFor="grid-password"
+                            >
+                                Min price
                             </label>
                             <InputField
-                                type="number"
-                                min="1"
-                                max="5"
-                                placeholder="Range Hotel from 1 to 5 stars"
+                                placeholder="Min price"
                                 form={form}
-                                name="hotelClass"
+                                name="minPrice"
+                                type="number"
                             />
                         </div>
                         <div className="relative w-full mb-3">
@@ -314,14 +451,27 @@ function RestaurantForm() {
                                 className="block uppercase text-sm font-bold mb-2"
                                 htmlFor="grid-password"
                             >
-                                Staring Price ($)
+                                Max price
                             </label>
                             <InputField
-                                placeholder="Staring Price (Price of normal room)"
+                                placeholder="Max price"
                                 form={form}
-                                name="cheapestPrice"
+                                name="maxPrice"
                                 type="number"
-                                min="0"
+                            />
+                        </div>
+                        <div className="relative w-full mb-3">
+                            <label
+                                className="block uppercase text-sm font-bold mb-2"
+                                htmlFor="grid-password"
+                            >
+                                Limit book per day
+                            </label>
+                            <InputField
+                                placeholder="Limit book per day"
+                                form={form}
+                                name="limitBookPerDay"
+                                type="number"
                             />
                         </div>
                         <div className="relative w-full mb-2">

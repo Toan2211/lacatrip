@@ -54,9 +54,9 @@ function Restaurants() {
             navigate(`?${queryString.stringify(filters)}`)
         }
     }
-    const handleSelectItem = hotel => {
-        dispatch(setCurrentRestaurant(hotel))
-        // navigate(`${path.formHotel}/${hotel.id}`)
+    const handleSelectItem = restaurant => {
+        dispatch(setCurrentRestaurant(restaurant))
+        navigate(`${path.formRestaurant}/${restaurant.id}`)
     }
     const handleTogglePublic = async hotelId => {
         try {
@@ -144,7 +144,7 @@ function Restaurants() {
                         >
                             <div className="flex-1">
                                 <InputField
-                                    placeholder="Name Hotel"
+                                    placeholder="Name Restaurant"
                                     form={form}
                                     name="key"
                                 />

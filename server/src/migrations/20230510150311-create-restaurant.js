@@ -55,6 +55,14 @@ module.exports = {
                 type: Sequelize.BOOLEAN,
                 defaultValue: false
             },
+            rating: {
+                type: Sequelize.FLOAT,
+                defaultValue: 0
+            },
+            totalRating: {
+                type: Sequelize.FLOAT,
+                defaultValue: 0
+            },
             createdAt: {
                 allowNull: false,
                 type: Sequelize.DATE
