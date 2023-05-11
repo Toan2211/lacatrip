@@ -6,6 +6,7 @@ import { path } from '@constants/path'
 import { FaHotel } from 'react-icons/fa'
 import { useSelector } from 'react-redux'
 import { selectUser } from '@pages/Auth/auth.slice'
+import { BiRestaurant } from 'react-icons/bi'
 import ROLE from '@constants/ROLE'
 export default function Sidebar() {
     const [collapseShow, setCollapseShow] = React.useState('hidden')
@@ -36,8 +37,7 @@ export default function Sidebar() {
                             collapseShow
                         }
                     >
-                        {(currentUser.role.name ===
-                            ROLE.ADMIN ||
+                        {(currentUser.role.name === ROLE.ADMIN ||
                             currentUser.role.name ===
                                 ROLE.EMPLOYEE) && (
                             <>
@@ -118,6 +118,21 @@ export default function Sidebar() {
                                         <FaHotel />
                                     </span>
                                     Hotels
+                                </NavLink>
+                            </li>
+                            <li className="items-center ">
+                                <NavLink
+                                    className={({ isActive }) =>
+                                        isActive
+                                            ? 'text-blue-600 hover:opacity-75 text-xs uppercase py-3 font-bold flex'
+                                            : 'hover:text-blue-600 text-xs uppercase py-3 font-bold flex'
+                                    }
+                                    to={path.restaurants}
+                                >
+                                    <span className="mr-2">
+                                        <BiRestaurant />
+                                    </span>
+                                    Restaurants
                                 </NavLink>
                             </li>
                         </ul>
