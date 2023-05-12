@@ -22,6 +22,7 @@ import FormHotel from '@pages/System/Hotel/Form'
 import Rooms from '@pages/System/Hotel/Room'
 import Restaurants from '@pages/System/Restaurant'
 import RestaurantForm from '@pages/System/Restaurant/Form'
+import CorpTour from '@pages/System/CorpTour'
 function RoutesComponent() {
     return (
         <BrowserRouter>
@@ -96,6 +97,10 @@ function RoutesComponent() {
                         <Route
                             path={path.formUpdateRestaurant}
                             element={<RestaurantForm />}
+                        />
+                        <Route
+                            path={path.corpTours}
+                            element={<CorpTour />}
                         />
                     </Route>
                 </Route>

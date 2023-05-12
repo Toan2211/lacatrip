@@ -10,7 +10,7 @@ const hotel = require('./hotel')
 const image = require('./image')
 const room = require('./room')
 const restaurant = require('./restaurant')
-
+const corpTour = require('./corpTour')
 router.get('/status', (req, res) => {
     res.status(200).json({ status: 'Status OKE' })
 })
@@ -25,5 +25,6 @@ router.use('/hotel', hotel)
 router.use('/image', image)
 router.use('/room', room)
 router.use('/restaurant', restaurant)
+router.use('/corp-tour', corpTour)
 
 module.exports = router
