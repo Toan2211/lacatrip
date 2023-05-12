@@ -21,6 +21,10 @@ module.exports = (sequelize, DataTypes) => {
                 foreignKey: 'serviceManagerId',
                 as: 'Restaurants'
             })
+            this.hasMany(models.DestinationTravel, {
+                foreignKey: 'serviceManagerId',
+                as: 'DestinationTravels'
+            })
         }
     }
     ServiceManager.init(
