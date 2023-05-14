@@ -33,10 +33,6 @@ module.exports = {
             destinationTravelId: {
                 type: Sequelize.UUID
             },
-            public: {
-                type: Sequelize.BOOLEAN,
-                defaultValue: false
-            },
             createdAt: {
                 allowNull: false,
                 type: Sequelize.DATE
