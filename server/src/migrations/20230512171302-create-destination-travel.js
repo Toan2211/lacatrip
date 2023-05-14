@@ -37,13 +37,19 @@ module.exports = {
                 type: Sequelize.UUID
             },
             rating: {
-                type: Sequelize.FLOAT
+                type: Sequelize.FLOAT,
+                defaultValue: 0
             },
             totalRating: {
-                type: Sequelize.FLOAT
+                type: Sequelize.FLOAT,
+                defaultValue: 0
             },
             corpTourId: {
                 type: Sequelize.UUID
+            },
+            public: {
+                type: Sequelize.BOOLEAN,
+                defaultValue: false
             },
             createdAt: {
                 allowNull: false,

@@ -7,8 +7,6 @@ const create = () => [
     body('latitude').notEmpty().isFloat(),
     body('price').notEmpty().isFloat(),
     body('originalPrice').notEmpty().isFloat(),
-    body('rating').notEmpty().isFloat(),
-    body('totalRating').notEmpty().isFloat(),
     body('provinceId').notEmpty().isInt(),
     body('serviceManagerId').notEmpty().isUUID(),
     body('corpTourId').notEmpty().isUUID()
@@ -21,8 +19,6 @@ const update = () => [
     body('latitude').optional().isFloat(),
     body('price').optional().isFloat(),
     body('originalPrice').optional().isFloat(),
-    body('rating').optional().isFloat(),
-    body('totalRating').optional().isFloat(),
     body('provinceId').optional().isInt(),
     body('serviceManagerId').optional().isUUID(),
     body('corpTourId').optional().isUUID()

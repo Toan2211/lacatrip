@@ -5,7 +5,7 @@ const create = () => [
     body('address').notEmpty().isString(),
     body('longtitude').notEmpty().isFloat(),
     body('latitude').notEmpty().isFloat(),
-    body('image').notEmpty().isString(),
+    // body('image').notEmpty().isString(),
     body('step').notEmpty().isInt(),
     body('destinationTravelId').notEmpty().isUUID()
 ]
@@ -15,7 +15,7 @@ const update = () => [
     body('address').optional().isString(),
     body('longtitude').optional().isFloat(),
     body('latitude').optional().isFloat(),
-    body('image').optional().isString(),
+    // body('image').optional().isString(),
     body('step').optional().isInt(),
     body('destinationTravelId').optional().isUUID()
 ]

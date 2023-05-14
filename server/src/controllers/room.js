@@ -64,7 +64,7 @@ const destroy = async (req, res) => {
             return res.status(403).json({
                 message: 'Forbidden: room is not your own'
             })
-        const result = await roomService.destroy(req.body)
+        const result = await roomService.destroy(req.params.id)
         if (result)
             return res
                 .status(200)

@@ -24,6 +24,11 @@ const update = async (id, data) => {
         })
         if (result) {
             const destinaton = await findOne(id)
+            if (data.images) {
+                for (let image of data.images) {
+                    await imageService.create(image.path, id)
+                }
+            }
             return destinaton
         } else return false
     } catch (error) {
