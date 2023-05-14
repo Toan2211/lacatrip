@@ -17,6 +17,10 @@ module.exports = (sequelize, DataTypes) => {
                 foreignKey: 'instanceId',
                 as: 'restaurant'
             })
+            this.belongsTo(models.DestinationTravel, {
+                foreignKey: 'instanceId',
+                as: 'destinationTravel'
+            })
         }
     }
     Image.init(

@@ -81,7 +81,11 @@ const findByHotelId = async (hotelId, page, limit) => {
 }
 const destroy = async id => {
     try {
-        const result = await db.Room.destroy(id)
+        const result = await db.Room.destroy({
+            where: {
+                id: id
+            }
+        })
         return result
     } catch (error) {
         throw new Error(error)
