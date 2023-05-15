@@ -14,11 +14,10 @@ import AddressGenMap from '@components/AddressGenMap'
 import Mybutton from '@components/MyButton'
 import OnePhotoUpload from '@components/OnePhotoUpload'
 import _ from 'lodash'
-import { currentDestinationSelector } from '../../destination.slice'
-function ItineraryForm({ data, onClose }) {
+import { currentDestinationSelector, getDetail } from '../../destination.slice'
+function ItineraryForm({ data, onClose, sheet, handleGetAllDestinations }) {
     const dispatch = useDispatch()
     const currenDestination = useSelector(currentDestinationSelector)
-    const currentItinerary = useSelector(currentItinerarySelector)
     const form = useForm({
         defaultValues: {
             title: '',
@@ -31,19 +30,19 @@ function ItineraryForm({ data, onClose }) {
         }
     })
     useEffect(() => {
-        if (!_.isEmpty(currentItinerary)) {
-            form.setValue('title', currentItinerary.title)
-            form.setValue('description', currentItinerary.description)
-            form.setValue('address', currentItinerary.address)
-            form.setValue('longtitude', currentItinerary.longtitude)
-            form.setValue('latitude', currentItinerary.latitude)
-            form.setValue('step', currentItinerary.step)
-            form.setValue('image', currentItinerary.image)
+        if (!_.isEmpty(data)) {
+            form.setValue('title', data.title)
+            form.setValue('description', data.description)
+            form.setValue('address', data.address)
+            form.setValue('longtitude', data.longtitude)
+            form.setValue('latitude', data.latitude)
+            form.setValue('step', data.step)
+            form.setValue('image', data.image)
         }
         return () => {
             form.reset()
         }
-    }, [form, currentItinerary])
+    }, [form, data, sheet])
     const handleButtonForm = async dataSubmit => {
         try {
             const formdata = new FormData()
@@ -69,9 +68,9 @@ function ItineraryForm({ data, onClose }) {
                 )
             }
             toast.success(
-                data
-                    ? 'Create itinerary successfully'
-                    : 'Update itinerary successfully',
+                data.id
+                    ? 'Update itinerary successfully'
+                    : 'Create itinerary successfully',
                 {
                     position: toast.POSITION.BOTTOM_CENTER,
                     autoClose: 1000,
@@ -79,6 +78,8 @@ function ItineraryForm({ data, onClose }) {
                 }
             )
             onClose()
+            dispatch(getDetail(currenDestination.id))
+            handleGetAllDestinations()
         } catch (error) {
             toast.error(error.message, {
                 position: toast.POSITION.BOTTOM_CENTER,

@@ -114,6 +114,7 @@ function DestinationTravel() {
         document.title = 'Destination Travel'
         dispatch(getServiceManagers({ limit: 1000 }))
         // dispatch(getDestinations({ limit: 1000 }))
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
     const [openForm, setOpenForm] = useState(false)
     const onClose = () => {
@@ -124,6 +125,7 @@ function DestinationTravel() {
         setOpenForm(true)
         dispatch(setCurrentDestination(destination))
     }
+    const [sheet, SetSheet] = useState(0)
     return (
         <div>
             <div className="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded bg-white min-h-[70vh]">
@@ -332,11 +334,14 @@ function DestinationTravel() {
                                                 <Mybutton
                                                     className="flex p-0.5 bg-yellow-500 rounded-lg hover:bg-yellow-600 transition-all duration-300 text-white"
                                                     // eslint-disable-next-line quotes
-                                                    onClick={() =>
+                                                    onClick={() => {
                                                         handleItineraryButton(
                                                             destination
                                                         )
-                                                    }
+                                                        SetSheet(
+                                                            sheet + 1
+                                                        )
+                                                    }}
                                                 >
                                                     <GiWavyItinerary />
                                                 </Mybutton>
@@ -357,7 +362,11 @@ function DestinationTravel() {
                     />
                 </div>
             )}
-            <Itinerary open={openForm} onClose={onClose} />
+            <Itinerary
+                open={openForm}
+                onClose={onClose}
+                sheet={sheet}
+            />
         </div>
     )
 }

@@ -18,6 +18,9 @@ function OnePhotoUpload({ form, name }) {
     useEffect(() => {
         if (!form.getValues(name))
             setPreviewSource('')
+        return () => {
+            setPreviewSource('')
+        }
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [form.getValues(name), form, name])
     return (
