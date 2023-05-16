@@ -1,5 +1,6 @@
 const { Op } = require('sequelize')
 const db = require('../models')
+const destinationTravel = require('../services/destinationTravel')
 const create = async data => {
     try {
         const itinerary = await db.Itinerary.create(data)
@@ -39,6 +40,10 @@ const destroy = async id => {
                 id: id
             }
         })
+        console.log(itinerary)
+        // if (itinerary) {
+
+        // }
         return itinerary
     } catch (error) {
         throw new Error(error)

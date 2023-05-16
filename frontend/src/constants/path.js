@@ -19,6 +19,9 @@ class Path {
         this.formRestaurant = '/system/restaurants/form'
         this.formUpdateRestaurant = '/system/restaurants/form/:id'
         this.corpTours = '/system/corp-tours'
+        this.destinations = '/system/destination-travel'
+        this.formDestination = '/system/destination-travel/form'
+        this.formUpdateDestination = '/system/destination-travel/form/:id'
     }
 }
 

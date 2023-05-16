@@ -54,6 +54,7 @@ function AddressGenMap({ form }) {
                         />
                     </div>
                     <Mybutton
+                        type="button"
                         onClick={handleGenAddressToMap}
                         className="bg-blue-500 text-white active:bg-blue-800 text-sm font-bold uppercase px-6 py-2 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 w-1/4 ease-linear transition-all duration-150"
                     >
