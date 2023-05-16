@@ -7,7 +7,9 @@ import baseProperty from '@pages/CommonProperty/baseproperty'
 import hotelsReducer from '@pages/System/Hotel/hotel.slice.js'
 import roomsReducer from '@pages/System/Hotel/Room/room.slice.js'
 import restaurantsReducer from '@pages/System/Restaurant/restaurant.slice.js'
-
+import corpToursReducer from '@pages/System/CorpTour/corptour.slice.js'
+import destinationReducer from '@pages/System/DestinationTravel/destination.slice.js'
+import itineraryReducer from '@pages/System/DestinationTravel/itinerary.slice.js'
 const rootReducer = {
     propertys: baseProperty,
     auth: authReducer,
@@ -17,7 +19,10 @@ const rootReducer = {
     serviceManagers: serviceManagersReducer,
     hotels: hotelsReducer,
     rooms: roomsReducer,
-    restaurants: restaurantsReducer
+    restaurants: restaurantsReducer,
+    corpTours: corpToursReducer,
+    destinations: destinationReducer,
+    itineraries: itineraryReducer
 }
 const store = configureStore({
     reducer: rootReducer,

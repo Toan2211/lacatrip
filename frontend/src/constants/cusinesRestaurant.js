@@ -9,5 +9,8 @@ export const cusinesRestaurant = [
     'French',
     'Bar',
     'Mediterranean',
-    'Contemporary'
+    'Contemporary',
+    'Italian',
+    'Southwestern',
+    'European'
 ]

@@ -8,6 +8,7 @@ import { useSelector } from 'react-redux'
 import { selectUser } from '@pages/Auth/auth.slice'
 import { BiRestaurant } from 'react-icons/bi'
 import ROLE from '@constants/ROLE'
+import { MdOutlineTravelExplore } from 'react-icons/md'
 export default function Sidebar() {
     const [collapseShow, setCollapseShow] = React.useState('hidden')
     const currentUser = useSelector(selectUser)
@@ -112,6 +113,21 @@ export default function Sidebar() {
                                             ? 'text-blue-600 hover:opacity-75 text-xs uppercase py-3 font-bold flex'
                                             : 'hover:text-blue-600 text-xs uppercase py-3 font-bold flex'
                                     }
+                                    to={path.corpTours}
+                                >
+                                    <span className="mr-2">
+                                        <FaHotel />
+                                    </span>
+                                    Company Tour
+                                </NavLink>
+                            </li>
+                            <li className="items-center ">
+                                <NavLink
+                                    className={({ isActive }) =>
+                                        isActive
+                                            ? 'text-blue-600 hover:opacity-75 text-xs uppercase py-3 font-bold flex'
+                                            : 'hover:text-blue-600 text-xs uppercase py-3 font-bold flex'
+                                    }
                                     to={path.hotels}
                                 >
                                     <span className="mr-2">
@@ -133,6 +149,21 @@ export default function Sidebar() {
                                         <BiRestaurant />
                                     </span>
                                     Restaurants
+                                </NavLink>
+                            </li>
+                            <li className="items-center ">
+                                <NavLink
+                                    className={({ isActive }) =>
+                                        isActive
+                                            ? 'text-blue-600 hover:opacity-75 text-xs uppercase py-3 font-bold flex'
+                                            : 'hover:text-blue-600 text-xs uppercase py-3 font-bold flex'
+                                    }
+                                    to={path.destinations}
+                                >
+                                    <span className="mr-2">
+                                        <MdOutlineTravelExplore />
+                                    </span>
+                                    Destinations Travel
                                 </NavLink>
                             </li>
                         </ul>

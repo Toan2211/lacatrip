@@ -22,6 +22,9 @@ import FormHotel from '@pages/System/Hotel/Form'
 import Rooms from '@pages/System/Hotel/Room'
 import Restaurants from '@pages/System/Restaurant'
 import RestaurantForm from '@pages/System/Restaurant/Form'
+import CorpTour from '@pages/System/CorpTour'
+import DestinationTravel from '@pages/System/DestinationTravel'
+import DestinationForm from '@pages/System/DestinationTravel/Form'
 function RoutesComponent() {
     return (
         <BrowserRouter>
@@ -96,6 +99,22 @@ function RoutesComponent() {
                         <Route
                             path={path.formUpdateRestaurant}
                             element={<RestaurantForm />}
+                        />
+                        <Route
+                            path={path.corpTours}
+                            element={<CorpTour />}
+                        />
+                        <Route
+                            path={path.destinations}
+                            element={<DestinationTravel />}
+                        />
+                        <Route
+                            path={path.formDestination}
+                            element={<DestinationForm />}
+                        />
+                        <Route
+                            path={path.formUpdateDestination}
+                            element={<DestinationForm />}
                         />
                     </Route>
                 </Route>

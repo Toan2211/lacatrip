@@ -8,7 +8,7 @@ class Path {
         this.profileSystem = '/system/profile'
         this.employees = '/system/employees'
         this.clients = '/system/clients'
-        this.serviceManagers = '/system/serviceManagers'
+        this.serviceManagers = '/system/service-manager'
         this.profile = '/profile'
         this.changePassword = '/changePassword'
         this.hotels = '/system/hotels'
@@ -18,6 +18,10 @@ class Path {
         this.restaurants = '/system/restaurants'
         this.formRestaurant = '/system/restaurants/form'
         this.formUpdateRestaurant = '/system/restaurants/form/:id'
+        this.corpTours = '/system/corp-tours'
+        this.destinations = '/system/destination-travel'
+        this.formDestination = '/system/destination-travel/form'
+        this.formUpdateDestination = '/system/destination-travel/form/:id'
     }
 }
 
