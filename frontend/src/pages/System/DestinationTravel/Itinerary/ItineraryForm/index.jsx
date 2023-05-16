@@ -3,7 +3,6 @@ import { useForm } from 'react-hook-form'
 import { useDispatch, useSelector } from 'react-redux'
 import {
     createItinerary,
-    currentItinerarySelector,
     updateItinerary
 } from '../../itinerary.slice'
 import { unwrapResult } from '@reduxjs/toolkit'
@@ -14,8 +13,16 @@ import AddressGenMap from '@components/AddressGenMap'
 import Mybutton from '@components/MyButton'
 import OnePhotoUpload from '@components/OnePhotoUpload'
 import _ from 'lodash'
-import { currentDestinationSelector, getDetail } from '../../destination.slice'
-function ItineraryForm({ data, onClose, sheet, handleGetAllDestinations }) {
+import {
+    currentDestinationSelector,
+    getDetail
+} from '../../destination.slice'
+function ItineraryForm({
+    data,
+    onClose,
+    sheet,
+    handleGetAllDestinations
+}) {
     const dispatch = useDispatch()
     const currenDestination = useSelector(currentDestinationSelector)
     const form = useForm({
@@ -25,7 +32,9 @@ function ItineraryForm({ data, onClose, sheet, handleGetAllDestinations }) {
             address: '',
             longtitude: '',
             latitude: '',
-            step: null,
+            step: currenDestination?.itineraries?.length
+                ? currenDestination?.itineraries?.length + 1
+                : 1,
             image: ''
         }
     })
@@ -117,6 +126,7 @@ function ItineraryForm({ data, onClose, sheet, handleGetAllDestinations }) {
                         type="number"
                         form={form}
                         name="step"
+                        disabled={true}
                     />
                 </div>
             </div>

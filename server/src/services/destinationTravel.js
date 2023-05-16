@@ -57,8 +57,16 @@ const findOne = async id => {
                 },
                 {
                     model: db.Itinerary,
-                    as: 'itineraries'
+                    as: 'itineraries',
+                    order: [['Itinerary.step', 'ASC']]
                 }
+            ],
+            order: [
+                [
+                    { model: db.Itinerary, as: 'itineraries' },
+                    'step',
+                    'asc'
+                ]
             ]
         })
         return instance
@@ -68,8 +76,14 @@ const findOne = async id => {
 }
 const find = async params => {
     try {
-        let { key, page, limit, serviceManagerId, provinceId } =
-            params
+        let {
+            key,
+            page,
+            limit,
+            serviceManagerId,
+            provinceId,
+            corpTourId
+        } = params
         key = key ? key : ''
         page = page ? +page : 1
         limit = limit ? +limit : 10
@@ -83,6 +97,19 @@ const find = async params => {
                 as: 'images'
             }
         ]
+        if (corpTourId)
+            includeModels.push({
+                model: db.CorpTour,
+                as: 'corpTour',
+                where: {
+                    id: corpTourId
+                }
+            })
+        else
+            includeModels.push({
+                model: db.CorpTour,
+                as: 'corpTour'
+            })
         if (serviceManagerId)
             includeModels.push({
                 model: db.ServiceManager,
@@ -125,17 +152,25 @@ const find = async params => {
                 model: db.Province,
                 as: 'province'
             })
-        const { count, rows } = await db.DestinationTravel.findAndCountAll({
-            offset: (page - 1) * limit,
-            limit: +limit,
-            include: [...includeModels],
-            where: {
-                name: {
-                    [Op.like]: `%${key}%`
-                }
-            },
-            distinct: true
-        })
+        const { count, rows } =
+            await db.DestinationTravel.findAndCountAll({
+                offset: (page - 1) * limit,
+                limit: +limit,
+                include: [...includeModels],
+                where: {
+                    name: {
+                        [Op.like]: `%${key}%`
+                    }
+                },
+                distinct: true,
+                order: [
+                    [
+                        { model: db.Itinerary, as: 'itineraries' },
+                        'step',
+                        'asc'
+                    ]
+                ]
+            })
         return {
             destinationTravels: rows,
             pagination: {
