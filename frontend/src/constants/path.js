@@ -22,6 +22,8 @@ class Path {
         this.destinations = '/system/destination-travel'
         this.formDestination = '/system/destination-travel/form'
         this.formUpdateDestination = '/system/destination-travel/form/:id'
+        //client
+        this.clientDestinationTravelDetail = '/destination-travel/:id'
     }
 }
 
