@@ -47,6 +47,7 @@ module.exports = (sequelize, DataTypes) => {
             public: DataTypes.BOOLEAN,
             rating: DataTypes.FLOAT,
             totalRating: DataTypes.FLOAT,
+            clickCount: DataTypes.FLOAT
         },
         {
             sequelize,

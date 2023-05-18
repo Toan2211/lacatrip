@@ -5,20 +5,25 @@ const create = async (req, res) => {
             req.body.images = req.files
         }
         const restaurant = await restaurantService.create(req.body)
-        return res
-            .status(200)
-            .json({
-                message: 'Create restaurant successful',
-                data: restaurant
-            })
+        return res.status(200).json({
+            message: 'Create restaurant successful',
+            data: restaurant
+        })
     } catch (error) {
         return res.status(500).json({ message: error.message })
     }
 }
 const findOne = async (req, res) => {
     try {
-        const restaurant = await restaurantService.findOne(req.params.id)
+        const restaurant = await restaurantService.findOne(
+            req.params.id
+        )
         if (restaurant) {
+            if (!req.user)
+                await restaurantService.update(req.params.id, {
+                    clickCount:
+                        restaurant.get({ plain: true }).clickCount + 1
+                })
             return res.status(200).json({
                 message: 'Get restaurant successful',
                 data: restaurant
@@ -44,7 +49,10 @@ const update = async (req, res) => {
         )
         return res
             .status(200)
-            .json({ message: 'Update restaurant successful', data: restaurant })
+            .json({
+                message: 'Update restaurant successful',
+                data: restaurant
+            })
     } catch (error) {
         return res.status(500).json({ message: error.message })
     }
@@ -62,10 +70,13 @@ const find = async (req, res) => {
 }
 const togglePublic = async (req, res) => {
     try {
-        const restaurant = await restaurantService.togglePublic(req.params.id)
+        const restaurant = await restaurantService.togglePublic(
+            req.params.id
+        )
         if (restaurant)
             return res.status(200).json({
-                message: 'Toggle status public restaurant successful!',
+                message:
+                    'Toggle status public restaurant successful!',
                 data: restaurant
             })
         else

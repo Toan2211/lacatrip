@@ -62,6 +62,11 @@ const findOne = async (req, res) => {
     try {
         const hotel = await hotelService.findOne(req.params.id)
         if (hotel) {
+            if (!req.user)
+                await hotelService.update(req.params.id, {
+                    clickCount:
+                        hotel.get({ plain: true }).clickCount + 1
+                })
             return res.status(200).json({
                 message: 'Get hotel successful',
                 data: hotel
