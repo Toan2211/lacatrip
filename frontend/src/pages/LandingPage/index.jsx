@@ -6,16 +6,23 @@ import Banner from './Banner'
 import SearchMain from './SearchMain'
 import TopProvince from './TopProvince'
 import Recommend from './Recommend'
+import { useDispatch, useSelector } from 'react-redux'
+import { provincesSelector } from '@pages/CommonProperty/baseproperty'
+import { getProvinces } from '@pages/CommonProperty/baseproperty'
 
 function LandingPage() {
     const isSystem = useSystemAuthenticated()
     const navigate = useNavigate()
+    const provinces = useSelector(provincesSelector)
+    const dispatch = useDispatch()
     useEffect(() => {
         if (isSystem) navigate(path.system)
     }, [navigate, isSystem])
     useEffect(() => {
         document.title = 'Lacatrip'
-    }, [])
+        if (provinces.length === 0)
+            dispatch(getProvinces())
+    }, [dispatch, provinces])
     return (
         <div className="">
             <div className="relative">
@@ -23,7 +30,7 @@ function LandingPage() {
                 <div className='absolute top-[66vh] max-w-[1535px] z-20 w-full mx-auto'>
                     <SearchMain />
                 </div>
-                <TopProvince />
+                <TopProvince provinces = {provinces} />
                 <Recommend />
             </div>
         </div>

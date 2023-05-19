@@ -40,10 +40,6 @@ const destroy = async id => {
                 id: id
             }
         })
-        console.log(itinerary)
-        // if (itinerary) {
-
-        // }
         return itinerary
     } catch (error) {
         throw new Error(error)

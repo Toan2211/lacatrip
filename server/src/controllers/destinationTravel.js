@@ -25,26 +25,25 @@ const update = async (req, res) => {
                 req.body
             )
         if (!destinationTravel)
-            return res
-                .status(400)
-                .json({
-                    message:
-                        'Destination Travel Not Found OR UPDATE FAIL'
-                })
+            return res.status(400).json({
+                message: 'Destination Travel Not Found OR UPDATE FAIL'
+            })
         else
-            return res
-                .status(200)
-                .json({
-                    message: 'Update destination travel successful',
-                    data: destinationTravel
-                })
+            return res.status(200).json({
+                message: 'Update destination travel successful',
+                data: destinationTravel
+            })
     } catch (error) {
         return res.status(500).json({ message: error.message })
     }
 }
 const find = async (req, res) => {
     try {
-        const destinationTravel = await destinationTravelService.find(req.query)
+        if (req.user)
+            req.query.roleId = req.user.roleId
+        const destinationTravel = await destinationTravelService.find(
+            req.query
+        )
         return res.status(200).json({
             message: 'Get list Destination Travel successful !',
             data: destinationTravel
@@ -55,8 +54,13 @@ const find = async (req, res) => {
 }
 const findOne = async (req, res) => {
     try {
-        const destinationTravel = await destinationTravelService.findOne(req.params.id)
+        const destinationTravel =
+            await destinationTravelService.findOne(req.params.id)
         if (destinationTravel) {
+            if(!req.user)
+                await destinationTravelService.update(req.params.id, {
+                    clickCount: destinationTravel.get({ plain: true }).clickCount + 1
+                })
             return res.status(200).json({
                 message: 'Get destinationTravel successful',
                 data: destinationTravel
@@ -73,10 +77,12 @@ const findOne = async (req, res) => {
 }
 const togglePublic = async (req, res) => {
     try {
-        const destinationTravel = await destinationTravelService.togglePublic(req.params.id)
+        const destinationTravel =
+            await destinationTravelService.togglePublic(req.params.id)
         if (destinationTravel)
             return res.status(200).json({
-                message: 'Toggle status public Destination Travel successful!',
+                message:
+                    'Toggle status public Destination Travel successful!',
                 data: destinationTravel
             })
         else

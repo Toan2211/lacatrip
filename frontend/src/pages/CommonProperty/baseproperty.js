@@ -5,7 +5,7 @@ import amenitieshotelApi from '@api/amenitieshotelApi'
 import imageApi from '@api/imageApi'
 export const getProvinces = createAsyncThunk(
     'provinces/getAllProvinces',
-    payloadCreator(provinceApi.getAllProvince)
+    payloadCreator(provinceApi.getTopPopular)
 )
 const handlegetAllProvincesFulfilled = (state, action) => {
     state.provinces = action.payload.data

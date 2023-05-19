@@ -1,6 +1,11 @@
 const { Op, where } = require('sequelize')
 const db = require('../models')
 const imageService = require('./image')
+const {
+    ADMINID,
+    EMPLOYEEID,
+    SERVICEMANAGERID
+} = require('../constants/variable')
 const create = async data => {
     try {
         const instance = await db.DestinationTravel.create(data)
@@ -82,7 +87,8 @@ const find = async params => {
             limit,
             serviceManagerId,
             provinceId,
-            corpTourId
+            corpTourId,
+            roleId
         } = params
         key = key ? key : ''
         page = page ? +page : 1
@@ -152,16 +158,30 @@ const find = async params => {
                 model: db.Province,
                 as: 'province'
             })
+        let whereParams
+        if (
+            +roleId === ADMINID ||
+            +roleId === EMPLOYEEID ||
+            +roleId === SERVICEMANAGERID
+        )
+            whereParams = {
+                name: {
+                    [Op.like]: `%${key}%`
+                }
+            }
+        else
+            whereParams = {
+                name: {
+                    [Op.like]: `%${key}%`
+                },
+                public: 1
+            }
         const { count, rows } =
             await db.DestinationTravel.findAndCountAll({
                 offset: (page - 1) * limit,
                 limit: +limit,
                 include: [...includeModels],
-                where: {
-                    name: {
-                        [Op.like]: `%${key}%`
-                    }
-                },
+                where: whereParams,
                 distinct: true,
                 order: [
                     [
