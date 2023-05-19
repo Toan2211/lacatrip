@@ -59,6 +59,8 @@ const update = async (req, res) => {
 }
 const find = async (req, res) => {
     try {
+        if (req.user)
+            req.query.roleId = req.user.roleId
         const result = await restaurantService.find(req.query)
         return res.status(200).json({
             message: 'Get list restaurants successful !',

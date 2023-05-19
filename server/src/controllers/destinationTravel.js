@@ -39,6 +39,8 @@ const update = async (req, res) => {
 }
 const find = async (req, res) => {
     try {
+        if (req.user)
+            req.query.roleId = req.user.roleId
         const destinationTravel = await destinationTravelService.find(
             req.query
         )

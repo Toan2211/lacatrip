@@ -1,72 +1,73 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
-import destinationApi from '@api/destinationApi'
 import { payloadCreator } from '@utils/helper'
-export const getDestinationClient = createAsyncThunk(
+import destinationApi from '@api/destinationApi'
+export const getDestinations = createAsyncThunk(
     'destinationClients/getAll',
     payloadCreator(destinationApi.getAll)
 )
+export const getDestinationsLoadMore = createAsyncThunk(
+    'destinationClients/getAllLoadMore',
+    payloadCreator(destinationApi.getAll)
+)
 export const getDetailDestination = createAsyncThunk(
-    'destinationClients/getDetail',
+    'destinationClients/getDetai',
     payloadCreator(destinationApi.getDetail)
 )
 const getAllFulfilled = (state, action) => {
-    console.log('helppppppppppppppppppp')
     const { destinationTravels, pagination } = action.payload.data
-    state.destinationClients = destinationTravels
+    state.destinations = destinationTravels
+    state.pagination = pagination
+}
+const getAllLoadMoreFulfilled = (state, action) => {
+    const { destinationTravels, pagination } = action.payload.data
+    state.destinations = [...state.destinations, ...destinationTravels]
     state.pagination = pagination
 }
 const getDetailFulfilled = (state, action) => {
-    state.currentDestinationClient = action.payload.data
+    state.currentDestination = action.payload.data
 }
-const destinationClientsSlice = createSlice({
+const destinationClientSlice = createSlice({
     name: 'destinationClients',
     initialState: {
-        destinationClients: [],
-        currentDestinationClient: {},
+        destinations: [],
+        currentDestination: {},
         loading: 0,
         pagination: {}
     },
     reducers: {
-        setCurrentDestinationClient(state, action) {
-            state.currentDestinationClient = action.payload
+        setCurrentDestination(state, action) {
+            state.currentDestination = action.payload
         }
     },
-    extraReducers: {
-        extraReducers: builder => {
-            builder
-                .addCase(
-                    getDestinationClient.fulfilled,
-                    getAllFulfilled
-                )
-                .addCase(
-                    getDetailDestination.fulfilled,
-                    getDetailFulfilled
-                )
-                .addMatcher(
-                    action => action.type.endsWith('/pending'),
-                    state => {
-                        state.loading = state.loading + 1
-                    }
-                )
-                .addMatcher(
-                    action =>
-                        action.type.endsWith('/fulfilled') ||
-                        action.type.endsWith('/rejected'),
-                    state => {
-                        state.loading = state.loading - 1
-                    }
-                )
-        }
+    extraReducers: builder => {
+        builder
+            .addCase(getDestinations.fulfilled, getAllFulfilled)
+            .addCase(getDetailDestination.fulfilled, getDetailFulfilled)
+            .addCase(getDestinationsLoadMore.fulfilled, getAllLoadMoreFulfilled)
+            .addMatcher(
+                action => action.type.endsWith('/pending'),
+                state => {
+                    state.loading = state.loading + 1
+                }
+            )
+            .addMatcher(
+                action =>
+                    action.type.endsWith('/fulfilled') ||
+                    action.type.endsWith('/rejected'),
+                state => {
+                    state.loading = state.loading - 1
+                }
+            )
     }
 })
-export const destinationsClientSelector = state =>
-    state.destinationClients.destinationClients
 export const currentDestinationClientSelector = state =>
-    state.destinationClients.currentDestinationClient
+    state.destinationClients.currentDestination
+export const destinationsClientSelector = state =>
+    state.destinationClients.destinations
 export const loadingDestinationClientSelector = state =>
     state.destinationClients.loading
 export const paginationDestinationClientSelector = state =>
     state.destinationClients.pagination
-const { actions, reducer } = destinationClientsSlice
-export const { setCurrentDestinationClient } = actions
+const { actions, reducer } = destinationClientSlice
 export default reducer
+export const { setCurrentDestination } = actions

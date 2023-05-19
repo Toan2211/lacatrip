@@ -11,6 +11,8 @@ import corpToursReducer from '@pages/System/CorpTour/corptour.slice.js'
 import destinationReducer from '@pages/System/DestinationTravel/destination.slice.js'
 import itineraryReducer from '@pages/System/DestinationTravel/itinerary.slice.js'
 import destinationClientReducer from '@pages/DestinationTravelList/destinationclient.slice.js'
+import restaurantClientReducer from '@pages/RestaurantList/restaurantclient.slice.js'
+import hotelClientReducer from '@pages/HotelList/hotelclient.slice.js'
 const rootReducer = {
     propertys: baseProperty,
     auth: authReducer,
@@ -25,7 +27,9 @@ const rootReducer = {
     destinations: destinationReducer,
     itineraries: itineraryReducer,
     // client page
-    destinationClients: destinationClientReducer
+    destinationClients: destinationClientReducer,
+    restaurantsClient: restaurantClientReducer,
+    hotelClients: hotelClientReducer
 }
 const store = configureStore({
     reducer: rootReducer,

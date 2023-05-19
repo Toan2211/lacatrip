@@ -6,7 +6,7 @@ const validateHotel = require('../validations/hotel')
 const validate = require('../middlewares/validate')
 const { verifyToken, isAdminOrEmployee, isSystemUser, verifyTokenNoLimit } = require('../middlewares/auth')
 
-router.get('/', controller.find)
+router.get('/', verifyTokenNoLimit, controller.find)
 router.get('/province/:provinceId', validateHotel.findOne(), validate, controller.findByProvince)
 router.get('/:id', verifyTokenNoLimit, validateHotel.findOne(), validate, controller.findOne)
 router.get('/service-manager/:serviceManagerId', verifyToken, isSystemUser, validateHotel.findOne(), validate, controller.findByServiceManager)
