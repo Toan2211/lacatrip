@@ -4,6 +4,7 @@ import DestinationCard from '@components/DestinationCard'
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { getDestinations } from '@pages/DestinationTravelList/destinationclient.slice'
+import RecommendSkeletonCard from '@components/RecommendSkeletonCard'
 
 function RecommendDestination() {
     const dispatch = useDispatch()
@@ -29,6 +30,9 @@ function RecommendDestination() {
                     destinations.map(destination => (
                         <DestinationCard key={destination.id} data={destination} />
                     ))}
+                {
+                    !!loading && Array.from(Array(8).keys()).map(index => <RecommendSkeletonCard key={index}/>)
+                }
             </div>
             {pagination.page < pagination.totalPages && (
                 <div className="text-center mt-4">

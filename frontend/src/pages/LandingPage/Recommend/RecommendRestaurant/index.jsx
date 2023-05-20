@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { loadingRestaurantClientSelector, paginationRestaurantClientSelector, restaurantsClientSelector, getRestaurantsClient } from '@pages/RestaurantList/restaurantclient.slice'
 import { getRestaurantsClientLoadMore } from '@pages/RestaurantList/restaurantclient.slice'
 import RestaurantCard from '@components/RestaurantCard'
+import RecommendSkeletonCard from '@components/RecommendSkeletonCard'
 
 function RecommendRestaurant() {
     const dispatch = useDispatch()
@@ -29,6 +30,9 @@ function RecommendRestaurant() {
                     restaurants.map(restaurant => (
                         <RestaurantCard key={restaurant.id} data={restaurant} />
                     ))}
+                {
+                    !!loading && Array.from(Array(8).keys()).map(index => <RecommendSkeletonCard key={index}/>)
+                }
             </div>
             {pagination.page < pagination.totalPages && (
                 <div className="text-center mt-4">

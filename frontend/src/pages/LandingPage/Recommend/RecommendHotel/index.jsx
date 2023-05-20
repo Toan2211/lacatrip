@@ -9,6 +9,7 @@ import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { getHotelsClientLoadMore } from '@pages/HotelList/hotelclient.slice'
 import { paginationHotelClient } from '@pages/HotelList/hotelclient.slice'
+import RecommendSkeletonCard from '@components/RecommendSkeletonCard'
 
 function RecommendHotel() {
     const dispatch = useDispatch()
@@ -34,6 +35,9 @@ function RecommendHotel() {
                     hotels.map(hotel => (
                         <HotelCard key={hotel.id} data={hotel} />
                     ))}
+                {
+                    !!loading && Array.from(Array(8).keys()).map(index => <RecommendSkeletonCard key={index}/>)
+                }
             </div>
             {pagination.page < pagination.totalPages && (
                 <div className="text-center mt-4">
