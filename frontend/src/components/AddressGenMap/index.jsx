@@ -1,6 +1,5 @@
 import InputField from '@components/InputField'
 import GoogleMaps from '@components/GoogleMap'
-import Maker from '@components/Maker'
 import React, { useState } from 'react'
 import Geocode from 'react-geocode'
 import Mybutton from '@components/MyButton'
@@ -10,8 +9,8 @@ Geocode.setRegion(import.meta.env.VITE_GEOCODE_REGION)
 Geocode.setLocationType(import.meta.env.VITE_GEOCODE_LOCATIONTYPE)
 Geocode.enableDebug()
 function AddressGenMap({ form }) {
-    const [lat, setLat] = useState(16.0748)
-    const [lon, setLon] = useState(108.224)
+    const [lat, setLat] = useState(() => form.getValues('latitude') || 16.0748)
+    const [lon, setLon] = useState(() => form.getValues('longtitude') || 108.224)
     // useEffect(() => {
     //     navigator.geolocation.getCurrentPosition(postion => {
     //         setLat(postion.coords.latitude)
@@ -19,8 +18,9 @@ function AddressGenMap({ form }) {
     //     })
     // }, [])
     const handleGenAddressToMap = () => {
-        form.setValue('longtitude', 16.0748)
-        form.setValue('latitude', 108.224)
+        setLat(lat - lat/10000)
+        form.setValue('longtitude', 108.224)
+        form.setValue('latitude', 16.0748)
         Geocode.fromAddress(form.getValues('address')).then(
             response => {
                 const { lat, lng } =
@@ -101,9 +101,24 @@ function AddressGenMap({ form }) {
                 >
                     Map
                 </label>
-                <GoogleMaps latitude={lat} longitude={lon}>
-                    <Maker lat={lat} lng={lon} />
-                </GoogleMaps>
+                <div className="h-[400px] w-2/3">
+                    <GoogleMaps
+                        center={{
+                            lat: lat,
+                            lng: lon
+                        }}
+                        markers={[
+                            {
+                                id: 9999,
+                                name: 'Destination',
+                                position: {
+                                    lat: lat,
+                                    lng: lon
+                                }
+                            }
+                        ]}
+                    ></GoogleMaps>
+                </div>
             </div>
         </>
     )

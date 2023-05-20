@@ -11,8 +11,5 @@ module.exports = {
             'auth-layout': 'url("../src/assets/img/login_bg.jpg")'
         }
     },
-    plugins: [
-        require('flowbite/plugin'),
-        require('@tailwindcss/line-clamp')
-    ]
+    plugins: [require('flowbite/plugin')]
 }

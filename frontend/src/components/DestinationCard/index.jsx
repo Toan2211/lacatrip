@@ -1,8 +1,9 @@
 import React from 'react'
+import { NavLink } from 'react-router-dom'
 
 function DestinationCard({ data }) {
     return (
-        <div className="overflow-hidden rounded-2xl bg-white shadow-md flex flex-col h-[468px] hover:shadow-2xl cursor-pointer group">
+        <NavLink to={`/destination-travel/${data.id}`} className="overflow-hidden rounded-2xl bg-white shadow-md flex flex-col h-[468px] hover:shadow-2xl cursor-pointer group">
             <div className=' overflow-hidden'>
                 <img className='h-[260px] w-full object-cover group-hover:scale-125 transition-transform' src={(data.images || []).length > 0 ? data.images[0].url : undefined} />
             </div>
@@ -32,7 +33,7 @@ function DestinationCard({ data }) {
                     </span>
                 </div>
             </div>
-        </div>
+        </NavLink>
     )
 }
 
