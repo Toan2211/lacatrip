@@ -37,6 +37,7 @@ const update = async (id, data) => {
             return destinaton
         } else return false
     } catch (error) {
+        console.log(error)
         throw new Error(error)
     }
 }

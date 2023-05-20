@@ -25,7 +25,7 @@ import RestaurantForm from '@pages/System/Restaurant/Form'
 import CorpTour from '@pages/System/CorpTour'
 import DestinationTravel from '@pages/System/DestinationTravel'
 import DestinationForm from '@pages/System/DestinationTravel/Form'
-import DestinationTravelClient from '@pages/DestinationTravel'
+import DestinationTravelClient from '@pages/DestinationTravelList/DestinationTravel'
 function RoutesComponent() {
     return (
         <BrowserRouter>
