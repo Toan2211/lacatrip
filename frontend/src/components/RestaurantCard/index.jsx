@@ -1,14 +1,26 @@
 import React from 'react'
+import { NavLink } from 'react-router-dom'
 
 function RestaurantCard({ data }) {
     return (
-        <div className=" overflow-hidden rounded-2xl bg-white shadow-md flex flex-col h-[468px]  hover:shadow-2xl cursor-pointer group">
-            <div className='overflow-hidden'>
-                <img className='h-[260px] w-full object-cover  group-hover:scale-125 transition-transform' src={(data.images || []).length > 0 && data.images[0].url} />
+        <NavLink
+            to={`/restaurant/${data.id}`}
+            className=" overflow-hidden rounded-2xl bg-white shadow-md flex flex-col h-[468px]  hover:shadow-2xl cursor-pointer group"
+        >
+            <div className="overflow-hidden">
+                <img
+                    className="h-[260px] w-full object-cover  group-hover:scale-125 transition-transform"
+                    src={
+                        (data.images || []).length > 0 &&
+                        data.images[0].url
+                    }
+                />
             </div>
             <div className="p-4 flex-1">
                 <div className="flex flex-col pb-2">
-                    <span className="font-semibold line-clamp-2">{data.name}</span>
+                    <span className="font-semibold line-clamp-2">
+                        {data.name}
+                    </span>
                     <span className="font-medium text-gray-400">
                         {data?.province?.name || ''}
                     </span>
@@ -32,7 +44,7 @@ function RestaurantCard({ data }) {
                     </span>
                 </div>
             </div>
-        </div>
+        </NavLink>
     )
 }
 

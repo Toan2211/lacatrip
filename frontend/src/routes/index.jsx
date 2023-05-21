@@ -27,6 +27,7 @@ import DestinationTravel from '@pages/System/DestinationTravel'
 import DestinationForm from '@pages/System/DestinationTravel/Form'
 import DestinationTravelClient from '@pages/DestinationTravelList/DestinationTravel'
 import HotelId from '@pages/HotelList/HotelId'
+import RestaurantId from '@pages/RestaurantList/RestaurantId'
 function RoutesComponent() {
     return (
         <BrowserRouter>
@@ -47,6 +48,10 @@ function RoutesComponent() {
                     <Route
                         path={path.clientHotelDetail}
                         element={<HotelId />}
+                    />
+                    <Route
+                        path={path.clientRestaurantDetail}
+                        element = {<RestaurantId />}
                     />
                 </Route>
                 <Route element={<AuthenticatedGuard />}>

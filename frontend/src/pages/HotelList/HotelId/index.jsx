@@ -13,6 +13,7 @@ import { AiFillStar } from 'react-icons/ai'
 import GoogleMap from '@components/GoogleMap'
 import RoomCard from './RoomCard'
 import CommentCard from '@components/CommentCard'
+import LikeAndShare from '@components/LikeAndShare'
 
 function HotelId() {
     const dispatch = useDispatch()
@@ -22,9 +23,15 @@ function HotelId() {
     useEffect(() => {
         if (id) dispatch(getDeailHotelClient(id))
     }, [id, dispatch])
+    useEffect(() => {
+        document.title = currentHotel.name
+    }, [currentHotel])
     if (!Object.keys(currentHotel).length) return <LoadingPage />
     return (
         <div className="max-w-[1535px] px-8 py-5 mt-[100px] md:mt-40 md:px-10 lg:mt-16 lg:px-20 mb-[20vh] pb-[100px]">
+            <div className="flex justify-end mr-[14%]">
+                <LikeAndShare />
+            </div>
             <div className=" ml-[12%]">
                 <div className="font-semibold text-2xl">
                     {currentHotel.name}
@@ -54,7 +61,7 @@ function HotelId() {
                     </span>
                 </div>
             </div>
-            <div className="w-full lg:w-[80%] bg-white lg:p-10 p-4 mx-auto">
+            <div className="w-full lg:w-[80%] bg-white lg:px-10 lg:pb-10 p-4 mx-auto">
                 <Swiper
                     loop={true}
                     spaceBetween={10}
