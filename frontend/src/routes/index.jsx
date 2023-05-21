@@ -26,6 +26,7 @@ import CorpTour from '@pages/System/CorpTour'
 import DestinationTravel from '@pages/System/DestinationTravel'
 import DestinationForm from '@pages/System/DestinationTravel/Form'
 import DestinationTravelClient from '@pages/DestinationTravelList/DestinationTravel'
+import HotelId from '@pages/HotelList/HotelId'
 function RoutesComponent() {
     return (
         <BrowserRouter>
@@ -42,6 +43,10 @@ function RoutesComponent() {
                     <Route
                         path={path.clientDestinationTravelDetail}
                         element={<DestinationTravelClient />}
+                    />
+                    <Route
+                        path={path.clientHotelDetail}
+                        element={<HotelId />}
                     />
                 </Route>
                 <Route element={<AuthenticatedGuard />}>
