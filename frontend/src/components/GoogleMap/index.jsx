@@ -16,6 +16,7 @@ function GoogleMaps({ center, markers }) {
         id: 'google-map-script',
         googleMapsApiKey: `${import.meta.env.VITE_GOOGLEMAP_KEY}`
     })
+    // eslint-disable-next-line no-unused-vars
     const [map, setMap] = useState(null)
     const [activeMarker, setActiveMarker] = useState(null)
 
@@ -41,7 +42,7 @@ function GoogleMaps({ center, markers }) {
         [center, markers]
     )
 
-    const onUnmount = useCallback(function callback(map) {
+    const onUnmount = useCallback(function callback() {
         setMap(null)
     }, [])
 

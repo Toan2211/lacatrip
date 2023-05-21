@@ -25,6 +25,7 @@ class Path {
         //client
         this.clientDestinationTravelDetail = '/destination-travel/:id'
         this.clientHotelDetail = '/hotel/:id'
+        this.clientRestaurantDetail = '/restaurant/:id'
     }
 }
 

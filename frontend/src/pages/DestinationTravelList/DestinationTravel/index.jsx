@@ -16,6 +16,7 @@ import {
 } from '../destinationclient.slice'
 import LoadingPage from '@components/LoadingPage'
 import GoogleMaps from '@components/GoogleMap'
+import LikeAndShare from '@components/LikeAndShare'
 
 function DestinationTravelClient() {
     const dispatch = useDispatch()
@@ -66,6 +67,9 @@ function DestinationTravelClient() {
 
     return (
         <div className="max-w-[1535px] px-8 py-5 mt-[100px] md:mt-40 md:px-10 lg:mt-16 lg:px-20 mb-[20vh] pb-[100px]">
+            <div className="flex justify-end mr-[10%]">
+                <LikeAndShare />
+            </div>
             <div className="font-semibold text-xl text-blue-600">
                 {currentDestination.province.name} <span>•</span>{' '}
                 {currentDestination.name}
@@ -74,7 +78,7 @@ function DestinationTravelClient() {
                 <span>{currentDestination.description}</span>
             </div>
             <div className="flex w-full flex-col lg:flex-row">
-                <div className="h-[75vh]  w-full lg:w-[60%] bg-white lg:p-10 p-4">
+                <div className="h-[75vh]  w-full lg:w-[60%] bg-white lg:px-10 lg:pb-10 p-4">
                     <Swiper
                         loop={true}
                         spaceBetween={10}
