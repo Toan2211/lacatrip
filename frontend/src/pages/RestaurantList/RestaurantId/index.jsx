@@ -8,10 +8,9 @@ import {
 import LoadingPage from '@components/LoadingPage'
 import { EffectFade, Navigation, Thumbs, Autoplay } from 'swiper'
 import { Swiper, SwiperSlide } from 'swiper/react'
-import { AiFillStar } from 'react-icons/ai'
 import GoogleMap from '@components/GoogleMap'
-import CommentCard from '@components/CommentCard'
 import LikeAndShare from '@components/LikeAndShare'
+import Comment from '@pages/Comment'
 function RestaurantId() {
     const dispatch = useDispatch()
     const id = useParams().id
@@ -28,7 +27,7 @@ function RestaurantId() {
     if (!Object.keys(currentRestaurant).length) return <LoadingPage />
     return (
         <div className="max-w-[1535px] px-8 py-5 mt-[100px] md:mt-40 md:px-10 lg:mt-16 lg:px-20 mb-[20vh] pb-[100px]">
-            <div className='flex justify-end mr-[14%]'>
+            <div className="flex justify-end mr-[14%]">
                 <LikeAndShare />
             </div>
             <div className=" ml-[12%]">
@@ -229,58 +228,10 @@ function RestaurantId() {
                     </span>
                 </div>
             </div>
-            <div className="mt-20">
-                <header className="font-semibold text-lg">
-                    Reviews
-                </header>
-                <div className="flex border-[1px] border-gray-200 rounded-xl lg:w-[60%] bg-slate-50 mt-4">
-                    <div className="flex items-center gap-1 basis-1/3 border-r-[1px] flex-col justify-center">
-                        <div className="flex items-center text-lg">
-                            <div className=" text-yellow-400 flex gap-1">
-                                <span>
-                                    <AiFillStar />
-                                </span>
-                            </div>
-                            <span className="font-normal text-gray-400">
-                                {currentRestaurant.rating.toFixed(1)}{' '}
-                                / 5
-                            </span>
-                        </div>
-                        <span className="font-normal text-gray-400">
-                            ({currentRestaurant.totalRating} Reviews)
-                        </span>
-                    </div>
-                    <div className="px-20 py-2 basis-2/3 text-gray-500">
-                        <div className="flex justify-between items-center">
-                            <span>Excellent</span>
-                            <span>3</span>
-                        </div>
-                        <div className="flex justify-between items-center">
-                            <span>Very Good</span>
-                            <span>0</span>
-                        </div>
-                        <div className="flex justify-between items-center">
-                            <span>Average</span>
-                            <span>0</span>
-                        </div>
-                        <div className="flex justify-between items-center">
-                            <span>Poor</span>
-                            <span>0</span>
-                        </div>
-                        <div className="flex justify-between items-center">
-                            <span>Terrible</span>
-                            <span>0</span>
-                        </div>
-                    </div>
-                </div>
-                <div className="lg:w-[60%] mt-4">
-                    <CommentCard />
-                    <CommentCard />
-                    <CommentCard />
-                    <CommentCard />
-                    <CommentCard />
-                </div>
-            </div>
+            <Comment
+                rating={currentRestaurant.rating}
+                totalRating={currentRestaurant.totalRating}
+            />
         </div>
     )
 }
