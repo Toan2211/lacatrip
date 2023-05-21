@@ -2,9 +2,15 @@ const ADMINID = 1
 const EMPLOYEEID = 2
 const SERVICEMANAGERID = 3
 const AUTHENTICATEDID = 4
+const HOTELTYPE = 'hotel'
+const RESTAURANTTYPE = 'restaurant'
+const DESTINATIONTYPE = 'destination'
 module.exports = {
     ADMINID,
     EMPLOYEEID,
     SERVICEMANAGERID,
-    AUTHENTICATEDID
+    AUTHENTICATEDID,
+    HOTELTYPE,
+    RESTAURANTTYPE,
+    DESTINATIONTYPE
 }

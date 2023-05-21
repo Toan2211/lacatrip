@@ -17,6 +17,7 @@ import {
 import LoadingPage from '@components/LoadingPage'
 import GoogleMaps from '@components/GoogleMap'
 import LikeAndShare from '@components/LikeAndShare'
+import Comment from '@pages/Comment'
 
 function DestinationTravelClient() {
     const dispatch = useDispatch()
@@ -312,142 +313,7 @@ function DestinationTravelClient() {
                     </div>
                 </div>
             )}
-
-            <div className="mt-20">
-                <header className="font-semibold text-lg">
-                    Reviews
-                </header>
-                <div className="flex border-[1px] border-gray-200 rounded-xl lg:w-[60%] bg-slate-50 mt-4">
-                    <div className="flex items-center gap-1 basis-1/3 border-r-[1px] flex-col justify-center">
-                        <div className="flex items-center text-lg">
-                            <div className=" text-yellow-400 flex gap-1">
-                                <span>
-                                    <AiFillStar />
-                                </span>
-                            </div>
-                            <span className="font-normal text-gray-400">
-                                {currentDestination.rating.toFixed(1)}{' '}
-                                / 5
-                            </span>
-                        </div>
-                        <span className="font-normal text-gray-400">
-                            ({currentDestination.totalRating} Reviews)
-                        </span>
-                    </div>
-                    <div className="px-20 py-2 basis-2/3 text-gray-500">
-                        <div className="flex justify-between items-center">
-                            <span>Excellent</span>
-                            <span>3</span>
-                        </div>
-                        <div className="flex justify-between items-center">
-                            <span>Very Good</span>
-                            <span>0</span>
-                        </div>
-                        <div className="flex justify-between items-center">
-                            <span>Average</span>
-                            <span>0</span>
-                        </div>
-                        <div className="flex justify-between items-center">
-                            <span>Poor</span>
-                            <span>0</span>
-                        </div>
-                        <div className="flex justify-between items-center">
-                            <span>Terrible</span>
-                            <span>0</span>
-                        </div>
-                    </div>
-                </div>
-                <div className="lg:w-[60%] mt-4">
-                    <div className="w-full border-b py-2">
-                        <div>
-                            <div className="flex items-center">
-                                <div>
-                                    <img
-                                        className="w-16 h-16 object-cover rounded-full"
-                                        src="https://secure.gravatar.com/avatar/?s=100&d=mm&r=g"
-                                    />
-                                </div>
-                                <div className="ml-2 flex flex-col">
-                                    <span>Customer</span>
-                                    <span>2/2/2022</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div className=" text-yellow-400 flex gap-1 mt-2">
-                            <span>
-                                <AiFillStar />
-                            </span>
-                            <span>
-                                <AiFillStar />
-                            </span>
-                            <span>
-                                <AiFillStar />
-                            </span>
-                            <span>
-                                <AiFillStar />
-                            </span>
-                            <span>
-                                <AiFillStar />
-                            </span>
-                        </div>
-                        <div>
-                            The customer service before departure was
-                            excellent, the organisation from start to
-                            finish was excellent, the accommodation
-                            was better than expected, the group leader
-                            was excellent, the itinerary was
-                            excellent. As a solo female traveller I
-                            felt completely comfortable with the rest
-                            of the group whether they were traveling
-                            alone, with friends or with partners.
-                        </div>
-                    </div>
-                    <div className="w-full border-b py-2">
-                        <div>
-                            <div className="flex items-center">
-                                <div>
-                                    <img
-                                        className="w-16 h-16 object-cover rounded-full"
-                                        src="https://secure.gravatar.com/avatar/?s=100&d=mm&r=g"
-                                    />
-                                </div>
-                                <div className="ml-2 flex flex-col">
-                                    <span>Customer</span>
-                                    <span>2/2/2022</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div className=" text-yellow-400 flex gap-1 mt-2">
-                            <span>
-                                <AiFillStar />
-                            </span>
-                            <span>
-                                <AiFillStar />
-                            </span>
-                            <span>
-                                <AiFillStar />
-                            </span>
-                            <span>
-                                <AiFillStar />
-                            </span>
-                            <span>
-                                <AiFillStar />
-                            </span>
-                        </div>
-                        <div>
-                            The customer service before departure was
-                            excellent, the organisation from start to
-                            finish was excellent, the accommodation
-                            was better than expected, the group leader
-                            was excellent, the itinerary was
-                            excellent. As a solo female traveller I
-                            felt completely comfortable with the rest
-                            of the group whether they were traveling
-                            alone, with friends or with partners.
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <Comment rating={currentDestination.rating} totalRating={currentDestination.totalRating} />
         </div>
     )
 }

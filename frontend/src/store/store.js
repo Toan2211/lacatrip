@@ -13,6 +13,7 @@ import itineraryReducer from '@pages/System/DestinationTravel/itinerary.slice.js
 import destinationClientReducer from '@pages/DestinationTravelList/destinationclient.slice.js'
 import restaurantClientReducer from '@pages/RestaurantList/restaurantclient.slice.js'
 import hotelClientReducer from '@pages/HotelList/hotelclient.slice.js'
+import commentReducer from '@pages/Comment/comment.slice.js'
 const rootReducer = {
     propertys: baseProperty,
     auth: authReducer,
@@ -29,7 +30,8 @@ const rootReducer = {
     // client page
     destinationClients: destinationClientReducer,
     restaurantsClient: restaurantClientReducer,
-    hotelClients: hotelClientReducer
+    hotelClients: hotelClientReducer,
+    comments: commentReducer
 }
 const store = configureStore({
     reducer: rootReducer,
