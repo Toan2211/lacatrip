@@ -1,22 +1,34 @@
 import React from 'react'
 import { AiFillStar } from 'react-icons/ai'
+import { NavLink } from 'react-router-dom'
 
 function HotelCard({ data }) {
     return (
-        <div className=" overflow-hidden rounded-2xl bg-white shadow-md flex flex-col h-[468px] hover:shadow-2xl cursor-pointer group">
-            <div className=' overflow-hidden'>
-                <img className='h-[260px] w-full object-cover  group-hover:scale-125 transition-transform' src={data.images && data.images[0].url} />
+        <NavLink
+            to={`/hotel/${data.id}`}
+            className=" overflow-hidden rounded-2xl bg-white shadow-md flex flex-col h-[468px] hover:shadow-2xl cursor-pointer group"
+        >
+            <div className=" overflow-hidden">
+                <img
+                    className="h-[260px] w-full object-cover  group-hover:scale-125 transition-transform"
+                    src={data.images && data.images[0].url}
+                />
             </div>
             <div className="p-4 flex-1">
                 <div className=" text-yellow-400 flex gap-1">
-                    {data.hotelClass && Array.from(Array(data.hotelClass)).map((index) => (
-                        <span key={index}>
-                            <AiFillStar />
-                        </span>
-                    ))}
+                    {data.hotelClass &&
+                        Array.from(Array(data.hotelClass)).map(
+                            index => (
+                                <span key={index}>
+                                    <AiFillStar />
+                                </span>
+                            )
+                        )}
                 </div>
                 <div className="flex flex-col">
-                    <span className="font-semibold line-clamp-2">{data.name}</span>
+                    <span className="font-semibold line-clamp-2">
+                        {data.name}
+                    </span>
                     <span className="font-medium text-gray-400">
                         {data?.province?.name || ''}
                     </span>
@@ -40,7 +52,7 @@ function HotelCard({ data }) {
                     </span>
                 </div>
             </div>
-        </div>
+        </NavLink>
     )
 }
 
