@@ -5,7 +5,7 @@ import amenitieshotelApi from '@api/amenitieshotelApi'
 import imageApi from '@api/imageApi'
 export const getProvinces = createAsyncThunk(
     'provinces/getAllProvinces',
-    payloadCreator(provinceApi.getAllProvince)
+    payloadCreator(provinceApi.getTopPopular)
 )
 const handlegetAllProvincesFulfilled = (state, action) => {
     state.provinces = action.payload.data
@@ -29,27 +29,24 @@ const basepropertySlice = createSlice({
         loading: 0
     },
     reducers: {},
-    extraReducers: {
-        [getProvinces.fulfilled]: handlegetAllProvincesFulfilled,
-        [getAmenitiesHotel.fulfilled]:
-            handlegetAllAmenitiesHotelFulfilled,
-        extraReducers: builder => {
-            builder
-                .addMatcher(
-                    action => action.type.endsWith('/pending'),
-                    state => {
-                        state.loading = state.loading + 1
-                    }
-                )
-                .addMatcher(
-                    action =>
-                        action.type.endsWith('/fulfilled') ||
-                        action.type.endsWith('/rejected'),
-                    state => {
-                        state.loading = state.loading - 1
-                    }
-                )
-        }
+    extraReducers: builder => {
+        builder
+            .addCase(getProvinces.fulfilled, handlegetAllProvincesFulfilled)
+            .addCase(getAmenitiesHotel.fulfilled, handlegetAllAmenitiesHotelFulfilled)
+            .addMatcher(
+                action => action.type.endsWith('/pending'),
+                state => {
+                    state.loading = state.loading + 1
+                }
+            )
+            .addMatcher(
+                action =>
+                    action.type.endsWith('/fulfilled') ||
+                    action.type.endsWith('/rejected'),
+                state => {
+                    state.loading = state.loading - 1
+                }
+            )
     }
 })
 export const provincesSelector = state => state.propertys.provinces

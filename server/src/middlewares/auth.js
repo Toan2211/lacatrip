@@ -15,6 +15,15 @@ const verifyToken = (req, res, next) => {
     req.user = decoded
     next()
 }
+const verifyTokenNoLimit = (req, res, next) => {
+    const token = req.header('Authorization')?.split(' ')[1]
+    if (token) {
+        const decoded = jwt.verify(token, secretJWT)
+        if (decoded)
+            req.user = decoded
+    }
+    next()
+}
 const isAuthenticatedUser = (req, res, next) => {
     if (req.user.confirm)
         return next()
@@ -55,5 +64,6 @@ module.exports = {
     isAdminOrEmployee,
     isYourSelf,
     isSystemUser,
-    isServiceManager
+    isServiceManager,
+    verifyTokenNoLimit
 }

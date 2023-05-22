@@ -25,6 +25,9 @@ import RestaurantForm from '@pages/System/Restaurant/Form'
 import CorpTour from '@pages/System/CorpTour'
 import DestinationTravel from '@pages/System/DestinationTravel'
 import DestinationForm from '@pages/System/DestinationTravel/Form'
+import DestinationTravelClient from '@pages/DestinationTravelList/DestinationTravel'
+import HotelId from '@pages/HotelList/HotelId'
+import RestaurantId from '@pages/RestaurantList/RestaurantId'
 function RoutesComponent() {
     return (
         <BrowserRouter>
@@ -37,6 +40,18 @@ function RoutesComponent() {
                     <Route
                         path={path.profile}
                         element={<ProfileClients />}
+                    />
+                    <Route
+                        path={path.clientDestinationTravelDetail}
+                        element={<DestinationTravelClient />}
+                    />
+                    <Route
+                        path={path.clientHotelDetail}
+                        element={<HotelId />}
+                    />
+                    <Route
+                        path={path.clientRestaurantDetail}
+                        element = {<RestaurantId />}
                     />
                 </Route>
                 <Route element={<AuthenticatedGuard />}>

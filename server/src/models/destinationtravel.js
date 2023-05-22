@@ -29,6 +29,10 @@ module.exports = (sequelize, DataTypes) => {
                 foreignKey: 'destinationTravelId',
                 as: 'itineraries'
             })
+            this.hasMany(models.Comment, {
+                foreignKey: 'instanceId',
+                as: 'comments'
+            })
         }
     }
     DestinationTravel.init(
@@ -51,7 +55,8 @@ module.exports = (sequelize, DataTypes) => {
             rating: DataTypes.FLOAT,
             totalRating: DataTypes.FLOAT,
             corpTourId: DataTypes.UUID,
-            public: DataTypes.BOOLEAN
+            public: DataTypes.BOOLEAN,
+            clickCount: DataTypes.FLOAT,
         },
         {
             sequelize,

@@ -8,6 +8,8 @@ import { React } from 'react'
 import RoutesComponent from '@routes'
 import { ToastContainer } from 'react-toastify'
 import CommonProperty from '@pages/CommonProperty'
+import 'react-loading-skeleton/dist/skeleton.css'
+
 function App() {
     return (
         <div>

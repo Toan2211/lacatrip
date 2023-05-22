@@ -20,6 +20,10 @@ module.exports = (sequelize, DataTypes) => {
                 foreignKey: 'serviceManagerId',
                 as: 'serviceManager'
             })
+            this.hasMany(models.Comment, {
+                foreignKey: 'instanceId',
+                as: 'comments'
+            })
         }
     }
     Restaurant.init(
@@ -47,6 +51,7 @@ module.exports = (sequelize, DataTypes) => {
             public: DataTypes.BOOLEAN,
             rating: DataTypes.FLOAT,
             totalRating: DataTypes.FLOAT,
+            clickCount: DataTypes.FLOAT
         },
         {
             sequelize,
