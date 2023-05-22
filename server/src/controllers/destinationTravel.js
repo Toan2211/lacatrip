@@ -34,7 +34,6 @@ const update = async (req, res) => {
                 data: destinationTravel
             })
     } catch (error) {
-        console.log(error)
         return res.status(500).json({ message: error.message })
     }
 }
@@ -102,3 +101,4 @@ module.exports = {
     findOne,
     create
 }
+
