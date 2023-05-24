@@ -28,6 +28,8 @@ import DestinationForm from '@pages/System/DestinationTravel/Form'
 import DestinationTravelClient from '@pages/DestinationTravelList/DestinationTravel'
 import HotelId from '@pages/HotelList/HotelId'
 import RestaurantId from '@pages/RestaurantList/RestaurantId'
+import TripId from '@pages/TripList/TripId'
+import TripList from '@pages/TripList'
 function RoutesComponent() {
     return (
         <BrowserRouter>
@@ -51,7 +53,7 @@ function RoutesComponent() {
                     />
                     <Route
                         path={path.clientRestaurantDetail}
-                        element = {<RestaurantId />}
+                        element={<RestaurantId />}
                     />
                 </Route>
                 <Route element={<AuthenticatedGuard />}>
@@ -63,6 +65,14 @@ function RoutesComponent() {
                         <Route
                             path={path.changePassword}
                             element={<ChangePassword />}
+                        />
+                        <Route
+                            path={path.clientTrips}
+                            element={<TripList />}
+                        />
+                        <Route
+                            path={path.clientTripDetail}
+                            element={<TripId />}
                         />
                     </Route>
                 </Route>
