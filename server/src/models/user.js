@@ -20,6 +20,10 @@ module.exports = (sequelize, DataTypes) => {
                 foreignKey: 'userId',
                 as: 'comments'
             })
+            this.hasMany(models.Trip, {
+                foreignKey: 'createdby',
+                as: 'trips'
+            })
         }
     }
     User.init(

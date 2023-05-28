@@ -1,36 +1,46 @@
 import React from 'react'
+import { NavLink } from 'react-router-dom'
 
-function TripCard() {
+function TripCard({ trip }) {
+    console.log(trip)
     return (
-        <div className="overflow-hidden rounded-2xl bg-white flex flex-col h-[300px] cursor-pointer group">
+        <NavLink
+            to={`/trip/${trip.id}`}
+            className="overflow-hidden rounded-2xl bg-white flex flex-col h-[300px] cursor-pointer group"
+        >
             <div className=" overflow-hidden rounded-xl">
                 <img
                     className="h-[200px] w-full object-cover group-hover:scale-125 transition-transform rounded-xl"
-                    src={
-                        'https://itin-dev.sfo2.cdn.digitaloceanspaces.com/freeImage/ItdeP0WWcQ6NhVHGPJIPDFtU36du76JG'
-                    }
+                    src={trip.image}
                 />
             </div>
             <div className="p-2 flex-1">
                 <div className="flex flex-col pb-2">
                     <span className="font-semibold line-clamp-2">
-                        Trip to Ba Na Hill
+                        {trip.name}
                     </span>
                 </div>
                 <div className="flex text-sm text-gray-400 gap-2">
                     <span className="block w-6 h-6 rounded-full overflow-hidden">
                         <img
-                            src="https://itin-dev.sfo2.cdn.digitaloceanspaces.com/freeImage/ItdeP0WWcQ6NhVHGPJIPDFtU36du76JG"
+                            src={
+                                trip?.user?.avatar ||
+                                'https://itin-dev.sfo2.cdn.digitaloceanspaces.com/freeImage/ItdeP0WWcQ6NhVHGPJIPDFtU36du76JG'
+                            }
                             className="w-full h-full object-cover rounded-full"
                         />
                     </span>
                     <span>•</span>
-                    <span>14 Apr – 22 Jun</span>
-                    <span>•</span>
+                    {trip.startDate && (
+                        <>
+                            <span>14 Apr – 22 Jun</span>{' '}
+                            <span>•</span>
+                        </>
+                    )}
                     <span>10 places</span>
                 </div>
             </div>
-        </div>
+        </NavLink>
     )
 }
 

@@ -1,6 +1,6 @@
 import GoogleMap from '@components/GoogleMap'
 import { Modal, Tooltip } from 'flowbite-react'
-import React, { forwardRef, useState } from 'react'
+import React, { forwardRef, useEffect, useState } from 'react'
 import ReactDatePicker from 'react-datepicker'
 import {
     AiFillSetting,
@@ -10,12 +10,68 @@ import {
 } from 'react-icons/ai'
 import { BiCalendar } from 'react-icons/bi'
 import TripOrganize from './TripOrganize'
-
+import { useDispatch, useSelector } from 'react-redux'
+import {
+    currentTripSelector,
+    getTripDetail,
+    setCurrentTrip,
+    updateTrip
+} from '../trip.slice'
+import { NavLink, useParams } from 'react-router-dom'
+import { unwrapResult } from '@reduxjs/toolkit'
+import _ from 'lodash'
+import LoadingPage from '@components/LoadingPage'
+const ItemCard = ({ data, link }) => {
+    return (
+        <li className="flex flex-col border-[1px] border-slate-300 rounded-2xl overflow-hidden shadow-xl mb-3">
+            <div className="w-full h-[200px]">
+                <img
+                    src={data.images[0].url}
+                    className="w-full h-full object-cover rounded-xl"
+                />
+            </div>
+            <div className="p-3">
+                <NavLink
+                    to={link}
+                    className="font-semibold text-lg mb-2 hover:text-blue-500"
+                >
+                    {data.name}
+                </NavLink>
+                <div>{data.address}</div>
+            </div>
+        </li>
+    )
+}
 function TripId() {
+    const dispatch = useDispatch()
+    const currentTrip = useSelector(currentTripSelector)
+    const id = useParams().id
     const [startDate, setStartDate] = useState(new Date('2014/02/08'))
     const [endDate, setEndDate] = useState(new Date('2014/02/10'))
-    const onNameTripBlur = event => {
-        console.log(event.target.value)
+    const [nameTrip, setNameTrip] = useState('')
+    const [tripdescription, setTripdescription] = useState('')
+    const handleOnchangeDescription = e =>
+        setTripdescription(e.target.value)
+    const onNameTripBlur = () => {
+        const formData = new FormData()
+        formData.append('id', id)
+        formData.append('name', nameTrip)
+        dispatch(updateTrip(formData)).then(res => unwrapResult(res))
+    }
+    const handleOnBlurDescription = () => {
+        if (
+            !(
+                tripdescription === '' &&
+                currentTrip.description === null
+            )
+        ) {
+            const formData = new FormData()
+            formData.append('id', id)
+            formData.append('description', tripdescription)
+            dispatch(updateTrip(formData)).then(res =>
+                unwrapResult(res)
+            )
+        }
     }
     const ExampleCustomInput = forwardRef(
         ({ value, onClick }, ref) => (
@@ -32,6 +88,23 @@ function TripId() {
     const onClose = () => setShowModal(false)
     const [isOpen, setIsOpen] = useState(false)
     const onCloseDrawer = () => setIsOpen(false)
+    const onChangeNameTrip = e => setNameTrip(e.target.value)
+    useEffect(() => {
+        if (id && id !== currentTrip.id)
+            dispatch(getTripDetail(id)).then(res => unwrapResult(res))
+        if (!_.isEmpty(currentTrip)) {
+            setStartDate(new Date(currentTrip.startDate))
+            setEndDate(new Date(currentTrip.endDate))
+            setNameTrip(currentTrip.name)
+            setTripdescription(currentTrip.description)
+        }
+    }, [id, dispatch, currentTrip])
+    useEffect(() => {
+        return () => {
+            dispatch(setCurrentTrip({}))
+        }
+    }, [dispatch])
+    if (!Object.keys(currentTrip).length) return <LoadingPage />
     return (
         <>
             <div className="max-w-[1535px] flex min-h-[200vh]">
@@ -48,7 +121,8 @@ function TripId() {
                                 <input
                                     className="font-bold text-2xl focus:outline-none focus:ring ease-linear transition-all duration-150 rounded-md px-1"
                                     onBlur={onNameTripBlur}
-                                    value="Trip to Ha Long Bay"
+                                    value={nameTrip}
+                                    onChange={onChangeNameTrip}
                                 />
                                 <span
                                     className="flex-end ml-4 cursor-pointer"
@@ -64,50 +138,38 @@ function TripId() {
                             </div>
 
                             <div className="text-sm ml-2">
-                                By Nguyen Toan
+                                By {currentTrip.user.firstname}{' '}
+                                {currentTrip.user.lastname}
                             </div>
                             <div className="flex justify-between mt-5 overflow-hidden">
                                 <div className="flex gap-2 items-center flex-1 w-[50%]">
-                                    <span>
-                                        <BiCalendar />
-                                    </span>
-
-                                    <div className="flex w-[100px]">
-                                        <ReactDatePicker
-                                            closeOnScroll={true}
-                                            className="ountl"
-                                            selected={startDate}
-                                            onChange={date =>
-                                                setStartDate(date)
-                                            }
-                                            selectsStart
-                                            startDate={startDate}
-                                            endDate={endDate}
-                                            customInput={
-                                                <ExampleCustomInput />
-                                            }
-                                        />
-                                        <div className="mx-2">-</div>
-                                        <ReactDatePicker
-                                            closeOnScroll={true}
-                                            selected={endDate}
-                                            onChange={date =>
-                                                setEndDate(date)
-                                            }
-                                            selectsEnd
-                                            startDate={startDate}
-                                            endDate={endDate}
-                                            minDate={startDate}
-                                            customInput={
-                                                <ExampleCustomInput />
-                                            }
-                                        />
-                                    </div>
+                                    {currentTrip.startDate && (
+                                        <>
+                                            <span>
+                                                <BiCalendar />
+                                            </span>
+                                            <span
+                                                className="text-sm font-semibold"
+                                            >
+                                                {currentTrip.startDate.split('T')[0]}
+                                            </span>
+                                            <span>-</span>
+                                            <span
+                                                className="text-sm font-semibold"
+                                            >
+                                                {currentTrip.endDate.split('T')[0]}
+                                            </span>
+                                        </>
+                                    )}
                                 </div>
                                 <div className="flex gap-5 items-center basis-7">
                                     <span className="block w-10 h-10 rounded-full overflow-hidden">
                                         <img
-                                            src="https://itin-dev.sfo2.cdn.digitaloceanspaces.com/freeImage/ItdeP0WWcQ6NhVHGPJIPDFtU36du76JG"
+                                            src={
+                                                currentTrip.user
+                                                    .avatar ||
+                                                'https://itin-dev.sfo2.cdn.digitaloceanspaces.com/freeImage/ItdeP0WWcQ6NhVHGPJIPDFtU36du76JG'
+                                            }
                                             className="w-full h-full object-cover rounded-full"
                                         />
                                     </span>
@@ -145,72 +207,83 @@ function TripId() {
                             <header className="font-bold text-xl mb-2">
                                 Notes
                             </header>
-                            <textarea className="w-full border border-gray-300 px-3 py-3 bg-white rounded text-sm shadow focus:outline-none focus:ring ease-linear transition-all duration-150 resize-none"></textarea>
+                            <textarea
+                                className="w-full border border-gray-300 px-3 py-3 bg-white rounded text-sm shadow focus:outline-none focus:ring ease-linear transition-all duration-150 resize-none"
+                                value={tripdescription}
+                                onChange={handleOnchangeDescription}
+                                onBlur={handleOnBlurDescription}
+                            ></textarea>
                         </div>
                         <div>
                             <header className="font-bold text-xl mb-2">
                                 Itinerary
                             </header>
-                            <div className="font-semibold text-base mb-1">
-                                Day 1
-                            </div>
-                            <div className="flex flex-col border-[1px] border-slate-300 rounded-2xl overflow-hidden cursor-pointer shadow-xl">
-                                <div className="w-full h-200px">
-                                    <img
-                                        src="https://res.cloudinary.com/djgkj9nli/image/upload/v1684519775/lacatrip/wxnsopoak3uhygczi00g.jpg"
-                                        className="w-full h-full object-cover rounded-xl"
-                                    />
+                        </div>
+                        <div className="mt-5">
+                            <header className="font-bold text-xl mb-2">
+                                All Item
+                            </header>
+                            {currentTrip.hotels.length > 0 && (
+                                <div>
+                                    <header className="w-full px-3 py-2 font-semibold">
+                                        Hotels
+                                    </header>
+                                    <ul>
+                                        {currentTrip.hotels.map(
+                                            hotel => (
+                                                <ItemCard
+                                                    key={hotel.id}
+                                                    data={hotel}
+                                                    link={`/hotel/${hotel.id}`}
+                                                />
+                                            )
+                                        )}
+                                    </ul>
                                 </div>
-                                <div className="p-3">
-                                    <div className="font-semibold text-lg mb-2">
-                                        Bistecca Restaurant Danang
-                                    </div>
-                                    <div className="flex gap-3 items-center">
-                                        <span className="text-yellow-400 flex gap-2">
-                                            <AiFillStar />
-                                            <AiFillStar />
-                                            <AiFillStar />
-                                            <AiFillStar />
-                                            <AiFillStar />
-                                        </span>
-                                        <span>200</span>
-                                    </div>
-                                    <div>Da Nang, Viet Nam</div>
-                                    <div>
-                                        Restaurant - Italia, Sourl
-                                    </div>
+                            )}
+                            {currentTrip.restaurants.length > 0 && (
+                                <div>
+                                    <header className="w-full bg-slate-50 px-3 py-2 font-semibold">
+                                        Restaurants
+                                    </header>
+                                    <ul>
+                                        {currentTrip.restaurants.map(
+                                            restaurant => (
+                                                <ItemCard
+                                                    key={
+                                                        restaurant.id
+                                                    }
+                                                    data={restaurant}
+                                                    link={`/restaurant/${restaurant.id}`}
+                                                />
+                                            )
+                                        )}
+                                    </ul>
                                 </div>
-                            </div>
-                            <div className="font-semibold text-base mb-1">
-                                Day 2
-                            </div>
-                            <div className="flex flex-col border-[1px] border-slate-300 rounded-2xl overflow-hidden cursor-pointer shadow-xl">
-                                <div className="w-full h-200px">
-                                    <img
-                                        src="https://res.cloudinary.com/djgkj9nli/image/upload/v1684519775/lacatrip/wxnsopoak3uhygczi00g.jpg"
-                                        className="w-full h-full object-cover rounded-xl"
-                                    />
+                            )}
+                            {currentTrip.destinationTravels.length >
+                                0 && (
+                                <div>
+                                    <header className="w-full bg-slate-50 px-3 py-2 font-semibold">
+                                        Destination Travels
+                                    </header>
+                                    <ul>
+                                        {currentTrip.destinationTravels.map(
+                                            destinationTravel => (
+                                                <ItemCard
+                                                    key={
+                                                        destinationTravel.id
+                                                    }
+                                                    data={
+                                                        destinationTravel
+                                                    }
+                                                    link={`/destination-travel/${destinationTravel.id}`}
+                                                />
+                                            )
+                                        )}
+                                    </ul>
                                 </div>
-                                <div className="p-3">
-                                    <div className="font-semibold text-lg mb-2">
-                                        Bistecca Restaurant Danang
-                                    </div>
-                                    <div className="flex gap-3 items-center">
-                                        <span className="text-yellow-400 flex gap-2">
-                                            <AiFillStar />
-                                            <AiFillStar />
-                                            <AiFillStar />
-                                            <AiFillStar />
-                                            <AiFillStar />
-                                        </span>
-                                        <span>200</span>
-                                    </div>
-                                    <div>Da Nang, Viet Nam</div>
-                                    <div>
-                                        Restaurant - Italia, Sourl
-                                    </div>
-                                </div>
-                            </div>
+                            )}
                         </div>
                     </div>
                 </div>

@@ -52,7 +52,7 @@ const UserDropdown = () => {
                     <span className="w-10 h-10 text-sm text-white bg-blueGray-200 inline-flex items-center justify-center rounded-full">
                         <img
                             alt="..."
-                            className="w-full rounded-full align-middle border-none shadow-lg"
+                            className="w-full h-full rounded-full align-middle border-none shadow-lg"
                             src={user.avatar}
                         />
                     </span>

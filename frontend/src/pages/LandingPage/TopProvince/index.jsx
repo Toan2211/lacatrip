@@ -36,14 +36,14 @@ function TopProvince({ provinces }) {
                 Top destinations
             </header>
             <div className="grid gap-1 grid-cols-1 md:grid-cols-2 xl:grid-cols-3">
-                {!loading && provinces.slice(0, 6).map(province => (
+                {provinces.length > 0 && provinces.slice(0, 6).map(province => (
                     <CardTopProvince
                         key={province.id}
                         province={province}
                     />
                 ))}
 
-                {!!loading &&
+                {!!loading && provinces.length === 0 &&
                     Array.from(Array(6).keys()).map(index => (
                         <div
                             key={index}
