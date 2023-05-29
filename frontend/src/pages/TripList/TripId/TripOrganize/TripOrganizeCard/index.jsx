@@ -1,5 +1,8 @@
 import React, { useState } from 'react'
 import TripListItem from '../TripListItem'
+import { useSelector } from 'react-redux'
+import { currentTripSelector } from '@pages/TripList/trip.slice'
+import { HOTELTYPE, RESTAURANTTYPE } from '@constants/instanceType'
 var options = {
     weekday: 'long',
     year: 'numeric',
@@ -7,13 +10,12 @@ var options = {
     day: 'numeric'
 }
 // date.toLocaleDateString('en-US', options)
-function TripOrganizeCard({ dataOfDate }) {
-    const [sheet, setSheet] = useState(0)
+function TripOrganizeCard({ dataOfDate, handleUpdateDataOfDate }) {
+    const currentTrip = useSelector(currentTripSelector)
     const [listItemOpen, setListItemOpen] = useState(false)
     const onCloseListItem = () => setListItemOpen(false)
     const handleAddItem = () => {
         setListItemOpen(true)
-        setSheet(sheet + 1)
     }
     return (
         <>
@@ -22,7 +24,12 @@ function TripOrganizeCard({ dataOfDate }) {
                     <div className="flex justify-between">
                         <header className="font-semibold mb-3">
                             {dataOfDate.date
-                                ? dataOfDate.date
+                                ? new Date(
+                                    dataOfDate.date
+                                ).toLocaleDateString(
+                                    'en-US',
+                                    options
+                                )
                                 : 'Unschedule'}
                         </header>
                         <span
@@ -32,21 +39,39 @@ function TripOrganizeCard({ dataOfDate }) {
                             Add item
                         </span>
                     </div>
-
-                    {/* {dataOfDate.cards.map((item, index) => (
-                        <div key = {index} className="border-slate-300 border-[1px] p-4 rounded-md flex justify-between items-center my-1 shadow-sm bg-slate-100">
-                            <span className="font-semibold text-sm">
-                                {item.title}
-                            </span>
-                            <span>...</span>
-                        </div>
-                    ))} */}
+                    {dataOfDate.itineraries.map(item => {
+                        let instance = null
+                        if (item.type === HOTELTYPE) {
+                            instance = currentTrip.hotels.find(
+                                i => i.id === item.instanceId
+                            )
+                        } else if (item.type === RESTAURANTTYPE)
+                            instance = currentTrip.restaurants.find(
+                                i => i.id === item.instanceId
+                            )
+                        else
+                            instance =
+                                currentTrip.destinationTravels.find(
+                                    i => i.id === item.instanceId
+                                )
+                        return (
+                            <div
+                                key={instance.instanceId}
+                                className="border-slate-300 border-[1px] p-4 rounded-md flex justify-between items-center my-1 shadow-sm bg-slate-100"
+                            >
+                                <span className="font-semibold text-sm">
+                                    {instance.name}
+                                </span>
+                            </div>
+                        )
+                    })}
                 </div>
             </div>
             <TripListItem
                 isOpen={listItemOpen}
                 onClose={onCloseListItem}
-                sheet={sheet}
+                dataOfDate={dataOfDate}
+                handleUpdateDataOfDate={handleUpdateDataOfDate}
             />
         </>
     )

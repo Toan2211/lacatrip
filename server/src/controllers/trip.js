@@ -65,9 +65,15 @@ const find = async (req, res) => {
 const addInstanceToTripList = async (req, res) => {
     try {
         req.body.userId = req.user.id
-        const instance = await tripservice.addInstanceToTripList(req.body)
+        const instance = await tripservice.addInstanceToTripList(
+            req.body
+        )
         if (!instance)
-            return res.status(401).json({ message: 'Trip not found or Trip not own of you' })
+            return res
+                .status(401)
+                .json({
+                    message: 'Trip not found or Trip not own of you'
+                })
         return res.status(200).json({
             message: 'Add data to trip successful !',
             data: instance
@@ -79,9 +85,15 @@ const addInstanceToTripList = async (req, res) => {
 const removeInstanceFromTripList = async (req, res) => {
     try {
         req.body.userId = req.user.id
-        const instance = await tripservice.removeInstanceFromTripList(req.body)
+        const instance = await tripservice.removeInstanceFromTripList(
+            req.body
+        )
         if (!instance)
-            return res.status(401).json({ message: 'Trip not found or Trip not own of you' })
+            return res
+                .status(401)
+                .json({
+                    message: 'Trip not found or Trip not own of you'
+                })
         return res.status(200).json({
             message: 'Remove data to trip successful !',
             data: instance
@@ -92,9 +104,16 @@ const removeInstanceFromTripList = async (req, res) => {
 }
 const handleUpdateTripDate = async (req, res) => {
     try {
-        const result = await tripservice.handleUpdateTripDate(req.body)
+        const result = await tripservice.handleUpdateTripDate(
+            req.params.id,
+            req.body
+        )
         if (!result)
-            return res.status(401).json({ message: 'Update Itineray Fail' })
+            return res
+                .status(401)
+                .json({
+                    message: 'Update Itineray Fail'
+                })
         return res.status(200).json({
             message: 'Update Itineray successful !',
             data: result

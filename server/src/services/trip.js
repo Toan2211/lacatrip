@@ -105,6 +105,18 @@ const findOne = async id => {
                     model: db.DestinationTravel,
                     as: 'destinationTravels',
                     include: [{ model: db.Image, as: 'images' }]
+                },
+                {
+                    model: db.TripDate,
+                    as: 'tripDates',
+                    include: [
+                        { model: db.Hotel, as: 'hotels' },
+                        { model: db.Restaurant, as: 'restaurants' },
+                        {
+                            model: db.DestinationTravel,
+                            as: 'destinationTravels'
+                        }
+                    ]
                 }
             ]
         })
@@ -211,10 +223,10 @@ const removeInstanceFromTripList = async ({
 
 
 */
-const handleUpdateTripDate = async data => {
+const handleUpdateTripDate = async (tripId, data) => {
     try {
-        const { tripId, itineraries } = data
-        const trip = await db.Trip.findByPk(tripId, {
+        const { itineraries } = data
+        let trip = await db.Trip.findByPk(tripId, {
             include: [
                 {
                     model: db.TripDate,
@@ -234,12 +246,13 @@ const handleUpdateTripDate = async data => {
             for (const instance of itinerary.instances) {
                 await tripDateService.addInstanceToTripDate({
                     tripDateId: tripdate.id,
-                    instanceId: instance.id,
+                    instanceId: instance.instanceId,
                     type: instance.type
                 })
             }
         }
-        return true
+        trip = await findOne(tripId)
+        return trip
     } catch (error) {
         throw new Error(error)
     }

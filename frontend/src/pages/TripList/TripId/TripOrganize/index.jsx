@@ -8,6 +8,14 @@ import { useDispatch, useSelector } from 'react-redux'
 import { currentTripSelector } from '@pages/TripList/trip.slice'
 import { updateTrip } from '@pages/TripList/trip.slice'
 import { getDates } from '@utils/getDates'
+import moment from 'moment/moment'
+import { updateItineraries } from '@pages/TripList/trip.slice'
+import {
+    DESTINATIONTYPE,
+    RESTAURANTTYPE,
+    HOTELTYPE
+} from '@constants/instanceType'
+import _ from 'lodash'
 var options = {
     weekday: 'long',
     year: 'numeric',
@@ -21,131 +29,7 @@ function TripOrganize({ isOpen, onClose }) {
     const [startDate, setStartDate] = useState(new Date('2023-5-5'))
     const [endDate, setEndDate] = useState(new Date('2023-5-8'))
 
-    const [datatest, setDatatest] = useState([
-        {
-            id: 'column-1',
-            boardId: 'board-1',
-            title: 'To do column',
-            cardOrder: [
-                'card-1',
-                'card-2',
-                'card-3',
-                'card-4',
-                'card-5',
-                'card-6',
-                'card-7'
-            ],
-            cards: [
-                {
-                    id: 'card-1',
-                    boardId: 'board-1',
-                    columnId: 'column-1',
-                    title: 'title card 1',
-                    cover: 'https://taimienphi.vn/tmp/cf/aut/anh-gai-xinh-1.jpg'
-                },
-                {
-                    id: 'card-2',
-                    boardId: 'board-1',
-                    columnId: 'column-1',
-                    title: 'title card 2',
-                    cover: null
-                },
-                {
-                    id: 'card-3',
-                    boardId: 'board-1',
-                    columnId: 'column-1',
-                    title: 'title card 3',
-                    cover: null
-                },
-                {
-                    id: 'card-4',
-                    boardId: 'board-1',
-                    columnId: 'column-1',
-                    title: 'title card 4',
-                    cover: null
-                },
-                {
-                    id: 'card-5',
-                    boardId: 'board-1',
-                    columnId: 'column-1',
-                    title: 'title card 5',
-                    cover: null
-                },
-                {
-                    id: 'card-6',
-                    boardId: 'board-1',
-                    columnId: 'column-1',
-                    title: 'title card 6',
-                    cover: null
-                },
-                {
-                    id: 'card-7',
-                    boardId: 'board-1',
-                    columnId: 'column-1',
-                    title: 'title card 7',
-                    cover: null
-                }
-            ]
-        },
-        {
-            id: 'column-2',
-            boardId: 'board-1',
-            title: 'Inprogress column',
-            cardOrder: ['card-8', 'card-9', 'card-10'],
-            cards: [
-                {
-                    id: 'card-8',
-                    boardId: 'board-1',
-                    columnId: 'column-2',
-                    title: 'title card 8',
-                    cover: null
-                },
-                {
-                    id: 'card-9',
-                    boardId: 'board-1',
-                    columnId: 'column-2',
-                    title: 'title card 9',
-                    cover: null
-                },
-                {
-                    id: 'card-10',
-                    boardId: 'board-1',
-                    columnId: 'column-2',
-                    title: 'title card 10',
-                    cover: null
-                }
-            ]
-        },
-        {
-            id: 'column-3',
-            boardId: 'board-1',
-            title: 'Done column',
-            cardOrder: ['card-11', 'card-12', 'card-13'],
-            cards: [
-                {
-                    id: 'card-11',
-                    boardId: 'board-1',
-                    columnId: 'column-2',
-                    title: 'title card 11',
-                    cover: null
-                },
-                {
-                    id: 'card-12',
-                    boardId: 'board-1',
-                    columnId: 'column-2',
-                    title: 'title card 12',
-                    cover: null
-                },
-                {
-                    id: 'card-13',
-                    boardId: 'board-1',
-                    columnId: 'column-2',
-                    title: 'title card 13',
-                    cover: null
-                }
-            ]
-        }
-    ])
+    const [dataItineraries, setDataItineraries] = useState([])
     const ExampleCustomInput = forwardRef(
         ({ value, onClick }, ref) => (
             <div
@@ -196,6 +80,20 @@ function TripOrganize({ isOpen, onClose }) {
             formData.append('startDate', startDate)
             formData.append('endDate', endDate)
             await dispatch(updateTrip(formData))
+            const itinerariesUpdate = []
+            for (const data of dataItineraries) {
+                if (data.itineraries.length > 0) {
+                    itinerariesUpdate.push({
+                        date: data.date,
+                        instances: [...data.itineraries]
+                    })
+                }
+            }
+            const data = {
+                tripId: currentTrip.id,
+                itineraries: itinerariesUpdate
+            }
+            await dispatch(updateItineraries(data))
             onClose()
         } catch (error) {
             toast.error(error.message, {
@@ -206,16 +104,53 @@ function TripOrganize({ isOpen, onClose }) {
         }
     }
     useEffect(() => {
-        setDatatest(
-            getDates(startDate, endDate).map(data => ({
-                date: data.toLocaleDateString('en-US', options)
-            }))
+        const rawDataFromDate = getDates(startDate, endDate).map(
+            data => ({
+                date: moment(data).format('YYYY-MM-DD'),
+                itineraries: []
+            })
         )
-    }, [startDate, endDate])
+        for (const tripDate of currentTrip.tripDates) {
+            const tripDateInRaw = rawDataFromDate.find(
+                tripDateItem =>
+                    tripDateItem.date === tripDate.date.split('T')[0]
+            )
+            if (_.isEmpty(tripDateInRaw)) break
+            for (const des of tripDate.destinationTravels)
+                tripDateInRaw.itineraries.push({
+                    instanceId: des.id,
+                    type: DESTINATIONTYPE
+                })
+            for (const res of tripDate.restaurants)
+                tripDateInRaw.itineraries.push({
+                    instanceId: res.id,
+                    type: RESTAURANTTYPE
+                })
+            for (const hotel of tripDate.hotels)
+                tripDateInRaw.itineraries.push({
+                    instanceId: hotel.id,
+                    type: HOTELTYPE
+                })
+        }
+        setDataItineraries(rawDataFromDate)
+
+    }, [startDate, endDate, currentTrip])
     useEffect(() => {
         setStartDate(new Date(currentTrip.startDate))
         setEndDate(new Date(currentTrip.endDate))
     }, [currentTrip])
+    const handleUpdateDataOfDate = dataOfDateToUpdate => {
+        const indexTripDated = dataItineraries.findIndex(
+            item => item.date === dataOfDateToUpdate.date
+        )
+        const dataItinerariesUpdate = [...dataItineraries]
+        dataItinerariesUpdate.splice(
+            indexTripDated,
+            1,
+            dataOfDateToUpdate
+        )
+        setDataItineraries(dataItinerariesUpdate)
+    }
     return (
         <Drawer2 isOpen={isOpen} onClose={onClose}>
             <div className="w-full h-[300vh] pb-[500px]">
@@ -263,8 +198,14 @@ function TripOrganize({ isOpen, onClose }) {
                         />
                     </div>
                 </div>
-                {datatest.map((item, index) => (
-                    <TripOrganizeCard key={index} dataOfDate={item} />
+                {dataItineraries.map((item, index) => (
+                    <TripOrganizeCard
+                        key={index}
+                        dataOfDate={item}
+                        handleUpdateDataOfDate={
+                            handleUpdateDataOfDate
+                        }
+                    />
                 ))}
             </div>
         </Drawer2>

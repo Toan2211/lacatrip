@@ -48,6 +48,13 @@ export const removeInstaceFromTripList = createAsyncThunk(
     'trips/removeInstaceFromTripList',
     payloadCreator(tripApi.removeInstance)
 )
+export const updateItineraries = createAsyncThunk(
+    'trips/handleUpdateItineraries',
+    payloadCreator(tripApi.handleUpdateItinerary)
+)
+const handleUpdateItinerariesFulfilled = (state, action) => {
+    state.currentTrip = action.payload.data
+}
 const handleAddInstanceToTripList = (state, action) => {
     const { data, type, tripId } = action.payload.data
     const tripIndex = state.trips.findIndex(trip => trip.id === tripId)
@@ -63,12 +70,9 @@ const handleAddInstanceToTripList = (state, action) => {
 }
 const handleRemoveInstanceFromTripList = (state, action) => {
     const { data, type, tripId } = action.payload.data
-    console.log(action.payload.data)
     const tripIndex = state.trips.findIndex(trip => trip.id === tripId)
-    console.log(tripIndex, 'log trip index');
     if (type === HOTELTYPE) {
         const hotelIndex = state.trips[tripIndex].hotels.findIndex(hotel => hotel.id === data.id)
-        console.log(tripIndex, 'log trip index');
         state.trips[tripIndex].hotels.splice(hotelIndex, 1)
     }
     else if (type === RESTAURANTTYPE) {
@@ -123,6 +127,7 @@ const tripSlice = createSlice({
             .addCase(updateTrip.fulfilled, handleUpdateTripFulfilled)
             .addCase(addInstanceToTripList.fulfilled, handleAddInstanceToTripList)
             .addCase(removeInstaceFromTripList.fulfilled, handleRemoveInstanceFromTripList)
+            .addCase(updateItineraries.fulfilled, handleUpdateItinerariesFulfilled)
             .addMatcher(
                 action => action.type.endsWith('/pending'),
                 state => {

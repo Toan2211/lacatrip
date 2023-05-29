@@ -47,20 +47,10 @@ router.post(
     validate,
     controller.removeInstanceFromTripList
 )
-router.post(
-    '/update-itinerary',
+router.put(
+    '/:id/update-itinerary',
     verifyToken,
-    // validateTrip.addInstanceToTripList(),
-    // validate,
     controller.handleUpdateTripDate
 )
-// router.delete(
-//     '/:id',
-//     verifyToken,
-//     isSystemUser,
-//     validateItinerary.findOne(),
-//     validate,
-//     controller.destroy
-// )
 
 module.exports = router

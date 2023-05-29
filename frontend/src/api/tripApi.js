@@ -18,6 +18,12 @@ const tripApi = {
     },
     removeInstance(data) {
         return http.post('/trip/remove-instance', data)
+    },
+    handleUpdateItinerary(data) {
+        const { tripId, itineraries } = data
+        return http.put(`/trip/${tripId}/update-itinerary`, {
+            itineraries: itineraries
+        })
     }
 }
 export default tripApi
