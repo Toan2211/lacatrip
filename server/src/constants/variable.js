@@ -5,6 +5,8 @@ const AUTHENTICATEDID = 4
 const HOTELTYPE = 'hotel'
 const RESTAURANTTYPE = 'restaurant'
 const DESTINATIONTYPE = 'destination'
+const EDITABLE = 'editable'
+const VIEWONLY= 'view only'
 module.exports = {
     ADMINID,
     EMPLOYEEID,
@@ -12,5 +14,7 @@ module.exports = {
     AUTHENTICATEDID,
     HOTELTYPE,
     RESTAURANTTYPE,
-    DESTINATIONTYPE
+    DESTINATIONTYPE,
+    EDITABLE,
+    VIEWONLY
 }

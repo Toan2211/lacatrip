@@ -16,12 +16,6 @@ import {
     HOTELTYPE
 } from '@constants/instanceType'
 import _ from 'lodash'
-var options = {
-    weekday: 'long',
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric'
-}
 
 function TripOrganize({ isOpen, onClose }) {
     const dispatch = useDispatch()
@@ -151,6 +145,11 @@ function TripOrganize({ isOpen, onClose }) {
         )
         setDataItineraries(dataItinerariesUpdate)
     }
+    const handleCancel = () => {
+        setStartDate(new Date(currentTrip.startDate))
+        setEndDate(new Date(currentTrip.endDate))
+        onClose()
+    }
     return (
         <Drawer2 isOpen={isOpen} onClose={onClose}>
             <div className="w-full h-[300vh] pb-[500px]">
@@ -166,7 +165,7 @@ function TripOrganize({ isOpen, onClose }) {
                             Save
                         </button>
                         <button
-                            onClick={onClose}
+                            onClick={handleCancel}
                             className=" bg-gray-300 text-white active:bg-gray-400 text-sm font-bold uppercase px-2 py-1 rounded-lg shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 w-full ease-linear transition-all duration-150"
                         >
                             Cancel

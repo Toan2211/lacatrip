@@ -3,7 +3,8 @@ const db = require('../models')
 const {
     HOTELTYPE,
     RESTAURANTTYPE,
-    DESTINATIONTYPE
+    DESTINATIONTYPE,
+    EDITABLE
 } = require('../constants/variable')
 const tripDateService = require('./tripdate')
 const find = async query => {
@@ -61,6 +62,8 @@ const find = async query => {
 const create = async data => {
     try {
         let trip = await db.Trip.create(data)
+        // const user = await db.User.findByPk(data.createdby)
+        // await trip.addUser(user, { through: { role: EDITABLE } })
         trip = await findOne(trip.id)
         return trip
     } catch (error) {
@@ -110,11 +113,26 @@ const findOne = async id => {
                     model: db.TripDate,
                     as: 'tripDates',
                     include: [
-                        { model: db.Hotel, as: 'hotels' },
-                        { model: db.Restaurant, as: 'restaurants' },
+                        {
+                            model: db.Hotel,
+                            as: 'hotels',
+                            include: [
+                                { model: db.Image, as: 'images' }
+                            ]
+                        },
+                        {
+                            model: db.Restaurant,
+                            as: 'restaurants',
+                            include: [
+                                { model: db.Image, as: 'images' }
+                            ]
+                        },
                         {
                             model: db.DestinationTravel,
-                            as: 'destinationTravels'
+                            as: 'destinationTravels',
+                            include: [
+                                { model: db.Image, as: 'images' }
+                            ]
                         }
                     ]
                 }

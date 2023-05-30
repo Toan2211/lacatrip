@@ -1,8 +1,8 @@
+import moment from 'moment'
 import React from 'react'
 import { NavLink } from 'react-router-dom'
 
 function TripCard({ trip }) {
-    console.log(trip)
     return (
         <NavLink
             to={`/trip/${trip.id}`}
@@ -33,11 +33,19 @@ function TripCard({ trip }) {
                     <span>•</span>
                     {trip.startDate && (
                         <>
-                            <span>14 Apr – 22 Jun</span>{' '}
+                            <span>
+                                {moment(new Date(trip.startDate)).format('DD/MM/YYYY')} –{' '}
+                                {moment(new Date(trip.endDate)).format('DD/MM/YYYY')}
+                            </span>{' '}
                             <span>•</span>
                         </>
                     )}
-                    <span>10 places</span>
+                    <span>
+                        {trip.hotels.length +
+                            trip.restaurants.length +
+                            trip.destinationTravels.length}{' '}
+                        places
+                    </span>
                 </div>
             </div>
         </NavLink>

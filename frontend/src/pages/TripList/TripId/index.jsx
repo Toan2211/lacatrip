@@ -1,13 +1,7 @@
 import GoogleMap from '@components/GoogleMap'
-import { Modal, Tooltip } from 'flowbite-react'
-import React, { forwardRef, useEffect, useState } from 'react'
-import ReactDatePicker from 'react-datepicker'
-import {
-    AiFillSetting,
-    AiFillStar,
-    AiOutlineLink,
-    AiOutlineMail
-} from 'react-icons/ai'
+import { Tooltip } from 'flowbite-react'
+import React, { useEffect, useState } from 'react'
+import { AiFillSetting } from 'react-icons/ai'
 import { BiCalendar } from 'react-icons/bi'
 import TripOrganize from './TripOrganize'
 import { useDispatch, useSelector } from 'react-redux'
@@ -21,6 +15,13 @@ import { NavLink, useParams } from 'react-router-dom'
 import { unwrapResult } from '@reduxjs/toolkit'
 import _ from 'lodash'
 import LoadingPage from '@components/LoadingPage'
+import InviteTripForm from './InviteTripForm'
+var options = {
+    weekday: 'long',
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric'
+}
 const ItemCard = ({ data, link }) => {
     return (
         <li className="flex flex-col border-[1px] border-slate-300 rounded-2xl overflow-hidden shadow-xl mb-3">
@@ -46,8 +47,6 @@ function TripId() {
     const dispatch = useDispatch()
     const currentTrip = useSelector(currentTripSelector)
     const id = useParams().id
-    const [startDate, setStartDate] = useState(new Date('2014/02/08'))
-    const [endDate, setEndDate] = useState(new Date('2014/02/10'))
     const [nameTrip, setNameTrip] = useState('')
     const [tripdescription, setTripdescription] = useState('')
     const handleOnchangeDescription = e =>
@@ -73,17 +72,6 @@ function TripId() {
             )
         }
     }
-    const ExampleCustomInput = forwardRef(
-        ({ value, onClick }, ref) => (
-            <span
-                className="cursor-pointer text-sm font-semibold"
-                onClick={onClick}
-                ref={ref}
-            >
-                {value}
-            </span>
-        )
-    )
     const [showModal, setShowModal] = useState(false)
     const onClose = () => setShowModal(false)
     const [isOpen, setIsOpen] = useState(false)
@@ -93,8 +81,6 @@ function TripId() {
         if (id && id !== currentTrip.id)
             dispatch(getTripDetail(id)).then(res => unwrapResult(res))
         if (!_.isEmpty(currentTrip)) {
-            setStartDate(new Date(currentTrip.startDate))
-            setEndDate(new Date(currentTrip.endDate))
             setNameTrip(currentTrip.name)
             setTripdescription(currentTrip.description)
         }
@@ -148,16 +134,20 @@ function TripId() {
                                             <span>
                                                 <BiCalendar />
                                             </span>
-                                            <span
-                                                className="text-sm font-semibold"
-                                            >
-                                                {currentTrip.startDate.split('T')[0]}
+                                            <span className="text-sm font-semibold">
+                                                {
+                                                    currentTrip.startDate.split(
+                                                        'T'
+                                                    )[0]
+                                                }
                                             </span>
                                             <span>-</span>
-                                            <span
-                                                className="text-sm font-semibold"
-                                            >
-                                                {currentTrip.endDate.split('T')[0]}
+                                            <span className="text-sm font-semibold">
+                                                {
+                                                    currentTrip.endDate.split(
+                                                        'T'
+                                                    )[0]
+                                                }
                                             </span>
                                         </>
                                     )}
@@ -214,11 +204,70 @@ function TripId() {
                                 onBlur={handleOnBlurDescription}
                             ></textarea>
                         </div>
-                        <div>
-                            <header className="font-bold text-xl mb-2">
-                                Itinerary
-                            </header>
-                        </div>
+                        {currentTrip.tripDates.length > 0 && (
+                            <div>
+                                <header className="font-bold text-xl mb-2">
+                                    Itinerary
+                                </header>
+                                {currentTrip.tripDates &&
+                                    currentTrip.tripDates.map(
+                                        (tripDate, index) => (
+                                            <div key={index}>
+                                                <header className=" font-semibold p-2 bg-slate-200 my-2 rounded-lg">
+                                                    {new Date(
+                                                        tripDate.date
+                                                    ).toLocaleDateString(
+                                                        'en-US',
+                                                        options
+                                                    )}
+                                                </header>
+                                                <ul>
+                                                    {tripDate.hotels.map(
+                                                        hotel => (
+                                                            <ItemCard
+                                                                key={
+                                                                    hotel.id
+                                                                }
+                                                                data={
+                                                                    hotel
+                                                                }
+                                                                link={`/hotel/${hotel.id}`}
+                                                            />
+                                                        )
+                                                    )}
+                                                    {tripDate.restaurants &&
+                                                        tripDate.restaurants.map(
+                                                            restaurant => (
+                                                                <ItemCard
+                                                                    key={
+                                                                        restaurant.id
+                                                                    }
+                                                                    data={
+                                                                        restaurant
+                                                                    }
+                                                                    link={`/restaurant/${restaurant.id}`}
+                                                                />
+                                                            )
+                                                        )}
+                                                    {tripDate.destinationTravels.map(
+                                                        destinationTravel => (
+                                                            <ItemCard
+                                                                key={
+                                                                    destinationTravel.id
+                                                                }
+                                                                data={
+                                                                    destinationTravel
+                                                                }
+                                                                link={`/destination-travel/${destinationTravel.id}`}
+                                                            />
+                                                        )
+                                                    )}
+                                                </ul>
+                                            </div>
+                                        )
+                                    )}
+                            </div>
+                        )}
                         <div className="mt-5">
                             <header className="font-bold text-xl mb-2">
                                 All Item
@@ -296,52 +345,7 @@ function TripId() {
                 /> */}
                 </div>
             </div>
-            <Modal
-                dismissible={true}
-                show={showModal}
-                onClose={onClose}
-                size="md"
-                popup={true}
-            >
-                <div className="p-4">
-                    <div className="font-bold text-lg text-center mb-4">
-                        Invite Trip
-                    </div>
-                    <div className="flex justify-center mb-2">
-                        <div className="w-50% bg-slate-200 p-1 rounded-lg flex gap-1">
-                            <button className="p-1 bg-white rounded-md">
-                                Can edit
-                            </button>
-                            <button>View only</button>
-                        </div>
-                    </div>
-                    <div className="flex p-2 items-center border-[1px] border-blue-500 rounded-md mb-2">
-                        <div className="basis-5">
-                            <AiOutlineLink />
-                        </div>
-                        <div className="flex-1">
-                            {window.location.href}
-                        </div>
-                        <div className="basis-24">
-                            <button className="bg-blue-500 text-white active:bg-blue-800 text-sm font-bold uppercase px-3 py-2 rounded-lg shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 w-full ease-linear transition-all duration-150">
-                                Copy link
-                            </button>
-                        </div>
-                    </div>
-                    <div className="flex p-2 items-center border-[1px] border-blue-500 rounded-md">
-                        <AiOutlineMail />
-                        <input
-                            className="ml-2 py-2 text-lg focus:outline-none w-full"
-                            placeholder="Invite tripmate by email"
-                        />
-                    </div>
-                    <div className="text-center mt-4">
-                        <button className="bg-blue-500 text-white w-1/4 active:bg-blue-800 text-sm font-bold uppercase px-3 py-2 rounded-lg shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150">
-                            Invite
-                        </button>
-                    </div>
-                </div>
-            </Modal>
+            <InviteTripForm showModal={showModal} onClose={onClose} tripId={currentTrip.id}/>
             <TripOrganize onClose={onCloseDrawer} isOpen={isOpen} />
         </>
     )
