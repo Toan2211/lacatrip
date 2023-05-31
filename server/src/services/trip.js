@@ -7,12 +7,16 @@ const {
     EDITABLE
 } = require('../constants/variable')
 const tripDateService = require('./tripdate')
+const tripMemberService = require('./tripmember')
+const userService = require('./user')
+const mailService = require('./mail')
 const find = async query => {
     try {
         let { key, page, limit, createdby } = query
         key = key ? key : ''
         page = page ? +page : 1
         limit = limit ? +limit : 10
+        const tripIds = await tripMemberService.getTripIdsByUserId(createdby)
         const { count, rows } = await db.Trip.findAndCountAll({
             offset: (page - 1) * limit,
             limit: +limit,
@@ -42,7 +46,14 @@ const find = async query => {
                 }
             ],
             where: {
-                createdby
+                [Op.or]: [
+                    {createdby: createdby},
+                    {
+                        id: {
+                            [Op.in]: tripIds
+                        }
+                    }
+                ]
             },
             distinct: true
         })
@@ -62,8 +73,11 @@ const find = async query => {
 const create = async data => {
     try {
         let trip = await db.Trip.create(data)
-        // const user = await db.User.findByPk(data.createdby)
-        // await trip.addUser(user, { through: { role: EDITABLE } })
+        await tripMemberService.addTripMember({
+            tripId: trip.id,
+            userId: data.createdby,
+            editable: true
+        })
         trip = await findOne(trip.id)
         return trip
     } catch (error) {
@@ -275,6 +289,41 @@ const handleUpdateTripDate = async (tripId, data) => {
         throw new Error(error)
     }
 }
+const inviteMember = async (email, tripId, editable) => {
+    try {
+        const user = await userService.findAuthenUserByEmail(email)
+        const trip = await findOne(tripId)
+        if (user) {
+            await tripMemberService.addTripMember({
+                tripId: tripId,
+                userId: user.id,
+                editable: editable
+            })
+            return true
+        }
+        else
+        {
+            const result = await mailService.sendMailInviteToTrip({
+                email: email,
+                redirectLink: `${process.env.REACT_API}/trip/${tripId}`,
+                trip: trip
+            })
+            if (!result)
+                return true
+            const user = await db.User.create({
+                email: email
+            })
+            await tripMemberService.addTripMember({
+                tripId: tripId,
+                userId: user.id,
+                editable: editable
+            })
+            return false
+        }
+    } catch (error) {
+        throw new Error(error)
+    }
+}
 module.exports = {
     create,
     update,
@@ -282,5 +331,6 @@ module.exports = {
     find,
     addInstanceToTripList,
     removeInstanceFromTripList,
-    handleUpdateTripDate
+    handleUpdateTripDate,
+    inviteMember
 }

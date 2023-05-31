@@ -52,5 +52,10 @@ router.put(
     verifyToken,
     controller.handleUpdateTripDate
 )
+router.post(
+    '/invite-member',
+    verifyToken,
+    controller.inviteToTrip
+)
 
 module.exports = router

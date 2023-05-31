@@ -1,4 +1,5 @@
 const tripservice = require('../services/trip')
+const tripMemberService = require('../services/tripmember')
 const create = async (req, res) => {
     try {
         if (req.file) {
@@ -17,6 +18,15 @@ const create = async (req, res) => {
 }
 const update = async (req, res) => {
     try {
+        req.body.userId = req.user.id
+        const isEditable = tripMemberService.checkEditable(
+            req.body.tripId,
+            req.body.userId
+        )
+        if (!isEditable)
+            return res.status(403).json({
+                message: 'You can not update Trip'
+            })
         if (req.file) {
             req.body.image = req.file.path
         }
@@ -65,15 +75,21 @@ const find = async (req, res) => {
 const addInstanceToTripList = async (req, res) => {
     try {
         req.body.userId = req.user.id
+        const isEditable = tripMemberService.checkEditable(
+            req.body.tripId,
+            req.body.userId
+        )
+        if (!isEditable)
+            return res.status(403).json({
+                message: 'You can not update Trip'
+            })
         const instance = await tripservice.addInstanceToTripList(
             req.body
         )
         if (!instance)
-            return res
-                .status(401)
-                .json({
-                    message: 'Trip not found or Trip not own of you'
-                })
+            return res.status(401).json({
+                message: 'Trip not found or Trip not own of you'
+            })
         return res.status(200).json({
             message: 'Add data to trip successful !',
             data: instance
@@ -85,15 +101,21 @@ const addInstanceToTripList = async (req, res) => {
 const removeInstanceFromTripList = async (req, res) => {
     try {
         req.body.userId = req.user.id
+        const isEditable = tripMemberService.checkEditable(
+            req.body.tripId,
+            req.body.userId
+        )
+        if (!isEditable)
+            return res.status(403).json({
+                message: 'You can not update Trip'
+            })
         const instance = await tripservice.removeInstanceFromTripList(
             req.body
         )
         if (!instance)
-            return res
-                .status(401)
-                .json({
-                    message: 'Trip not found or Trip not own of you'
-                })
+            return res.status(401).json({
+                message: 'Trip not found or Trip not own of you'
+            })
         return res.status(200).json({
             message: 'Remove data to trip successful !',
             data: instance
@@ -104,19 +126,53 @@ const removeInstanceFromTripList = async (req, res) => {
 }
 const handleUpdateTripDate = async (req, res) => {
     try {
+        req.body.userId = req.user.id
+        const isEditable = tripMemberService.checkEditable(
+            req.params.id,
+            req.body.userId
+        )
+        if (!isEditable)
+            return res.status(403).json({
+                message: 'You can not update Trip'
+            })
         const result = await tripservice.handleUpdateTripDate(
             req.params.id,
             req.body
         )
         if (!result)
-            return res
-                .status(401)
-                .json({
-                    message: 'Update Itineray Fail'
-                })
+            return res.status(401).json({
+                message: 'Update Itineray Fail'
+            })
         return res.status(200).json({
             message: 'Update Itineray successful !',
             data: result
+        })
+    } catch (error) {
+        return res.status(500).json({ message: error.message })
+    }
+}
+const inviteToTrip = async (req, res) => {
+    try {
+        req.body.userId = req.user.id
+        const isEditable = tripMemberService.checkEditable(
+            req.body.tripId,
+            req.body.userId
+        )
+        if (!isEditable)
+            return res.status(403).json({
+                message: 'You can not update Trip'
+            })
+        const result = await tripservice.inviteMember(
+            req.body.email,
+            req.body.tripId,
+            req.body.editable
+        )
+        if (!result)
+            return res.status(401).json({
+                message: 'Invite member fail'
+            })
+        return res.status(200).json({
+            message: 'Invite member successful'
         })
     } catch (error) {
         return res.status(500).json({ message: error.message })
@@ -129,5 +185,6 @@ module.exports = {
     find,
     addInstanceToTripList,
     removeInstanceFromTripList,
-    handleUpdateTripDate
+    handleUpdateTripDate,
+    inviteToTrip
 }

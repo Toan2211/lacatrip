@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import {
     amenitiesHotelSelector,
@@ -17,6 +17,7 @@ function CommonProperty() {
     const provinces = useSelector(provincesSelector)
     const amenitiesHotel = useSelector(amenitiesHotelSelector)
     const trips = useSelector(allTripsSelector)
+    const [firstTime, setFirsttime] = useState(true)
     useEffect(() => {
         const fetchData = async () => {
             if (provinces.length === 0)
@@ -25,10 +26,13 @@ function CommonProperty() {
                 )
             if (amenitiesHotel.length === 0)
                 await dispatch(getAmenitiesHotel())
-            if (profile.id && trips.length === 0) dispatch(getAllTrip())
+            if (profile.id && firstTime) {
+                dispatch(getAllTrip())
+                setFirsttime(false)
+            }
         }
         fetchData()
-    }, [dispatch, provinces, amenitiesHotel, profile, trips])
+    }, [dispatch, provinces, amenitiesHotel, profile, trips, firstTime])
     return <></>
 }
 

@@ -52,6 +52,10 @@ export const updateItineraries = createAsyncThunk(
     'trips/handleUpdateItineraries',
     payloadCreator(tripApi.handleUpdateItinerary)
 )
+export const inviteMember = createAsyncThunk(
+    'trips/inviteMember',
+    payloadCreator(tripApi.inviteMember)
+)
 const handleUpdateItinerariesFulfilled = (state, action) => {
     state.currentTrip = action.payload.data
 }

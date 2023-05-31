@@ -24,6 +24,9 @@ const tripApi = {
         return http.put(`/trip/${tripId}/update-itinerary`, {
             itineraries: itineraries
         })
+    },
+    inviteMember(data) {
+        return http.post('/trip/invite-member', data)
     }
 }
 export default tripApi
