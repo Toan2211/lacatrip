@@ -30,6 +30,7 @@ import HotelId from '@pages/HotelList/HotelId'
 import RestaurantId from '@pages/RestaurantList/RestaurantId'
 import TripId from '@pages/TripList/TripId'
 import TripList from '@pages/TripList'
+import AccountInvite from '@pages/Auth/AccountInvite'
 function RoutesComponent() {
     return (
         <BrowserRouter>
@@ -156,6 +157,10 @@ function RoutesComponent() {
                         <Route
                             path={path.forgotPass}
                             element={<ForgotPassword />}
+                        />
+                        <Route
+                            path={path.accountInvite}
+                            element={<AccountInvite />}
                         />
                     </Route>
                 </Route>

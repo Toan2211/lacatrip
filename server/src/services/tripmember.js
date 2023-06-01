@@ -1,3 +1,4 @@
+const { Op } = require('sequelize')
 const db = require('../models')
 
 // tripId
@@ -12,8 +13,21 @@ const addTripMember = async data => {
         throw new Error(error)
     }
 }
-
-const getMemberIdsByTripId = async tripId => {
+const checkMemberInTrip = async (tripId, userId) => {
+    try {
+        const [member] = await db.TripMember.findAll({
+            where: {
+                tripId: tripId,
+                userId: userId
+            }
+        })
+        if (member) return true
+        return false
+    } catch (error) {
+        throw new Error(error)
+    }
+}
+const getMembersByTripId = async tripId => {
     try {
         const membersArr = await db.TripMember.findAll({
             attributes: ['userId'],
@@ -21,8 +35,17 @@ const getMemberIdsByTripId = async tripId => {
                 tripId: tripId
             }
         })
+        if (!membersArr) return []
         const memberIds = membersArr.map(member => member.userId)
-        return memberIds
+        const member = await db.User.findAll({
+            where: {
+                id: {
+                    [Op.in]: memberIds
+                }
+            }
+        })
+
+        return member
     } catch (error) {
         throw new Error(error)
     }
@@ -45,14 +68,13 @@ const getTripIdsByUserId = async userId => {
 const checkEditable = async (tripId, userId) => {
     try {
         const [trip] = await db.TripMember.findAll({
-            attributes: ['tripId'],
             where: {
                 userId: userId,
                 tripId: tripId
-            }
+            },
+            raw: true
         })
-        if (trip.editable)
-            return true
+        if (trip.editable) return true
         return false
     } catch (error) {
         throw new Error(error)
@@ -60,7 +82,8 @@ const checkEditable = async (tripId, userId) => {
 }
 module.exports = {
     addTripMember,
-    getMemberIdsByTripId,
+    getMembersByTripId,
     getTripIdsByUserId,
-    checkEditable
+    checkEditable,
+    checkMemberInTrip
 }

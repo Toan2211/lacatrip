@@ -102,7 +102,8 @@ const update = async (id, data) => {
 }
 const findOne = async id => {
     try {
-        const trip = await db.Trip.findByPk(id, {
+        const members = await tripMemberService.getMembersByTripId(id)
+        const trip =  await db.Trip.findByPk(id, {
             include: [
                 {
                     model: db.User,
@@ -152,7 +153,13 @@ const findOne = async id => {
                 }
             ]
         })
-        return trip
+        if (!trip)
+            return false
+        const result = {
+            ...trip.toJSON(),
+            members: [...members]
+        }
+        return result
     } catch (error) {
         throw new Error(error)
     }
@@ -294,6 +301,9 @@ const inviteMember = async (email, tripId, editable) => {
         const user = await userService.findAuthenUserByEmail(email)
         const trip = await findOne(tripId)
         if (user) {
+            const check = tripMemberService.checkMemberInTrip(tripId, user.id)
+            if (check)
+                return true
             await tripMemberService.addTripMember({
                 tripId: tripId,
                 userId: user.id,
@@ -305,20 +315,26 @@ const inviteMember = async (email, tripId, editable) => {
         {
             const result = await mailService.sendMailInviteToTrip({
                 email: email,
-                redirectLink: `${process.env.REACT_API}/trip/${tripId}`,
+                redirectLink: `${process.env.REACT_API}/create/user-invite?email=${email}`,
                 trip: trip
             })
             if (!result)
-                return true
+                return false
             const user = await db.User.create({
-                email: email
+                email: email,
+                password: '',
+                roleId: 4,
+                firstname: '',
+                lastname: '',
+                gender: 0,
+                country: ''
             })
             await tripMemberService.addTripMember({
                 tripId: tripId,
                 userId: user.id,
                 editable: editable
             })
-            return false
+            return true
         }
     } catch (error) {
         throw new Error(error)

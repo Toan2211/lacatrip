@@ -7,6 +7,7 @@ import { AiOutlineMail } from 'react-icons/ai'
 import { useDispatch } from 'react-redux'
 import { toast } from 'react-toastify'
 import * as yup from 'yup'
+import { unwrapResult } from '@reduxjs/toolkit'
 function InviteTripForm({ showModal, onClose, tripId }) {
     const [editable, setEditable] = useState(true)
     const dispatch = useDispatch()
@@ -30,7 +31,7 @@ function InviteTripForm({ showModal, onClose, tripId }) {
                 tripId: tripId,
                 editable: editable
             }
-            await dispatch(inviteMember(sendData))
+            await dispatch(inviteMember(sendData)).then(res => unwrapResult(res))
             onClose()
             toast.success('Invite tripmate successful', {
                 position: toast.POSITION.BOTTOM_CENTER,

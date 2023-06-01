@@ -16,6 +16,7 @@ import { unwrapResult } from '@reduxjs/toolkit'
 import _ from 'lodash'
 import LoadingPage from '@components/LoadingPage'
 import InviteTripForm from './InviteTripForm'
+import { toast } from 'react-toastify'
 var options = {
     weekday: 'long',
     year: 'numeric',
@@ -51,26 +52,46 @@ function TripId() {
     const [tripdescription, setTripdescription] = useState('')
     const handleOnchangeDescription = e =>
         setTripdescription(e.target.value)
-    const onNameTripBlur = () => {
-        const formData = new FormData()
-        formData.append('id', id)
-        formData.append('name', nameTrip)
-        dispatch(updateTrip(formData)).then(res => unwrapResult(res))
-    }
-    const handleOnBlurDescription = () => {
-        if (
-            !(
-                tripdescription === '' &&
-                currentTrip.description === null
-            )
-        ) {
+    const onNameTripBlur = async () => {
+        try {
             const formData = new FormData()
             formData.append('id', id)
-            formData.append('description', tripdescription)
-            dispatch(updateTrip(formData)).then(res =>
-                unwrapResult(res)
-            )
+            formData.append('name', nameTrip)
+            await dispatch(updateTrip(formData)).then(res => unwrapResult(res))
+        } catch (error) {
+            setNameTrip(currentTrip.name)
+            toast.error(error.message, {
+                position: toast.POSITION.BOTTOM_CENTER,
+                autoClose: 1000,
+                hideProgressBar: true
+            })
         }
+
+    }
+    const handleOnBlurDescription = async () => {
+        try {
+            if (
+                !(
+                    tripdescription === '' &&
+                    currentTrip.description === null
+                )
+            ) {
+                const formData = new FormData()
+                formData.append('id', id)
+                formData.append('description', tripdescription)
+                await dispatch(updateTrip(formData)).then(res =>
+                    unwrapResult(res)
+                )
+            }
+        } catch (error) {
+            setTripdescription(currentTrip.description)
+            toast.error(error.message, {
+                position: toast.POSITION.BOTTOM_CENTER,
+                autoClose: 1000,
+                hideProgressBar: true
+            })
+        }
+
     }
     const [showModal, setShowModal] = useState(false)
     const onClose = () => setShowModal(false)
@@ -152,17 +173,23 @@ function TripId() {
                                         </>
                                     )}
                                 </div>
-                                <div className="flex gap-5 items-center basis-7">
-                                    <span className="block w-10 h-10 rounded-full overflow-hidden">
-                                        <img
-                                            src={
-                                                currentTrip.user
-                                                    .avatar ||
-                                                'https://itin-dev.sfo2.cdn.digitaloceanspaces.com/freeImage/ItdeP0WWcQ6NhVHGPJIPDFtU36du76JG'
-                                            }
-                                            className="w-full h-full object-cover rounded-full"
-                                        />
-                                    </span>
+
+                                <div className="flex gap-5 items-center">
+                                    <div className="flex -space-x-4">
+                                        {currentTrip.members.map(
+                                            member => (
+                                                <img
+                                                    key={member.id}
+                                                    className="w-10 h-10 border-2 border-white rounded-full dark:border-gray-800"
+                                                    src={
+                                                        member.avatar ||
+                                                        'https://itin-dev.sfo2.cdn.digitaloceanspaces.com/freeImage/ItdeP0WWcQ6NhVHGPJIPDFtU36du76JG'
+                                                    }
+                                                    alt=""
+                                                />
+                                            )
+                                        )}
+                                    </div>
                                     <span
                                         className="block w-5 h-5 cursor-pointer"
                                         onClick={() =>
@@ -345,7 +372,11 @@ function TripId() {
                 /> */}
                 </div>
             </div>
-            <InviteTripForm showModal={showModal} onClose={onClose} tripId={currentTrip.id}/>
+            <InviteTripForm
+                showModal={showModal}
+                onClose={onClose}
+                tripId={currentTrip.id}
+            />
             <TripOrganize onClose={onCloseDrawer} isOpen={isOpen} />
         </>
     )

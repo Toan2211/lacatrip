@@ -118,7 +118,7 @@ const sendMailInviteToTrip = async (data) => {
     const result = await transporter.sendMail({
         from: '"LACATRIP" <nguyenthanhtoan2211@gmail.com>',
         to: data.email,
-        subject: 'Invite to trip ${data.trip.name}',
+        subject: `Invite to trip ${data.trip.name}`,
         html: `
         <h3>Hello, </h3>
         <p>Your friend was invite you to his/her trip ${data.trip.name}</p>

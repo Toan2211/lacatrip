@@ -28,6 +28,7 @@ class Path {
         this.clientRestaurantDetail = '/restaurant/:id'
         this.clientTrips = '/trip'
         this.clientTripDetail = '/trip/:id'
+        this.accountInvite = '/create/user-invite'
     }
 }
 

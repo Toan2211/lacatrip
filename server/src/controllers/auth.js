@@ -25,7 +25,7 @@ const signup = async (req, res) => {
                 .json({ message: 'This email already exists.' })
         req.body.roleId = AUTHENTICATEDID
         req.body.confirmtoken = crypto.randomBytes(64).toString('hex')
-        req.avatar = avatarDefault
+        req.avatar = 'https://res.cloudinary.com/djgkj9nli/image/upload/v1681614915/lacatrip/lhwrnxjhgw5uhrvinh6r.jpg'
         const user = await userService.create(req.body)
         await sendEmailConfirm({
             name: `${firstname} ${lastname}`,
@@ -38,6 +38,17 @@ const signup = async (req, res) => {
         })
     } catch (err) {
         return res.status(500).json({ message: err.message })
+    }
+}
+const createAccountInvite = async (req, res) => {
+    try {
+        const user = await authService.createAccountInvite(req.body)
+        return res.status(201).json({
+            message: 'Create account successfuly',
+            data: user
+        })
+    } catch (error) {
+        return res.status(500).json({ message: error.message })
     }
 }
 const signin = async (req, res) => {
@@ -104,5 +115,6 @@ const forgotPassword = async (req, res) => {
 module.exports = {
     signup,
     signin,
-    forgotPassword
+    forgotPassword,
+    createAccountInvite
 }

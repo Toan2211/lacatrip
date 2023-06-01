@@ -19,8 +19,8 @@ const create = async (req, res) => {
 const update = async (req, res) => {
     try {
         req.body.userId = req.user.id
-        const isEditable = tripMemberService.checkEditable(
-            req.body.tripId,
+        const isEditable = await tripMemberService.checkEditable(
+            req.params.id,
             req.body.userId
         )
         if (!isEditable)
@@ -75,7 +75,7 @@ const find = async (req, res) => {
 const addInstanceToTripList = async (req, res) => {
     try {
         req.body.userId = req.user.id
-        const isEditable = tripMemberService.checkEditable(
+        const isEditable = await tripMemberService.checkEditable(
             req.body.tripId,
             req.body.userId
         )
@@ -127,7 +127,7 @@ const removeInstanceFromTripList = async (req, res) => {
 const handleUpdateTripDate = async (req, res) => {
     try {
         req.body.userId = req.user.id
-        const isEditable = tripMemberService.checkEditable(
+        const isEditable = await tripMemberService.checkEditable(
             req.params.id,
             req.body.userId
         )
@@ -154,13 +154,13 @@ const handleUpdateTripDate = async (req, res) => {
 const inviteToTrip = async (req, res) => {
     try {
         req.body.userId = req.user.id
-        const isEditable = tripMemberService.checkEditable(
+        const isEditable = await tripMemberService.checkEditable(
             req.body.tripId,
             req.body.userId
         )
         if (!isEditable)
             return res.status(403).json({
-                message: 'You can not update Trip'
+                message: 'You can not invite member Trip'
             })
         const result = await tripservice.inviteMember(
             req.body.email,
