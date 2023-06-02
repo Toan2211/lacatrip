@@ -21,7 +21,7 @@ function HotelCard({ data }) {
                     <div className=" text-yellow-400 flex gap-1">
                         {data.hotelClass &&
                             Array.from(Array(data.hotelClass)).map(
-                                index => (
+                                (value, index) => (
                                     <span key={index}>
                                         <AiFillStar />
                                     </span>
