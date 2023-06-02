@@ -33,6 +33,14 @@ module.exports = (sequelize, DataTypes) => {
                 foreignKey: 'instanceId',
                 as: 'comments'
             })
+            this.belongsToMany(models.Trip, {
+                as: 'trips',
+                through: 'Trip_Destinationtravel'
+            })
+            this.belongsToMany(models.TripDate, {
+                as: 'TripDates',
+                through: 'TripDate_Destinationtravel'
+            })
         }
     }
     DestinationTravel.init(

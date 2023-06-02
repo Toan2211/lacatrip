@@ -54,7 +54,7 @@ const findOne = async (req, res) => {
                 .status(200)
                 .json({ message: 'Get Itinerary successful', data: itinerary })
         else
-            return res.status(400).json({ message: 'Itinerary not found' })
+            return res.status(404).json({ message: 'Itinerary not found' })
     } catch (error) {
         return res.status(500).json({ message: error.message })
     }

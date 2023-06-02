@@ -7,4 +7,5 @@ const validateAuth = require('../validations/auth')
 router.post('/signup', validationUser.create(), validate, controller.signup)
 router.post('/signin', validateAuth.signin(), validate, controller.signin)
 router.post('/forgotpassword', validateAuth.forgotPass(), validate, controller.forgotPassword)
+router.post('/create/account-invite', validationUser.create(), validate, controller.createAccountInvite)
 module.exports = router
