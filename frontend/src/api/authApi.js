@@ -9,6 +9,9 @@ const authApi = {
     },
     forgotPassword(data) {
         return http.post('/auth/forgotpassword', data)
+    },
+    createAccountInvite(data) {
+        return http.post('/auth/create/account-invite', data)
     }
 }
 export default authApi

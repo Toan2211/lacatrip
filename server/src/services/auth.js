@@ -3,6 +3,7 @@ const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 const { secretJWT } = require('../config/auth.config')
 const crypto = require('crypto')
+const { avatarDefault } = require('../constants/images')
 require('dotenv').config()
 const checkEmailExist = async email => {
     const user = await db.User.findOne({
@@ -13,7 +14,7 @@ const checkEmailExist = async email => {
         },
         where: {
             email
-        },
+        }
         // raw: true,
     })
     if (user) return user
@@ -49,9 +50,31 @@ const forgotPassword = async email => {
         throw new Error(error)
     }
 }
+const createAccountInvite = async data => {
+    try {
+        const user = await db.User.findOne({
+            where: {
+                email: data.email
+            },
+            raw: true
+        })
+        data.password = await bcrypt.hash(data.password, 12)
+        data.avatar = 'https://res.cloudinary.com/djgkj9nli/image/upload/v1681614915/lacatrip/lhwrnxjhgw5uhrvinh6r.jpg'
+        data.confirm = 1
+        const result = await db.User.update(data, {
+            where: {
+                id: user.id
+            }
+        })
+        return result
+    } catch (error) {
+        throw new Error(error)
+    }
+}
 module.exports = {
     checkEmailExist,
     checkPassword,
     createAccessToken,
-    forgotPassword
+    forgotPassword,
+    createAccountInvite
 }

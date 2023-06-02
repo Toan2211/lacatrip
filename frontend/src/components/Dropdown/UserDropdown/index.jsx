@@ -37,6 +37,10 @@ const UserDropdown = () => {
         navigate(path.changePassword)
         setDropdownPopoverShow(false)
     }
+    const handleLogOut = () => {
+        dispatch(logout())
+        window.location.reload(true)
+    }
     return (
         <>
             <div
@@ -52,7 +56,7 @@ const UserDropdown = () => {
                     <span className="w-10 h-10 text-sm text-white bg-blueGray-200 inline-flex items-center justify-center rounded-full">
                         <img
                             alt="..."
-                            className="w-full rounded-full align-middle border-none shadow-lg"
+                            className="w-full h-full rounded-full align-middle border-none shadow-lg"
                             src={user.avatar}
                         />
                     </span>
@@ -89,7 +93,7 @@ const UserDropdown = () => {
                     className={
                         'text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent cursor-pointer'
                     }
-                    onClick={() => dispatch(logout())}
+                    onClick={handleLogOut}
                 >
                     Logout
                 </div>

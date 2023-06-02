@@ -23,6 +23,10 @@ export const changePassword = createAsyncThunk(
     'auth/changepassword',
     payloadCreator(userApi.changePassword)
 )
+export const createAccountInvite = createAsyncThunk(
+    'auth/createAccountInvite',
+    payloadCreator(authApi.createAccountInvite)
+)
 const handleSigninPending = state => {
     state.loading = true
 }

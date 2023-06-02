@@ -41,7 +41,7 @@ const find = async (key, page, limit, roleId) => {
                     }
                 ],
                 roleId: roleId
-            },
+            }
         })
         return {
             users: rows,
@@ -149,12 +149,21 @@ const verifyConfirmToken = async token => {
         throw new Error(err)
     }
 }
-
+const findAuthenUserByEmail = async email => {
+    const [user] = await db.User.findAll({
+        where: {
+            email: email,
+            roleId: 4
+        }
+    })
+    return user
+}
 module.exports = {
     create,
     findOne,
     update,
     verifyConfirmToken,
     toggleBlock,
-    find
+    find,
+    findAuthenUserByEmail
 }
