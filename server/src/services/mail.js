@@ -105,10 +105,36 @@ const sendEmailConfirmServiceManager = async data => {
         `
     })
 }
+const sendMailInviteToTrip = async (data) => {
+    const transporter = nodemailer.createTransport({
+        host: 'smtp.gmail.com',
+        port: 587,
+        secure: false,
+        auth: {
+            user: process.env.EMAIL_NAME,
+            pass: process.env.EMAIL_APP_PASSWORD
+        }
+    })
+    const result = await transporter.sendMail({
+        from: '"LACATRIP" <nguyenthanhtoan2211@gmail.com>',
+        to: data.email,
+        subject: `Invite to trip ${data.trip.name}`,
+        html: `
+        <h3>Hello, </h3>
+        <p>Your friend was invite you to his/her trip ${data.trip.name}</p>
+        <div>
+            <a href="${data.redirectLink}" target="_blank">Please complete create account to enjoy the trip</a>
+        </div>
+        <p>Thanks</p>
+        `
+    })
+    return result
+}
 
 module.exports = {
     sendEmailConfirm,
     sendEmailResetPassword,
     sendEmailConfirmEmployee,
-    sendEmailConfirmServiceManager
+    sendEmailConfirmServiceManager,
+    sendMailInviteToTrip
 }

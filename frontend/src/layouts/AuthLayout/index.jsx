@@ -1,15 +1,17 @@
 import React from 'react'
 import logo from '@assets/img/logo-off.svg'
-import { Outlet } from 'react-router-dom'
+import { Link, Outlet } from 'react-router-dom'
+import { path } from '@constants/path'
 function AuthLayout() {
     return (
         <div className="relative h-scree bg-auth-layout">
-            <header className="hidden lg:h-[10vh] lg:pl-7 lg:block">
-                <img
-                    alt="logo"
-                    src={logo}
-                    className="h-full w-[16%] ml-10"
-                />
+            <header className="hidden lg:h-[10vh] lg:pl-7 lg:block py-5">
+                <Link
+                    to={path.landingPage}
+                    className="w-[16%] h-5 hidden lg:block"
+                >
+                    <img src={logo} alt="logo-lacatrip" />
+                </Link>
             </header>
             <main className="lg:h-[90vh] flex justify-center items-center h-screen">
                 <div className="container mx-auto px-4 h-full">

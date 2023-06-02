@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import logo from '@assets/img/logo-off.svg'
-import { Link, NavLink } from 'react-router-dom'
+import { Link, NavLink, useLocation } from 'react-router-dom'
 import { path } from '@constants/path'
 import { GrNotification } from 'react-icons/gr'
 import { SlPaperPlane } from 'react-icons/sl'
@@ -11,6 +11,7 @@ import SidebarMobile from '@components/SidebarMobile'
 
 function Header() {
     const user = useSelector(selectUser)
+    const location = useLocation()
     const [openForm, setOpenForm] = useState(false)
     const onClose = () => {
         setOpenForm(false)
@@ -69,8 +70,12 @@ function Header() {
                 </div>
                 <div className="flex-1 flex items-center gap-4 justify-end">
                     <Link
-                        to={path.landingPage}
-                        className="hidden lg:flex gap-1 items-center font-medium hover:bg-slate-100 hover:border-slate-200 border-2  border-transparent px-4 py-2 rounded-xl"
+                        to={path.clientTrips}
+                        className={`${
+                            location.pathname.includes(path.clientTrips)
+                                ? 'bg-slate-100 border-slate-200 '
+                                : 'border-transparent '
+                        } hidden lg:flex gap-1 items-center font-medium hover:bg-slate-100 hover:border-slate-200 border-2  px-4 py-2 rounded-xl`}
                     >
                         <span>
                             <SlPaperPlane />
