@@ -32,8 +32,8 @@ function RecommendHotel() {
         <>
             <div className="grid gap-6 grid-cols-1 md:grid-cols-2 xl:grid-cols-4">
                 {hotels &&
-                    hotels.map((hotel) => (
-                        <HotelCard key={hotel.id} data={hotel} />
+                    hotels.map((hotel, index) => (
+                        <HotelCard key={index} data={hotel} />
                     ))}
                 {
                     !!loading && Array.from(Array(8).keys()).map(index => <RecommendSkeletonCard key={index}/>)

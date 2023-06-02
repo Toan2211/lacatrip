@@ -20,8 +20,8 @@ import _ from 'lodash'
 function TripOrganize({ isOpen, onClose }) {
     const dispatch = useDispatch()
     const currentTrip = useSelector(currentTripSelector)
-    const [startDate, setStartDate] = useState(new Date('2023-5-5'))
-    const [endDate, setEndDate] = useState(new Date('2023-5-8'))
+    const [startDate, setStartDate] = useState(new Date(new Date().toLocaleDateString()))
+    const [endDate, setEndDate] = useState(new Date(new Date().toLocaleDateString()))
 
     const [dataItineraries, setDataItineraries] = useState([])
     const ExampleCustomInput = forwardRef(
@@ -130,8 +130,10 @@ function TripOrganize({ isOpen, onClose }) {
 
     }, [startDate, endDate, currentTrip])
     useEffect(() => {
-        setStartDate(new Date(currentTrip.startDate))
-        setEndDate(new Date(currentTrip.endDate))
+        if (currentTrip.startDate) {
+            setStartDate(new Date(currentTrip.startDate))
+            setEndDate(new Date(currentTrip.endDate))
+        }
     }, [currentTrip])
     const handleUpdateDataOfDate = dataOfDateToUpdate => {
         const indexTripDated = dataItineraries.findIndex(
