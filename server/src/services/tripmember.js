@@ -41,6 +41,9 @@ const getMembersByTripId = async tripId => {
             where: {
                 id: {
                     [Op.in]: memberIds
+                },
+                password: {
+                    [Op.ne]: ''
                 }
             }
         })

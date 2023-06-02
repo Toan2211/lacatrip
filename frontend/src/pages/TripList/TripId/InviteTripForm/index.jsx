@@ -9,7 +9,7 @@ import { toast } from 'react-toastify'
 import * as yup from 'yup'
 import { unwrapResult } from '@reduxjs/toolkit'
 function InviteTripForm({ showModal, onClose, tripId }) {
-    const [editable, setEditable] = useState(true)
+    const [editable, setEditable] = useState(false)
     const dispatch = useDispatch()
     const schema = yup.object().shape({
         email: yup

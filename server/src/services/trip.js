@@ -173,7 +173,7 @@ const addInstanceToTripList = async ({
 }) => {
     try {
         const trip = await db.Trip.findOne({
-            where: { id: tripId, createdby: userId }
+            where: { id: tripId }
         })
         if (!trip) return false
         if (type === HOTELTYPE) {
@@ -215,7 +215,7 @@ const removeInstanceFromTripList = async ({
 }) => {
     try {
         const trip = await db.Trip.findOne({
-            where: { id: tripId, createdby: userId }
+            where: { id: tripId }
         })
         if (!trip) return false
         if (type === HOTELTYPE) {
@@ -327,7 +327,8 @@ const inviteMember = async (email, tripId, editable) => {
                 firstname: '',
                 lastname: '',
                 gender: 0,
-                country: ''
+                country: '',
+                avatar: 'https://res.cloudinary.com/djgkj9nli/image/upload/v1681614915/lacatrip/lhwrnxjhgw5uhrvinh6r.jpg'
             })
             await tripMemberService.addTripMember({
                 tripId: tripId,

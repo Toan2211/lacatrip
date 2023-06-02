@@ -57,7 +57,9 @@ function TripId() {
             const formData = new FormData()
             formData.append('id', id)
             formData.append('name', nameTrip)
-            await dispatch(updateTrip(formData)).then(res => unwrapResult(res))
+            await dispatch(updateTrip(formData)).then(res =>
+                unwrapResult(res)
+            )
         } catch (error) {
             setNameTrip(currentTrip.name)
             toast.error(error.message, {
@@ -66,7 +68,6 @@ function TripId() {
                 hideProgressBar: true
             })
         }
-
     }
     const handleOnBlurDescription = async () => {
         try {
@@ -91,7 +92,6 @@ function TripId() {
                 hideProgressBar: true
             })
         }
-
     }
     const [showModal, setShowModal] = useState(false)
     const onClose = () => setShowModal(false)
@@ -178,42 +178,56 @@ function TripId() {
                                     <div className="flex -space-x-4">
                                         {currentTrip.members.map(
                                             member => (
-                                                <img
+                                                <Tooltip
+                                                    content={`${member.firstname} ${member.lastname}`}
+                                                    style="light"
                                                     key={member.id}
-                                                    className="w-10 h-10 border-2 border-white rounded-full dark:border-gray-800"
-                                                    src={
-                                                        member.avatar ||
-                                                        'https://itin-dev.sfo2.cdn.digitaloceanspaces.com/freeImage/ItdeP0WWcQ6NhVHGPJIPDFtU36du76JG'
-                                                    }
-                                                    alt=""
-                                                />
+                                                    className="cursor-pointer"
+                                                >
+                                                    <img
+                                                        key={
+                                                            member.id
+                                                        }
+                                                        className="w-10 h-10 border-2 border-white rounded-full dark:border-gray-800"
+                                                        src={
+                                                            member.avatar ||
+                                                            'https://itin-dev.sfo2.cdn.digitaloceanspaces.com/freeImage/ItdeP0WWcQ6NhVHGPJIPDFtU36du76JG'
+                                                        }
+                                                        alt=""
+                                                    />
+                                                </Tooltip>
                                             )
                                         )}
                                     </div>
-                                    <span
-                                        className="block w-5 h-5 cursor-pointer"
-                                        onClick={() =>
-                                            setShowModal(true)
-                                        }
+                                    <Tooltip
+                                        content="Add Tripmate"
+                                        style="light"
                                     >
-                                        <svg
-                                            width="20px"
-                                            height="20px"
-                                            aria-hidden="true"
-                                            focusable="false"
-                                            data-prefix="fas"
-                                            data-icon="user-plus"
-                                            role="img"
-                                            xmlns="http://www.w3.org/2000/svg"
-                                            viewBox="0 0 640 512"
-                                            color="#6c757d"
+                                        <span
+                                            className="block w-5 h-5 cursor-pointer"
+                                            onClick={() =>
+                                                setShowModal(true)
+                                            }
                                         >
-                                            <path
-                                                fill="currentColor"
-                                                d="M96 128a128 128 0 1 1 256 0A128 128 0 1 1 96 128zM0 482.3C0 383.8 79.8 304 178.3 304h91.4C368.2 304 448 383.8 448 482.3c0 16.4-13.3 29.7-29.7 29.7H29.7C13.3 512 0 498.7 0 482.3zM504 312V248H440c-13.3 0-24-10.7-24-24s10.7-24 24-24h64V136c0-13.3 10.7-24 24-24s24 10.7 24 24v64h64c13.3 0 24 10.7 24 24s-10.7 24-24 24H552v64c0 13.3-10.7 24-24 24s-24-10.7-24-24z"
-                                            ></path>
-                                        </svg>
-                                    </span>
+                                            <svg
+                                                width="20px"
+                                                height="20px"
+                                                aria-hidden="true"
+                                                focusable="false"
+                                                data-prefix="fas"
+                                                data-icon="user-plus"
+                                                role="img"
+                                                xmlns="http://www.w3.org/2000/svg"
+                                                viewBox="0 0 640 512"
+                                                color="#6c757d"
+                                            >
+                                                <path
+                                                    fill="currentColor"
+                                                    d="M96 128a128 128 0 1 1 256 0A128 128 0 1 1 96 128zM0 482.3C0 383.8 79.8 304 178.3 304h91.4C368.2 304 448 383.8 448 482.3c0 16.4-13.3 29.7-29.7 29.7H29.7C13.3 512 0 498.7 0 482.3zM504 312V248H440c-13.3 0-24-10.7-24-24s10.7-24 24-24h64V136c0-13.3 10.7-24 24-24s24 10.7 24 24v64h64c13.3 0 24 10.7 24 24s-10.7 24-24 24H552v64c0 13.3-10.7 24-24 24s-24-10.7-24-24z"
+                                                ></path>
+                                            </svg>
+                                        </span>
+                                    </Tooltip>
                                 </div>
                             </div>
                         </div>
