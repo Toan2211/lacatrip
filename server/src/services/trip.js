@@ -72,6 +72,7 @@ const find = async query => {
 }
 const create = async data => {
     try {
+        data.description = ''
         let trip = await db.Trip.create(data)
         await tripMemberService.addTripMember({
             tripId: trip.id,
