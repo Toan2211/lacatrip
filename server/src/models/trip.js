@@ -29,6 +29,10 @@ module.exports = (sequelize, DataTypes) => {
                 foreignKey: 'tripId',
                 as: 'tripDates'
             })
+            this.hasMany(models.Message, {
+                foreignKey: 'tripId',
+                as: 'messages'
+            })
         }
     }
     Trip.init(

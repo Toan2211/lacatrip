@@ -15,6 +15,7 @@ const destiantionTravel = require('./destinationTravel')
 const itinerary = require('./itinerary')
 const comment = require('./comment')
 const trip = require('./trip')
+const message = require('./message')
 router.get('/status', (req, res) => {
     res.status(200).json({ status: 'Status OKE' })
 })
@@ -34,4 +35,5 @@ router.use('/destination-travel', destiantionTravel)
 router.use('/itinerary', itinerary)
 router.use('/comment', comment)
 router.use('/trip', trip)
+router.use('/message', message)
 module.exports = router

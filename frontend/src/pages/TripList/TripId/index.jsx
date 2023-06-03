@@ -17,6 +17,7 @@ import _ from 'lodash'
 import LoadingPage from '@components/LoadingPage'
 import InviteTripForm from './InviteTripForm'
 import { toast } from 'react-toastify'
+import { socketSelector } from '@pages/Chat/socket.slice'
 var options = {
     weekday: 'long',
     year: 'numeric',
@@ -46,6 +47,8 @@ const ItemCard = ({ data, link }) => {
 }
 function TripId() {
     const dispatch = useDispatch()
+    const socket = useSelector(socketSelector)
+    console.log('socket in trip id', socket)
     const currentTrip = useSelector(currentTripSelector)
     const id = useParams().id
     const [nameTrip, setNameTrip] = useState('')
@@ -104,13 +107,23 @@ function TripId() {
         if (!_.isEmpty(currentTrip)) {
             setNameTrip(currentTrip.name)
             setTripdescription(currentTrip.description)
+            if (socket?.connected && currentTrip.id) {
+                socket.emit('joinRoom', currentTrip.id)
+            }
         }
-    }, [id, dispatch, currentTrip])
+    }, [id, dispatch, currentTrip, socket])
     useEffect(() => {
         return () => {
             dispatch(setCurrentTrip({}))
+
         }
     }, [dispatch])
+    useEffect(() => {
+        return () => {
+            if (socket?.connected && currentTrip.id)
+                socket.emit('leaveRoom', currentTrip.id)
+        }
+    }, [currentTrip, socket])
     if (!Object.keys(currentTrip).length) return <LoadingPage />
     return (
         <>

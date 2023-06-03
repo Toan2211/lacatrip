@@ -1,7 +1,11 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import { payloadCreator } from '@utils/helper'
 import tripApi from '@api/tripApi'
-import { HOTELTYPE, RESTAURANTTYPE, DESTINATIONTYPE } from '@constants/instanceType'
+import {
+    HOTELTYPE,
+    RESTAURANTTYPE,
+    DESTINATIONTYPE
+} from '@constants/instanceType'
 export const createTrip = createAsyncThunk(
     'trips/createTrip',
     async (payload, { rejectWithValue }) => {
@@ -61,31 +65,44 @@ const handleUpdateItinerariesFulfilled = (state, action) => {
 }
 const handleAddInstanceToTripList = (state, action) => {
     const { data, type, tripId } = action.payload.data
-    const tripIndex = state.trips.findIndex(trip => trip.id === tripId)
+    const tripIndex = state.trips.findIndex(
+        trip => trip.id === tripId
+    )
     if (type === HOTELTYPE) {
         state.trips[tripIndex].hotels.push(data)
-    }
-    else if (type === RESTAURANTTYPE) {
+    } else if (type === RESTAURANTTYPE) {
         state.trips[tripIndex].restaurants.push(data)
-    }
-    else if (type === DESTINATIONTYPE) {
+    } else if (type === DESTINATIONTYPE) {
         state.trips[tripIndex].destinationTravels.push(data)
     }
 }
 const handleRemoveInstanceFromTripList = (state, action) => {
     const { data, type, tripId } = action.payload.data
-    const tripIndex = state.trips.findIndex(trip => trip.id === tripId)
+    const tripIndex = state.trips.findIndex(
+        trip => trip.id === tripId
+    )
     if (type === HOTELTYPE) {
-        const hotelIndex = state.trips[tripIndex].hotels.findIndex(hotel => hotel.id === data.id)
+        const hotelIndex = state.trips[tripIndex].hotels.findIndex(
+            hotel => hotel.id === data.id
+        )
         state.trips[tripIndex].hotels.splice(hotelIndex, 1)
-    }
-    else if (type === RESTAURANTTYPE) {
-        const restaurantIndex = state.trips[tripIndex].restaurants.findIndex(restaurant => restaurant.id === data.id)
+    } else if (type === RESTAURANTTYPE) {
+        const restaurantIndex = state.trips[
+            tripIndex
+        ].restaurants.findIndex(
+            restaurant => restaurant.id === data.id
+        )
         state.trips[tripIndex].restaurants.splice(restaurantIndex, 1)
-    }
-    else if (type === DESTINATIONTYPE) {
-        const destinationTravelIndex = state.trips[tripIndex].destinationTravels.findIndex(destinationTravel => destinationTravel.id === data.id)
-        state.trips[tripIndex].destinationTravels.splice(destinationTravelIndex, 1)
+    } else if (type === DESTINATIONTYPE) {
+        const destinationTravelIndex = state.trips[
+            tripIndex
+        ].destinationTravels.findIndex(
+            destinationTravel => destinationTravel.id === data.id
+        )
+        state.trips[tripIndex].destinationTravels.splice(
+            destinationTravelIndex,
+            1
+        )
     }
 }
 const handleGetAllTripFullfilled = (state, action) => {
@@ -121,6 +138,10 @@ const tripSlice = createSlice({
     reducers: {
         setCurrentTrip(state, action) {
             state.currentTrip = action.payload
+        },
+        getSocket(action) {
+            const { socket } = action.payload
+            console.log('trip slice js', socket)
         }
     },
     extraReducers: builder => {
@@ -129,9 +150,18 @@ const tripSlice = createSlice({
             .addCase(getTripDetail.fulfilled, getTripDetailFullfilled)
             .addCase(createTrip.fulfilled, handleCreateTripFulfilled)
             .addCase(updateTrip.fulfilled, handleUpdateTripFulfilled)
-            .addCase(addInstanceToTripList.fulfilled, handleAddInstanceToTripList)
-            .addCase(removeInstaceFromTripList.fulfilled, handleRemoveInstanceFromTripList)
-            .addCase(updateItineraries.fulfilled, handleUpdateItinerariesFulfilled)
+            .addCase(
+                addInstanceToTripList.fulfilled,
+                handleAddInstanceToTripList
+            )
+            .addCase(
+                removeInstaceFromTripList.fulfilled,
+                handleRemoveInstanceFromTripList
+            )
+            .addCase(
+                updateItineraries.fulfilled,
+                handleUpdateItinerariesFulfilled
+            )
             .addMatcher(
                 action => action.type.endsWith('/pending'),
                 state => {
