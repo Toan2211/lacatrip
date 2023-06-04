@@ -138,10 +138,6 @@ const tripSlice = createSlice({
     reducers: {
         setCurrentTrip(state, action) {
             state.currentTrip = action.payload
-        },
-        getSocket(action) {
-            const { socket } = action.payload
-            console.log('trip slice js', socket)
         }
     },
     extraReducers: builder => {

@@ -4,12 +4,19 @@ const getConversationsByTripID = async query => {
         let { tripId, page, limit } = query
         page = page ? page : 1
         limit = limit ? limit : 10
-        const {count, rows } = await db.Message.findAndCountAll({
+        const { count, rows } = await db.Message.findAndCountAll({
             offset: (page - 1) * limit,
             limit: +limit,
             where: {
                 tripId: tripId
             },
+            include: [
+                {
+                    model: db.User,
+                    as: 'user',
+                    attributes: ['avatar', 'firstname', 'lastname']
+                }
+            ],
             order: [['createdAt', 'DESC']]
         })
         return {

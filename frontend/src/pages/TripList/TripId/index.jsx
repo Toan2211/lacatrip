@@ -18,6 +18,7 @@ import LoadingPage from '@components/LoadingPage'
 import InviteTripForm from './InviteTripForm'
 import { toast } from 'react-toastify'
 import { socketSelector } from '@pages/Chat/socket.slice'
+import Chat from '@pages/Chat'
 var options = {
     weekday: 'long',
     year: 'numeric',
@@ -48,7 +49,6 @@ const ItemCard = ({ data, link }) => {
 function TripId() {
     const dispatch = useDispatch()
     const socket = useSelector(socketSelector)
-    console.log('socket in trip id', socket)
     const currentTrip = useSelector(currentTripSelector)
     const id = useParams().id
     const [nameTrip, setNameTrip] = useState('')
@@ -107,7 +107,7 @@ function TripId() {
         if (!_.isEmpty(currentTrip)) {
             setNameTrip(currentTrip.name)
             setTripdescription(currentTrip.description)
-            if (socket?.connected && currentTrip.id) {
+            if (socket && currentTrip.id) {
                 socket.emit('joinRoom', currentTrip.id)
             }
         }
@@ -115,12 +115,11 @@ function TripId() {
     useEffect(() => {
         return () => {
             dispatch(setCurrentTrip({}))
-
         }
     }, [dispatch])
     useEffect(() => {
         return () => {
-            if (socket?.connected && currentTrip.id)
+            if (socket && currentTrip.id)
                 socket.emit('leaveRoom', currentTrip.id)
         }
     }, [currentTrip, socket])
@@ -390,13 +389,20 @@ function TripId() {
                         </div>
                     </div>
                 </div>
-                <div className="basis-2/3 lg:h-[100vh] hidden lg:block lg:fixed w-[66%] right-0">
-                    {/* <GoogleMap
-                    center={{
-                        lat: 16.0667,
-                        lng: 108.225
-                    }}
-                /> */}
+                <div className="lg:basis-1/3 lg:h-[100vh] hidden lg:fixed lg:w-[66%] lg:right-0 lg:flex">
+                    <div className="flex-1 w-full">
+                        {/* <GoogleMap
+                            center={{
+                                lat: 16.0667,
+                                lng: 108.225
+                            }}
+                        /> */}
+                    </div>
+                    {currentTrip.members.length > 1 && (
+                        <div className="flex-1 lg:h-[90vh] shadow-lg">
+                            <Chat />
+                        </div>
+                    )}
                 </div>
             </div>
             <InviteTripForm

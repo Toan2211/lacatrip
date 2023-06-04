@@ -65,7 +65,6 @@ io.on('connection', socket => {
     socket.on('joinRoom', room => {
         socket.join(room)
         const clients = getClientsInRoom(room)
-        // console.log('room',room, clients)
         socket.emit('get clients', {
             clients: clients
         })
@@ -76,10 +75,40 @@ io.on('connection', socket => {
         socket.to(room).emit('user left', socket.id)
     })
 
-    socket.on('chat message', ({ room, message }) => {
-        socket
-            .to(room)
-            .emit('chat message', { id: socket.id, message })
+    socket.on('addMessage', ({ room, message, members }) => {
+        const clients = getClientsInRoom(room)
+        socket.emit('joinRoomToClient', clients)
+        let membersTrip = [...members]
+        const userSend = users.find(
+            user => user.id === message.senderId
+        )
+        membersTrip = membersTrip.filter(
+            member => member.id !== message.senderId
+        )
+        if (!userSend) return
+        clients.forEach(client => {
+            if (client.id !== userSend.socketId) {
+                const userClient = users.find(
+                    user => user.socketId === client.id
+                )
+                membersTrip = membersTrip.filter(
+                    member => member.id !== userClient.id
+                )
+                socket
+                    .to(`${client.id}`)
+                    .emit('addMessageToClient', message)
+            }
+        })
+        membersTrip.forEach(member => {
+            const user = users.find(user => user.id === member.id)
+            const notification = 'test notification'
+            if (user) {
+                socket
+                    .to(`${user.socketId}`)
+                    .emit('createNotifyToClient', notification)
+            }
+
+        })
     })
 
     socket.on('disconnect', () => {

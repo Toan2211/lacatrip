@@ -35,7 +35,7 @@ function App() {
     }, [dispatch])
     return (
         <div>
-            {profile.id && socket?.connected && <SocketClient />}
+            {profile.id && socket && <SocketClient />}
             <CommonProperty />
             <ToastContainer />
             <RoutesComponent />

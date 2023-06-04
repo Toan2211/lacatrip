@@ -16,6 +16,7 @@ import hotelClientReducer from '@pages/HotelList/hotelclient.slice.js'
 import commentReducer from '@pages/Comment/comment.slice.js'
 import tripReducer from '@pages/TripList/trip.slice.js'
 import socketReducer from '@pages/Chat/socket.slice.js'
+import messageReducer from '@pages/Chat/message.slice.js'
 const rootReducer = {
     propertys: baseProperty,
     auth: authReducer,
@@ -36,7 +37,8 @@ const rootReducer = {
     comments: commentReducer,
     trips: tripReducer,
     //chat
-    socket: socketReducer
+    socket: socketReducer,
+    messages: messageReducer
 }
 const store = configureStore({
     reducer: rootReducer,
