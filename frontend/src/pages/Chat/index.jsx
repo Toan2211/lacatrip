@@ -41,6 +41,10 @@ function Chat() {
                 message: messageSended.data,
                 members: currentTrip.members
             })
+            socket.emit('getUsersInRoom', {
+                room: currentTrip.id,
+                userId: user.id
+            })
             setMessageInput('')
             setPreviewSource('')
             setImage(null)

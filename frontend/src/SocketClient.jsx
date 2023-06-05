@@ -2,7 +2,20 @@ import { socketSelector } from '@pages/Chat/socket.slice'
 import { addMessage } from '@pages/Chat/message.slice'
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { toast } from 'react-toastify'
+import { setCurrentOnline } from '@pages/Chat/message.slice'
+
+const spawnNotification = ({ body, icon, url, title }) => {
+    let options = {
+        body,
+        icon
+    }
+    let n = new Notification(title, options)
+
+    n.onclick = e => {
+        e.preventDefault()
+        window.open(url, '_blank')
+    }
+}
 
 function SocketClient() {
     const { auth } = useSelector(state => state)
@@ -27,21 +40,24 @@ function SocketClient() {
 
     useEffect(() => {
         socket.on('createNotifyToClient', notify => {
-            toast.success(notify, {
-                position: toast.POSITION.TOP_CENTER,
-                autoClose: 1000,
-                hideProgressBar: true
-            })
+            spawnNotification(notify)
         })
         return () => socket.off('createNotifyToClient')
     }, [socket, dispatch])
+
+    useEffect(() => {
+        socket.on('getClientsToClient', clients => {
+            dispatch(setCurrentOnline(clients))
+        })
+        return () => socket.off('getClientsToClient')
+    }, [socket, dispatch])
     //romm
-    // useEffect(() => {
-    //     socket.on('joinRoomToClient', clients => {
-    //         console.log('joinRoomToClient', clients)
-    //     })
-    //     // return () => socket.off('addMessageToClient')
-    // }, [socket])
+    useEffect(() => {
+        socket.on('joinRoomToClient', clients => {
+            console.log('joinRoomToClient', clients)
+        })
+        // return () => socket.off('addMessageToClient')
+    }, [socket])
     return <></>
 }
 

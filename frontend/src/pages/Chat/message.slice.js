@@ -30,7 +30,8 @@ const handleGetConversationByTripIdFullfilled = (state, action) => {
 const messageSlice = createSlice({
     name: 'messages',
     initialState: {
-        currentConversation: []
+        currentConversation: [],
+        currentOnline: []
     },
     reducers: {
         setCurrentConversation(state, action) {
@@ -38,6 +39,9 @@ const messageSlice = createSlice({
         },
         addMessage(state, action) {
             state.currentConversation.push(action.payload)
+        },
+        setCurrentOnline(state, action) {
+            state.currentOnline = action.payload
         }
     },
     extraReducers: builder => {
@@ -50,4 +54,4 @@ const messageSlice = createSlice({
 export const currentConversationSelector = state => state.messages.currentConversation
 const { actions, reducer } = messageSlice
 export default reducer
-export const { setCurrentConversation, addMessage } = actions
+export const { setCurrentConversation, addMessage, setCurrentOnline } = actions

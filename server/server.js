@@ -64,15 +64,43 @@ io.on('connection', socket => {
 
     socket.on('joinRoom', room => {
         socket.join(room)
-        const clients = getClientsInRoom(room)
-        socket.emit('get clients', {
-            clients: clients
+        let clients = getClientsInRoom(room)
+        const clientsArr = clients.map(client =>
+            users.find(user => user.socketId === client.id)
+        )
+        clients.forEach(client => {
+            socket
+                .to(`${client.id}`)
+                .emit('getClientsToClient', clientsArr)
         })
     })
 
     socket.on('leaveRoom', room => {
         socket.leave(room)
         socket.to(room).emit('user left', socket.id)
+        let clients = getClientsInRoom(room)
+        const clientsArr = clients.map(client =>
+            users.find(user => user.socketId === client.id)
+        )
+        clients.forEach(client => {
+            socket
+                .to(`${client.id}`)
+                .emit('getClientsToClient', clientsArr)
+        })
+    })
+
+    socket.on('getUsersInRoom', ({ room, userId }) => {
+        console.log(userId, room)
+        const clients = getClientsInRoom(room)
+        const user = users.find(user => user.id === userId)
+        console.log(user)
+        console.log(clients)
+        if (user) {
+            console.log(user.socketId)
+            socket
+                .to(user.socketId)
+                .emit('getUsersInRoomToClient', { clients: clients })
+        }
     })
 
     socket.on('addMessage', ({ room, message, members }) => {
@@ -99,16 +127,24 @@ io.on('connection', socket => {
                     .emit('addMessageToClient', message)
             }
         })
-        membersTrip.forEach(member => {
+        const notification = {
+            body:
+                message.user.firstname +
+                message.user.lastname +
+                ': ' +
+                message.content,
+            icon: message.user.avatar,
+            url: `${process.env.REACT_API}/trip/${message.tripId}`,
+            title: 'Lacatrip'
+        }
+        for (const member of membersTrip) {
             const user = users.find(user => user.id === member.id)
-            const notification = 'test notification'
             if (user) {
                 socket
                     .to(`${user.socketId}`)
                     .emit('createNotifyToClient', notification)
             }
-
-        })
+        }
     })
 
     socket.on('disconnect', () => {

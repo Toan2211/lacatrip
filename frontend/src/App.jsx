@@ -33,6 +33,23 @@ function App() {
             setSocket(null)
         }
     }, [dispatch])
+    useEffect(() => {
+        if (!('Notification' in window)) {
+            alert(
+                'This browser does not support desktop notification'
+            )
+        } else if (Notification.permission === 'granted') {
+            /* empty */
+        } else if (Notification.permission !== 'denied') {
+            Notification.requestPermission().then(function (
+                permission
+            ) {
+                if (permission === 'granted') {
+                    /* empty */
+                }
+            })
+        }
+    }, [])
     return (
         <div>
             {profile.id && socket && <SocketClient />}

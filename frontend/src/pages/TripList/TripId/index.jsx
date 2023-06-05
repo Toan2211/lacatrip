@@ -19,6 +19,7 @@ import InviteTripForm from './InviteTripForm'
 import { toast } from 'react-toastify'
 import { socketSelector } from '@pages/Chat/socket.slice'
 import Chat from '@pages/Chat'
+import { setCurrentOnline } from '@pages/Chat/message.slice'
 var options = {
     weekday: 'long',
     year: 'numeric',
@@ -119,10 +120,12 @@ function TripId() {
     }, [dispatch])
     useEffect(() => {
         return () => {
-            if (socket && currentTrip.id)
+            if (socket && currentTrip.id) {
                 socket.emit('leaveRoom', currentTrip.id)
+                dispatch(setCurrentOnline([]))
+            }
         }
-    }, [currentTrip, socket])
+    }, [currentTrip, socket, dispatch])
     if (!Object.keys(currentTrip).length) return <LoadingPage />
     return (
         <>
