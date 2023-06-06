@@ -21,6 +21,13 @@ module.exports = {
             message: {
                 type: Sequelize.TEXT
             },
+            url: {
+                type: Sequelize.STRING
+            },
+            isReaded: {
+                type: Sequelize.BOOLEAN,
+                defaultValue: false
+            },
             createdAt: {
                 allowNull: false,
                 type: Sequelize.DATE

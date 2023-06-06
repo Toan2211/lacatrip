@@ -3,6 +3,7 @@ import { addMessage } from '@pages/Chat/message.slice'
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { setCurrentOnline } from '@pages/Chat/message.slice'
+import { getNotifications } from '@pages/Notification/notification.slice'
 
 const spawnNotification = ({ body, icon, url, title }) => {
     let options = {
@@ -41,6 +42,7 @@ function SocketClient() {
     useEffect(() => {
         socket.on('createNotifyToClient', notify => {
             spawnNotification(notify)
+            dispatch(getNotifications())
         })
         return () => socket.off('createNotifyToClient')
     }, [socket, dispatch])
@@ -52,12 +54,12 @@ function SocketClient() {
         return () => socket.off('getClientsToClient')
     }, [socket, dispatch])
     //romm
-    useEffect(() => {
-        socket.on('joinRoomToClient', clients => {
-            console.log('joinRoomToClient', clients)
-        })
-        // return () => socket.off('addMessageToClient')
-    }, [socket])
+    // useEffect(() => {
+    //     socket.on('joinRoomToClient', clients => {
+    //         console.log('joinRoomToClient', clients)
+    //     })
+    //     // return () => socket.off('addMessageToClient')
+    // }, [socket])
     return <></>
 }
 

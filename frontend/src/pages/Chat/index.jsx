@@ -5,6 +5,7 @@ import { currentTripSelector } from '@pages/TripList/trip.slice'
 import { toast } from 'react-toastify'
 import {
     createMessage,
+    currentOnelineSelector,
     setCurrentConversation
 } from './message.slice'
 import { currentConversationSelector } from './message.slice'
@@ -12,12 +13,15 @@ import { getConversationByTripId } from './message.slice'
 import { selectUser } from '@pages/Auth/auth.slice'
 import { unwrapResult } from '@reduxjs/toolkit'
 import { socketSelector } from './socket.slice'
+import { createNotification } from '@pages/Notification/notification.slice'
+import { readNotification } from '@pages/Notification/notification.slice'
 
 function Chat() {
     const dispatch = useDispatch()
     const socket = useSelector(socketSelector)
     const currentTrip = useSelector(currentTripSelector)
     const conversations = useSelector(currentConversationSelector)
+    const currentOnline = useSelector(currentOnelineSelector)
     const user = useSelector(selectUser)
     const [messageInput, setMessageInput] = useState('')
     const [paramsConv, setParamsConv] = useState({
@@ -45,6 +49,22 @@ function Chat() {
                 room: currentTrip.id,
                 userId: user.id
             })
+            for (const member of currentTrip.members) {
+                const isOnline = currentOnline.find(
+                    item => item.id === member.id
+                )
+                if (!isOnline && member.id !== user.id)
+                    dispatch(
+                        createNotification({
+                            receiverId: member.id,
+                            tripId: currentTrip.id,
+                            url: `/trip/${currentTrip.id}`,
+                            message: messageSended.data.image
+                                ? 'Sent a photo'
+                                : messageSended.data.content
+                        })
+                    ).then(res => unwrapResult(res))
+            }
             setMessageInput('')
             setPreviewSource('')
             setImage(null)
@@ -94,6 +114,11 @@ function Chat() {
                 getConversationByTripId({
                     tripId: currentTrip.id,
                     params: paramsConv
+                })
+            )
+            dispatch(
+                readNotification({
+                    tripId: currentTrip.id
                 })
             )
         }

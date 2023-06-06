@@ -9,6 +9,18 @@ module.exports = (sequelize, DataTypes) => {
          */
         static associate(models) {
             // define association here
+            this.belongsTo(models.User, {
+                foreignKey: 'senderId',
+                as: 'sender'
+            })
+            this.belongsTo(models.User, {
+                foreignKey: 'receiverId',
+                as: 'receiver'
+            })
+            this.belongsTo(models.Trip, {
+                foreignKey: 'tripId',
+                as: 'trip'
+            })
         }
     }
     Notification.init(
@@ -22,7 +34,9 @@ module.exports = (sequelize, DataTypes) => {
             senderId: DataTypes.UUID,
             receiverId: DataTypes.UUID,
             tripID: DataTypes.UUID,
-            message: DataTypes.TEXT
+            message: DataTypes.TEXT,
+            url: DataTypes.STRING,
+            isReaded: DataTypes.BOOLEAN
         },
         {
             sequelize,

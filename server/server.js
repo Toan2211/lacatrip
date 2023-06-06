@@ -90,13 +90,9 @@ io.on('connection', socket => {
     })
 
     socket.on('getUsersInRoom', ({ room, userId }) => {
-        console.log(userId, room)
         const clients = getClientsInRoom(room)
         const user = users.find(user => user.id === userId)
-        console.log(user)
-        console.log(clients)
         if (user) {
-            console.log(user.socketId)
             socket
                 .to(user.socketId)
                 .emit('getUsersInRoomToClient', { clients: clients })
@@ -119,12 +115,14 @@ io.on('connection', socket => {
                 const userClient = users.find(
                     user => user.socketId === client.id
                 )
-                membersTrip = membersTrip.filter(
-                    member => member.id !== userClient.id
-                )
-                socket
-                    .to(`${client.id}`)
-                    .emit('addMessageToClient', message)
+                if (userClient) {
+                    membersTrip = membersTrip.filter(
+                        member => member.id !== userClient.id
+                    )
+                    socket
+                        .to(`${client.id}`)
+                        .emit('addMessageToClient', message)
+                }
             }
         })
         const notification = {

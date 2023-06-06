@@ -52,6 +52,7 @@ const messageSlice = createSlice({
 })
 
 export const currentConversationSelector = state => state.messages.currentConversation
+export const currentOnelineSelector = state => state.messages.currentOnline
 const { actions, reducer } = messageSlice
 export default reducer
 export const { setCurrentConversation, addMessage, setCurrentOnline } = actions

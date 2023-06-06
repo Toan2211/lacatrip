@@ -17,6 +17,7 @@ import commentReducer from '@pages/Comment/comment.slice.js'
 import tripReducer from '@pages/TripList/trip.slice.js'
 import socketReducer from '@pages/Chat/socket.slice.js'
 import messageReducer from '@pages/Chat/message.slice.js'
+import notificationReducer from '@pages/Notification/notification.slice.js'
 const rootReducer = {
     propertys: baseProperty,
     auth: authReducer,
@@ -38,7 +39,8 @@ const rootReducer = {
     trips: tripReducer,
     //chat
     socket: socketReducer,
-    messages: messageReducer
+    messages: messageReducer,
+    notifications: notificationReducer
 }
 const store = configureStore({
     reducer: rootReducer,

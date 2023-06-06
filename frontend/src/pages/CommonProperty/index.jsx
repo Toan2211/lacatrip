@@ -10,6 +10,7 @@ import { unwrapResult } from '@reduxjs/toolkit'
 import { selectUser } from '@pages/Auth/auth.slice'
 import { getAllTrip } from '@pages/TripList/trip.slice'
 import { allTripsSelector } from '@pages/TripList/trip.slice'
+import { getNotifications } from '@pages/Notification/notification.slice'
 
 function CommonProperty() {
     const dispatch = useDispatch()
@@ -28,6 +29,7 @@ function CommonProperty() {
                 await dispatch(getAmenitiesHotel())
             if (profile.id && firstTime) {
                 dispatch(getAllTrip())
+                dispatch(getNotifications())
                 setFirsttime(false)
             }
         }
