@@ -8,11 +8,13 @@ import { useSelector } from 'react-redux'
 import { selectUser } from '@pages/Auth/auth.slice'
 import UserDropdown from '@components/Dropdown/UserDropdown'
 import SidebarMobile from '@components/SidebarMobile'
+import { countNotReadedSelector } from '@pages/Notification/notification.slice'
 
 function Header() {
     const user = useSelector(selectUser)
     const location = useLocation()
     const [openForm, setOpenForm] = useState(false)
+    const countNotReaded = useSelector(countNotReadedSelector)
     const onClose = () => {
         setOpenForm(false)
     }
@@ -72,7 +74,9 @@ function Header() {
                     <Link
                         to={path.clientTrips}
                         className={`${
-                            location.pathname.includes(path.clientTrips)
+                            location.pathname.includes(
+                                path.clientTrips
+                            )
                                 ? 'bg-slate-100 border-slate-200 '
                                 : 'border-transparent '
                         } hidden lg:flex gap-1 items-center font-medium hover:bg-slate-100 hover:border-slate-200 border-2  px-4 py-2 rounded-xl`}
@@ -82,15 +86,27 @@ function Header() {
                         </span>
                         <span>Trips</span>
                     </Link>
-                    <div className="hidden lg:flex gap-1 items-center cursor-pointer hover:bg-slate-100 hover:border-slate-200 border-2  border-transparent px-4 py-2 rounded-xl">
+                    <Link
+                        to={path.notification}
+                        className={`${
+                            location.pathname.includes(
+                                path.notification
+                            )
+                                ? 'bg-slate-100 border-slate-200 '
+                                : 'border-transparent '
+                        } hidden lg:flex gap-1 items-center font-medium hover:bg-slate-100 hover:border-slate-200 border-2  px-4 py-2 rounded-xl`}
+                    >
+                        {' '}
                         <span className="relative">
                             <GrNotification />
-                            <span className="absolute top-[-14px] right-[-10px] z-10 flex justify-center items-center w-5 h-5 rounded-xl bg-red-600 text-white text-center">
-                                5
-                            </span>
+                            {!!countNotReaded && (
+                                <span className="absolute top-[-14px] right-[-10px] z-10 flex justify-center items-center w-5 h-5 rounded-xl bg-red-600 text-white text-center">
+                                    {countNotReaded}
+                                </span>
+                            )}
                         </span>
                         <span>Notifications</span>
-                    </div>
+                    </Link>
                     {user.id ? (
                         <UserDropdown />
                     ) : (
