@@ -11,6 +11,19 @@ const getConversationsByTripID = async (req, res) => {
         return res.status(500).json({ message: error.message })
     }
 }
+const getAllMessages = async (req, res) => {
+    try {
+        req.query.tripId = req.params.id
+        const result = await messageService.getAllMessages(req.query)
+        return res.status(200).json({
+            message: 'Get list messages successful !',
+            data: result
+        })
+    } catch (error) {
+        console.log(error)
+        return res.status(500).json({ message: error.message })
+    }
+}
 const create = async (req, res) => {
     try {
 
@@ -28,5 +41,6 @@ const create = async (req, res) => {
 }
 module.exports = {
     create,
-    getConversationsByTripID
+    getConversationsByTripID,
+    getAllMessages
 }

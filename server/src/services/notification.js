@@ -139,10 +139,24 @@ const countNotifyNotReaded = async receiverId => {
         throw new Error(error)
     }
 }
+const deleteNotify = async (notifyId, receiverId) => {
+    try {
+        await db.Notification.destroy({
+            where: {
+                id: notifyId,
+                receiverId: receiverId
+            }
+        })
+        return notifyId
+    } catch (error) {
+        throw new Error(error)
+    }
+}
 module.exports = {
     create,
     findOne,
     getNotifications,
     readNotification,
-    countNotifyNotReaded
+    countNotifyNotReaded,
+    deleteNotify
 }

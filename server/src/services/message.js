@@ -1,3 +1,4 @@
+const { Sequelize, Op } = require('sequelize')
 const db = require('../models')
 const getConversationsByTripID = async query => {
     try {
@@ -17,7 +18,8 @@ const getConversationsByTripID = async query => {
                     attributes: ['avatar', 'firstname', 'lastname']
                 }
             ],
-            order: [['createdAt', 'DESC']]
+            order: [['createdAt', 'DESC']],
+            distinct: true
         })
         return {
             messages: rows,
@@ -28,6 +30,59 @@ const getConversationsByTripID = async query => {
                 size: +limit
             }
         }
+    } catch (error) {
+        throw new Error(error)
+    }
+}
+const getAllMessages = async query => {
+    try {
+        let { tripId, messageID, limit, time } = query
+        limit = limit ? limit : 10
+        let messages = []
+        if (time)
+            messages = await db.Message.findAll({
+                include: [
+                    {
+                        model: db.User,
+                        as: 'user',
+                        attributes: [
+                            'avatar',
+                            'firstname',
+                            'lastname'
+                        ]
+                    }
+                ],
+                distinct: true,
+                where: {
+                    createdAt: {
+                        [Op.lt]: new Date(time)
+                    },
+                    tripId: tripId
+                },
+                order: [['createdAt', 'DESC']],
+                limit: limit
+            })
+        else
+            messages = await db.Message.findAll({
+                where: {
+                    tripId
+                },
+                limit: Number(limit),
+                include: [
+                    {
+                        model: db.User,
+                        as: 'user',
+                        attributes: [
+                            'avatar',
+                            'firstname',
+                            'lastname'
+                        ]
+                    }
+                ],
+                order: [['createdAt', 'DESC']],
+                distinct: true
+            })
+        return messages
     } catch (error) {
         throw new Error(error)
     }
@@ -64,5 +119,6 @@ const findOne = async id => {
 }
 module.exports = {
     getConversationsByTripID,
-    create
+    create,
+    getAllMessages
 }

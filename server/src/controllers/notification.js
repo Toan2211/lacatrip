@@ -44,8 +44,20 @@ const readNotification = async (req, res) => {
         return res.status(500).json({ message: error.message })
     }
 }
+const deleteNotify = async (req, res) => {
+    try {
+        const notify = await notificationService.deleteNotify(req.params.id, req.user.id)
+        return res.status(200).json({
+            message: 'Delete successful',
+            data: notify
+        })
+    } catch (error) {
+        return res.status(500).json({ message: error.message })
+    }
+}
 module.exports = {
     create,
     getNotifications,
-    readNotification
+    readNotification,
+    deleteNotify
 }

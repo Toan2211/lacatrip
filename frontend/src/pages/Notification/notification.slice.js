@@ -15,6 +15,16 @@ export const readNotification = createAsyncThunk(
     'notifications/readNotification',
     payloadCreator(notificationApi.readedNotifi)
 )
+export const deleteNotify = createAsyncThunk(
+    'notifications/deleteNotification',
+    payloadCreator(notificationApi.deleteNotify)
+)
+const deleteFullfilled = (state, action) => {
+    const notifications = state.notifications.filter(
+        notify => notify.id !== action.payload.data
+    )
+    state.notifications = notifications
+}
 const getAllFullfilled = (state, action) => {
     const { notifications, pagination } = action.payload.data
     state.notifications = notifications
@@ -26,7 +36,7 @@ const readNotificationFulfilled = (state, action) => {
         const notify = state.notifications.find(
             notify => notify.id === action.payload.data.id
         )
-        if (notify) {
+        if (notify && !notify.isReaded) {
             notify.isReaded = true
             state.countNotReaded = state.countNotReaded - 1
         }
@@ -42,14 +52,18 @@ const notificationSlice = createSlice({
     reducers: {},
     extraReducers: builder => {
         builder.addCase(getNotifications.fulfilled, getAllFullfilled)
-        builder.addCase(
-            readNotification.fulfilled,
-            readNotificationFulfilled
-        )
+        builder
+            .addCase(
+                readNotification.fulfilled,
+                readNotificationFulfilled
+            )
+            .addCase(deleteNotify.fulfilled, deleteFullfilled)
     }
 })
 
 export const notificationsSelector = state =>
     state.notifications.notifications
+export const countNotReadedSelector = state =>
+    state.notifications.countNotReaded
 const { actions, reducer } = notificationSlice
 export default reducer

@@ -18,5 +18,10 @@ router.post(
     verifyToken,
     controller.readNotification
 )
+router.delete(
+    '/:id',
+    verifyToken,
+    controller.deleteNotify
+)
 
 module.exports = router

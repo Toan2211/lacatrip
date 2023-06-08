@@ -17,7 +17,7 @@ router.post(
 router.get(
     '/conversation/:id',
     verifyToken,
-    controller.getConversationsByTripID
+    controller.getAllMessages
 )
 
 module.exports = router

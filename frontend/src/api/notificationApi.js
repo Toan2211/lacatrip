@@ -9,6 +9,9 @@ const notificationApi = {
     },
     readedNotifi(data) {
         return http.post('/notification/read', data)
+    },
+    deleteNotify(id) {
+        return http.delete(`/notification/${id}`)
     }
 }
 export default notificationApi

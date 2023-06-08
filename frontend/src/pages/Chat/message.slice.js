@@ -22,10 +22,21 @@ export const getConversationByTripId = createAsyncThunk(
     payloadCreator(messageApi.getConversationByTripId)
 )
 const handleCreateMessageFulfilled = (state, action) => {
-    state.currentConversation = [...state.currentConversation, action.payload.data]
+    state.currentConversation = [
+        ...state.currentConversation,
+        action.payload.data
+    ]
 }
 const handleGetConversationByTripIdFullfilled = (state, action) => {
-    state.currentConversation = [...action.payload.data.messages].reverse()
+    if (state.currentConversation.length === 0)
+        state.currentConversation = [...action.payload.data].reverse()
+    else if (action.payload.data) {
+        const rever = action.payload.data.reverse()
+        state.currentConversation = [
+            ...rever,
+            ...state.currentConversation
+        ]
+    }
 }
 const messageSlice = createSlice({
     name: 'messages',
@@ -46,13 +57,25 @@ const messageSlice = createSlice({
     },
     extraReducers: builder => {
         builder
-            .addCase(createMessage.fulfilled, handleCreateMessageFulfilled)
-            .addCase(getConversationByTripId.fulfilled, handleGetConversationByTripIdFullfilled)
+            .addCase(
+                createMessage.fulfilled,
+                handleCreateMessageFulfilled
+            )
+            .addCase(
+                getConversationByTripId.fulfilled,
+                handleGetConversationByTripIdFullfilled
+            )
     }
 })
 
-export const currentConversationSelector = state => state.messages.currentConversation
-export const currentOnelineSelector = state => state.messages.currentOnline
+export const currentConversationSelector = state =>
+    state.messages.currentConversation
+export const currentOnelineSelector = state =>
+    state.messages.currentOnline
 const { actions, reducer } = messageSlice
 export default reducer
-export const { setCurrentConversation, addMessage, setCurrentOnline } = actions
+export const {
+    setCurrentConversation,
+    addMessage,
+    setCurrentOnline
+} = actions

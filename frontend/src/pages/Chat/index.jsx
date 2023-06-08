@@ -24,10 +24,6 @@ function Chat() {
     const currentOnline = useSelector(currentOnelineSelector)
     const user = useSelector(selectUser)
     const [messageInput, setMessageInput] = useState('')
-    const [paramsConv, setParamsConv] = useState({
-        page: 1,
-        limit: 10
-    })
     const refDisplay = useRef()
     const handleMessageInputChange = e =>
         setMessageInput(e.target.value)
@@ -112,8 +108,7 @@ function Chat() {
         if (currentTrip.id) {
             dispatch(
                 getConversationByTripId({
-                    tripId: currentTrip.id,
-                    params: paramsConv
+                    tripId: currentTrip.id
                 })
             )
             dispatch(
@@ -123,9 +118,9 @@ function Chat() {
             )
         }
         return () => {
-            setCurrentConversation([])
+            dispatch(setCurrentConversation([]))
         }
-    }, [currentTrip, paramsConv, dispatch])
+    }, [currentTrip, dispatch])
     useEffect(() => {
         if (refDisplay.current) {
             refDisplay.current.scrollIntoView({
@@ -134,12 +129,27 @@ function Chat() {
             })
         }
     }, [conversations])
+    const onScroll = e => {
+        if (e.currentTarget.scrollTop === 0 && conversations.length > 0) {
+            dispatch(
+                getConversationByTripId({
+                    tripId: currentTrip.id,
+                    params: {
+                        time: conversations[0].createdAt
+                    }
+                })
+            )
+        }
+    }
     return (
         <div className="h-full flex flex-col">
             <header className=" font-semibold bg-slate-200 p-4 text-lg uppercase rounded-md">
                 Chat between tripmate
             </header>
-            <div className="overflow-y-scroll flex-1  gap-2 p-2 h-[calc(100%-200px)]">
+            <div
+                className="overflow-y-scroll flex-1  gap-2 p-2 h-[calc(100%-200px)]"
+                onScroll={onScroll}
+            >
                 <div className="flex flex-col w-full max-h-full">
                     {conversations.map((message, index) => (
                         <ChatCard
