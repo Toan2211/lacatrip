@@ -302,7 +302,7 @@ const inviteMember = async (email, tripId, editable) => {
         const user = await userService.findAuthenUserByEmail(email)
         const trip = await findOne(tripId)
         if (user) {
-            const check = tripMemberService.checkMemberInTrip(tripId, user.id)
+            const check = await tripMemberService.checkMemberInTrip(tripId, user.id)
             if (check)
                 return true
             await tripMemberService.addTripMember({

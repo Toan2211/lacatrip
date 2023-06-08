@@ -17,16 +17,19 @@ import _ from 'lodash'
 import LoadingPage from '@components/LoadingPage'
 import InviteTripForm from './InviteTripForm'
 import { toast } from 'react-toastify'
+import { socketSelector } from '@pages/Chat/socket.slice'
+import Chat from '@pages/Chat'
+import { setCurrentOnline } from '@pages/Chat/message.slice'
 var options = {
     weekday: 'long',
     year: 'numeric',
     month: 'long',
     day: 'numeric'
 }
-const ItemCard = ({ data, link }) => {
+const ItemCard = ({ data, link, onClick }) => {
     return (
         <li className="flex flex-col border-[1px] border-slate-300 rounded-2xl overflow-hidden shadow-xl mb-3">
-            <div className="w-full h-[200px]">
+            <div className="w-full h-[200px]" onClick={() => onClick(data.longtitude, data.latitude)}>
                 <img
                     src={data.images[0].url}
                     className="w-full h-full object-cover rounded-xl"
@@ -46,10 +49,12 @@ const ItemCard = ({ data, link }) => {
 }
 function TripId() {
     const dispatch = useDispatch()
+    const socket = useSelector(socketSelector)
     const currentTrip = useSelector(currentTripSelector)
     const id = useParams().id
     const [nameTrip, setNameTrip] = useState('')
     const [tripdescription, setTripdescription] = useState('')
+    const [markers, setMarkers] = useState([])
     const handleOnchangeDescription = e =>
         setTripdescription(e.target.value)
     const onNameTripBlur = async () => {
@@ -104,24 +109,124 @@ function TripId() {
         if (!_.isEmpty(currentTrip)) {
             setNameTrip(currentTrip.name)
             setTripdescription(currentTrip.description)
+            const markersHotel = currentTrip.hotels.map(hotel => ({
+                id: hotel.id,
+                name: hotel.name,
+                position: {
+                    lat: hotel.latitude,
+                    lng: hotel.longtitude
+                }
+            }))
+            const markersRes = currentTrip.restaurants.map(
+                restaurant => ({
+                    id: restaurant.id,
+                    name: restaurant.name,
+                    position: {
+                        lat: restaurant.latitude,
+                        lng: restaurant.longtitude
+                    }
+                })
+            )
+            const markersDes = currentTrip.destinationTravels.map(
+                destinationTravel => ({
+                    id: destinationTravel.id,
+                    name: destinationTravel.name,
+                    position: {
+                        lat: destinationTravel.latitude,
+                        lng: destinationTravel.longtitude
+                    }
+                })
+            )
+            setMarkers([
+                ...markersHotel,
+                ...markersRes,
+                ...markersDes
+            ])
+            if (socket && currentTrip.id) {
+                socket.emit('joinRoom', currentTrip.id)
+            }
         }
-    }, [id, dispatch, currentTrip])
+    }, [id, dispatch, currentTrip, socket])
     useEffect(() => {
         return () => {
             dispatch(setCurrentTrip({}))
         }
     }, [dispatch])
+    useEffect(() => {
+        return () => {
+            if (socket && currentTrip.id) {
+                socket.emit('leaveRoom', currentTrip.id)
+                dispatch(setCurrentOnline([]))
+            }
+        }
+    }, [currentTrip, socket, dispatch])
+    // eslint-disable-next-line no-unused-vars
+    const [image, setImage] = useState(null)
+    const [previewSource, setPreviewSource] = useState('')
+    const handleChangeImg = async e => {
+        const file = e.target.files[0]
+        if (file) setImage(file)
+        previewFile(file)
+        const formData = new FormData()
+        formData.append('id', id)
+        formData.append('image', file)
+        await dispatch(updateTrip(formData)).then(res => {
+            unwrapResult(res)
+            if (res.payload.status == 200) {
+                dispatch(
+                    setCurrentTrip({
+                        ...currentTrip,
+                        image: res.payload.data.image
+                    })
+                )
+            }
+        })
+    }
+    const previewFile = file => {
+        if (!file) return
+        const reader = new FileReader(file)
+        reader.readAsDataURL(file)
+        reader.onloadend = () => {
+            setPreviewSource(reader.result)
+        }
+    }
+    const [center, setCenter] = useState({
+        lat: 16.0667,
+        lng: 108.225
+    })
+    const handleChangeCenterMap = (longtitude, latitude) => {
+        setCenter({
+            lat: latitude,
+            lng: longtitude
+        })
+    }
     if (!Object.keys(currentTrip).length) return <LoadingPage />
     return (
         <>
             <div className="max-w-[1535px] flex min-h-[200vh]">
                 <div className="w-full lg:basis-1/3 shadow-lg">
                     <div className="relative flex flex-col items-center">
-                        <div className="w-full h-[240px]">
+                        <div className="w-full h-[240px] relative">
                             <img
-                                src="https://itin-dev.sfo2.cdn.digitaloceanspaces.com/freeImage/ItdeP0WWcQ6NhVHGPJIPDFtU36du76JG"
+                                src={
+                                    previewSource || currentTrip.image
+                                }
                                 className="w-full h-full object-cover"
                             />
+                            <label className="z-10 absolute top-0 right-3 font-bold text-2xl cursor-pointer">
+                                <input
+                                    type="file"
+                                    accept=".jpg, .svg, .png"
+                                    className=" hidden"
+                                    onChange={handleChangeImg}
+                                />
+                                <Tooltip
+                                    content="Update thumbnail trip"
+                                    style="light"
+                                >
+                                    ...
+                                </Tooltip>
+                            </label>
                         </div>
                         <div className="lg:w-[80%] bg-slate-50 h-[140px] shadow-xl rounded-xl p-4 absolute top-[180px] w-[80%]">
                             <div className="flex items-center">
@@ -273,6 +378,7 @@ function TripId() {
                                                                     hotel
                                                                 }
                                                                 link={`/hotel/${hotel.id}`}
+                                                                onClick = {handleChangeCenterMap}
                                                             />
                                                         )
                                                     )}
@@ -287,6 +393,7 @@ function TripId() {
                                                                         restaurant
                                                                     }
                                                                     link={`/restaurant/${restaurant.id}`}
+                                                                    onClick = {handleChangeCenterMap}
                                                                 />
                                                             )
                                                         )}
@@ -300,6 +407,7 @@ function TripId() {
                                                                     destinationTravel
                                                                 }
                                                                 link={`/destination-travel/${destinationTravel.id}`}
+                                                                onClick = {handleChangeCenterMap}
                                                             />
                                                         )
                                                     )}
@@ -325,6 +433,7 @@ function TripId() {
                                                     key={hotel.id}
                                                     data={hotel}
                                                     link={`/hotel/${hotel.id}`}
+                                                    onClick = {handleChangeCenterMap}
                                                 />
                                             )
                                         )}
@@ -345,6 +454,7 @@ function TripId() {
                                                     }
                                                     data={restaurant}
                                                     link={`/restaurant/${restaurant.id}`}
+                                                    onClick = {handleChangeCenterMap}
                                                 />
                                             )
                                         )}
@@ -368,6 +478,7 @@ function TripId() {
                                                         destinationTravel
                                                     }
                                                     link={`/destination-travel/${destinationTravel.id}`}
+                                                    onClick = {handleChangeCenterMap}
                                                 />
                                             )
                                         )}
@@ -377,13 +488,18 @@ function TripId() {
                         </div>
                     </div>
                 </div>
-                <div className="basis-2/3 lg:h-[100vh] hidden lg:block lg:fixed w-[66%] right-0">
-                    {/* <GoogleMap
-                    center={{
-                        lat: 16.0667,
-                        lng: 108.225
-                    }}
-                /> */}
+                <div className="lg:basis-1/3 lg:h-[100vh] hidden lg:fixed lg:w-[66%] lg:right-0 lg:flex">
+                    <div className="flex-1 w-full">
+                        <GoogleMap
+                            center={center}
+                            markers={markers}
+                        />
+                    </div>
+                    {currentTrip.members.length > 1 && (
+                        <div className="flex-1 lg:h-[90vh] shadow-lg">
+                            <Chat />
+                        </div>
+                    )}
                 </div>
             </div>
             <InviteTripForm

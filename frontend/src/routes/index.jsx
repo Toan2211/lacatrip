@@ -31,6 +31,7 @@ import RestaurantId from '@pages/RestaurantList/RestaurantId'
 import TripId from '@pages/TripList/TripId'
 import TripList from '@pages/TripList'
 import AccountInvite from '@pages/Auth/AccountInvite'
+import Notification from '@pages/Notification'
 function RoutesComponent() {
     return (
         <BrowserRouter>
@@ -74,6 +75,10 @@ function RoutesComponent() {
                         <Route
                             path={path.clientTripDetail}
                             element={<TripId />}
+                        />
+                        <Route
+                            path={path.notification}
+                            element={<Notification />}
                         />
                     </Route>
                 </Route>

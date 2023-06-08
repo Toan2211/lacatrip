@@ -24,6 +24,10 @@ module.exports = (sequelize, DataTypes) => {
                 foreignKey: 'createdby',
                 as: 'trips'
             })
+            this.hasMany(models.Message, {
+                foreignKey: 'senderId',
+                as: 'messages'
+            })
         }
     }
     User.init(
