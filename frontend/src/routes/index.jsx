@@ -32,6 +32,10 @@ import TripId from '@pages/TripList/TripId'
 import TripList from '@pages/TripList'
 import AccountInvite from '@pages/Auth/AccountInvite'
 import Notification from '@pages/Notification'
+import DestinationList from '@pages/DestinationTravelList'
+import HotelList from '@pages/HotelList'
+import RestaurantList from '@pages/RestaurantList'
+import DetailProvince from '@pages/DetailProvince'
 function RoutesComponent() {
     return (
         <BrowserRouter>
@@ -56,6 +60,22 @@ function RoutesComponent() {
                     <Route
                         path={path.clientRestaurantDetail}
                         element={<RestaurantId />}
+                    />
+                    <Route
+                        path={path.destinationList}
+                        element={<DestinationList />}
+                    />
+                    <Route
+                        path={path.hotelList}
+                        element={<HotelList />}
+                    />
+                    <Route
+                        path={path.restaurantList}
+                        element={<RestaurantList />}
+                    />
+                    <Route
+                        path={path.detailProvince}
+                        element={<DetailProvince />}
                     />
                 </Route>
                 <Route element={<AuthenticatedGuard />}>
