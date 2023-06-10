@@ -2,9 +2,10 @@ import { loadingPropertySelector } from '@pages/CommonProperty/baseproperty'
 import React from 'react'
 import Skeleton from 'react-loading-skeleton'
 import { useSelector } from 'react-redux'
+import { Link } from 'react-router-dom'
 const CardTopProvince = ({ province }) => {
     return (
-        <div className="relative cursor-pointer h-[300px] scale-95 hover:scale-100 ease-in duration-300 overflow-hidden  transition-transform">
+        <Link to={`/province/${province.id}`} className="relative cursor-pointer h-[300px] scale-95 hover:scale-100 ease-in duration-300 overflow-hidden  transition-transform">
             <img
                 src={province.image}
                 className="rounded-2xl cursor-pointer object-cover brightness-75 w-full h-full"
@@ -25,7 +26,7 @@ const CardTopProvince = ({ province }) => {
                     </span>
                 </span>
             </div>
-        </div>
+        </Link>
     )
 }
 function TopProvince({ provinces }) {

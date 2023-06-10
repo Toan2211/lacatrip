@@ -30,6 +30,10 @@ class Path {
         this.clientTripDetail = '/trip/:id'
         this.accountInvite = '/create/user-invite'
         this.notification = '/notifications'
+        this.destinationList = '/destination-travels/province/:id'
+        this.hotelList = '/hotels/province/:id'
+        this.restaurantList = '/restaurants/province/:id'
+        this.detailProvince = '/province/:id'
     }
 }
 
