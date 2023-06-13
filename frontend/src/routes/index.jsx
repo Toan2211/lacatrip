@@ -36,6 +36,7 @@ import DestinationList from '@pages/DestinationTravelList'
 import HotelList from '@pages/HotelList'
 import RestaurantList from '@pages/RestaurantList'
 import DetailProvince from '@pages/DetailProvince'
+import BookingHotel from '@pages/BookingHotel'
 function RoutesComponent() {
     return (
         <BrowserRouter>
@@ -99,6 +100,10 @@ function RoutesComponent() {
                         <Route
                             path={path.notification}
                             element={<Notification />}
+                        />
+                        <Route
+                            path={path.bookingHotel}
+                            element={<BookingHotel />}
                         />
                     </Route>
                 </Route>

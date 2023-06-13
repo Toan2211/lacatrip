@@ -14,6 +14,7 @@ import GoogleMap from '@components/GoogleMap'
 import RoomCard from './RoomCard'
 import LikeAndShare from '@components/LikeAndShare'
 import Comment from '@pages/Comment'
+import SearchForm from './SearchForm'
 
 function HotelId() {
     const dispatch = useDispatch()
@@ -171,96 +172,18 @@ function HotelId() {
                             Availability
                         </header>
                         <div className="flex flex-col gap-5">
-                            <RoomCard />
-                            <RoomCard />
-                            <RoomCard />
-                            <RoomCard />
-                            <RoomCard />
+                            {currentHotel.rooms &&
+                                currentHotel.rooms.map(room => (
+                                    <RoomCard
+                                        key={room.id}
+                                        data={room}
+                                    />
+                                ))}
                         </div>
                     </div>
                 </div>
                 <div>
-                    <div className="lg:mt-2">
-                        <div className=" border-gray-100 shadow-md border-1 lg:w-[30vw] w-full h-[50vh] border-[1px] px-5 py-10 rounded-2xl">
-                            <div className="px-4 pb-4 flex justify-between items-center">
-                                <div className="mt-4">
-                                    <span className="font-normal text-gray-400">
-                                        From:
-                                    </span>
-                                    <span className="font-bold text-xl">
-                                        ${currentHotel.cheapestPrice}
-                                    </span>
-                                </div>
-                                <div className="flex items-center gap-1">
-                                    <div className=" text-yellow-400 flex gap-1">
-                                        <span>
-                                            <AiFillStar />
-                                        </span>
-                                    </div>
-                                    <span className="font-normal text-gray-400">
-                                        {currentHotel.rating}{' '}
-                                    </span>
-                                    <span className="font-normal text-gray-400">
-                                        ({currentHotel.totalRating}{' '}
-                                        Reviews)
-                                    </span>
-                                </div>
-                            </div>
-                            <div className="border-gray-100 border-[1px] rounded-2xl w-full overflow-hidden">
-                                <div className="border-gray-100 border-[1px] w-full px-4 py-2 flex justify-between items-center">
-                                    <div className="flex flex-col">
-                                        <span className=" font-medium text-md">
-                                            Date
-                                        </span>
-                                        <span className="text-sm">
-                                            17/5/2023
-                                        </span>
-                                    </div>
-                                    <div>
-                                        <button className="bg-gray-300 text-gray-700 rounded inline-flex items-center">
-                                            <svg
-                                                className="fill-current h-4 w-4  transition-transform"
-                                                xmlns="http://www.w3.org/2000/svg"
-                                                viewBox="0 0 20 20"
-                                            >
-                                                <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
-                                            </svg>
-                                        </button>
-                                    </div>
-                                </div>
-                                <div className="border-gray-100 border-[1px] w-full px-4 py-2 flex justify-between items-center">
-                                    <div className="flex flex-col">
-                                        <span className=" font-medium text-md">
-                                            People
-                                        </span>
-                                        <span className="text-sm">
-                                            5
-                                        </span>
-                                    </div>
-                                    <div className="flex gap-3">
-                                        <span className=" px-2 py-1 border-[1px] border-black rounded-full font-bold cursor-pointer">
-                                            -
-                                        </span>
-                                        <span className=" px-2 py-1 border-[1px] border-black rounded-full font-bold cursor-pointer">
-                                            5
-                                        </span>
-                                        <span className=" px-2 py-1 border-[1px] border-black rounded-full font-bold cursor-pointer">
-                                            +
-                                        </span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="flex justify-between items-center font-semibold text-2xl mt-5">
-                                <span>Total</span>
-                                <span>$500</span>
-                            </div>
-                            <div className="text-center mt-4">
-                                <Mybutton className=" bg-blue-500 text-white active:bg-blue-800 text-sm font-semibold px-4 py-2 rounded-lg shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 w-3/4 ease-linear transition-all duration-150">
-                                    Book Now
-                                </Mybutton>
-                            </div>
-                        </div>
-                    </div>
+                    <SearchForm />
                     <div className="h-[300px] mt-4">
                         <GoogleMap
                             center={{
@@ -281,7 +204,10 @@ function HotelId() {
                     </div>
                 </div>
             </div>
-            <Comment rating={currentHotel.rating} totalRating={currentHotel.totalRating} />
+            <Comment
+                rating={currentHotel.rating}
+                totalRating={currentHotel.totalRating}
+            />
         </div>
     )
 }

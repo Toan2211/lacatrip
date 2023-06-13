@@ -4,9 +4,15 @@ import { useLocation, useNavigate, useParams } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { currentHotelSelector, getHotelById } from '../hotel.slice'
 import RoomForm from './Form'
-import { getRooms, paginationRoom, roomsSelector, setCurrentRoom } from './room.slice'
+import {
+    getRooms,
+    paginationRoom,
+    roomsSelector,
+    setCurrentRoom
+} from './room.slice'
 import queryString from 'query-string'
 import Mybutton from '@components/MyButton'
+import RoomDetailForm from './RoomDetailForm'
 
 function Rooms() {
     const dispatch = useDispatch()
@@ -18,6 +24,19 @@ function Rooms() {
     const [openForm, setOpenForm] = useState(false)
     const showDrawer = () => {
         setOpenForm(true)
+    }
+    const [openFormDetail, setOpenFormDetail] = useState(false)
+    const showDrawerDetail = () => {
+        setOpenFormDetail(true)
+    }
+    const onCloseDetail = () => {
+        setOpenFormDetail(false)
+        dispatch(setCurrentRoom({}))
+        dispatch(getRooms(queryParams))
+    }
+    const handleSelectItemDetail = room => {
+        dispatch(setCurrentRoom(room))
+        showDrawerDetail()
     }
     const onClose = () => {
         setOpenForm(false)
@@ -87,17 +106,14 @@ function Rooms() {
                 <div className="block w-full overflow-x-auto h-[66vh]">
                     <Table hoverable={true}>
                         <Table.Head>
-                            <Table.HeadCell>Room No</Table.HeadCell>
-                            <Table.HeadCell>Title</Table.HeadCell>
+                            {/* <Table.HeadCell>Room ID</Table.HeadCell> */}
+                            <Table.HeadCell>Room type</Table.HeadCell>
                             <Table.HeadCell>
                                 Description
                             </Table.HeadCell>
                             <Table.HeadCell>Price</Table.HeadCell>
                             <Table.HeadCell>
                                 Original Price
-                            </Table.HeadCell>
-                            <Table.HeadCell>
-                                Max People
                             </Table.HeadCell>
                             <Table.HeadCell>Action</Table.HeadCell>
                         </Table.Head>
@@ -108,10 +124,10 @@ function Rooms() {
                                         className="bg-white dark:border-gray-700 dark:bg-gray-800"
                                         key={room.id}
                                     >
+                                        {/* <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
+                                            {room.id}
+                                        </Table.Cell> */}
                                         <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
-                                            {room.roomNo}
-                                        </Table.Cell>
-                                        <Table.Cell>
                                             {room.title}
                                         </Table.Cell>
                                         <Table.Cell>
@@ -122,9 +138,6 @@ function Rooms() {
                                         </Table.Cell>
                                         <Table.Cell>
                                             {room.originalPrice}
-                                        </Table.Cell>
-                                        <Table.Cell>
-                                            {room.maxPeople}
                                         </Table.Cell>
                                         <Table.Cell className="flex gap-4">
                                             <Tooltip
@@ -155,7 +168,61 @@ function Rooms() {
                                                     </svg>
                                                 </Mybutton>
                                             </Tooltip>
-
+                                            <Tooltip
+                                                content="Detail Rooms Manage"
+                                                style="light"
+                                            >
+                                                <Mybutton
+                                                    onClick={() =>
+                                                        handleSelectItemDetail(
+                                                            room
+                                                        )
+                                                    }
+                                                    className="flex p-0.5 bg-yellow-500 rounded-lg hover:bg-yellow-600 transition-all duration-300 text-white"
+                                                >
+                                                    <svg
+                                                        xmlns="http://www.w3.org/2000/svg"
+                                                        className="h-6 w-6"
+                                                        fill="white"
+                                                        viewBox="0 0 24 24"
+                                                        stroke="currentColor"
+                                                        strokeWidth="2"
+                                                    >
+                                                        <title>
+                                                            door [#45]
+                                                        </title>
+                                                        <desc>
+                                                            Created
+                                                            with
+                                                            Sketch.
+                                                        </desc>
+                                                        <defs></defs>
+                                                        <g
+                                                            id="Page-1"
+                                                            stroke="none"
+                                                            strokeWidth="1"
+                                                            fill="none"
+                                                            fillRule="evenodd"
+                                                        >
+                                                            <g
+                                                                id="Dribbble-Light-Preview"
+                                                                transform="translate(-180.000000, -7999.000000)"
+                                                                fill="white"
+                                                            >
+                                                                <g
+                                                                    id="icons"
+                                                                    transform="translate(56.000000, 160.000000)"
+                                                                >
+                                                                    <path
+                                                                        d="M131.25,7849.125 C131.25,7848.573 131.698,7848.125 132.25,7848.125 C132.802,7848.125 133.25,7848.573 133.25,7849.125 C133.25,7849.677 132.802,7850.125 132.25,7850.125 C131.698,7850.125 131.25,7849.677 131.25,7849.125 L131.25,7849.125 Z M130,7857 L138,7857 L138,7841 L130,7841 L130,7857 Z M140,7857 L140,7839 L128,7839 L128,7857 L124,7857 L124,7859 L144,7859 L144,7857 L140,7857 Z"
+                                                                        id="door-[#45]"
+                                                                    ></path>
+                                                                </g>
+                                                            </g>
+                                                        </g>
+                                                    </svg>
+                                                </Mybutton>
+                                            </Tooltip>
                                         </Table.Cell>
                                     </Table.Row>
                                 ))}
@@ -173,6 +240,10 @@ function Rooms() {
                 </div>
             )}
             <RoomForm open={openForm} onClose={onClose} />
+            <RoomDetailForm
+                open={openFormDetail}
+                onClose={onCloseDetail}
+            />
         </div>
     )
 }

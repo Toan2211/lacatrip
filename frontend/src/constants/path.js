@@ -34,6 +34,8 @@ class Path {
         this.hotelList = '/hotels/province/:id'
         this.restaurantList = '/restaurants/province/:id'
         this.detailProvince = '/province/:id'
+        //booking
+        this.bookingHotel = '/hotel/booking'
     }
 }
 
