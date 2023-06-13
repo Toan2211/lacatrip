@@ -1,7 +1,7 @@
 'use strict'
 const { Model } = require('sequelize')
 module.exports = (sequelize, DataTypes) => {
-    class Room extends Model {
+    class RoomDetail extends Model {
         /**
          * Helper method for defining associations.
          * This method is not a part of Sequelize lifecycle.
@@ -13,13 +13,17 @@ module.exports = (sequelize, DataTypes) => {
                 foreignKey: 'hotelId',
                 as: 'hotel'
             })
-            this.hasMany(models.RoomDetail, {
+            this.belongsTo(models.Room, {
                 foreignKey: 'roomTypeId',
-                as: 'roomDetails'            
+                as: 'roomType'
+            })
+            this.belongsToMany(models.BookingHotel, {
+                as: 'booking',
+                through: 'BookingHotel_RoomDetail'
             })
         }
     }
-    Room.init(
+    RoomDetail.init(
         {
             id: {
                 type: DataTypes.UUID,
@@ -27,21 +31,15 @@ module.exports = (sequelize, DataTypes) => {
                 defaultValue: DataTypes.UUIDV4,
                 allowNull: false
             },
-            title: DataTypes.STRING,
-            description: DataTypes.TEXT,
-            price: DataTypes.FLOAT,
-            originalPrice: DataTypes.FLOAT,
-            childrenCount: DataTypes.INTEGER,
-            adultCount: DataTypes.INTEGER,
-            bedCount: DataTypes.INTEGER,
-            area: DataTypes.INTEGER,
+            roomNo: DataTypes.INTEGER,
+            roomTypeId: DataTypes.UUID,
             hotelId: DataTypes.UUID,
-            image: DataTypes.STRING
+            isOpen: DataTypes.BOOLEAN
         },
         {
             sequelize,
-            modelName: 'Room'
+            modelName: 'RoomDetail'
         }
     )
-    return Room
+    return RoomDetail
 }

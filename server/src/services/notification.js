@@ -1,5 +1,26 @@
 const db = require('../models')
-
+const createNotifyBooking = async data => {
+    try {
+        let notify = await db.Notification.create(data)
+        notify = await db.Notification.findByPk(notify.id, {
+            include: [
+                {
+                    model: db.User,
+                    as: 'sender',
+                    attributes: ['avatar', 'firstname', 'lastname']
+                },
+                {
+                    model: db.User,
+                    as: 'receiver',
+                    attributes: ['avatar', 'firstname', 'lastname']
+                }
+            ]
+        })
+        return notify
+    } catch (error) {
+        throw new Error(error)
+    }
+}
 const create = async data => {
     try {
         let [notifiInDB] = await db.Notification.findAll({
@@ -158,5 +179,6 @@ module.exports = {
     getNotifications,
     readNotification,
     countNotifyNotReaded,
-    deleteNotify
+    deleteNotify,
+    createNotifyBooking
 }
