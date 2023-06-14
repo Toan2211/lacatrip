@@ -13,25 +13,22 @@ const createBooking = async bookingData => {
                 )
             await booking.addRoomDetail(roomDetail)
         }
-        await paymentService.createPayment({
-            bookingId: booking.id,
-            amount: bookingData.amount,
-            paymentType: bookingData.paymentType,
-            status: false
+        booking = await db.BookingHotel.findOne({
+            where: { id: booking.id },
+            include: [
+                { model: db.Hotel, as: 'hotel' },
+                { model: db.Room, as: 'roomType' },
+                { model: db.RoomDetail, as: 'roomDetails' }
+            ]
         })
-
-        booking = await getBookingById(booking.id)
-        const notify = await notificationService.createNotifyBooking({
-            senderId: booking.userId,
-            receiverId: booking.serviceManagerId,
-            tripId: null,
-            url: `/booking-hotel/${booking.id}`,
-            message: `${booking.user.firstname} ${booking.user.lastname} already booked rooms in ${booking.hotel.name}. Please check !`
-        })
-        return {
-            booking: booking,
-            notify: notify
-        }
+        // const notify = await notificationService.createNotifyBooking({
+        //     senderId: booking.userId,
+        //     receiverId: booking.serviceManagerId,
+        //     tripId: null,
+        //     url: `/booking-hotel/${booking.id}`,
+        //     message: `${booking.user.firstname} ${booking.user.lastname} already booked rooms in ${booking.hotel.name}. Please check !`
+        // })
+        return booking
     } catch (error) {
         throw new Error(error)
     }
@@ -89,7 +86,7 @@ const getBookingById = async bookingId => {
             include: [
                 { model: db.Hotel, as: 'hotel' },
                 { model: db.Room, as: 'roomType' },
-                { model: db.Payment, as: 'payment' },
+                // { model: db.Payment, as: 'payment' },
                 { model: db.User, as: 'user' },
                 { model: db.RoomDetail, as: 'roomDetails' }
             ]

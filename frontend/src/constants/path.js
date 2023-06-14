@@ -36,6 +36,7 @@ class Path {
         this.detailProvince = '/province/:id'
         //booking
         this.bookingHotel = '/hotel/booking'
+        this.paymentSuccess = '/payment/success'
     }
 }
 

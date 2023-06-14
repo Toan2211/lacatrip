@@ -15,11 +15,11 @@ module.exports = {
             amount: {
                 type: Sequelize.INTEGER
             },
-            paymentType: {
-                type: Sequelize.INTEGER
+            paymentId: {
+                type: Sequelize.STRING
             },
-            status: {
-                type: Sequelize.BOOLEAN
+            payerId: {
+                type: Sequelize.STRING
             },
             createdAt: {
                 allowNull: false,

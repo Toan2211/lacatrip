@@ -9,8 +9,7 @@ const create = () => [
     body('countChildrens').notEmpty().isInt(),
     body('countRooms').notEmpty().isInt(),
     body('roomDetailIds').notEmpty().isArray(),
-    body('amount').notEmpty().isInt(),
-    body('paymentType').notEmpty().isInt(), // 0 - pay after checkin, 1 pay online 
+    body('amount').notEmpty().isInt()
 ]
 module.exports = {
     create

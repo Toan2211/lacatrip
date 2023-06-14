@@ -27,10 +27,6 @@ module.exports = {
             checkOut: {
                 type: Sequelize.DATE
             },
-            createdAt: {
-                allowNull: false,
-                type: Sequelize.DATE
-            },
             countAdults: {
                 type: Sequelize.INTEGER
             },
@@ -39,6 +35,13 @@ module.exports = {
             },
             countRooms: {
                 type: Sequelize.INTEGER
+            },
+            amount: {
+                type: Sequelize.INTEGER
+            },
+            createdAt: {
+                allowNull: false,
+                type: Sequelize.DATE
             },
             updatedAt: {
                 allowNull: false,

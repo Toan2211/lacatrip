@@ -37,6 +37,7 @@ import HotelList from '@pages/HotelList'
 import RestaurantList from '@pages/RestaurantList'
 import DetailProvince from '@pages/DetailProvince'
 import BookingHotel from '@pages/BookingHotel'
+import PaymentSuccess from '@pages/Payment/Success'
 function RoutesComponent() {
     return (
         <BrowserRouter>
@@ -194,6 +195,10 @@ function RoutesComponent() {
                         />
                     </Route>
                 </Route>
+                <Route
+                    path={path.paymentSuccess}
+                    element={<PaymentSuccess />}
+                />
             </Routes>
         </BrowserRouter>
     )

@@ -25,8 +25,6 @@ module.exports = (sequelize, DataTypes) => {
             },
             bookingId: DataTypes.UUID,
             amount: DataTypes.INTEGER,
-            paymentType: DataTypes.INTEGER,
-            status: DataTypes.BOOLEAN,
             paymentId: DataTypes.STRING,
             payerId: DataTypes.STRING
         },

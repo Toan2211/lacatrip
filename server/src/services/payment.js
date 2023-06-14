@@ -9,6 +9,17 @@ const createPayment = async paymentData => {
     }
 }
 
+const findPaymentByAttribute = async params => {
+    try {
+        const payment = await db.Payment.findOne({
+            where: params
+        })
+        return payment
+    } catch (error) {
+        throw new Error(error)
+    }
+}
+
 const getPaymentByBookingId = async bookingId => {
     try {
         const payment = await db.Payment.findOne({
@@ -20,10 +31,10 @@ const getPaymentByBookingId = async bookingId => {
     }
 }
 
-const updatePayment = async (bookingId, updatedData) => {
+const updatePayment = async (params, updatedData) => {
     try {
         const payment = await db.Payment.findOne({
-            where: { bookingId }
+            where: params
         })
         if (!payment) {
             throw new Error('Payment not found')
@@ -36,10 +47,10 @@ const updatePayment = async (bookingId, updatedData) => {
     }
 }
 
-const deletePayment = async bookingId => {
+const deletePayment = async params => {
     try {
         const payment = await db.Payment.findOne({
-            where: { bookingId }
+            where: params
         })
         if (!payment) {
             return false
@@ -56,5 +67,6 @@ module.exports = {
     createPayment,
     getPaymentByBookingId,
     updatePayment,
-    deletePayment
+    deletePayment,
+    findPaymentByAttribute
 }
