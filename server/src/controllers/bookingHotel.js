@@ -10,7 +10,9 @@ paypal.configure({
 const create = async (req, res) => {
     try {
         req.body.userId = req.user.id
-        const booking = await bookingHotelService.createBooking(req.body)
+        const booking = await bookingHotelService.createBooking(
+            req.body
+        )
         const description = `Payment ${booking.countRooms} ${booking?.roomType?.title} in ${booking.hotel.name}`
         const payment = {
             intent: 'sale',
@@ -27,27 +29,32 @@ const create = async (req, res) => {
                         total: booking.amount.toString(),
                         currency: 'USD'
                     },
-                    description: description, 
+                    description: description
                 }
-            ],
+            ]
         }
-    
-        paypal.payment.create(payment, async function (error, payment) {
-            if (error) {
-                return res.status(500).json({ message: error })
-            } else {
-                for (let i = 0; i < payment.links.length; i++) {
-                    if (payment.links[i].rel === 'approval_url') {
-                        await paymentService.createPayment({
-                            bookingId: booking.id,
-                            paymentId: payment.id,
-                            amount: booking.amount
-                        })
-                        return res.json(payment)
+
+        paypal.payment.create(
+            payment,
+            async function (error, payment) {
+                if (error) {
+                    return res.status(500).json({ message: error })
+                } else {
+                    for (let i = 0; i < payment.links.length; i++) {
+                        if (payment.links[i].rel === 'approval_url') {
+                            await paymentService.createPayment({
+                                bookingId: booking.id,
+                                paymentId: payment.id,
+                                amount: booking.amount
+                            })
+                            return res.json({
+                                linkPayment: payment.links[i].href
+                            })
+                        }
                     }
                 }
             }
-        })
+        )
         // return res.status(200).json({
         //     message: 'Booking successful - Please payment !',
         //     data: booking
@@ -58,7 +65,9 @@ const create = async (req, res) => {
 }
 const getAllBookingsByUser = async (req, res) => {
     try {
-        const bookings = await bookingHotelService.getAllBookingsByUser(req.query)
+        req.query.userId = req.user.id
+        const bookings =
+            await bookingHotelService.getAllBookingsByUser(req.query)
         return res.status(200).json({
             message: 'Get all booking by user!',
             data: bookings
@@ -67,9 +76,11 @@ const getAllBookingsByUser = async (req, res) => {
         return res.status(500).json({ message: error.message })
     }
 }
-const getBookingById= async (req, res) => {
+const getBookingById = async (req, res) => {
     try {
-        const booking = await bookingHotelService.getBookingById(req.params.id)
+        const booking = await bookingHotelService.getBookingById(
+            req.params.id
+        )
         return res.status(200).json({
             message: 'Get booking successful!',
             data: booking
@@ -78,8 +89,22 @@ const getBookingById= async (req, res) => {
         return res.status(500).json({ message: error.message })
     }
 }
+const getAllBookings = async (req, res) => {
+    try {
+        // req.query.userId = req.user.id
+        const bookings =
+            await bookingHotelService.getAllBookings(req.query)
+        return res.status(200).json({
+            message: 'Get all booking !',
+            data: bookings
+        })
+    } catch (error) {
+        return res.status(500).json({ message: error.message })
+    }
+}
 module.exports = {
     create,
     getAllBookingsByUser,
-    getBookingById
+    getBookingById,
+    getAllBookings
 }

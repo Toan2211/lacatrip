@@ -22,6 +22,7 @@ class Path {
         this.destinations = '/system/destination-travel'
         this.formDestination = '/system/destination-travel/form'
         this.formUpdateDestination = '/system/destination-travel/form/:id'
+        this.bookingHotelSystem = '/system/booking-hotel'
         //client
         this.clientDestinationTravelDetail = '/destination-travel/:id'
         this.clientHotelDetail = '/hotel/:id'
@@ -35,8 +36,10 @@ class Path {
         this.restaurantList = '/restaurants/province/:id'
         this.detailProvince = '/province/:id'
         //booking
+        this.bookingme = '/booking/me'
         this.bookingHotel = '/hotel/booking'
         this.paymentSuccess = '/payment/success'
+        this.paymentFail = '/payment/fail'
     }
 }
 

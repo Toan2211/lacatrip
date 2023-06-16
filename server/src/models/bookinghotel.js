@@ -25,6 +25,10 @@ module.exports = (sequelize, DataTypes) => {
                 foreignKey: 'roomTypeId',
                 as: 'roomType'
             })
+            this.belongsTo(models.ServiceManager, {
+                foreignKey: 'serviceManagerId',
+                as: 'serviceManager'
+            })
             this.belongsToMany(models.RoomDetail, {
                 as: 'roomDetails',
                 through: 'BookingHotel_RoomDetail'

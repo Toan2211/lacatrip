@@ -1,8 +1,93 @@
-const { Sequelize } = require('sequelize')
+const { Sequelize, Op } = require('sequelize')
 const db = require('../models')
 const paymentService = require('./payment')
 const roomDetailService = require('./roomdetail')
 const notificationService = require('./notification')
+
+const getAllBookings = async ({
+    userId,
+    checkInDate,
+    checkOutDate,
+    page,
+    limit,
+    serviceManagerId
+}) => {
+    try {
+        page = page ? page : 1
+        limit = limit ? limit : 10
+        let whereParams = {}
+        if (userId)
+            whereParams = {
+                ...whereParams,
+                userId: userId
+            }
+        if (!checkInDate) checkInDate = '1970-01-01'
+        if (!checkOutDate) checkOutDate = '2100-01-01'
+        if (checkInDate && checkOutDate)
+            whereParams = {
+                ...whereParams,
+                checkIn: {
+                    [Sequelize.Op.gte]: new Date(checkInDate)
+                },
+                checkOut: {
+                    [Sequelize.Op.lte]: new Date(checkOutDate)
+                }
+            }
+        if (serviceManagerId)
+            whereParams = {
+                ...whereParams,
+                serviceManagerId: serviceManagerId
+            }
+        const { count, rows } = await db.BookingHotel.findAndCountAll(
+            {
+                offset: (page - 1) * limit,
+                limit: +limit,
+                where: whereParams,
+                include: [
+                    { model: db.Hotel, as: 'hotel' },
+                    { model: db.Room, as: 'roomType' },
+                    {
+                        model: db.Payment,
+                        as: 'payment',
+                        where: {
+                            payerId: {
+                                [Op.not]: null
+                            }
+                        }
+                    },
+                    { model: db.User, as: 'user' },
+                    { model: db.RoomDetail, as: 'roomDetails' },
+                    {
+                        model: db.ServiceManager,
+                        as: 'serviceManager',
+                        include: {
+                            model: db.User,
+                            required: true,
+                            as: 'user',
+                            attributes: {
+                                exclude: ['password', 'confirmtoken']
+                            }
+                        }
+                    }
+                ],
+                order: [['checkIn', 'DESC']],
+                distinct: true
+            }
+        )
+        return {
+            bookingHotels: rows,
+            pagination: {
+                page: +page,
+                totalPages: Math.ceil(count / limit),
+                totalElements: count,
+                size: +limit
+            }
+        }
+    } catch (error) {
+        throw new Error('Error retrieving bookings: ' + error.message)
+    }
+}
+
 const createBooking = async bookingData => {
     try {
         let booking = await db.BookingHotel.create(bookingData)
@@ -46,11 +131,17 @@ const getAllBookingsByUser = async ({
         let whereParams = {
             userId: userId
         }
+        if (!checkInDate) checkInDate = '1970-01-01'
+        if (!checkOutDate) checkOutDate = '2100-01-01'
         if (checkInDate && checkOutDate)
             whereParams = {
                 ...whereParams,
-                checkIn: { [Sequelize.Op.lte]: checkInDate },
-                checkOut: { [Sequelize.Op.gte]: checkOutDate }
+                checkIn: {
+                    [Sequelize.Op.gte]: new Date(checkInDate)
+                },
+                checkOut: {
+                    [Sequelize.Op.lte]: new Date(checkOutDate)
+                }
             }
         const { count, rows } = await db.BookingHotel.findAndCountAll(
             {
@@ -60,19 +151,29 @@ const getAllBookingsByUser = async ({
                 include: [
                     { model: db.Hotel, as: 'hotel' },
                     { model: db.Room, as: 'roomType' },
-                    { model: db.Payment, as: 'payment' },
+                    {
+                        model: db.Payment,
+                        as: 'payment',
+                        where: {
+                            payerId: {
+                                [Op.not]: null
+                            }
+                        }
+                    },
                     { model: db.User, as: 'user' },
                     { model: db.RoomDetail, as: 'roomDetails' }
-                ]
+                ],
+                order: [['checkIn', 'DESC']],
+                distinct: true
             }
         )
         return {
             bookingHotels: rows,
             pagination: {
-                page: page,
+                page: +page,
                 totalPages: Math.ceil(count / limit),
                 totalElements: count,
-                size: limit
+                size: +limit
             }
         }
     } catch (error) {
@@ -129,5 +230,6 @@ module.exports = {
     getBookingById,
     updateBooking,
     deleteBooking,
-    getAllBookingsByUser
+    getAllBookingsByUser,
+    getAllBookings
 }

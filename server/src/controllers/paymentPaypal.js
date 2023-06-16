@@ -33,17 +33,14 @@ const successPaymentPaypal = async (req, res) => {
                     bookingId: bookingId,
                     paymentId: paymentId
                 })
-                return res.json({
-                    error: 'payment expired'
-                })
+                return res.redirect(`${process.env.REACT_API}/payment/fail?content=expiredTime`)
             } else {
                 paypal.payment.execute(
                     paymentId,
                     execute_payment_json,
                     async function (error, payment) {
                         if (error) {
-                            console.log(error.response)
-                            throw error
+                            return res.redirect(`${process.env.REACT_API}/payment/fail?content=${error.response}`)
                         } else {
                             await paymentService.updatePayment(
                                 {
@@ -73,7 +70,7 @@ const successPaymentPaypal = async (req, res) => {
                                         message: `${booking.user.firstname} ${booking.user.lastname} already booked rooms in ${booking.hotel.name}. Please check !`
                                     }
                                 )
-                            return res.json(notify)
+                            return res.redirect(`${process.env.REACT_API}/payment/success?notifyId=${notify.id}`)
                         }
                     }
                 )

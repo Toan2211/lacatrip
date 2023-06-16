@@ -5,8 +5,11 @@ import { BiArea, BiBed } from 'react-icons/bi'
 import { FaChild } from 'react-icons/fa'
 import { MdChildCare } from 'react-icons/md'
 import { Link } from 'react-router-dom'
+import _ from 'lodash'
 
 function RoomCard({ data }) {
+    if (_.isEmpty(data.roomDetails || []))
+        return <></>
     return (
         <div className="flex lg:h-[200px] border-[1px] border-slate-200 rounded-xl overflow-hidden">
             <div className="flex-1">
@@ -65,7 +68,7 @@ function RoomCard({ data }) {
                 <Link
                     to={{
                         pathname: path.bookingHotel,
-                        search: `${location.search}&roomId=${data.id}`
+                        search: `${location.search}&roomId=${data.id}&roomDetailIds=${data.roomDetails.map(room => room.id).toString()}`
                     }}
                     className="bg-blue-500 text-white active:bg-blue-800 text-sm font-bold uppercase px-4 py-2 rounded-full shadow hover:shadow-lg outline-none focus:outline-none mb-1 ease-linear transition-all duration-150"
                 >

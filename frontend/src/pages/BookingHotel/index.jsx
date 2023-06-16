@@ -1,4 +1,3 @@
-import moment from 'moment'
 import {
     currentHotelClientSelector,
     getDeailHotelClient
@@ -13,6 +12,9 @@ import { SwiperSlide, Swiper } from 'swiper/react'
 import { getRoomClient } from '@pages/HotelList/hotelclient.slice'
 import _ from 'lodash'
 import { currentRoomClientSelector } from '@pages/HotelList/hotelclient.slice'
+import { createBookingHotel } from './bookinghotelclient.slice'
+import { unwrapResult } from '@reduxjs/toolkit'
+import { getLengthDay } from '@utils/getDates'
 
 function BookingHotel() {
     const location = useLocation()
@@ -28,14 +30,50 @@ function BookingHotel() {
             countAdults: Number.parseInt(params.countAdults),
             countChildrens: Number.parseInt(params.countChildrens),
             hotelId: params.hotelId,
-            roomId: params.roomId
+            roomId: params.roomId,
+            roomDetailIds: params.roomDetailIds || ''
         }
     }, [location.search])
     useEffect(() => {
         dispatch(getDeailHotelClient(queryParams.hotelId))
         dispatch(getRoomClient(queryParams.roomId))
     }, [queryParams, dispatch])
-    if (_.isEmpty(currentHotel) || _.isEmpty(currentRoom)) return <div>Loading...</div>
+    const handleBookingHotel = async () => {
+        try {
+            const roomDetailIds = []
+            const roomDetailIdsParams =
+                queryParams.roomDetailIds.split(',')
+            for (let i = 1; i <= queryParams.countRooms; i = i + 1)
+                roomDetailIds.push(roomDetailIdsParams[i])
+            const dataBooking = {
+                checkIn: queryParams.checkIn,
+                checkOut: queryParams.checkOut,
+                countRooms: Number.parseInt(queryParams.countRooms),
+                countAdults: Number.parseInt(queryParams.countAdults),
+                countChildrens: Number.parseInt(
+                    queryParams.countChildrens
+                ),
+                hotelId: queryParams.hotelId,
+                roomTypeId: queryParams.roomId,
+                roomDetailIds: roomDetailIds,
+                serviceManagerId: currentHotel.serviceManagerId,
+                amount:
+                    currentRoom.price *
+                    Number.parseInt(queryParams.countRooms) *
+                    getLengthDay(queryParams.checkIn, queryParams.checkOut)
+            }
+            await dispatch(createBookingHotel(dataBooking)).then(
+                res => {
+                    const data = unwrapResult(res)
+                    window.location.replace(data.linkPayment)
+                }
+            )
+        } catch (error) {
+            alert(error.message)
+        }
+    }
+    if (_.isEmpty(currentHotel) || _.isEmpty(currentRoom))
+        return <div>Loading...</div>
     return (
         <div className="max-w-[1535px] px-8 py-5 mt-[100px] md:mt-40 md:px-10 lg:mt-16 lg:px-20 pb-[100px] bg-slate-50">
             <div className="w-[40%] mx-auto bg-white">
@@ -97,14 +135,9 @@ function BookingHotel() {
                             <div className=" text-gray-500 text-lg">
                                 Date
                             </div>
-                            <div>
-                                {moment(queryParams.checkIn)
-                                    .local()
-                                    .format('DD/MM/YYYY')}{' '}
-                                -{' '}
-                                {moment(queryParams.checkOut)
-                                    .local()
-                                    .format('DD/MM/YYYY')}
+                            <div className='font-semibold'>
+                                {queryParams.checkIn} to {' '}
+                                {queryParams.checkOut}
                             </div>
                         </div>
                         <div className="flex justify-between">
@@ -132,27 +165,41 @@ function BookingHotel() {
                         </div>
                         <div className="flex justify-between">
                             <div className=" text-gray-500 text-lg">
-                                Pay After CheckIn Amout
+                                Price per night
                             </div>
                             <div className="font-bold text-lg">
-                                $500
+                                {currentRoom.price}
                             </div>
                         </div>
                         <div className="flex justify-between">
                             <div className=" text-gray-500 text-lg">
-                                Pay Banking Amout
+                                Night
                             </div>
                             <div className="font-bold text-lg">
-                                $450
+                                {getLengthDay(queryParams.checkIn, queryParams.checkOut)}
+                            </div>
+                        </div>
+                        <div className="flex justify-between">
+                            <div className=" text-gray-500 text-lg">
+                                Total Price
+                            </div>
+                            <div className="font-bold text-lg">
+                                $
+                                {currentRoom.price *
+                                    Number.parseInt(
+                                        queryParams.countRooms
+                                    )
+                                    * getLengthDay(queryParams.checkIn, queryParams.checkOut)
+                                }
                             </div>
                         </div>
                     </div>
                     <div className="flex gap-10 mt-5 justify-center">
-                        <button className="w-[40%] bg-blue-500 text-white active:bg-blue-800 text-sm font-bold uppercase px-4 py-2 rounded-full shadow hover:shadow-lg outline-none focus:outline-none mb-1 ease-linear transition-all duration-150">
+                        <button
+                            onClick={() => handleBookingHotel()}
+                            className="w-[40%] bg-blue-500 text-white active:bg-blue-800 text-sm font-bold uppercase px-4 py-2 rounded-full shadow hover:shadow-lg outline-none focus:outline-none mb-1 ease-linear transition-all duration-150"
+                        >
                             Banking Now
-                        </button>
-                        <button className="w-[40%] bg-blue-500 text-white active:bg-blue-800 text-sm font-bold uppercase px-4 py-2 rounded-full shadow hover:shadow-lg outline-none focus:outline-none mb-1 ease-linear transition-all duration-150">
-                            Pay After Check in
                         </button>
                     </div>
                 </div>

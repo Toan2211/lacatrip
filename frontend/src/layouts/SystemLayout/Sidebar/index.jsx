@@ -167,6 +167,26 @@ export default function Sidebar() {
                                 </NavLink>
                             </li>
                         </ul>
+                        <hr className="my-2 md:min-w-full" />
+                        <h6 className="md:min-w-full text-blueGray-500 text-xs uppercase font-bold block pt-1 pb-4 no-underline">
+                            Manage Booking
+                        </h6>
+                        <ul className="md:flex-col md:min-w-full flex flex-col list-none text-bl">
+                            <li className="items-center ">
+                                <NavLink
+                                    className={({ isActive }) =>
+                                        isActive
+                                            ? 'text-blue-600 hover:opacity-75 text-xs uppercase py-3 font-bold flex'
+                                            : 'hover:text-blue-600 text-xs uppercase py-3 font-bold flex'
+                                    }
+                                    to={path.bookingHotelSystem}
+                                >
+                                    <span className="mr-2">
+                                    </span>
+                                    Booking Hotel
+                                </NavLink>
+                            </li>
+                        </ul>
                     </div>
                 </div>
             </nav>

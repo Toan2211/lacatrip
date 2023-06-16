@@ -7,6 +7,7 @@ import ReactDatePicker from 'react-datepicker'
 import { AiFillStar } from 'react-icons/ai'
 import { useSelector } from 'react-redux'
 import { useLocation, useNavigate } from 'react-router-dom'
+import { getDateString } from '@utils/getDateString'
 
 function SearchForm() {
     const location = useLocation()
@@ -23,8 +24,8 @@ function SearchForm() {
     const queryParams = useMemo(() => {
         const params = queryString.parse(location.search)
         return {
-            checkIn: params.checkIn || (new Date(moment())).toISOString(),
-            checkOut: params.checkOut || (new Date(moment().add(1, 'days'))).toISOString(),
+            checkIn: params.checkIn || getDateString(new Date(moment())),
+            checkOut: params.checkOut || getDateString(new Date(moment().add(1, 'days'))),
             countRooms: Number.parseInt(params.countRooms) || 1,
             countAdults: Number.parseInt(params.countAdults) || 1,
             countChildrens:
@@ -85,8 +86,8 @@ function SearchForm() {
             countRooms: countRooms,
             countChildrens: countChildrens,
             countAdults: countAdults,
-            checkIn: checkIn.toISOString(),
-            checkOut: checkOut.toISOString()
+            checkIn: getDateString(checkIn),
+            checkOut:  getDateString(checkOut)
         }
         navigate(`?${queryString.stringify(filters)}`)
     }

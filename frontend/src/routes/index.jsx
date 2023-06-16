@@ -38,6 +38,9 @@ import RestaurantList from '@pages/RestaurantList'
 import DetailProvince from '@pages/DetailProvince'
 import BookingHotel from '@pages/BookingHotel'
 import PaymentSuccess from '@pages/Payment/Success'
+import PaymentFail from '@pages/Payment/Fail'
+import BookingList from '@pages/BookingList'
+import BookingHotelListSystem from '@pages/System/BookingHotel'
 function RoutesComponent() {
     return (
         <BrowserRouter>
@@ -106,6 +109,10 @@ function RoutesComponent() {
                             path={path.bookingHotel}
                             element={<BookingHotel />}
                         />
+                        <Route
+                            path={path.bookingme}
+                            element={<BookingList />}
+                        />
                     </Route>
                 </Route>
                 <Route element={<SystemAuthenticated />}>
@@ -173,6 +180,10 @@ function RoutesComponent() {
                             path={path.formUpdateDestination}
                             element={<DestinationForm />}
                         />
+                        <Route
+                            path={path.bookingHotelSystem}
+                            element={<BookingHotelListSystem />}
+                        />
                     </Route>
                 </Route>
                 <Route element={<UnauthenticatedGuard />}>
@@ -198,6 +209,10 @@ function RoutesComponent() {
                 <Route
                     path={path.paymentSuccess}
                     element={<PaymentSuccess />}
+                />
+                <Route
+                    path={path.paymentFail}
+                    element={<PaymentFail />}
                 />
             </Routes>
         </BrowserRouter>
