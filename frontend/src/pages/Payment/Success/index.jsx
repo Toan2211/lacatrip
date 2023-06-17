@@ -1,8 +1,16 @@
 import React, { useEffect, useState } from 'react'
 import { CSSTransition } from 'react-transition-group'
 import confetti from 'canvas-confetti'
+import { useDispatch, useSelector } from 'react-redux'
+import { socketSelector } from '@pages/Chat/socket.slice'
+import { getDetailNotify } from '@pages/Notification/notification.slice'
+import { useParams } from 'react-router-dom'
+import { unwrapResult } from '@reduxjs/toolkit'
 
 const PaymentSuccess = () => {
+    const dispatch = useDispatch()
+    const socket = useSelector(socketSelector)
+    const notificationId = useParams().notificationId
     const [showConfetti, setShowConfetti] = useState(false)
     const [showModal, setShowModal] = useState(false)
 
@@ -59,6 +67,16 @@ const PaymentSuccess = () => {
         }
     }, [showConfetti])
 
+    useEffect(() => {
+        const notify = dispatch(getDetailNotify(notificationId)).then(
+            res => unwrapResult(res)
+        )
+        if (socket)
+            socket.emit('createNotify', notify)
+    }, [dispatch, notificationId, socket])
+    useEffect(() => {
+        document.title = 'Payment Success'
+    }, [])
     return (
         <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-b from-purple-600 to-pink-600">
             <CSSTransition

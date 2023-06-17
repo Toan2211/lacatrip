@@ -19,6 +19,10 @@ export const deleteNotify = createAsyncThunk(
     'notifications/deleteNotification',
     payloadCreator(notificationApi.deleteNotify)
 )
+export const getDetailNotify = createAsyncThunk(
+    'notifications/getDetailNotify',
+    payloadCreator(notificationApi.getDetailNotify)
+)
 const deleteFullfilled = (state, action) => {
     const notifications = state.notifications.filter(
         notify => notify.id !== action.payload.data
@@ -65,5 +69,7 @@ export const notificationsSelector = state =>
     state.notifications.notifications
 export const countNotReadedSelector = state =>
     state.notifications.countNotReaded
+export const notificationPaginationSelector = state =>
+    state.notifications.pagination
 const { actions, reducer } = notificationSlice
 export default reducer

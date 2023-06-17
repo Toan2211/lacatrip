@@ -1,6 +1,6 @@
 import Drawer from '@components/Drawer'
 import React from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useSelector } from 'react-redux'
 import { currentRoomSelector } from '../room.slice'
 import { currentHotelSelector } from '../../hotel.slice'
 import Mybutton from '@components/MyButton'
@@ -14,7 +14,7 @@ const DetailRoomCard = ({ roomDetail }) => {
             <div>
                 <ToggleButton
                     status={roomDetail.isOpen}
-                    onClick={() => console.log('a')}
+                    // onClick={() => console.log('a')}
                 />
             </div>
         </li>
@@ -23,7 +23,6 @@ const DetailRoomCard = ({ roomDetail }) => {
 function RoomDetailForm({ onClose, open }) {
     const currentHotel = useSelector(currentHotelSelector)
     const currentRoom = useSelector(currentRoomSelector)
-    const dispatch = useDispatch()
     return (
         <Drawer isOpen={open} onClose={onClose}>
             <header className="font-bold bg-slate-50 p-4">

@@ -34,6 +34,9 @@ function BookingList() {
     useEffect(() => {
         dispatch(getAllBookingHotelMe(queryParams))
     }, [queryParams, dispatch])
+    useEffect(() => {
+        document.title = 'Booking List'
+    }, [])
     if (loading ) return <div>Loading...</div>
     return (
         <div className="max-w-[1535px] px-8 py-5 mt-[100px] md:mt-40 md:px-10 lg:mt-16 lg:px-80 mb-[20vh] pb-[100px] min-h-[100vh]">

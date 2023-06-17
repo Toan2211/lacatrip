@@ -41,6 +41,7 @@ import PaymentSuccess from '@pages/Payment/Success'
 import PaymentFail from '@pages/Payment/Fail'
 import BookingList from '@pages/BookingList'
 import BookingHotelListSystem from '@pages/System/BookingHotel'
+import NotificationSystem from '@pages/System/Notification'
 function RoutesComponent() {
     return (
         <BrowserRouter>
@@ -183,6 +184,11 @@ function RoutesComponent() {
                         <Route
                             path={path.bookingHotelSystem}
                             element={<BookingHotelListSystem />}
+                        />
+                        <Route
+                            path={path.notificationSystem}
+                            element={<NotificationSystem />}
+
                         />
                     </Route>
                 </Route>

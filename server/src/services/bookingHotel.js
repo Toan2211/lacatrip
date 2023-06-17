@@ -6,31 +6,55 @@ const notificationService = require('./notification')
 
 const getAllBookings = async ({
     userId,
-    checkInDate,
-    checkOutDate,
+    checkIn,
+    checkOut,
     page,
     limit,
-    serviceManagerId
+    serviceManagerId,
+    keyword
 }) => {
     try {
         page = page ? page : 1
         limit = limit ? limit : 10
-        let whereParams = {}
+        let whereParams = {
+            [Op.or]: [
+                {
+                    '$hotel.name$': {
+                        [Op.like]: `%${keyword}%`
+                    }
+                },
+                {
+                    '$user.firstname$': {
+                        [Op.like]: `%${keyword}%`
+                    }
+                },
+                {
+                    '$user.lastname$': {
+                        [Op.like]: `%${keyword}%`
+                    }
+                },
+                {
+                    'id': {
+                        [Op.like]: `%${keyword}%`
+                    }
+                }
+            ]
+        }
         if (userId)
             whereParams = {
                 ...whereParams,
                 userId: userId
             }
-        if (!checkInDate) checkInDate = '1970-01-01'
-        if (!checkOutDate) checkOutDate = '2100-01-01'
-        if (checkInDate && checkOutDate)
+        if (!checkIn) checkIn = '1970-01-01'
+        if (!checkOut) checkOut = '2100-01-01'
+        if (checkIn && checkOut)
             whereParams = {
                 ...whereParams,
                 checkIn: {
-                    [Sequelize.Op.gte]: new Date(checkInDate)
+                    [Sequelize.Op.gte]: new Date(checkIn)
                 },
                 checkOut: {
-                    [Sequelize.Op.lte]: new Date(checkOutDate)
+                    [Sequelize.Op.lte]: new Date(checkOut)
                 }
             }
         if (serviceManagerId)
@@ -38,13 +62,15 @@ const getAllBookings = async ({
                 ...whereParams,
                 serviceManagerId: serviceManagerId
             }
-        const { count, rows } = await db.BookingHotel.findAndCountAll(
+        const rows = await db.BookingHotel.findAll(
             {
                 offset: (page - 1) * limit,
                 limit: +limit,
-                where: whereParams,
                 include: [
-                    { model: db.Hotel, as: 'hotel' },
+                    {
+                        model: db.Hotel,
+                        as: 'hotel'
+                    },
                     { model: db.Room, as: 'roomType' },
                     {
                         model: db.Payment,
@@ -55,7 +81,10 @@ const getAllBookings = async ({
                             }
                         }
                     },
-                    { model: db.User, as: 'user' },
+                    {
+                        model: db.User,
+                        as: 'user'
+                    },
                     { model: db.RoomDetail, as: 'roomDetails' },
                     {
                         model: db.ServiceManager,
@@ -70,16 +99,18 @@ const getAllBookings = async ({
                         }
                     }
                 ],
+                where: whereParams,
                 order: [['checkIn', 'DESC']],
-                distinct: true
+                distinct: true,
+                subQuery: false,
             }
         )
         return {
             bookingHotels: rows,
             pagination: {
                 page: +page,
-                totalPages: Math.ceil(count / limit),
-                totalElements: count,
+                totalPages: Math.ceil(rows.length / limit),
+                totalElements: rows.length,
                 size: +limit
             }
         }

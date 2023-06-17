@@ -1,6 +1,9 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 
 function PaymentFail() {
+    useEffect(() => {
+        document.title = 'Payment Fail'
+    }, [])
     return (
         <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-red-500 to-red-600">
             <div className="bg-white rounded-lg p-8 text-center">

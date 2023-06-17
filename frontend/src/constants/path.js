@@ -23,6 +23,7 @@ class Path {
         this.formDestination = '/system/destination-travel/form'
         this.formUpdateDestination = '/system/destination-travel/form/:id'
         this.bookingHotelSystem = '/system/booking-hotel'
+        this.notificationSystem = '/system/notifications'
         //client
         this.clientDestinationTravelDetail = '/destination-travel/:id'
         this.clientHotelDetail = '/hotel/:id'

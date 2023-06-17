@@ -72,6 +72,9 @@ function BookingHotel() {
             alert(error.message)
         }
     }
+    useEffect(() => {
+        document.title = 'Booking Hotel'
+    }, [])
     if (_.isEmpty(currentHotel) || _.isEmpty(currentRoom))
         return <div>Loading...</div>
     return (

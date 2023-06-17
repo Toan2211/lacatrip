@@ -1,13 +1,16 @@
+import {
+    deleteNotify,
+    readNotification
+} from '@pages/Notification/notification.slice'
 import React, { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { Link } from 'react-router-dom'
-import { deleteNotify, readNotification } from '../notification.slice'
 
 function NotificationCard({ notification }) {
     const dispatch = useDispatch()
     const handleActionClick = event => {
         event.preventDefault()
-        setShowActionForm(true)
+        setShowActionForm(!showActionForm)
     }
     const [showActionForm, setShowActionForm] = useState(false)
     const handleReadNotify = () => {
@@ -31,13 +34,13 @@ function NotificationCard({ notification }) {
         >
             <div className="flex w-14 h-14">
                 <img
-                    src={notification.trip.image}
+                    src={notification.sender.avatar}
                     className="w-full h-full rounded-full"
                 />
             </div>
             <div className="flex-1">
                 <div className=" font-bold text-lg">
-                    From {notification.trip.name}
+                    Booking Request
                 </div>
                 <div>
                     <span className="font-bold text-sm">

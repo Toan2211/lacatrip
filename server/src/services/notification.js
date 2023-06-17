@@ -117,7 +117,32 @@ const getNotifications = async query => {
         throw new Error(error)
     }
 }
-const readNotification = async ({ receiverId, tripId }) => {
+const fineOne = async id => {
+    try {
+        const notify = await db.Notification.findByPk(id, {
+            include: [
+                {
+                    model: db.User,
+                    as: 'sender',
+                    attributes: ['avatar', 'firstname', 'lastname']
+                },
+                {
+                    model: db.Trip,
+                    as: 'trip',
+                    attributes: ['id', 'name', 'image']
+                }
+            ]
+        })
+        return notify
+    } catch (error) {
+        throw new Error(error)
+    }
+}
+const readNotification = async ({
+    receiverId,
+    tripId,
+    notificationId
+}) => {
     try {
         const result = await db.Notification.update(
             {
@@ -125,6 +150,7 @@ const readNotification = async ({ receiverId, tripId }) => {
             },
             {
                 where: {
+                    id: notificationId,
                     receiverId: receiverId,
                     tripId: tripId,
                     isReaded: false
@@ -135,7 +161,8 @@ const readNotification = async ({ receiverId, tripId }) => {
             const [notify] = await db.Notification.findAll({
                 where: {
                     receiverId: receiverId,
-                    tripId: tripId
+                    tripId: tripId,
+                    id: notificationId
                 }
             })
             return notify
@@ -180,5 +207,6 @@ module.exports = {
     readNotification,
     countNotifyNotReaded,
     deleteNotify,
-    createNotifyBooking
+    createNotifyBooking,
+    fineOne
 }

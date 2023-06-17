@@ -66,11 +66,11 @@ const successPaymentPaypal = async (req, res) => {
                                         receiverId:
                                             serviceManager.userId,
                                         tripId: null,
-                                        url: `/booking-hotel/${booking.id}`,
+                                        url: `system/booking-hotel/?keyword=${booking.id}`,
                                         message: `${booking.user.firstname} ${booking.user.lastname} already booked rooms in ${booking.hotel.name}. Please check !`
                                     }
                                 )
-                            return res.redirect(`${process.env.REACT_API}/payment/success?notifyId=${notify.id}`)
+                            return res.redirect(`${process.env.REACT_API}/payment/success?notificationId=${notify.id}`)
                         }
                     }
                 )
