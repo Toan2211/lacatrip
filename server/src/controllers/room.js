@@ -2,6 +2,9 @@ const { SERVICEMANAGERID } = require('../constants/variable')
 const roomService = require('../services/room')
 const create = async (req, res) => {
     try {
+        if(req.file) {
+            req.body.image = req.file.path
+        }
         const room = await roomService.create(req.body)
         return res
             .status(200)
@@ -12,6 +15,9 @@ const create = async (req, res) => {
 }
 const update = async (req, res) => {
     try {
+        if(req.file) {
+            req.body.image = req.file.path
+        }
         const room = await roomService.findOne(req.params.id)
         if (
             req.user.id !== room.hotel.serviceManager.userId &&

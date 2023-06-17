@@ -23,5 +23,10 @@ router.delete(
     verifyToken,
     controller.deleteNotify
 )
+router.get(
+    '/:id',
+    verifyToken,
+    controller.findOne
+)
 
 module.exports = router

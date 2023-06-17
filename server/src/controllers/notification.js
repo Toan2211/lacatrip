@@ -20,7 +20,10 @@ const getNotifications = async (req, res) => {
         req.query.userId = req.user.id
         const notifications =
             await notificationService.getNotifications(req.query)
-        const countNotReaded = await notificationService.countNotifyNotReaded(req.user.id)
+        const countNotReaded =
+            await notificationService.countNotifyNotReaded(
+                req.user.id
+            )
         return res.status(200).json({
             message: 'Get Notifications successful',
             data: notifications,
@@ -46,9 +49,29 @@ const readNotification = async (req, res) => {
 }
 const deleteNotify = async (req, res) => {
     try {
-        const notify = await notificationService.deleteNotify(req.params.id, req.user.id)
+        const notify = await notificationService.deleteNotify(
+            req.params.id,
+            req.user.id
+        )
         return res.status(200).json({
             message: 'Delete successful',
+            data: notify
+        })
+    } catch (error) {
+        return res.status(500).json({ message: error.message })
+    }
+}
+const findOne = async (req, res) => {
+    try {
+        const notify = await notificationService.fineOne(
+            req.params.id
+        )
+        if (!notify)
+            return res.status(404).json({
+                message: 'Notification not found'
+            })
+        return res.status(200).json({
+            message: 'Get Notify successful',
             data: notify
         })
     } catch (error) {
@@ -59,5 +82,6 @@ module.exports = {
     create,
     getNotifications,
     readNotification,
-    deleteNotify
+    deleteNotify,
+    findOne
 }

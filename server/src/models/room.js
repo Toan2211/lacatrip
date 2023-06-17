@@ -13,6 +13,10 @@ module.exports = (sequelize, DataTypes) => {
                 foreignKey: 'hotelId',
                 as: 'hotel'
             })
+            this.hasMany(models.RoomDetail, {
+                foreignKey: 'roomTypeId',
+                as: 'roomDetails'            
+            })
         }
     }
     Room.init(
@@ -27,9 +31,12 @@ module.exports = (sequelize, DataTypes) => {
             description: DataTypes.TEXT,
             price: DataTypes.FLOAT,
             originalPrice: DataTypes.FLOAT,
-            maxPeople: DataTypes.INTEGER,
+            childrenCount: DataTypes.INTEGER,
+            adultCount: DataTypes.INTEGER,
+            bedCount: DataTypes.INTEGER,
+            area: DataTypes.INTEGER,
             hotelId: DataTypes.UUID,
-            roomNo: DataTypes.INTEGER
+            image: DataTypes.STRING
         },
         {
             sequelize,

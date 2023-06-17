@@ -292,6 +292,14 @@ const findOne = async id => {
                 {
                     model: db.Province,
                     as: 'province'
+                },
+                {
+                    model: db.Room,
+                    as: 'rooms',
+                    include: {
+                        model: db.RoomDetail,
+                        as: 'roomDetails'
+                    }
                 }
             ]
         })
