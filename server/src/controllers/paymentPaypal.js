@@ -3,6 +3,7 @@ const bookingHotelService = require('../services/bookingHotel')
 const paymentService = require('../services/payment')
 const notificationService = require('../services/notification')
 const serviceManagerService = require('../services/servicemanager')
+const bookingDestinationTravelService = require('../services/bookingDestinationTravel')
 require('dotenv').config()
 paypal.configure({
     mode: 'sandbox', //sandbox or live
@@ -14,7 +15,8 @@ const successPaymentPaypal = async (req, res) => {
     const payerId = req.query.PayerID
     const paymentId = req.query.paymentId
     const bookingId = req.query.bookingId
-
+    
+    const bookingDestinationId = req.query.bookingDestinationId
     const execute_payment_json = {
         payer_id: payerId
     }
@@ -28,33 +30,54 @@ const successPaymentPaypal = async (req, res) => {
                 new Date() - createTime >
                 process.env.LIMITED_TIME_PAYMENT
             ) {
-                await bookingHotelService.deleteBooking(bookingId)
+                const bookingIdFinal = bookingId ? bookingId : bookingDestinationId
+                await bookingHotelService.deleteBooking(bookingIdFinal)
                 await paymentService.deletePayment({
-                    bookingId: bookingId,
+                    bookingId: bookingIdFinal,
                     paymentId: paymentId
                 })
-                return res.redirect(`${process.env.REACT_API}/payment/fail?content=expiredTime`)
+                return res.redirect(
+                    `${process.env.REACT_API}/payment/fail?content=expiredTime`
+                )
             } else {
                 paypal.payment.execute(
                     paymentId,
                     execute_payment_json,
                     async function (error, payment) {
                         if (error) {
-                            return res.redirect(`${process.env.REACT_API}/payment/fail?content=${error.response}`)
+                            return res.redirect(
+                                `${process.env.REACT_API}/payment/fail?content=${error.response}`
+                            )
                         } else {
+
+                            let booking = null
+                            let url = null
+                            let message = null
+                            if (bookingId) {
+                                booking =
+                                    await bookingHotelService.getBookingById(
+                                        bookingId
+                                    )
+                                url = `system/booking-hotel/?keyword=${booking.id}`
+                                message = `${booking.user.firstname} ${booking.user.lastname} already booked rooms in ${booking.hotel.name}. Please check !`
+                            } else {
+                                booking =
+                                    await bookingDestinationTravelService.getBookingById(
+                                        bookingDestinationId
+                                    )
+                                url = `system/booking-destination-travel/?keyword=${booking.id}`
+                                message = `${booking.user.firstname} ${booking.user.lastname} already booked ${booking.countPeople} ticket ${booking.destinationTravel.name}. Please check !`
+                            }
                             await paymentService.updatePayment(
                                 {
                                     paymentId: paymentId,
-                                    bookingId: bookingId
+                                    bookingId: booking.id
                                 },
                                 {
                                     payerId: payerId
                                 }
                             )
-                            const booking =
-                                await bookingHotelService.getBookingById(
-                                    bookingId
-                                )
+
                             const serviceManager =
                                 await serviceManagerService.findOne(
                                     booking.serviceManagerId
@@ -66,11 +89,13 @@ const successPaymentPaypal = async (req, res) => {
                                         receiverId:
                                             serviceManager.userId,
                                         tripId: null,
-                                        url: `system/booking-hotel/?keyword=${booking.id}`,
-                                        message: `${booking.user.firstname} ${booking.user.lastname} already booked rooms in ${booking.hotel.name}. Please check !`
+                                        url: url,
+                                        message: message
                                     }
                                 )
-                            return res.redirect(`${process.env.REACT_API}/payment/success?notificationId=${notify.id}`)
+                            return res.redirect(
+                                `${process.env.REACT_API}/payment/success?notificationId=${notify.id}`
+                            )
                         }
                     }
                 )

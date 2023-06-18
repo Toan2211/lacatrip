@@ -8,7 +8,6 @@ import {
 import { EffectFade, Navigation, Thumbs, Autoplay } from 'swiper'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import LoadingPage from '@components/LoadingPage'
-import Mybutton from '@components/MyButton'
 import { AiFillStar } from 'react-icons/ai'
 import GoogleMap from '@components/GoogleMap'
 import RoomCard from './RoomCard'

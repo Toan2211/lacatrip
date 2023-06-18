@@ -42,6 +42,9 @@ import PaymentFail from '@pages/Payment/Fail'
 import BookingList from '@pages/BookingList'
 import BookingHotelListSystem from '@pages/System/BookingHotel'
 import NotificationSystem from '@pages/System/Notification'
+import BookingDestinationTravel from '@pages/BookingDestinationTravel'
+import BookingDestinationTravelSystem from '@pages/System/BookingDestinationTravel'
+import BookingListDestinationTravel from '@pages/BookingDestinationTravel/BookingList'
 function RoutesComponent() {
     return (
         <BrowserRouter>
@@ -111,8 +114,16 @@ function RoutesComponent() {
                             element={<BookingHotel />}
                         />
                         <Route
-                            path={path.bookingme}
+                            path={path.bookingmeHotel}
                             element={<BookingList />}
+                        />
+                        <Route
+                            path={path.bookingmeDestinationTravel}
+                            element={<BookingListDestinationTravel />}
+                        />
+                        <Route
+                            path={path.bookingDestiantionTravel}
+                            element={<BookingDestinationTravel />}
                         />
                     </Route>
                 </Route>
@@ -188,7 +199,12 @@ function RoutesComponent() {
                         <Route
                             path={path.notificationSystem}
                             element={<NotificationSystem />}
-
+                        />
+                        <Route
+                            path={path.bookingDestinationTravelSystem}
+                            element={
+                                <BookingDestinationTravelSystem />
+                            }
                         />
                     </Route>
                 </Route>
