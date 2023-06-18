@@ -1,22 +1,37 @@
 const db = require('../models')
 const create = async data => {
     try {
-        const roomArr = []
-        for (const roomNo of data.roomNo) {
-            if (roomNo) {
-                const room = await db.Room.create({
-                    roomNo: roomNo,
-                    hotelId: data.hotelId,
-                    title: data.title,
-                    description: data.description,
-                    price: data.price,
-                    originalPrice: data.originalPrice,
-                    maxPeople: data.maxPeople
-                })
-                roomArr.push(room)
+        let room = await db.Room.create({
+            hotelId: data.hotelId,
+            title: data.title,
+            description: data.description,
+            price: data.price,
+            originalPrice: data.originalPrice,
+            childrenCount: data.childrenCount,
+            adultCount: data.adultCount,
+            bedCount: data.bedCount,
+            area: data.area,
+            image: data.image
+        })
+        if (typeof data.roomNo === 'object') {
+            for (const roomNo of data.roomNo) {
+                if (roomNo) {
+                    await db.RoomDetail.create({
+                        roomNo: roomNo,
+                        hotelId: data.hotelId,
+                        roomTypeId: room.id
+                    })
+                }
             }
+        } else {
+            await db.RoomDetail.create({
+                roomNo: data.roomNo,
+                hotelId: data.hotelId,
+                roomTypeId: room.id
+            })
         }
-        return roomArr
+        room = await findOne(room.id)
+        return room
     } catch (error) {
         throw new Error(error)
     }
@@ -38,14 +53,20 @@ const update = async (id, data) => {
 const findOne = async id => {
     try {
         const room = await db.Room.findByPk(id, {
-            include: {
-                model: db.Hotel,
-                as: 'hotel',
-                include: {
-                    model: db.ServiceManager,
-                    as: 'serviceManager'
+            include: [
+                {
+                    model: db.Hotel,
+                    as: 'hotel',
+                    include: {
+                        model: db.ServiceManager,
+                        as: 'serviceManager'
+                    }
+                },
+                {
+                    model: db.RoomDetail,
+                    as: 'roomDetails'
                 }
-            }
+            ]
         })
         return room
     } catch (error) {
@@ -57,10 +78,16 @@ const findByHotelId = async (hotelId, page, limit) => {
         const { count, rows } = await db.Room.findAndCountAll({
             offset: (page - 1) * limit,
             limit: +limit,
-            include: {
-                model: db.Hotel,
-                as: 'hotel'
-            },
+            include: [
+                {
+                    model: db.Hotel,
+                    as: 'hotel'
+                },
+                {
+                    model: db.RoomDetail,
+                    as: 'roomDetails'
+                }
+            ],
             where: {
                 hotelId: hotelId
             },

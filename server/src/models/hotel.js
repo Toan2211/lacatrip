@@ -42,6 +42,15 @@ module.exports = (sequelize, DataTypes) => {
                 as: 'TripDates',
                 through: 'TripDate_Hotel'
             })
+            this.hasMany(models.RoomDetail, {
+                foreignKey: 'hotelId',
+                as: 'roomDetails'            
+            })
+            // booking
+            this.hasMany(models.BookingHotel, {
+                foreignKey: 'hotelId',
+                as: 'bookingHotels'
+            })
         }
     }
     Hotel.init(

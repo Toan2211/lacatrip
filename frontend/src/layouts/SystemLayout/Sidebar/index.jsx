@@ -1,7 +1,7 @@
 import React from 'react'
 import { NavLink } from 'react-router-dom'
 import logo from '@assets/img/logo.svg'
-import { BsFillPersonFill } from 'react-icons/bs'
+import { BsFillPersonFill, BsFillTicketFill } from 'react-icons/bs'
 import { path } from '@constants/path'
 import { FaHotel } from 'react-icons/fa'
 import { useSelector } from 'react-redux'
@@ -164,6 +164,44 @@ export default function Sidebar() {
                                         <MdOutlineTravelExplore />
                                     </span>
                                     Destinations Travel
+                                </NavLink>
+                            </li>
+                        </ul>
+                        <hr className="my-2 md:min-w-full" />
+                        <h6 className="md:min-w-full text-blueGray-500 text-xs uppercase font-bold block pt-1 pb-4 no-underline">
+                            Manage Booking
+                        </h6>
+                        <ul className="md:flex-col md:min-w-full flex flex-col list-none text-bl">
+                            <li className="items-center ">
+                                <NavLink
+                                    className={({ isActive }) =>
+                                        isActive
+                                            ? 'text-blue-600 hover:opacity-75 text-xs uppercase py-3 font-bold flex'
+                                            : 'hover:text-blue-600 text-xs uppercase py-3 font-bold flex'
+                                    }
+                                    to={path.bookingHotelSystem}
+                                >
+                                    <span className="mr-2">
+                                        <FaHotel />
+                                    </span>
+                                    Booking Hotel
+                                </NavLink>
+                            </li>
+                            <li className="items-center ">
+                                <NavLink
+                                    className={({ isActive }) =>
+                                        isActive
+                                            ? 'text-blue-600 hover:opacity-75 text-xs uppercase py-3 font-bold flex'
+                                            : 'hover:text-blue-600 text-xs uppercase py-3 font-bold flex'
+                                    }
+                                    to={
+                                        path.bookingDestinationTravelSystem
+                                    }
+                                >
+                                    <span className="mr-2">
+                                        <BsFillTicketFill />
+                                    </span>
+                                    Booking Destination Travel
                                 </NavLink>
                             </li>
                         </ul>

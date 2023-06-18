@@ -9,9 +9,14 @@ import { useDispatch, useSelector } from 'react-redux'
 import { toast } from 'react-toastify'
 import * as yup from 'yup'
 import { currentHotelSelector } from '../../hotel.slice'
-import { createRoom, currentRoomSelector, updateRoom } from '../room.slice'
+import {
+    createRoom,
+    currentRoomSelector,
+    updateRoom
+} from '../room.slice'
 import _ from 'lodash'
 import { unwrapResult } from '@reduxjs/toolkit'
+import OnePhotoUpload from '@components/OnePhotoUpload'
 // eslint-disable-next-line no-useless-escape
 function RoomForm({ onClose, open }) {
     const currentHotel = useSelector(currentHotelSelector)
@@ -29,61 +34,87 @@ function RoomForm({ onClose, open }) {
             .number()
             .typeError('Original Price must be number')
             .required('Original Price is required'),
-        maxPeople: yup
+        adultCount: yup
             .number()
-            .typeError('maxPeople must be number')
-            .required('maxPeople is required')
+            .typeError('adultCount must be number')
+            .required('adultCounte is required')
     })
     const form = useForm({
         defaultValues: {
             roomNo: '',
             title: '',
             description: '',
-            price: null,
-            originalPrice: null,
-            maxPeople: null
+            price: '',
+            originalPrice: '',
+            childrenCount: '',
+            bedCount: '',
+            adultCount: '',
+            area: '',
+            image: ''
         },
         resolver: yupResolver(schema)
     })
     useEffect(() => {
         if (!_.isEmpty(currentRoom)) {
-            form.setValue('roomNo', currentRoom.roomNo)
+            // form.setValue('roomNo', currentRoom.roomNo)
             form.setValue('title', currentRoom.title)
             form.setValue('description', currentRoom.description)
             form.setValue('price', currentRoom.price)
             form.setValue('originalPrice', currentRoom.originalPrice)
-            form.setValue('maxPeople', currentRoom.maxPeople)
+            form.setValue('childrenCount', currentRoom.childrenCount)
+            form.setValue('adultCount', currentRoom.adultCount)
+            form.setValue('bedCount', currentRoom.bedCount)
+            form.setValue('area', currentRoom.area)
+            form.setValue('image', currentRoom.image)
         }
         return () => {
-            form.reset()
+            form.setValue('roomNo', '')
+            form.setValue('title', '')
+            form.setValue('description', '')
+            form.setValue('price', '')
+            form.setValue('originalPrice', '')
+            form.setValue('childrenCount', '')
+            form.setValue('adultCount', '')
+            form.setValue('bedCount', '')
+            form.setValue('area', '')
+            // form.setValue('image', '')
         }
     }, [currentRoom, form, dispatch])
     const handleSubmit = async data => {
         try {
             if (currentHotel) {
+                const formData = new FormData()
+                formData.append('title', data.title)
+                formData.append('description', data.description)
+                formData.append('price', data.price)
+                formData.append('originalPrice', data.originalPrice)
+                formData.append('hotelId', currentHotel.id)
+                formData.append('childrenCount', data.childrenCount)
+                formData.append('adultCount', data.adultCount)
+                formData.append('bedCount', data.bedCount)
+                formData.append('area', data.area)
+                if (typeof data.image !== 'string')
+                    formData.append('image', data.image)
                 if (_.isEmpty(currentRoom)) {
-                    await dispatch(
-                        createRoom({
-                            ...data,
-                            hotelId: currentHotel.id,
-                            roomNo: data.roomNo.split(',')
+                    if (!data.roomNo.includes(','))
+                        formData.append('roomNo', data.roomNo)
+                    else
+                        data.roomNo.split(',').forEach(roomNo => {
+                            formData.append('roomNo', roomNo)
                         })
-                    ).then(res => unwrapResult(res))
-                    toast.success('Create room successful !', {
+                    await dispatch(createRoom(formData)).then(res =>
+                        unwrapResult(res)
+                    )
+                    toast.success('Create rooms successful !', {
                         position: toast.POSITION.BOTTOM_CENTER,
                         autoClose: 1000,
                         hideProgressBar: true
                     })
-                }
-                else
-                {
-                    await dispatch(
-                        updateRoom({
-                            ...data,
-                            hotelId: currentHotel.id,
-                            id: currentRoom.id
-                        })
-                    ).then(res => unwrapResult(res))
+                } else {
+                    formData.append('id', currentRoom.id)
+                    await dispatch(updateRoom(formData)).then(res =>
+                        unwrapResult(res)
+                    )
                     toast.success('Update room successful !', {
                         position: toast.POSITION.BOTTOM_CENTER,
                         autoClose: 1000,
@@ -117,21 +148,27 @@ function RoomForm({ onClose, open }) {
             </header>
             <div className="p-5">
                 <form onSubmit={form.handleSubmit(handleSubmit)}>
-                    <div className="relative w-full">
-                        <label
-                            className="block uppercase text-xs font-bold mb-2"
-                            htmlFor="grid-password"
-                        >
-                            Room No
-                        </label>
-                        <InputField
-                            placeholder="Please split room no by comma(,)"
-                            type="input"
-                            form={form}
-                            name="roomNo"
-                            onKeyDown={handleOnKeyDown}
-                        />
+                    <div className="mb-2">
+                        <OnePhotoUpload form={form} name={'image'} />
                     </div>
+                    {_.isEmpty(currentRoom) && (
+                        <div className="relative w-full">
+                            <label
+                                className="block uppercase text-xs font-bold mb-2"
+                                htmlFor="grid-password"
+                            >
+                                Room No
+                            </label>
+                            <InputField
+                                placeholder="Please split room no by comma(,)"
+                                type="input"
+                                form={form}
+                                name="roomNo"
+                                onKeyDown={handleOnKeyDown}
+                            />
+                        </div>
+                    )}
+
                     <div className="relative w-full">
                         <label
                             className="block uppercase text-xs font-bold mb-2"
@@ -195,13 +232,55 @@ function RoomForm({ onClose, open }) {
                             className="block uppercase text-xs font-bold mb-2"
                             htmlFor="grid-password"
                         >
-                            Max People
+                            Adults Limit
                         </label>
                         <InputField
-                            placeholder="Max people"
+                            placeholder="Max adults"
                             type="number"
                             form={form}
-                            name="maxPeople"
+                            name="adultCount"
+                        />
+                    </div>
+                    <div className="relative w-full">
+                        <label
+                            className="block uppercase text-xs font-bold mb-2"
+                            htmlFor="grid-password"
+                        >
+                            Childrens Limit
+                        </label>
+                        <InputField
+                            placeholder="Max childrens"
+                            type="number"
+                            form={form}
+                            name="childrenCount"
+                        />
+                    </div>
+                    <div className="relative w-full">
+                        <label
+                            className="block uppercase text-xs font-bold mb-2"
+                            htmlFor="grid-password"
+                        >
+                            Bed Count
+                        </label>
+                        <InputField
+                            placeholder="Bed Count"
+                            type="number"
+                            form={form}
+                            name="bedCount"
+                        />
+                    </div>
+                    <div className="relative w-full">
+                        <label
+                            className="block uppercase text-xs font-bold mb-2"
+                            htmlFor="grid-password"
+                        >
+                            Area
+                        </label>
+                        <InputField
+                            placeholder="Area"
+                            type="number"
+                            form={form}
+                            name="area"
                         />
                     </div>
                     <div className="mt-6 text-right">

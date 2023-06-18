@@ -96,9 +96,22 @@ const findByUserId = async userId => {
         throw new Error(error)
     }
 }
+const findOne = async id => {
+    try {
+        const serviceManager = await db.ServiceManager.findOne({
+            where: {
+                id
+            }
+        })
+        return serviceManager
+    } catch (error) {
+        throw new Error(error)
+    }
+}
 module.exports = {
     find,
     create,
     update,
-    findByUserId
+    findByUserId,
+    findOne
 }

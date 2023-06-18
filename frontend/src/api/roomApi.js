@@ -4,14 +4,14 @@ const roomApi = {
     getAll(data) {
         return http.get('/room/hotel', { params: data })
     },
-    create(data) {
-        return http.post('/room', data)
+    create(data, config) {
+        return http.post('/room', data, config)
     },
     getDetail(roomId) {
         return http.get(`/room/${roomId}`)
     },
-    update(data) {
-        return http.put(`/room/${data.id}`, data)
+    update(data, config) {
+        return http.put(`/room/${data.get('id')}`, data, config)
     }
 }
 export default roomApi

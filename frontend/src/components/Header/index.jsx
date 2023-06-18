@@ -9,6 +9,7 @@ import { selectUser } from '@pages/Auth/auth.slice'
 import UserDropdown from '@components/Dropdown/UserDropdown'
 import SidebarMobile from '@components/SidebarMobile'
 import { countNotReadedSelector } from '@pages/Notification/notification.slice'
+import { SiGooglecalendar } from 'react-icons/si'
 
 function Header() {
     const user = useSelector(selectUser)
@@ -71,6 +72,21 @@ function Header() {
                     </Link>
                 </div>
                 <div className="flex-1 flex items-center gap-4 justify-end">
+                    <Link
+                        to={path.bookingmeHotel}
+                        className={`${
+                            location.pathname.includes(
+                                path.bookingmeHotel
+                            )
+                                ? 'bg-slate-100 border-slate-200 '
+                                : 'border-transparent '
+                        } hidden lg:flex gap-1 items-center font-medium hover:bg-slate-100 hover:border-slate-200 border-2  px-4 py-2 rounded-xl`}
+                    >
+                        <span>
+                            <SiGooglecalendar />
+                        </span>
+                        <span>Bookings</span>
+                    </Link>
                     <Link
                         to={path.clientTrips}
                         className={`${

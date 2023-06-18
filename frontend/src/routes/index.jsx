@@ -36,6 +36,15 @@ import DestinationList from '@pages/DestinationTravelList'
 import HotelList from '@pages/HotelList'
 import RestaurantList from '@pages/RestaurantList'
 import DetailProvince from '@pages/DetailProvince'
+import BookingHotel from '@pages/BookingHotel'
+import PaymentSuccess from '@pages/Payment/Success'
+import PaymentFail from '@pages/Payment/Fail'
+import BookingList from '@pages/BookingList'
+import BookingHotelListSystem from '@pages/System/BookingHotel'
+import NotificationSystem from '@pages/System/Notification'
+import BookingDestinationTravel from '@pages/BookingDestinationTravel'
+import BookingDestinationTravelSystem from '@pages/System/BookingDestinationTravel'
+import BookingListDestinationTravel from '@pages/BookingDestinationTravel/BookingList'
 function RoutesComponent() {
     return (
         <BrowserRouter>
@@ -99,6 +108,22 @@ function RoutesComponent() {
                         <Route
                             path={path.notification}
                             element={<Notification />}
+                        />
+                        <Route
+                            path={path.bookingHotel}
+                            element={<BookingHotel />}
+                        />
+                        <Route
+                            path={path.bookingmeHotel}
+                            element={<BookingList />}
+                        />
+                        <Route
+                            path={path.bookingmeDestinationTravel}
+                            element={<BookingListDestinationTravel />}
+                        />
+                        <Route
+                            path={path.bookingDestiantionTravel}
+                            element={<BookingDestinationTravel />}
                         />
                     </Route>
                 </Route>
@@ -167,6 +192,20 @@ function RoutesComponent() {
                             path={path.formUpdateDestination}
                             element={<DestinationForm />}
                         />
+                        <Route
+                            path={path.bookingHotelSystem}
+                            element={<BookingHotelListSystem />}
+                        />
+                        <Route
+                            path={path.notificationSystem}
+                            element={<NotificationSystem />}
+                        />
+                        <Route
+                            path={path.bookingDestinationTravelSystem}
+                            element={
+                                <BookingDestinationTravelSystem />
+                            }
+                        />
                     </Route>
                 </Route>
                 <Route element={<UnauthenticatedGuard />}>
@@ -189,6 +228,14 @@ function RoutesComponent() {
                         />
                     </Route>
                 </Route>
+                <Route
+                    path={path.paymentSuccess}
+                    element={<PaymentSuccess />}
+                />
+                <Route
+                    path={path.paymentFail}
+                    element={<PaymentFail />}
+                />
             </Routes>
         </BrowserRouter>
     )

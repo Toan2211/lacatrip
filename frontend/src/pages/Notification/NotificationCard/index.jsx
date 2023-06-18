@@ -13,7 +13,8 @@ function NotificationCard({ notification }) {
     const handleReadNotify = () => {
         dispatch(
             readNotification({
-                tripId: notification.tripId
+                tripId: notification.tripId,
+                notificationId: notification.id
             })
         )
         setShowActionForm(false)

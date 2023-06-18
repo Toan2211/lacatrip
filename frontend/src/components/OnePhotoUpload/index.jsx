@@ -18,9 +18,9 @@ function OnePhotoUpload({ form, name }) {
     useEffect(() => {
         if (!form.getValues(name))
             setPreviewSource('')
-        return () => {
-            setPreviewSource('')
-        }
+        // return () => {
+        //     setPreviewSource('')
+        // }
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [form.getValues(name), form, name])
     return (
@@ -58,6 +58,7 @@ function OnePhotoUpload({ form, name }) {
                 <input
                     type="file"
                     id="chooseAvatar"
+                    accept='.svg, .png, .jpg'
                     className="hidden"
                     onChange={handleChangeImg}
                     value={''}

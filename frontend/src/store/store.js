@@ -18,6 +18,10 @@ import tripReducer from '@pages/TripList/trip.slice.js'
 import socketReducer from '@pages/Chat/socket.slice.js'
 import messageReducer from '@pages/Chat/message.slice.js'
 import notificationReducer from '@pages/Notification/notification.slice.js'
+import bookingHotelClientReducer from '@pages/BookingHotel/bookinghotelclient.slice.js'
+import bookingHotelReducer from '@pages/System/BookingHotel/bookinghotel.slice.js'
+import bookingDestinationReducer from '@pages/System/BookingDestinationTravel/bookingdestinationtravel.slice.js'
+import bookingDestinationClientReducer from '@pages/BookingDestinationTravel/bookingdestinationtravel.slice.js'
 const rootReducer = {
     propertys: baseProperty,
     auth: authReducer,
@@ -31,6 +35,8 @@ const rootReducer = {
     corpTours: corpToursReducer,
     destinations: destinationReducer,
     itineraries: itineraryReducer,
+    bookingHotels: bookingHotelReducer,
+    bookingDestinationTravels: bookingDestinationReducer,
     // client page
     destinationClients: destinationClientReducer,
     restaurantsClient: restaurantClientReducer,
@@ -40,7 +46,10 @@ const rootReducer = {
     //chat
     socket: socketReducer,
     messages: messageReducer,
-    notifications: notificationReducer
+    notifications: notificationReducer,
+    //booking
+    bookingHotelClients: bookingHotelClientReducer,
+    bookingDestinationTravelClients: bookingDestinationClientReducer
 }
 const store = configureStore({
     reducer: rootReducer,
