@@ -24,6 +24,7 @@ class Path {
         this.formUpdateDestination = '/system/destination-travel/form/:id'
         this.bookingHotelSystem = '/system/booking-hotel'
         this.notificationSystem = '/system/notifications'
+        this.bookingDestinationTravelSystem = '/system/booking-destination-travel'
         //client
         this.clientDestinationTravelDetail = '/destination-travel/:id'
         this.clientHotelDetail = '/hotel/:id'
@@ -37,8 +38,10 @@ class Path {
         this.restaurantList = '/restaurants/province/:id'
         this.detailProvince = '/province/:id'
         //booking
-        this.bookingme = '/booking/me'
+        this.bookingmeHotel = '/booking/me/hotel'
+        this.bookingmeDestinationTravel = '/booking/me/destination-travel'
         this.bookingHotel = '/hotel/booking'
+        this.bookingDestiantionTravel = '/destination-travel/booking'
         this.paymentSuccess = '/payment/success'
         this.paymentFail = '/payment/fail'
     }

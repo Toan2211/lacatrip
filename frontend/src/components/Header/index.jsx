@@ -73,10 +73,10 @@ function Header() {
                 </div>
                 <div className="flex-1 flex items-center gap-4 justify-end">
                     <Link
-                        to={path.bookingme}
+                        to={path.bookingmeHotel}
                         className={`${
                             location.pathname.includes(
-                                path.bookingme
+                                path.bookingmeHotel
                             )
                                 ? 'bg-slate-100 border-slate-200 '
                                 : 'border-transparent '

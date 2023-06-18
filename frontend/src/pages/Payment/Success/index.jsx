@@ -1,16 +1,17 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import { CSSTransition } from 'react-transition-group'
 import confetti from 'canvas-confetti'
 import { useDispatch, useSelector } from 'react-redux'
 import { socketSelector } from '@pages/Chat/socket.slice'
 import { getDetailNotify } from '@pages/Notification/notification.slice'
-import { useParams } from 'react-router-dom'
+import { useLocation } from 'react-router-dom'
 import { unwrapResult } from '@reduxjs/toolkit'
+import queryString from 'query-string'
+import _ from 'lodash'
 
 const PaymentSuccess = () => {
     const dispatch = useDispatch()
     const socket = useSelector(socketSelector)
-    const notificationId = useParams().notificationId
     const [showConfetti, setShowConfetti] = useState(false)
     const [showModal, setShowModal] = useState(false)
 
@@ -66,14 +67,20 @@ const PaymentSuccess = () => {
             }, 250)
         }
     }, [showConfetti])
-
+    const location = useLocation()
+    const queryParams = useMemo(() => {
+        const params = queryString.parse(location.search)
+        return {
+            notificationId: params.notificationId
+        }
+    }, [location.search])
     useEffect(() => {
-        const notify = dispatch(getDetailNotify(notificationId)).then(
-            res => unwrapResult(res)
-        )
-        if (socket)
-            socket.emit('createNotify', notify)
-    }, [dispatch, notificationId, socket])
+        if (socket && queryParams.notificationId) {
+            dispatch(getDetailNotify(queryParams.notificationId))
+                .then(unwrapResult)
+                .then(res => socket.emit('createNotify', res.data))
+        }
+    }, [dispatch, queryParams, socket])
     useEffect(() => {
         document.title = 'Payment Success'
     }, [])

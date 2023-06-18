@@ -19,6 +19,7 @@ const message = require('./message')
 const notification = require('./notification')
 const bookingHotel = require('./bookingHotel')
 const paymentPaypal = require('./paymentPaypal')
+const bookingDestinationTravel = require('./bookingDestinationTravel')
 router.get('/status', (req, res) => {
     res.status(200).json({ status: 'Status OKE' })
 })
@@ -42,4 +43,5 @@ router.use('/message', message)
 router.use('/notification', notification)
 router.use('/booking-hotel', bookingHotel)
 router.use('/payment-paypal', paymentPaypal)
+router.use('/booking-destination-travel', bookingDestinationTravel)
 module.exports = router

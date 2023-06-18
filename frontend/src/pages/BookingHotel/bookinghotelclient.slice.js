@@ -31,5 +31,5 @@ const bookingHotelClientSlice = createSlice({
 export const bookingHotelListSelector = state => state.bookingHotelClients.bookings
 export const bookingHotelListPaginationSelector = state => state.bookingHotelClients.pagination
 export const bookingHotelLoadingSelector = state => state.bookingHotelClients.loading
-const { actions, reducer } = bookingHotelClientSlice
+const { reducer } = bookingHotelClientSlice
 export default reducer

@@ -13,6 +13,10 @@ module.exports = (sequelize, DataTypes) => {
                 foreignKey: 'bookingId',
                 as: 'booking'
             })
+            this.belongsTo(models.BookingDestinationTravel, {
+                foreignKey: 'bookingId',
+                as: 'bookingDestination'
+            })
         }
     }
     Payment.init(
