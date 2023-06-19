@@ -22,7 +22,14 @@ function RoomCard({ data }) {
                 <span className="text-sm text-blue-700 font-semibold">
                     {data.title}
                 </span>
-                <ul className="mt-10 flex gap-2 mx-auto">
+                <ul className='flex gap-2'>
+                    {data.roomDetails.map(roomDetail => (
+                        <li key={roomDetail.id} className="border border-slate-200 bg-slate-50 rounded text-sm inline-block px-2 py-1">
+                            No.{roomDetail.roomNo}
+                        </li>
+                    ))}
+                </ul>
+                <ul className="mt-2 flex gap-2 mx-auto">
                     <li className="text-center">
                         <span className="border-[1px] border-slate-200 p-2 w-10 flex justify-center items-center rounded-lg">
                             <Tooltip content="Area" style="light">

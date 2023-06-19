@@ -9,6 +9,7 @@ import {
 } from './destinationclient.slice'
 import { DESTINATIONTYPE } from '@constants/instanceType'
 import queryString from 'query-string'
+import Sidebar from './Sidebar'
 
 function DestinationList() {
     const location = useLocation()
@@ -22,7 +23,9 @@ function DestinationList() {
         return {
             page: Number.parseInt(params.page) || 1,
             limit: Number.parseInt(params.limit) || 10,
-            key: params.key || ''
+            key: params.key || '',
+            minPrice: params.minPrice || '',
+            maxPrice: params.maxPrice || ''
         }
     }, [location.search])
     useEffect(() => {
@@ -59,8 +62,8 @@ function DestinationList() {
                 </div>
             </div>
 
-            <div className="flex">
-                <div className="w-1/4">Side bar</div>
+            <div className="flex gap-3">
+                <div className="w-1/4"><Sidebar /></div>
                 <div className="flex-1">
                     <ul className="flex flex-col gap-4">
                         {destinations.map((destination) => (

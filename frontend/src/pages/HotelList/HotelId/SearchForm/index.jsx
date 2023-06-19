@@ -5,11 +5,14 @@ import queryString from 'query-string'
 import React, { forwardRef, useEffect, useMemo, useState } from 'react'
 import ReactDatePicker from 'react-datepicker'
 import { AiFillStar } from 'react-icons/ai'
-import { useSelector } from 'react-redux'
-import { useLocation, useNavigate } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux'
+import { useLocation, useNavigate, useParams } from 'react-router-dom'
 import { getDateString } from '@utils/getDateString'
+import { getRoomAvailable } from '@pages/HotelList/hotelclient.slice'
 
 function SearchForm() {
+    const hotelId = useParams().id
+    const dispatch = useDispatch()
     const location = useLocation()
     const [checkIn, setCheckIn] = useState(new Date(moment()))
     const [checkOut, setCheckOut] = useState(
@@ -73,11 +76,11 @@ function SearchForm() {
         else setCountChildrens(prev => prev + 1)
     }
     const handleDownCount = type => {
-        if (type === 'rooms' && countRooms > 0)
+        if (type === 'rooms' && countRooms > 1)
             setCountRooms(prev => prev - 1)
-        else if (type === 'adults' && countAdults > 0)
+        else if (type === 'adults' && countAdults > 1)
             setCountAdults(prev => prev - 1)
-        else if (type === 'childrens' && countChildrens > 0)
+        else if (type === 'childrens' && countChildrens > 1)
             setCountChildrens(prev => prev - 1)
     }
     const handleCheckAvailability = () => {
@@ -95,6 +98,12 @@ function SearchForm() {
         navigate(`?${queryString.stringify(queryParams)}`)
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
+    useEffect(() => {
+        dispatch(getRoomAvailable({
+            id: hotelId,
+            ...queryParams
+        }))
+    }, [queryParams, hotelId, dispatch])
     return (
         <div className="lg:mt-2">
             <div className=" border-gray-100 shadow-md border-1 lg:w-[30vw] w-full h-[50vh] border-[1px] px-5 py-10 rounded-2xl">
@@ -152,7 +161,7 @@ function SearchForm() {
                                 Guests
                             </div>
                             <div className="text-gray-400 text-sm">
-                                Add guests and rooms: {countAdults} Guest, {countRooms} Rooms
+                                Add guests and rooms: {countAdults + countChildrens} Guest, {countRooms} Rooms
                             </div>
                         </div>
                         {showGuest && (
@@ -168,7 +177,7 @@ function SearchForm() {
                                                     'rooms'
                                                 )
                                             }
-                                            className=" font-bold rounded-full border border-black w-8 h-8 text-2xl flex justify-center items-center hover:bg-blue-600 hover:text-white hover:border-blue-600"
+                                            className=" cursor-pointer font-bold rounded-full border border-black w-8 h-8 text-2xl flex justify-center items-center hover:bg-blue-600 hover:text-white hover:border-blue-600"
                                         >
                                             <span className="mb-1">
                                                 -
@@ -178,7 +187,7 @@ function SearchForm() {
                                             <span>{countRooms}</span>
                                         </div>
                                         <div
-                                            className=" font-bold rounded-full border border-black w-8 h-8 text-2xl flex justify-center items-center hover:bg-blue-600 hover:text-white hover:border-blue-600"
+                                            className=" cursor-pointer font-bold rounded-full border border-black w-8 h-8 text-2xl flex justify-center items-center hover:bg-blue-600 hover:text-white hover:border-blue-600"
                                             onClick={() =>
                                                 handleUpCount('rooms')
                                             }
@@ -200,7 +209,7 @@ function SearchForm() {
                                                     'adults'
                                                 )
                                             }
-                                            className=" font-bold rounded-full border border-black w-8 h-8 text-2xl flex justify-center items-center hover:bg-blue-600 hover:text-white hover:border-blue-600"
+                                            className=" font-bold rounded-full border border-black w-8 h-8 text-2xl flex justify-center items-center hover:bg-blue-600 hover:text-white hover:border-blue-600  cursor-pointer"
                                         >
                                             <span className="mb-1">
                                                 -
@@ -210,7 +219,7 @@ function SearchForm() {
                                             <span>{countAdults}</span>
                                         </div>
                                         <div
-                                            className=" font-bold rounded-full border border-black w-8 h-8 text-2xl flex justify-center items-center hover:bg-blue-600 hover:text-white hover:border-blue-600"
+                                            className=" font-bold rounded-full border border-black w-8 h-8 text-2xl flex justify-center items-center hover:bg-blue-600 hover:text-white hover:border-blue-600  cursor-pointer"
                                             onClick={() =>
                                                 handleUpCount(
                                                     'adults'
@@ -234,7 +243,7 @@ function SearchForm() {
                                                     'childrens'
                                                 )
                                             }
-                                            className=" font-bold rounded-full border border-black w-8 h-8 text-2xl flex justify-center items-center hover:bg-blue-600 hover:text-white hover:border-blue-600"
+                                            className=" font-bold rounded-full border border-black w-8 h-8 text-2xl flex justify-center items-center hover:bg-blue-600 hover:text-white hover:border-blue-600 cursor-pointer"
                                         >
                                             <span className="mb-1">
                                                 -
@@ -246,7 +255,7 @@ function SearchForm() {
                                             </span>
                                         </div>
                                         <div
-                                            className=" font-bold rounded-full border border-black w-8 h-8 text-2xl flex justify-center items-center hover:bg-blue-600 hover:text-white hover:border-blue-600"
+                                            className=" font-bold rounded-full border border-black w-8 h-8 text-2xl flex justify-center items-center hover:bg-blue-600 hover:text-white hover:border-blue-600 cursor-pointer"
                                             onClick={() =>
                                                 handleUpCount(
                                                     'childrens'
