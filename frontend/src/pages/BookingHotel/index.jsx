@@ -3,7 +3,7 @@ import {
     getDeailHotelClient
 } from '@pages/HotelList/hotelclient.slice'
 import queryString from 'query-string'
-import React, { useEffect, useMemo } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import { IoLocationOutline } from 'react-icons/io5'
 import { useDispatch, useSelector } from 'react-redux'
 import { useLocation } from 'react-router-dom'
@@ -21,6 +21,8 @@ function BookingHotel() {
     const dispatch = useDispatch()
     const currentHotel = useSelector(currentHotelClientSelector)
     const currentRoom = useSelector(currentRoomClientSelector)
+    const [countAdults, setCountAdults] = useState(1)
+    const [countChildrens, setCountChildrens] = useState(1)
     const queryParams = useMemo(() => {
         const params = queryString.parse(location.search)
         return {
@@ -49,10 +51,8 @@ function BookingHotel() {
                 checkIn: queryParams.checkIn,
                 checkOut: queryParams.checkOut,
                 countRooms: Number.parseInt(queryParams.countRooms),
-                countAdults: Number.parseInt(queryParams.countAdults),
-                countChildrens: Number.parseInt(
-                    queryParams.countChildrens
-                ),
+                countAdults: countAdults,
+                countChildrens: countChildrens,
                 hotelId: queryParams.hotelId,
                 roomTypeId: queryParams.roomId,
                 roomDetailIds: roomDetailIds,
@@ -60,7 +60,10 @@ function BookingHotel() {
                 amount:
                     currentRoom.price *
                     Number.parseInt(queryParams.countRooms) *
-                    getLengthDay(queryParams.checkIn, queryParams.checkOut)
+                    getLengthDay(
+                        queryParams.checkIn,
+                        queryParams.checkOut
+                    )
             }
             await dispatch(createBookingHotel(dataBooking)).then(
                 res => {
@@ -71,6 +74,16 @@ function BookingHotel() {
         } catch (error) {
             alert(error.message)
         }
+    }
+    const handleUpCount = type => {
+        if (type === 'adults') setCountAdults(prev => prev + 1)
+        else setCountChildrens(prev => prev + 1)
+    }
+    const handleDownCount = type => {
+        if (type === 'adults' && countAdults > 1)
+            setCountAdults(prev => prev - 1)
+        else if (type === 'childrens' && countChildrens > 1)
+            setCountChildrens(prev => prev - 1)
     }
     useEffect(() => {
         document.title = 'Booking Hotel'
@@ -138,22 +151,77 @@ function BookingHotel() {
                             <div className=" text-gray-500 text-lg">
                                 Date
                             </div>
-                            <div className='font-semibold'>
-                                {queryParams.checkIn} to {' '}
+                            <div className="font-semibold">
+                                {queryParams.checkIn} to{' '}
                                 {queryParams.checkOut}
                             </div>
                         </div>
-                        <div className="flex justify-between">
+                        <div className="flex justify-between mb-2">
                             <div className=" text-gray-500 text-lg">
                                 Adults
                             </div>
-                            <div>{queryParams.countAdults}</div>
+                            <div>
+                                {' '}
+                                <div className="flex gap-1 items-center">
+                                    <div
+                                        onClick={() =>
+                                            handleDownCount('adults')
+                                        }
+                                        className=" font-bold rounded-full border border-black w-6 h-6 text-2xl flex justify-center items-center hover:bg-blue-600 hover:text-white hover:border-blue-600 cursor-pointer"
+                                    >
+                                        <span className="mb-1">
+                                            -
+                                        </span>
+                                    </div>
+                                    <div className=" font-medium rounded-full text-xl flex justify-center items-center w-[30px]">
+                                        <span>{countAdults}</span>
+                                    </div>
+                                    <div
+                                        className=" font-bold rounded-full border border-black w-6 h-6 text-2xl flex justify-center items-center hover:bg-blue-600 hover:text-white hover:border-blue-600 cursor-pointer"
+                                        onClick={() =>
+                                            handleUpCount('adults')
+                                        }
+                                    >
+                                        <span className="mb-1">
+                                            +
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                         <div className="flex justify-between">
                             <div className=" text-gray-500 text-lg">
                                 Childrens
                             </div>
-                            <div>{queryParams.countChildrens}</div>
+                            <div>
+                                <div className="flex gap-1 items-center">
+                                    <div
+                                        onClick={() =>
+                                            handleDownCount(
+                                                'childrens'
+                                            )
+                                        }
+                                        className=" font-bold rounded-full border border-black w-6 h-6 text-2xl flex justify-center items-center hover:bg-blue-600 hover:text-white hover:border-blue-600 cursor-pointer"
+                                    >
+                                        <span className="mb-1">
+                                            -
+                                        </span>
+                                    </div>
+                                    <div className=" font-medium rounded-full text-xl flex justify-center items-center w-[30px]">
+                                        <span>{countChildrens}</span>
+                                    </div>
+                                    <div
+                                        className=" font-bold rounded-full border border-black w-6 h-6 text-2xl flex justify-center items-center hover:bg-blue-600 hover:text-white hover:border-blue-600 cursor-pointer"
+                                        onClick={() =>
+                                            handleUpCount('childrens')
+                                        }
+                                    >
+                                        <span className="mb-1">
+                                            +
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                         <div className="flex justify-between">
                             <div className=" text-gray-500 text-lg">
@@ -179,7 +247,10 @@ function BookingHotel() {
                                 Night
                             </div>
                             <div className="font-bold text-lg">
-                                {getLengthDay(queryParams.checkIn, queryParams.checkOut)}
+                                {getLengthDay(
+                                    queryParams.checkIn,
+                                    queryParams.checkOut
+                                )}
                             </div>
                         </div>
                         <div className="flex justify-between">
@@ -191,9 +262,11 @@ function BookingHotel() {
                                 {currentRoom.price *
                                     Number.parseInt(
                                         queryParams.countRooms
-                                    )
-                                    * getLengthDay(queryParams.checkIn, queryParams.checkOut)
-                                }
+                                    ) *
+                                    getLengthDay(
+                                        queryParams.checkIn,
+                                        queryParams.checkOut
+                                    )}
                             </div>
                         </div>
                     </div>

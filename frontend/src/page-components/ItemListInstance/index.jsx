@@ -5,23 +5,25 @@ import {
     RESTAURANTTYPE
 } from '@constants/instanceType'
 import React, { useEffect, useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import { Pagination } from 'swiper'
 import { Swiper, SwiperSlide } from 'swiper/react'
+import { AiFillStar } from 'react-icons/ai'
 
 function ItemListInstance({ item, type }) {
+    const location = useLocation()
     const [link, setLink] = useState('')
     useEffect(() => {
         if (type === DESTINATIONTYPE) {
-            setLink(`/destination-travel/${item.id}`)
+            setLink(`/destination-travel/${item.id}${location.search}`)
         }
         else if (type === HOTELTYPE) {
-            setLink(`/hotel/${item.id}`)
+            setLink(`/hotel/${item.id}${location.search}${location.search}`)
         }
         else if (type === RESTAURANTTYPE) {
-            setLink(`/restaurant/${item.id}`)
+            setLink(`/restaurant/${item.id}${location.search}${location.search}`)
         }
-    }, [type, item])
+    }, [type, item, location])
     return (
         <div className="w-full flex gap-4 overflow-hidden h-[250px]">
             <div className="w-[300px] h-[250px] overflow-hidden relative">
@@ -48,6 +50,18 @@ function ItemListInstance({ item, type }) {
                 >
                     {item.name}
                 </Link>
+                {type === HOTELTYPE && (
+                    <div className=" text-yellow-400 flex gap-1">
+                        {item.hotelClass &&
+                            Array.from(Array(item.hotelClass)).map(
+                                (value, index) => (
+                                    <span key={index}>
+                                        <AiFillStar />
+                                    </span>
+                                )
+                            )}
+                    </div>
+                )}
                 {item?.corpTour?.name && (
                     <div>By {item?.corpTour?.name}</div>
                 )}

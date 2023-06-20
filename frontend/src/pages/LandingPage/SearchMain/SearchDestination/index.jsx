@@ -1,6 +1,7 @@
 import Mybutton from '@components/MyButton'
 import React, { useState } from 'react'
 import { AiOutlineSearch } from 'react-icons/ai'
+import { BsSearch } from 'react-icons/bs'
 import { IoLocationOutline } from 'react-icons/io5'
 import { useNavigate } from 'react-router'
 import Select from 'react-select'
@@ -47,8 +48,8 @@ function SearchDestination({
                 </div>
             </div>
             <div className="flex-1 flex gap-3 items-center w-full">
-                <span className="text-3xl">
-                    {/* <IoLocationOutline /> */}
+                <span className="text-2xl mt-5 text-slate-400">
+                    <BsSearch />
                 </span>
                 <div className="flex flex-col w-full">
                     <div className="font-medium text-md ml-2">

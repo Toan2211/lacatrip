@@ -9,6 +9,7 @@ import {
 } from './hotelclient.slice'
 import { HOTELTYPE } from '@constants/instanceType'
 import queryString from 'query-string'
+import Sidebar from './Sidebar'
 
 function HotelList() {
     const location = useLocation()
@@ -60,8 +61,10 @@ function HotelList() {
                 </div>
             </div>
 
-            <div className="flex">
-                <div className="w-1/4">Side bar</div>
+            <div className="flex gap-4">
+                <div className="w-1/4">
+                    <Sidebar />
+                </div>
                 <div className="flex-1">
                     <ul className="flex flex-col gap-4">
                         {hotels.map(hotel => (
