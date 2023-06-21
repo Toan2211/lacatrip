@@ -30,8 +30,10 @@ import {
 } from '../restaurant.slice'
 import { cusinesRestaurant } from '@constants/cusinesRestaurant'
 import { specialDietsRestaurant } from '@constants/specialDietsRestaurant'
+import { selectUser } from '@pages/Auth/auth.slice'
 function RestaurantForm() {
     const dispatch = useDispatch()
+    const profile = useSelector(selectUser)
     const serviceManagers = useSelector(serviceManagersSelector)
     const currentRestaurant = useSelector(currentRestauRantSelector)
     const provinces = useSelector(provincesSelector)
@@ -94,9 +96,6 @@ function RestaurantForm() {
             .required(
                 'Input Address and generate map to get latitude'
             ),
-        serviceManagerId: yup
-            .string()
-            .required('Service Manager is required'),
         provinceId: yup
             .string()
             .typeError('Province is required')
@@ -210,7 +209,7 @@ function RestaurantForm() {
             formData.append('address', data.address)
             formData.append('longtitude', data.longtitude)
             formData.append('latitude', data.latitude)
-            formData.append('serviceManagerId', data.serviceManagerId)
+            formData.append('serviceManagerId', profile.serviceManagerId)
             formData.append('provinceId', data.provinceId)
             formData.append('minPrice', data.minPrice)
             formData.append('maxPrice', data.maxPrice)
@@ -277,33 +276,10 @@ function RestaurantForm() {
                                 className="block uppercase text-sm font-bold mb-2"
                                 htmlFor="grid-password"
                             >
-                                Service Manager
-                            </label>
-                            <MySelect
-                                placeholder="Service Manager manage the hotel"
-                                form={form}
-                                name="serviceManagerId"
-                                options={serviceManagers.map(
-                                    servicemanager => ({
-                                        value: servicemanager.id,
-                                        label:
-                                            servicemanager.user
-                                                .firstname +
-                                            servicemanager.user
-                                                .lastname
-                                    })
-                                )}
-                            />
-                        </div>
-                        <div className="relative w-full mb-3">
-                            <label
-                                className="block uppercase text-sm font-bold mb-2"
-                                htmlFor="grid-password"
-                            >
                                 Name
                             </label>
                             <InputField
-                                placeholder="Name Hotel"
+                                placeholder="Name Restaurant"
                                 form={form}
                                 name="name"
                             />
@@ -316,7 +292,7 @@ function RestaurantForm() {
                                 Description
                             </label>
                             <TextArea
-                                placeholder="Description Hotel..."
+                                placeholder="Description Restaurant..."
                                 form={form}
                                 name="description"
                                 rows={2}
@@ -330,7 +306,7 @@ function RestaurantForm() {
                                 Phone
                             </label>
                             <InputField
-                                placeholder="Phone hotel to contact"
+                                placeholder="Phone Restaurant to contact"
                                 form={form}
                                 name="phone"
                             />
@@ -343,7 +319,7 @@ function RestaurantForm() {
                                 Website
                             </label>
                             <InputField
-                                placeholder="Website of hotel"
+                                placeholder="Website of Restaurant"
                                 form={form}
                                 name="website"
                                 type="input"

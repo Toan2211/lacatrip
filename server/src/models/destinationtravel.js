@@ -9,10 +9,6 @@ module.exports = (sequelize, DataTypes) => {
          */
         static associate(models) {
             // define association here
-            this.belongsTo(models.CorpTour, {
-                foreignKey: 'corpTourId',
-                as: 'corpTour'
-            })
             this.belongsTo(models.Province, {
                 foreignKey: 'provinceId',
                 as: 'province'
@@ -62,7 +58,6 @@ module.exports = (sequelize, DataTypes) => {
             serviceManagerId: DataTypes.UUID,
             rating: DataTypes.FLOAT,
             totalRating: DataTypes.FLOAT,
-            corpTourId: DataTypes.UUID,
             public: DataTypes.BOOLEAN,
             clickCount: DataTypes.FLOAT,
         },

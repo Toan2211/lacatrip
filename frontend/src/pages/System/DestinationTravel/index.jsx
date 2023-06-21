@@ -24,7 +24,6 @@ import InputField from '@components/InputField'
 import MySelect from '@components/MySelect'
 import Mybutton from '@components/MyButton'
 import ToggleButton from '@components/ToggleButton'
-import { corpToursSelector } from '../CorpTour/corptour.slice'
 import Itinerary from './Itinerary'
 import { GiWavyItinerary } from 'react-icons/gi'
 function DestinationTravel() {
@@ -36,7 +35,6 @@ function DestinationTravel() {
     const location = useLocation()
     const provinces = useSelector(provincesSelector)
     const serviceManagers = useSelector(serviceManagersSelector)
-    const corpTours = useSelector(corpToursSelector)
     const queryParams = useMemo(() => {
         const params = queryString.parse(location.search)
         return {
@@ -44,8 +42,7 @@ function DestinationTravel() {
             limit: Number.parseInt(params.limit) || 10,
             key: params.key || '',
             provinceId: params.provinceId || null,
-            serviceManagerId: params.serviceManagerId || '',
-            corpTourId: params.corpTourId || ''
+            serviceManagerId: params.serviceManagerId || ''
         }
     }, [location.search])
     useEffect(() => {
@@ -89,14 +86,12 @@ function DestinationTravel() {
         defaultValues: {
             serviceManagerId: '',
             provinceId: undefined,
-            key: '',
-            corpTourId: ''
+            key: ''
         }
     })
     const handleResetSearch = () => {
         form.setValue('serviceManagerId', '')
         form.setValue('provinceId', '')
-        form.setValue('corpTourId', '')
         form.setValue('key', '')
     }
     const handleSubmitSearch = data => {
@@ -104,8 +99,7 @@ function DestinationTravel() {
             ...queryParams,
             serviceManagerId: data.serviceManagerId,
             provinceId: data.provinceId,
-            key: data.key,
-            corpTourId: data.corpTourId
+            key: data.key
         }
         navigate(`?${queryString.stringify(filters)}`)
     }
@@ -135,7 +129,7 @@ function DestinationTravel() {
                             <h3 className="font-semibold text-lg text-blue-600">
                                 Manage Destination Travel
                             </h3>
-                            {!profile.serviceManagerId && (
+                            {profile.serviceManagerId && (
                                 <div className="relative flex flex-col items-center group w-10">
                                     <Tooltip
                                         content="Create"
@@ -211,19 +205,7 @@ function DestinationTravel() {
                                     )}
                                 />
                             </div>
-                            <div className="flex-1">
-                                <MySelect
-                                    placeholder="Company tour"
-                                    form={form}
-                                    name="corpTourId"
-                                    options={corpTours.map(
-                                        corpTour => ({
-                                            value: corpTour.id,
-                                            label: corpTour.name
-                                        })
-                                    )}
-                                />
-                            </div>
+
                             <div className="flex-1 flex gap-3">
                                 <div className="flex-1">
                                     <Mybutton

@@ -117,7 +117,7 @@ function Hotel() {
                             <h3 className="font-semibold text-lg text-blue-600">
                                 Manage Hotels
                             </h3>
-                            {!profile.serviceManagerId && (<div className="relative flex flex-col items-center group w-10">
+                            {profile.serviceManagerId && (<div className="relative flex flex-col items-center group w-10">
                                 <Tooltip
                                     content="Create"
                                     style="light"
