@@ -30,10 +30,11 @@ import _ from 'lodash'
 import { provincesSelector } from '@pages/CommonProperty/baseproperty'
 import { useNavigate, useParams } from 'react-router-dom'
 import { path } from '@constants/path'
+import { selectUser } from '@pages/Auth/auth.slice'
 function FormHotel() {
     const dispatch = useDispatch()
+    const profile = useSelector(selectUser)
     const amenitiesHotel = useSelector(amenitiesHotelSelector)
-    const serviceManagers = useSelector(serviceManagersSelector)
     const currentHotel = useSelector(currentHotelSelector)
     const provinces = useSelector(provincesSelector)
     const navigate = useNavigate()
@@ -103,9 +104,6 @@ function FormHotel() {
             .required(
                 'Input Address and generate map to get latitude'
             ),
-        serviceManagerId: yup
-            .string()
-            .required('Service Manager is required'),
         provinceId: yup.string().required('Province is required')
     })
     const form = useForm({
@@ -152,7 +150,7 @@ function FormHotel() {
             form.setValue('latitude', currentHotel.latitude)
             form.setValue(
                 'serviceManagerId',
-                currentHotel.serviceManagerId
+                profile.serviceManagerId
             )
             form.setValue('provinceId', currentHotel.provinceId)
             setAmenityIds(
@@ -173,7 +171,7 @@ function FormHotel() {
                     .map(item => ({ value: item, label: item }))
             )
         }
-    }, [form, currentHotel])
+    }, [form, currentHotel, profile])
     const handleOnChangeImage = data => {
         setImages(data)
     }
@@ -195,7 +193,7 @@ function FormHotel() {
             formData.append('address', data.address)
             formData.append('longtitude', data.longtitude)
             formData.append('latitude', data.latitude)
-            formData.append('serviceManagerId', data.serviceManagerId)
+            formData.append('serviceManagerId', profile.serviceManagerId)
             formData.append('provinceId', data.provinceId)
             for (const image of images) {
                 if (image.file) formData.append('images', image.file)
@@ -253,29 +251,6 @@ function FormHotel() {
                 </div>
                 <form onSubmit={form.handleSubmit(handleButtonForm)}>
                     <div className="block w-full overflow-x-auto px-4">
-                        <div className="relative w-full mb-3">
-                            <label
-                                className="block uppercase text-sm font-bold mb-2"
-                                htmlFor="grid-password"
-                            >
-                                Service Manager
-                            </label>
-                            <MySelect
-                                placeholder="Service Manager manage the hotel"
-                                form={form}
-                                name="serviceManagerId"
-                                options={serviceManagers.map(
-                                    servicemanager => ({
-                                        value: servicemanager.id,
-                                        label:
-                                            servicemanager.user
-                                                .firstname +
-                                            servicemanager.user
-                                                .lastname
-                                    })
-                                )}
-                            />
-                        </div>
                         <div className="relative w-full mb-3">
                             <label
                                 className="block uppercase text-sm font-bold mb-2"

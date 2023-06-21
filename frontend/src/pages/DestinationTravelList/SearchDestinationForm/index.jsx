@@ -23,30 +23,32 @@ function SearchDestinationForm() {
         if (people <= 1) return
         setPeople(prev => prev - 1)
     }
-    const ExampleCustomDate = forwardRef(
-        ({ value, onClick }, ref) => (
-            <div className="" onClick={onClick}>
-                <div className="flex flex-col">
-                    <button className="bg-gray-300 text-gray-700 rounded inline-flex items-center">
-                        <svg
-                            className="fill-current h-4 w-4  transition-transform"
-                            xmlns="http://www.w3.org/2000/svg"
-                            viewBox="0 0 20 20"
-                        >
-                            <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
-                        </svg>
-                    </button>
-                </div>
+    const ExampleCustomDate = forwardRef(({ onClick }, ref) => (
+        <div className="" onClick={onClick}>
+            <div className="flex flex-col">
+                <button className="bg-gray-300 text-gray-700 rounded inline-flex items-center">
+                    <svg
+                        className="fill-current h-4 w-4  transition-transform"
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 20 20"
+                    >
+                        <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
+                    </svg>
+                </button>
             </div>
-        )
-    )
+        </div>
+    ))
     const handleBookingDestinationTravel = () => {
         const params = {
             countPeople: people,
             destinationTravelId: currentDestination.id,
             date: getDateString(date)
         }
-        navigate(`${path.bookingDestiantionTravel}?${queryString.stringify(params)}`)
+        navigate(
+            `${path.bookingDestiantionTravel}?${queryString.stringify(
+                params
+            )}`
+        )
     }
     return (
         <div className=" border-gray-100 shadow-md border-1 lg:w-[30vw] w-full h-[50vh] border-[1px] px-5 py-10 rounded-2xl">

@@ -57,10 +57,6 @@ const findOne = async id => {
                     as: 'province'
                 },
                 {
-                    model: db.CorpTour,
-                    as: 'corpTour'
-                },
-                {
                     model: db.Itinerary,
                     as: 'itineraries',
                     order: [['Itinerary.step', 'ASC']]
@@ -87,7 +83,6 @@ const find = async params => {
             limit,
             serviceManagerId,
             provinceId,
-            corpTourId,
             roleId,
             minPrice,
             maxPrice
@@ -107,19 +102,6 @@ const find = async params => {
                 as: 'images'
             }
         ]
-        if (corpTourId)
-            includeModels.push({
-                model: db.CorpTour,
-                as: 'corpTour',
-                where: {
-                    id: corpTourId
-                }
-            })
-        else
-            includeModels.push({
-                model: db.CorpTour,
-                as: 'corpTour'
-            })
         if (serviceManagerId)
             includeModels.push({
                 model: db.ServiceManager,

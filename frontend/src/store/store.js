@@ -7,7 +7,6 @@ import baseProperty from '@pages/CommonProperty/baseproperty'
 import hotelsReducer from '@pages/System/Hotel/hotel.slice.js'
 import roomsReducer from '@pages/System/Hotel/Room/room.slice.js'
 import restaurantsReducer from '@pages/System/Restaurant/restaurant.slice.js'
-import corpToursReducer from '@pages/System/CorpTour/corptour.slice.js'
 import destinationReducer from '@pages/System/DestinationTravel/destination.slice.js'
 import itineraryReducer from '@pages/System/DestinationTravel/itinerary.slice.js'
 import destinationClientReducer from '@pages/DestinationTravelList/destinationclient.slice.js'
@@ -32,7 +31,6 @@ const rootReducer = {
     hotels: hotelsReducer,
     rooms: roomsReducer,
     restaurants: restaurantsReducer,
-    corpTours: corpToursReducer,
     destinations: destinationReducer,
     itineraries: itineraryReducer,
     bookingHotels: bookingHotelReducer,

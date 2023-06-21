@@ -3,7 +3,7 @@ const router = express.Router()
 const validate = require('../middlewares/validate')
 const validateItinerary = require('../validations/itinerary')
 const controller = require('../controllers/itinerary')
-const { verifyToken, isSystemUser } = require('../middlewares/auth')
+const { verifyToken, isSystemUser, isServiceManager } = require('../middlewares/auth')
 const uploadCloud = require('../config/cloudinary.config')
 router.get(
     '/:id',
@@ -14,7 +14,7 @@ router.get(
 router.post(
     '/',
     verifyToken,
-    isSystemUser,
+    isServiceManager,
     uploadCloud.single('image'),
     validateItinerary.create(),
     validate,
@@ -23,7 +23,7 @@ router.post(
 router.put(
     '/:id',
     verifyToken,
-    isSystemUser,
+    isServiceManager,
     uploadCloud.single('image'),
     validateItinerary.update(),
     validate,
@@ -31,7 +31,7 @@ router.put(
 )
 router.delete(
     '/:id',
-    verifyToken,
+    isServiceManager,
     isSystemUser,
     validateItinerary.findOne(),
     validate,

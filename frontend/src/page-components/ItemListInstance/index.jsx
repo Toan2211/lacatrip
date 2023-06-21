@@ -62,9 +62,6 @@ function ItemListInstance({ item, type }) {
                             )}
                     </div>
                 )}
-                {item?.corpTour?.name && (
-                    <div>By {item?.corpTour?.name}</div>
-                )}
                 <div className="flex mt-3">
                     <div className="flex-1 line-clamp-4 text-sm text-gray-500 h-[80px] overflow-hidden">
                         {item.description}

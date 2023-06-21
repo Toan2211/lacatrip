@@ -23,7 +23,7 @@ function RoomForm({ onClose, open }) {
     const currentRoom = useSelector(currentRoomSelector)
     const dispatch = useDispatch()
     const schema = yup.object().shape({
-        roomNo: yup.string().required('Room No is required'),
+        // roomNo: yup.string().required('Room No is required'),
         title: yup.string().required('Name is required'),
         description: yup.string().required('Description is required'),
         price: yup

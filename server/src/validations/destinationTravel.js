@@ -9,7 +9,6 @@ const create = () => [
     body('originalPrice').notEmpty().isFloat(),
     body('provinceId').notEmpty().isInt(),
     body('serviceManagerId').notEmpty().isUUID(),
-    body('corpTourId').notEmpty().isUUID()
 ]
 const update = () => [
     body('name').optional().isString(),
@@ -21,7 +20,6 @@ const update = () => [
     body('originalPrice').optional().isFloat(),
     body('provinceId').optional().isInt(),
     body('serviceManagerId').optional().isUUID(),
-    body('corpTourId').optional().isUUID()
 ]
 const findOne = () => [param('id').notEmpty().isUUID()]
 module.exports = {
