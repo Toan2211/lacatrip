@@ -64,6 +64,7 @@ const update = async (id, data) => {
         })
         if (!servicemanager) return false
         // delete data.email
+        delete data.id
         await db.User.update(data, {
             where: {
                 id: servicemanager.userId

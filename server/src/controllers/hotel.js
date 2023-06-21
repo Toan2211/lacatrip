@@ -32,8 +32,7 @@ const update = async (req, res) => {
 }
 const find = async (req, res) => {
     try {
-        if (req.user)
-            req.query.roleId = req.user.roleId
+        if (req.user) req.query.roleId = req.user.roleId
         const hotels = await hotelService.find(req.query)
         return res.status(200).json({
             message: 'Get list hotel successful !',
@@ -62,12 +61,14 @@ const findByServiceManager = async (req, res) => {
 }
 const findOne = async (req, res) => {
     try {
-        const hotel = await hotelService.findOne(req.params.id)
+        const hotel = await hotelService.findOne(
+            req.params.id,
+            req.query
+        )
         if (hotel) {
             if (!req.user)
                 await hotelService.update(req.params.id, {
-                    clickCount:
-                        hotel.get({ plain: true }).clickCount + 1
+                    clickCount: hotel.clickCount + 1
                 })
             return res.status(200).json({
                 message: 'Get hotel successful',
@@ -79,6 +80,17 @@ const findOne = async (req, res) => {
                 data: hotel
             })
         }
+    } catch (error) {
+        return res.status(500).json({ message: error.message })
+    }
+}
+const getAvailableRooms = async (req, res) => {
+    try {
+        const hotel = await hotelService.getAvailableRooms(req.query)
+        return res.status(200).json({
+            message: 'Get list rooms available successful',
+            data: hotel
+        })
     } catch (error) {
         return res.status(500).json({ message: error.message })
     }
@@ -123,5 +135,6 @@ module.exports = {
     update,
     find,
     findByServiceManager,
-    findByProvince
+    findByProvince,
+    getAvailableRooms
 }

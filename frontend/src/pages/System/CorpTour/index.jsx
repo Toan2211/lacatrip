@@ -4,14 +4,21 @@ import { useLocation, useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import queryString from 'query-string'
 import Mybutton from '@components/MyButton'
-import { corpToursSelector, getCorpTours, paginationCorpTourSelector, setCurrentCorpTour } from './corptour.slice'
+import {
+    corpToursSelector,
+    getCorpTours,
+    paginationCorpTourSelector,
+    setCurrentCorpTour
+} from './corptour.slice'
 import CorpTourForm from './Form'
+import { selectUser } from '@pages/Auth/auth.slice'
 
 function CorpTour() {
     const dispatch = useDispatch()
     const navigate = useNavigate()
     const corpTours = useSelector(corpToursSelector)
     const pagination = useSelector(paginationCorpTourSelector)
+    const profile = useSelector(selectUser)
     const [openForm, setOpenForm] = useState(false)
     const showDrawer = () => {
         setOpenForm(true)
@@ -52,28 +59,30 @@ function CorpTour() {
                             <h3 className="font-semibold text-lg text-blue-600">
                                 Manage Company Tour
                             </h3>
-                            <div className="relative flex flex-col items-center group w-10">
-                                <Tooltip
-                                    content="Create"
-                                    style="light"
-                                >
-                                    <button
-                                        className="inline-flex items-center justify-center w-6 h-6 mr-2 text-indigo-100 transition-colors duration-150  bg-green-700 rounded-lg focus:shadow-outline hover:bg-green-500 ml-4"
-                                        onClick={showDrawer}
+                            {!profile.serviceManagerId && (
+                                <div className="relative flex flex-col items-center group w-10">
+                                    <Tooltip
+                                        content="Create"
+                                        style="light"
                                     >
-                                        <svg
-                                            className="w-4 h-4 fill-current"
-                                            viewBox="0 0 20 20"
+                                        <button
+                                            className="inline-flex items-center justify-center w-6 h-6 mr-2 text-indigo-100 transition-colors duration-150  bg-green-700 rounded-lg focus:shadow-outline hover:bg-green-500 ml-4"
+                                            onClick={showDrawer}
                                         >
-                                            <path
-                                                d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z"
-                                                clipRule="evenodd"
-                                                fillRule="evenodd"
-                                            ></path>
-                                        </svg>
-                                    </button>
-                                </Tooltip>
-                            </div>
+                                            <svg
+                                                className="w-4 h-4 fill-current"
+                                                viewBox="0 0 20 20"
+                                            >
+                                                <path
+                                                    d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z"
+                                                    clipRule="evenodd"
+                                                    fillRule="evenodd"
+                                                ></path>
+                                            </svg>
+                                        </button>
+                                    </Tooltip>
+                                </div>
+                            )}
                         </div>
                     </div>
                 </div>
@@ -82,9 +91,7 @@ function CorpTour() {
                         <Table.Head>
                             <Table.HeadCell>Name</Table.HeadCell>
                             <Table.HeadCell>Phone</Table.HeadCell>
-                            <Table.HeadCell>
-                                Website
-                            </Table.HeadCell>
+                            <Table.HeadCell>Website</Table.HeadCell>
                             <Table.HeadCell>Address</Table.HeadCell>
                             <Table.HeadCell>Action</Table.HeadCell>
                         </Table.Head>
@@ -136,7 +143,6 @@ function CorpTour() {
                                                     </svg>
                                                 </Mybutton>
                                             </Tooltip>
-
                                         </Table.Cell>
                                     </Table.Row>
                                 ))}

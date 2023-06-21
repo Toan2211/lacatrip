@@ -3,7 +3,8 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useParams } from 'react-router-dom'
 import {
     currentHotelClientSelector,
-    getDeailHotelClient
+    getDeailHotelClient,
+    getRoomAvailableSelector
 } from '../hotelclient.slice'
 import { EffectFade, Navigation, Thumbs, Autoplay } from 'swiper'
 import { Swiper, SwiperSlide } from 'swiper/react'
@@ -19,6 +20,7 @@ function HotelId() {
     const dispatch = useDispatch()
     const id = useParams().id
     const currentHotel = useSelector(currentHotelClientSelector)
+    const roomAvailable = useSelector(getRoomAvailableSelector)
     const [thumbsSwiper, setThumbsSwiper] = useState()
     useEffect(() => {
         if (id) dispatch(getDeailHotelClient(id))
@@ -171,8 +173,8 @@ function HotelId() {
                             Availability
                         </header>
                         <div className="flex flex-col gap-5">
-                            {currentHotel.rooms &&
-                                currentHotel.rooms.map(room => (
+                            {roomAvailable &&
+                                roomAvailable.map(room => (
                                     <RoomCard
                                         key={room.id}
                                         data={room}

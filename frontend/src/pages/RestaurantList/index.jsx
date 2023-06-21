@@ -9,6 +9,7 @@ import {
 } from './restaurantclient.slice'
 import { RESTAURANTTYPE } from '@constants/instanceType'
 import queryString from 'query-string'
+import Sidebar from './Sidebar'
 
 function RestaurantList() {
     const location = useLocation()
@@ -61,8 +62,10 @@ function RestaurantList() {
                 </div>
             </div>
 
-            <div className="flex">
-                <div className="w-1/4">Side bar</div>
+            <div className="flex gap-5">
+                <div className="w-1/4">
+                    <Sidebar queryParams={queryParams} />
+                </div>
                 <div className="flex-1">
                     <ul className="flex flex-col gap-4">
                         {restaurants.map(restaurant => (

@@ -135,32 +135,34 @@ function DestinationTravel() {
                             <h3 className="font-semibold text-lg text-blue-600">
                                 Manage Destination Travel
                             </h3>
-                            <div className="relative flex flex-col items-center group w-10">
-                                <Tooltip
-                                    content="Create"
-                                    style="light"
-                                >
-                                    <button
-                                        className="inline-flex items-center justify-center w-6 h-6 mr-2 text-indigo-100 transition-colors duration-150  bg-green-700 rounded-lg focus:shadow-outline hover:bg-green-500 ml-4"
-                                        onClick={() =>
-                                            navigate(
-                                                path.formDestination
-                                            )
-                                        }
+                            {!profile.serviceManagerId && (
+                                <div className="relative flex flex-col items-center group w-10">
+                                    <Tooltip
+                                        content="Create"
+                                        style="light"
                                     >
-                                        <svg
-                                            className="w-4 h-4 fill-current"
-                                            viewBox="0 0 20 20"
+                                        <button
+                                            className="inline-flex items-center justify-center w-6 h-6 mr-2 text-indigo-100 transition-colors duration-150  bg-green-700 rounded-lg focus:shadow-outline hover:bg-green-500 ml-4"
+                                            onClick={() =>
+                                                navigate(
+                                                    path.formDestination
+                                                )
+                                            }
                                         >
-                                            <path
-                                                d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z"
-                                                clipRule="evenodd"
-                                                fillRule="evenodd"
-                                            ></path>
-                                        </svg>
-                                    </button>
-                                </Tooltip>
-                            </div>
+                                            <svg
+                                                className="w-4 h-4 fill-current"
+                                                viewBox="0 0 20 20"
+                                            >
+                                                <path
+                                                    d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z"
+                                                    clipRule="evenodd"
+                                                    fillRule="evenodd"
+                                                ></path>
+                                            </svg>
+                                        </button>
+                                    </Tooltip>
+                                </div>
+                            )}
                         </div>
                         <form
                             className="flex gap-5 w-full mt-4"

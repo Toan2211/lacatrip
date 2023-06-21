@@ -9,9 +9,15 @@ import { toast } from 'react-toastify'
 import * as yup from 'yup'
 import _ from 'lodash'
 import { unwrapResult } from '@reduxjs/toolkit'
-import { createCorpTour, currentCorpTourSelector, updateCorpTour } from '../corptour.slice'
+import {
+    createCorpTour,
+    currentCorpTourSelector,
+    updateCorpTour
+} from '../corptour.slice'
+import { selectUser } from '@pages/Auth/auth.slice'
 // eslint-disable-next-line no-useless-escape
 function CorpTourForm({ onClose, open }) {
+    const profile = useSelector(selectUser)
     const currentCorpTour = useSelector(currentCorpTourSelector)
     const dispatch = useDispatch()
     const schema = yup.object().shape({
@@ -49,25 +55,29 @@ function CorpTourForm({ onClose, open }) {
                             ...data
                         })
                     ).then(res => unwrapResult(res))
-                    toast.success('Create company tour successful !', {
-                        position: toast.POSITION.BOTTOM_CENTER,
-                        autoClose: 1000,
-                        hideProgressBar: true
-                    })
-                }
-                else
-                {
+                    toast.success(
+                        'Create company tour successful !',
+                        {
+                            position: toast.POSITION.BOTTOM_CENTER,
+                            autoClose: 1000,
+                            hideProgressBar: true
+                        }
+                    )
+                } else {
                     await dispatch(
                         updateCorpTour({
                             ...data,
                             id: currentCorpTour.id
                         })
                     ).then(res => unwrapResult(res))
-                    toast.success('Update company tour successful !', {
-                        position: toast.POSITION.BOTTOM_CENTER,
-                        autoClose: 1000,
-                        hideProgressBar: true
-                    })
+                    toast.success(
+                        'Update company tour successful !',
+                        {
+                            position: toast.POSITION.BOTTOM_CENTER,
+                            autoClose: 1000,
+                            hideProgressBar: true
+                        }
+                    )
                 }
             }
             onClose()
@@ -82,7 +92,9 @@ function CorpTourForm({ onClose, open }) {
     return (
         <Drawer isOpen={open} onClose={onClose}>
             <header className="font-bold bg-slate-50 p-4">
-                {_.isEmpty(currentCorpTour) ? 'Add Company Tour' : 'Edit Company Tour'}
+                {_.isEmpty(currentCorpTour)
+                    ? 'Add Company Tour'
+                    : 'Edit Company Tour'}
             </header>
             <div className="p-5">
                 <form onSubmit={form.handleSubmit(handleSubmit)}>
@@ -142,14 +154,18 @@ function CorpTourForm({ onClose, open }) {
                             rows={2}
                         />
                     </div>
-                    <div className="mt-6 text-right">
-                        <Mybutton
-                            className=" bg-blue-500 text-white active:bg-blue-800 text-sm font-bold uppercase px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 w-1/4 ease-linear transition-all duration-150"
-                            type="submit"
-                        >
-                            {_.isEmpty(currentCorpTour) ? 'Add' : 'Edit'}
-                        </Mybutton>
-                    </div>
+                    {!profile.serviceManagerId && (
+                        <div className="mt-6 text-right">
+                            <Mybutton
+                                className=" bg-blue-500 text-white active:bg-blue-800 text-sm font-bold uppercase px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 w-1/4 ease-linear transition-all duration-150"
+                                type="submit"
+                            >
+                                {_.isEmpty(currentCorpTour)
+                                    ? 'Add'
+                                    : 'Edit'}
+                            </Mybutton>
+                        </div>
+                    )}
                 </form>
             </div>
         </Drawer>
