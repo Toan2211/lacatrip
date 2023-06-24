@@ -60,6 +60,7 @@ module.exports = (sequelize, DataTypes) => {
             totalRating: DataTypes.FLOAT,
             public: DataTypes.BOOLEAN,
             clickCount: DataTypes.FLOAT,
+            commissionPercent: DataTypes.INTEGER
         },
         {
             sequelize,

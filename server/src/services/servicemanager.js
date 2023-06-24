@@ -109,10 +109,25 @@ const findOne = async id => {
         throw new Error(error)
     }
 }
+const updatePaymentAccount = async (id, paymentAccount) => {
+    try {
+        const result = await db.ServiceManager.update({
+            paymentAccount: paymentAccount
+        }, {
+            where: {
+                id: id
+            }
+        })
+        return result
+    } catch (error) {
+        throw new Error(error)
+    }
+}
 module.exports = {
     find,
     create,
     update,
     findByUserId,
-    findOne
+    findOne,
+    updatePaymentAccount
 }

@@ -45,7 +45,9 @@ const create = async (req, res) => {
                             await paymentService.createPayment({
                                 bookingId: booking.id,
                                 paymentId: payment.id,
-                                amount: booking.amount
+                                amount: booking.amount,
+                                serviceManagerId: booking.serviceManagerId,
+                                commissionAmount: Math.ceil((booking.amount*booking.destinationTravel.commissionPercent)/100)
                             })
                             return res.json({
                                 linkPayment: payment.links[i].href

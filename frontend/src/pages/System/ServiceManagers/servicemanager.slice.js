@@ -6,6 +6,10 @@ export const getServiceManagers = createAsyncThunk(
     'serviceManagers/getAllServiceManagers',
     payloadCreator(serviceManagerApi.getServiceManagers)
 )
+export const updatePaymentAccount = createAsyncThunk(
+    'serviceManagers/updatePaymentAccount',
+    payloadCreator(serviceManagerApi.updatePaymentAccount)
+)
 export const createServiceManager = createAsyncThunk(
     'serviceManagers/createServiceManager',
     async (payload, { rejectWithValue }) => {

@@ -34,8 +34,7 @@ const create = async (req, res) => {
     }
 }
 const find = async (req, res) => {
-    try
-    {
+    try {
         const key = req.query.key ? +req.query.key : ''
         const page = req.query.page ? +req.query.page : 1
         const limit = req.query.limit ? +req.query.limit : 10
@@ -44,8 +43,7 @@ const find = async (req, res) => {
             message: 'Get list service manager successful !',
             data: userData
         })
-    }
-    catch (err) {
+    } catch (err) {
         return res.status(500).json({ message: err.message })
     }
 }
@@ -53,7 +51,10 @@ const update = async (req, res) => {
     try {
         if (req.file) req.body.avatar = req.file.path
 
-        const user = await servicemanager.update(req.params.id, req.body)
+        const user = await servicemanager.update(
+            req.params.id,
+            req.body
+        )
         if (user)
             return res.status(200).json({
                 message: 'Update service manager successful !',
@@ -63,14 +64,34 @@ const update = async (req, res) => {
             })
         else
             return res.status(400).json({
-                message: 'Can not update service manager. Maybe user does not exit or data is empty !'
+                message:
+                    'Can not update service manager. Maybe user does not exit or data is empty !'
             })
     } catch (err) {
         return res.status(500).json({ message: err.message })
     }
 }
+const updatePaymentAccount = async (req, res) => {
+    try {
+        const result = await servicemanager.updatePaymentAccount(
+            req.params.id,
+            req.body.paymentAccount
+        )
+        if (!result)
+            return res.status(400).json({
+                message:
+                    'Can not update service manager. Maybe service manager does not exit or data is empty !'
+            })
+        return res.status(201).json({
+            message: 'Update payment Account service manager successful !',
+        })
+    } catch (error) {
+        return res.status(500).json({ message: error.message })
+    }
+}
 module.exports = {
     find,
     create,
-    update
+    update,
+    updatePaymentAccount
 }

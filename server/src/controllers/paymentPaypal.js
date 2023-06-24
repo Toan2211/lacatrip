@@ -15,7 +15,6 @@ const successPaymentPaypal = async (req, res) => {
     const payerId = req.query.PayerID
     const paymentId = req.query.paymentId
     const bookingId = req.query.bookingId
-    
     const bookingDestinationId = req.query.bookingDestinationId
     const execute_payment_json = {
         payer_id: payerId
@@ -30,8 +29,12 @@ const successPaymentPaypal = async (req, res) => {
                 new Date() - createTime >
                 process.env.LIMITED_TIME_PAYMENT
             ) {
-                const bookingIdFinal = bookingId ? bookingId : bookingDestinationId
-                await bookingHotelService.deleteBooking(bookingIdFinal)
+                const bookingIdFinal = bookingId
+                    ? bookingId
+                    : bookingDestinationId
+                await bookingHotelService.deleteBooking(
+                    bookingIdFinal
+                )
                 await paymentService.deletePayment({
                     bookingId: bookingIdFinal,
                     paymentId: paymentId
@@ -49,7 +52,6 @@ const successPaymentPaypal = async (req, res) => {
                                 `${process.env.REACT_API}/payment/fail?content=${error.response}`
                             )
                         } else {
-
                             let booking = null
                             let url = null
                             let message = null
@@ -103,7 +105,52 @@ const successPaymentPaypal = async (req, res) => {
         }
     })
 }
+const payOutToServiceManager = async (req, res) => {
+    try {
+        const { dataAmount, now } =
+            await paymentService.getAmountToPayServiceManager()
+        console.log('run job')
+        if (dataAmount.length > 0) {
+            dataAmount.forEach(payment => {
+                console.log(payment)
+                const payout = {
+                    sender_batch_header: {
+                        sender_batch_id:
+                            'batch_' +
+                            Math.random().toString(36).substring(9),
+                        email_subject: 'You have received a payment'
+                    },
+                    items: [
+                        {
+                            recipient_type: 'EMAIL',
+                            amount: {
+                                value: payment.amount,
+                                currency: 'USD'
+                            },
+                            receiver: payment.email,
+                            note: 'Payment money of booking.'
+                        }
+                    ]
+                }
+                paypal.payout.create(
+                    payout,
+                    async function (error, payout) {
+                        if (error) {
+                            console.error(error.response)
+                        } else {
+                            await paymentService.updateIsPayedForServiceManager(payment.serviceManagerId, now)
+                            console.log('update success', payment.serviceManagerId)
+                        }
+                    }
+                )
+            })
+        }
+    } catch (error) {
+        console.log(error)
+    }
+}
 module.exports = {
     createPayment,
-    successPaymentPaypal
+    successPaymentPaypal,
+    payOutToServiceManager
 }

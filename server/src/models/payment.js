@@ -17,6 +17,10 @@ module.exports = (sequelize, DataTypes) => {
                 foreignKey: 'bookingId',
                 as: 'bookingDestination'
             })
+            this.belongsTo(models.ServiceManager, {
+                foreignKey: 'serviceManagerId',
+                as: 'serviceManager'
+            })
         }
     }
     Payment.init(
@@ -29,8 +33,11 @@ module.exports = (sequelize, DataTypes) => {
             },
             bookingId: DataTypes.UUID,
             amount: DataTypes.INTEGER,
-            paymentId: DataTypes.STRING,
-            payerId: DataTypes.STRING
+            paymentId: DataTypes.STRING, // payment Id Paypal
+            payerId: DataTypes.STRING, // payerId Paypal
+            serviceManagerId: DataTypes.UUID,
+            commissionAmount: DataTypes.INTEGER,
+            isPayedForServiceManager: DataTypes.BOOLEAN // tranfer money to service Manager
         },
         {
             sequelize,

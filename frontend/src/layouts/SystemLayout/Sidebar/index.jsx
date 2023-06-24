@@ -8,7 +8,7 @@ import { useSelector } from 'react-redux'
 import { selectUser } from '@pages/Auth/auth.slice'
 import { BiRestaurant } from 'react-icons/bi'
 import ROLE from '@constants/ROLE'
-import { MdOutlineTravelExplore } from 'react-icons/md'
+import { MdOutlineAttachMoney, MdOutlineTravelExplore } from 'react-icons/md'
 export default function Sidebar() {
     const [collapseShow, setCollapseShow] = React.useState('hidden')
     const currentUser = useSelector(selectUser)
@@ -187,6 +187,27 @@ export default function Sidebar() {
                                         <BsFillTicketFill />
                                     </span>
                                     Booking Destination Travel
+                                </NavLink>
+                            </li>
+                        </ul>
+                        <hr className="my-2 md:min-w-full" />
+                        <h6 className="md:min-w-full text-blueGray-500 text-xs uppercase font-bold block pt-1 pb-4 no-underline">
+                            Manage Revenue
+                        </h6>
+                        <ul className="md:flex-col md:min-w-full flex flex-col list-none text-bl">
+                            <li className="items-center ">
+                                <NavLink
+                                    className={({ isActive }) =>
+                                        isActive
+                                            ? 'text-blue-600 hover:opacity-75 text-xs uppercase py-3 font-bold flex'
+                                            : 'hover:text-blue-600 text-xs uppercase py-3 font-bold flex'
+                                    }
+                                    to={path.revenue}
+                                >
+                                    <span className="mr-2">
+                                        <MdOutlineAttachMoney />
+                                    </span>
+                                    Revenue Booking
                                 </NavLink>
                             </li>
                         </ul>

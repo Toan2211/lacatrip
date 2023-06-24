@@ -24,6 +24,7 @@ class Path {
         this.bookingHotelSystem = '/system/booking-hotel'
         this.notificationSystem = '/system/notifications'
         this.bookingDestinationTravelSystem = '/system/booking-destination-travel'
+        this.revenue = '/system/revenue'
         //client
         this.clientDestinationTravelDetail = '/destination-travel/:id'
         this.clientHotelDetail = '/hotel/:id'
