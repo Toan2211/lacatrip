@@ -14,29 +14,29 @@ const getAllRevenue = async ({
             dataReturn = await db.sequelize.query(
                 `
                     SELECT 
-                    payments.serviceManagerId,
-                    users.firstname,
-                    users.lastname,
-                    users.email,
-                    users.phone,
-                    SUM(payments.amount) AS totalAmount,
-                    SUM(payments.commissionAmount) AS totalCommissionAmount,
-                    SUM(CASE WHEN payments.isPayedForServiceManager = false THEN (payments.amount - payments.commissionAmount) ELSE 0 END) AS totalCommissionAmountNotYet,
-                    DATE_FORMAT(payments.createdAt, '%Y-%m') AS month
+                    Payments.serviceManagerId,
+                    Users.firstname,
+                    Users.lastname,
+                    Users.email,
+                    Users.phone,
+                    SUM(Payments.amount) AS totalAmount,
+                    SUM(Payments.commissionAmount) AS totalCommissionAmount,
+                    SUM(CASE WHEN Payments.isPayedForServiceManager = false THEN (Payments.amount - Payments.commissionAmount) ELSE 0 END) AS totalCommissionAmountNotYet,
+                    DATE_FORMAT(Payments.createdAt, '%Y-%m') AS month
                 FROM 
-                    payments
+                    Payments
                 JOIN 
-                    servicemanagers ON payments.serviceManagerId = servicemanagers.id
+                    ServiceManagers ON Payments.serviceManagerId = ServiceManagers.id
                 JOIN
-                    users ON servicemanagers.userId = users.id
+                    Users ON ServiceManagers.userId = Users.id
                 WHERE 
-                    payments.payerId IS NOT NULL
-                    AND payments.createdAt >= :startDate
-                    AND payments.createdAt < :endDate
-                    AND payments.serviceManagerId = :serviceManagerId
+                    Payments.payerId IS NOT NULL
+                    AND Payments.createdAt >= :startDate
+                    AND Payments.createdAt < :endDate
+                    AND Payments.serviceManagerId = :serviceManagerId
                 GROUP BY 
-                    payments.serviceManagerId,
-                    DATE_FORMAT(payments.createdAt, '%Y-%m');
+                    Payments.serviceManagerId,
+                    DATE_FORMAT(Payments.createdAt, '%Y-%m');
                 `,
                 {
                     replacements: {
@@ -51,26 +51,26 @@ const getAllRevenue = async ({
             dataReturn = await db.sequelize.query(
                 `
                     SELECT 
-                    payments.serviceManagerId,
-                    users.firstname,
-                    users.lastname,
-                    users.email,
-                    users.phone,
-                    SUM(payments.amount) AS totalAmount,
-                    SUM(payments.commissionAmount) AS totalCommissionAmount,
-                    SUM(CASE WHEN payments.isPayedForServiceManager = false THEN (payments.amount - payments.commissionAmount) ELSE 0 END) AS totalCommissionAmountNotYet
+                    Payments.serviceManagerId,
+                    Users.firstname,
+                    Users.lastname,
+                    Users.email,
+                    Users.phone,
+                    SUM(Payments.amount) AS totalAmount,
+                    SUM(Payments.commissionAmount) AS totalCommissionAmount,
+                    SUM(CASE WHEN Payments.isPayedForServiceManager = false THEN (Payments.amount - Payments.commissionAmount) ELSE 0 END) AS totalCommissionAmountNotYet
                 FROM 
-                    payments
+                Payments
                 JOIN 
-                    servicemanagers ON payments.serviceManagerId = servicemanagers.id
+                    ServiceManagers ON Payments.serviceManagerId = ServiceManagers.id
                 JOIN
-                    users ON servicemanagers.userId = users.id
+                    Users ON ServiceManagers.userId = Users.id
                 WHERE 
-                    payments.payerId IS NOT NULL
-                    AND payments.createdAt >= :startDate
-                    AND payments.createdAt < :endDate
+                    Payments.payerId IS NOT NULL
+                    AND Payments.createdAt >= :startDate
+                    AND Payments.createdAt < :endDate
                 GROUP BY 
-                    payments.serviceManagerId                
+                    Payments.serviceManagerId                
                 `,
                 {
                     replacements: {

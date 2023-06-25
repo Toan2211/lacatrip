@@ -66,22 +66,25 @@ const deletePayment = async params => {
 
 const getAmountToPayServiceManager = async () => {
     try {
-        const now = (new Date()).toISOString().replace('T', ' ').substring(0,19)
+        const now = new Date()
+            .toISOString()
+            .replace('T', ' ')
+            .substring(0, 19)
         let [dataAmount, _] = await db.sequelize.query(`
                 SELECT 
-                payments.serviceManagerId,
-                servicemanagers.paymentAccount as email,
-                SUM(CASE WHEN payments.isPayedForServiceManager = false THEN (payments.amount - payments.commissionAmount) ELSE 0 END) AS amount
+                Payments.serviceManagerId,
+                ServiceManagers.paymentAccount as email,
+                SUM(CASE WHEN Payments.isPayedForServiceManager = false THEN (Payments.amount - Payments.commissionAmount) ELSE 0 END) AS amount
                 FROM
-                    payments
+                    Payments
                 JOIN
-                    servicemanagers ON payments.serviceManagerId = servicemanagers.id
+                    ServiceManagers ON Payments.serviceManagerId = ServiceManagers.id
                 JOIN
-                    users ON servicemanagers.userId = users.id
+                    Users ON ServiceManagers.userId = Users.id
                 WHERE
-                    payments.payerId IS NOT NULL
+                    Payments.payerId IS NOT NULL
                 GROUP BY
-                    payments.serviceManagerId
+                    Payments.serviceManagerId
                 HAVING amount > 100
         `)
         return {
@@ -100,7 +103,7 @@ const updateIsPayedForServiceManager = async (
     try {
         await db.sequelize.query(
             `
-            UPDATE payments SET isPayedForServiceManager = 1
+            UPDATE Payments SET isPayedForServiceManager = 1
             WHERE 
             payerId is not null
             and isPayedForServiceManager = 0
