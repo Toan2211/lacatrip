@@ -26,9 +26,9 @@ const getAllRevenue = async ({
                 FROM 
                     Payments
                 JOIN 
-                    Servicemanagers ON Payments.serviceManagerId = Servicemanagers.id
+                    ServiceManagers ON Payments.serviceManagerId = ServiceManagers.id
                 JOIN
-                    Users ON Servicemanagers.userId = Users.id
+                    Users ON ServiceManagers.userId = Users.id
                 WHERE 
                     Payments.payerId IS NOT NULL
                     AND Payments.createdAt >= :startDate
@@ -62,9 +62,9 @@ const getAllRevenue = async ({
                 FROM 
                 Payments
                 JOIN 
-                    Servicemanagers ON Payments.serviceManagerId = Servicemanagers.id
+                    ServiceManagers ON Payments.serviceManagerId = ServiceManagers.id
                 JOIN
-                    Users ON servicemanagers.userId = Users.id
+                    Users ON ServiceManagers.userId = Users.id
                 WHERE 
                     Payments.payerId IS NOT NULL
                     AND Payments.createdAt >= :startDate
