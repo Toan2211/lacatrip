@@ -44,6 +44,8 @@ import NotificationSystem from '@pages/System/Notification'
 import BookingDestinationTravel from '@pages/BookingDestinationTravel'
 import BookingDestinationTravelSystem from '@pages/System/BookingDestinationTravel'
 import BookingListDestinationTravel from '@pages/BookingDestinationTravel/BookingList'
+import Revenue from '@pages/System/Revenue'
+import TrackingPayment from '@pages/System/TrackingPayment'
 function RoutesComponent() {
     return (
         <BrowserRouter>
@@ -200,6 +202,14 @@ function RoutesComponent() {
                             element={
                                 <BookingDestinationTravelSystem />
                             }
+                        />
+                        <Route
+                            path={path.revenue}
+                            element={<Revenue />}
+                        />
+                        <Route
+                            path={path.trackingPayment}
+                            element={<TrackingPayment />}
                         />
                     </Route>
                 </Route>

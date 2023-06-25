@@ -20,7 +20,11 @@ const create = async data => {
             serviceManagerId: data.serviceManagerId,
             longtitude: data.longtitude,
             latitude: data.latitude,
-            address: data.address
+            address: data.address,
+            commissionPercent:
+                data.commissionPercent >= 10
+                    ? data.commissionPercent
+                    : 10
         }
         const hotel = await db.Hotel.create(dataHotel)
         if (data.amenitiesIds) {
@@ -178,7 +182,10 @@ const find = async params => {
             limit: +limit,
             include: [...includeModels],
             where: whereParams,
-            distinct: true
+            distinct: true,
+            order: [
+                ['commissionPercent', 'DESC'],
+            ]
         })
         return {
             hotels: rows,
@@ -262,6 +269,9 @@ const findByProvince = async (provinceId, page, limit) => {
                         id: provinceId
                     }
                 }
+            ],
+            order: [
+                ['commissionPercent', 'DESC'],
             ]
         })
         return {
@@ -278,7 +288,7 @@ const findByProvince = async (provinceId, page, limit) => {
     }
 }
 
-const getAvailableRooms = async (query) => {
+const getAvailableRooms = async query => {
     //Rooms DB
     //childrenCount
     //adultCount
@@ -294,8 +304,7 @@ const getAvailableRooms = async (query) => {
             countRooms,
             hotelId
         } = query
-        const includeParams = [
-        ]
+        const includeParams = []
         if (query.checkIn) {
             const RoomDetailList = await db.sequelize.query(
                 `SELECT BookingHotel_RoomDetail.RoomDetailId FROM BookingHotels
@@ -306,7 +315,11 @@ const getAvailableRooms = async (query) => {
                 and checkOut<=:checkOut
                 `,
                 {
-                    replacements: { hotelId: hotelId, checkIn, checkOut },
+                    replacements: {
+                        hotelId: hotelId,
+                        checkIn,
+                        checkOut
+                    },
                     type: QueryTypes.SELECT
                 }
             )
@@ -353,10 +366,12 @@ const getAvailableRooms = async (query) => {
                 countRoomDetailQuery += room.roomDetails.length
             }
             if (
-                !(countAdultsQuery + countChildrensQuery >=
-                    +countAdults + +countChildrens &&
-                countAdultsQuery >= +countAdults &&
-                countRoomDetailQuery >= +countRooms)
+                !(
+                    countAdultsQuery + countChildrensQuery >=
+                        +countAdults + +countChildrens &&
+                    countAdultsQuery >= +countAdults &&
+                    countRoomDetailQuery >= +countRooms
+                )
             ) {
                 for (const room of hotel.rooms) {
                     room.roomDetails = []
@@ -370,7 +385,7 @@ const getAvailableRooms = async (query) => {
     }
 }
 
-const findOne = async (id) => {
+const findOne = async id => {
     try {
         const [hotel] = await db.Hotel.findAll({
             where: {

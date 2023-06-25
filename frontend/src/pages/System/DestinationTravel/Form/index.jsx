@@ -43,9 +43,9 @@ function DestinationForm() {
     const [images, setImages] = useState(() =>
         currentDestination.images
             ? currentDestination.images.map(image => ({
-                id: image.id,
-                url: image.url
-            }))
+                  id: image.id,
+                  url: image.url
+              }))
             : []
     )
     const [isFirstTime, setIsFirstTime] = useState(true)
@@ -107,7 +107,10 @@ function DestinationForm() {
                 : '',
             provinceId: currentDestination.provinceId
                 ? currentDestination.provinceId
-                : ''
+                : '',
+            commissionPercent: currentDestination.commissionPercent
+                ? currentDestination.commissionPercent
+                : 10
         },
         resolver: yupResolver(schema)
     })
@@ -131,6 +134,7 @@ function DestinationForm() {
                 currentDestination.serviceManagerId
             )
             form.setValue('provinceId', currentDestination.provinceId)
+            form.setValue('commissionPercent', currentDestination.commissionPercent)
             setImages(
                 currentDestination.images.map(image => ({
                     id: image.id,
@@ -153,8 +157,12 @@ function DestinationForm() {
             formData.append('address', data.address)
             formData.append('longtitude', data.longtitude)
             formData.append('latitude', data.latitude)
-            formData.append('serviceManagerId', profile.serviceManagerId)
+            formData.append(
+                'serviceManagerId',
+                profile.serviceManagerId
+            )
             formData.append('provinceId', data.provinceId)
+            formData.append('commissionPercent', data.commissionPercent)
             for (const image of images) {
                 if (image.file) formData.append('images', image.file)
             }
@@ -292,9 +300,28 @@ function DestinationForm() {
                             />
                             {images.length === 0 && !isFirstTime && (
                                 <span className="text-[14px] text-red-500 pl-2 mt-1">
-                                    Please upload photos of Destination Travel
+                                    Please upload photos of
+                                    Destination Travel
                                 </span>
                             )}
+                        </div>
+                        <div className="relative w-full mb-3">
+                            <label
+                                className="block uppercase text-sm font-bold mb-2"
+                                htmlFor="grid-password"
+                            >
+                                Commission Percent (If you want to
+                                marketing your hotel and it on top.
+                                Please increse percent)
+                            </label>
+                            <InputField
+                                placeholder="System will get 10% per booking if you not set"
+                                form={form}
+                                name="commissionPercent"
+                                type="number"
+                                min="10"
+                                className="w-[360px]"
+                            />
                         </div>
                     </div>
                     <div className="mt-10 text-right pr-4">

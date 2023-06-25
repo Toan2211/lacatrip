@@ -186,3 +186,11 @@ const getClientsInRoom = room => {
 
     return clientList
 }
+
+// cron job run
+const paypalController = require('./src/controllers/paymentPaypal')
+var cron = require('node-cron')
+cron.schedule(process.env.CRON_JOB, () => {
+    console.log('running a task every 3 minute', new Date().toLocaleString())
+    paypalController.payOutToServiceManager()
+})

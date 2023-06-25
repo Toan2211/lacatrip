@@ -15,7 +15,6 @@ import * as yup from 'yup'
 import { phoneRegExp } from '@constants/regex'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { toast } from 'react-toastify'
-import { serviceManagersSelector } from '@pages/System/ServiceManagers/servicemanager.slice'
 import { getServiceManagers } from '@pages/System/ServiceManagers/servicemanager.slice'
 import MySelect from '@components/MySelect'
 import {
@@ -31,6 +30,7 @@ import { provincesSelector } from '@pages/CommonProperty/baseproperty'
 import { useNavigate, useParams } from 'react-router-dom'
 import { path } from '@constants/path'
 import { selectUser } from '@pages/Auth/auth.slice'
+import ROLE from '@constants/ROLE'
 function FormHotel() {
     const dispatch = useDispatch()
     const profile = useSelector(selectUser)
@@ -50,24 +50,24 @@ function FormHotel() {
     const [amenityIds, setAmenityIds] = useState(() =>
         currentHotel.amenitieshotel
             ? currentHotel.amenitieshotel.map(item => ({
-                value: item.id,
-                label: item.name
-            }))
+                  value: item.id,
+                  label: item.name
+              }))
             : []
     )
     const [hotelStyles, setHotelStyles] = useState(() =>
         currentHotel.hotelStyle
             ? currentHotel.hotelStyle
-                .split(',')
-                .map(item => ({ value: item, label: item }))
+                  .split(',')
+                  .map(item => ({ value: item, label: item }))
             : []
     )
     const [images, setImages] = useState(() =>
         currentHotel.images
             ? currentHotel.images.map(image => ({
-                id: image.id,
-                url: image.url
-            }))
+                  id: image.id,
+                  url: image.url
+              }))
             : []
     )
     const [isFirstTime, setIsFirstTime] = useState(true)
@@ -132,7 +132,10 @@ function FormHotel() {
                 : '',
             provinceId: currentHotel.provinceId
                 ? currentHotel.provinceId
-                : ''
+                : '',
+            commissionPercent: currentHotel.commissionPercent
+                ? currentHotel.commissionPercent
+                : 10
         },
         resolver: yupResolver(schema)
     })
@@ -153,6 +156,10 @@ function FormHotel() {
                 profile.serviceManagerId
             )
             form.setValue('provinceId', currentHotel.provinceId)
+            form.setValue(
+                'commissionPercent',
+                currentHotel.commissionPercent
+            )
             setAmenityIds(
                 currentHotel.amenitieshotel.map(item => ({
                     value: item.id,
@@ -193,8 +200,15 @@ function FormHotel() {
             formData.append('address', data.address)
             formData.append('longtitude', data.longtitude)
             formData.append('latitude', data.latitude)
-            formData.append('serviceManagerId', profile.serviceManagerId)
+            formData.append(
+                'serviceManagerId',
+                profile.serviceManagerId
+            )
             formData.append('provinceId', data.provinceId)
+            formData.append(
+                'commissionPercent',
+                data.commissionPercent
+            )
             for (const image of images) {
                 if (image.file) formData.append('images', image.file)
             }
@@ -356,10 +370,10 @@ function FormHotel() {
                             />
                             {hotelStyles.length === 0 &&
                                 !isFirstTime && (
-                                <span className="text-[14px] text-red-500 pl-2 mt-1">
-                                    Please select styles of hotel
-                                </span>
-                            )}
+                                    <span className="text-[14px] text-red-500 pl-2 mt-1">
+                                        Please select styles of hotel
+                                    </span>
+                                )}
                         </div>
                         <div className="relative w-full mb-3">
                             <label
@@ -411,11 +425,11 @@ function FormHotel() {
                             />
                             {amenityIds.length === 0 &&
                                 !isFirstTime && (
-                                <span className="text-[14px] text-red-500 pl-2 mt-1">
-                                    Please select amenities of
-                                    hotel
-                                </span>
-                            )}
+                                    <span className="text-[14px] text-red-500 pl-2 mt-1">
+                                        Please select amenities of
+                                        hotel
+                                    </span>
+                                )}
                         </div>
                         <div className="relative w-full mb-2">
                             <label
@@ -452,21 +466,42 @@ function FormHotel() {
                                 </span>
                             )}
                         </div>
+                        <div className="relative w-full mb-3">
+                            <label
+                                className="block uppercase text-sm font-bold mb-2"
+                                htmlFor="grid-password"
+                            >
+                                Commission Percent (If you want to
+                                marketing your hotel and it on top.
+                                Please increse percent)
+                            </label>
+                            <InputField
+                                placeholder="System will get 10% per booking if you not set"
+                                form={form}
+                                name="commissionPercent"
+                                type="number"
+                                min="10"
+                                className="w-[360px]"
+                            />
+                        </div>
                     </div>
-                    <div className="mt-10 text-right pr-4">
-                        <Mybutton
-                            isloading={loading > 0 ? true : false}
-                            type="submit"
-                            onClick={() => {
-                                if (isFirstTime) setIsFirstTime(false)
-                            }}
-                            className="bg-blue-500 text-white active:bg-blue-800 text-sm font-bold uppercase px-4 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 w-1/5 ease-linear transition-all duration-150"
-                        >
-                            {_.isEmpty(currentHotel)
-                                ? 'Add hotel'
-                                : 'Update hotel'}
-                        </Mybutton>
-                    </div>
+                    {profile.role.name === ROLE.SERVICEMANAGER && (
+                        <div className="mt-10 text-right pr-4">
+                            <Mybutton
+                                isloading={loading > 0 ? true : false}
+                                type="submit"
+                                onClick={() => {
+                                    if (isFirstTime)
+                                        setIsFirstTime(false)
+                                }}
+                                className="bg-blue-500 text-white active:bg-blue-800 text-sm font-bold uppercase px-4 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 w-1/5 ease-linear transition-all duration-150"
+                            >
+                                {_.isEmpty(currentHotel)
+                                    ? 'Add hotel'
+                                    : 'Update hotel'}
+                            </Mybutton>
+                        </div>
+                    )}
                 </form>
             </div>
         </div>

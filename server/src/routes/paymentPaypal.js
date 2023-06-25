@@ -8,9 +8,10 @@ router.get(
     // verifyToken,
     controller.createPayment
 )
-router.get(
-    '/success',
-    controller.successPaymentPaypal
+router.get('/success', controller.successPaymentPaypal)
+router.post(
+    '/payout-service-manager',
+    controller.payOutToServiceManager
 )
 
 module.exports = router

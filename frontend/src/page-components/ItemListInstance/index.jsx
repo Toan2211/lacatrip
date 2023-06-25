@@ -18,10 +18,10 @@ function ItemListInstance({ item, type }) {
             setLink(`/destination-travel/${item.id}${location.search}`)
         }
         else if (type === HOTELTYPE) {
-            setLink(`/hotel/${item.id}${location.search}${location.search}`)
+            setLink(`/hotel/${item.id}${location.search}`)
         }
         else if (type === RESTAURANTTYPE) {
-            setLink(`/restaurant/${item.id}${location.search}${location.search}`)
+            setLink(`/restaurant/${item.id}${location.search}`)
         }
     }, [type, item, location])
     return (

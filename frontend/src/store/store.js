@@ -21,6 +21,8 @@ import bookingHotelClientReducer from '@pages/BookingHotel/bookinghotelclient.sl
 import bookingHotelReducer from '@pages/System/BookingHotel/bookinghotel.slice.js'
 import bookingDestinationReducer from '@pages/System/BookingDestinationTravel/bookingdestinationtravel.slice.js'
 import bookingDestinationClientReducer from '@pages/BookingDestinationTravel/bookingdestinationtravel.slice.js'
+import revenueReducer from '@pages/System/Revenue/revenue.slice.js'
+import trackingPaymentReducer from '@pages/System/TrackingPayment/trackingpayment.slice.js'
 const rootReducer = {
     propertys: baseProperty,
     auth: authReducer,
@@ -47,7 +49,10 @@ const rootReducer = {
     notifications: notificationReducer,
     //booking
     bookingHotelClients: bookingHotelClientReducer,
-    bookingDestinationTravelClients: bookingDestinationClientReducer
+    bookingDestinationTravelClients: bookingDestinationClientReducer,
+    //revenue
+    revenues: revenueReducer,
+    trackingPayments : trackingPaymentReducer
 }
 const store = configureStore({
     reducer: rootReducer,

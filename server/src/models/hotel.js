@@ -76,7 +76,8 @@ module.exports = (sequelize, DataTypes) => {
             cheapestPrice: DataTypes.FLOAT,
             provinceId: DataTypes.INTEGER,
             serviceManagerId: DataTypes.UUID,
-            clickCount: DataTypes.FLOAT
+            clickCount: DataTypes.FLOAT,
+            commissionPercent: DataTypes.INTEGER
         },
         {
             sequelize,
