@@ -25,6 +25,22 @@ module.exports = (sequelize, DataTypes) => {
                 foreignKey: 'serviceManagerId',
                 as: 'DestinationTravels'
             })
+            this.hasMany(models.Payment, {
+                foreignKey: 'serviceManagerId',
+                as: 'payments'
+            })
+            this.hasMany(models.BookingHotel, {
+                foreignKey: 'serviceManagerId',
+                as: 'bookingHotels'
+            })
+            this.hasMany(models.BookingDestinationTravel, {
+                foreignKey: 'serviceManagerId',
+                as: 'bookingDestinationTravels'
+            })
+            this.hasMany(models.TrackingPayment, {
+                foreignKey: 'serviceManagerId',
+                as: 'trackingPayments'
+            })
         }
     }
     ServiceManager.init(
@@ -35,7 +51,8 @@ module.exports = (sequelize, DataTypes) => {
                 defaultValue: DataTypes.UUIDV4,
                 allowNull: false
             },
-            userId: DataTypes.UUID
+            userId: DataTypes.UUID,
+            paymentAccount: DataTypes.STRING
         },
         {
             sequelize,

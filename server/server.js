@@ -145,6 +145,25 @@ io.on('connection', socket => {
         }
     })
 
+    socket.on('createNotify', notify => {
+        const notification = {
+            body:
+                notify.sender.firstname +
+                notify.sender.lastname +
+                ': ' +
+                notify.message,
+            icon: notify.sender.avatar,
+            url: `${process.env.REACT_API}/${notify.url}`,
+            title: 'Lacatrip'
+        }
+        const user = users.find(user => user.id === notify.receiverId)
+        if (user) {
+            socket
+                .to(`${user.socketId}`)
+                .emit('createNotifyToClient', notification)
+        }
+    })
+
     socket.on('disconnect', () => {
         const data = users.find(user => user.socketId === socket.id)
         users = users.filter(user => user.socketId !== socket.id)
@@ -167,3 +186,11 @@ const getClientsInRoom = room => {
 
     return clientList
 }
+
+// cron job run
+const paypalController = require('./src/controllers/paymentPaypal')
+var cron = require('node-cron')
+cron.schedule(process.env.CRON_JOB, () => {
+    console.log('running a task every 3 minute', new Date().toLocaleString())
+    paypalController.payOutToServiceManager()
+})

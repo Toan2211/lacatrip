@@ -20,8 +20,8 @@ import _ from 'lodash'
 function TripOrganize({ isOpen, onClose }) {
     const dispatch = useDispatch()
     const currentTrip = useSelector(currentTripSelector)
-    const [startDate, setStartDate] = useState(new Date(new Date().toLocaleDateString()))
-    const [endDate, setEndDate] = useState(new Date(new Date().toLocaleDateString()))
+    const [startDate, setStartDate] = useState(new Date())
+    const [endDate, setEndDate] = useState(new Date())
 
     const [dataItineraries, setDataItineraries] = useState([])
     const ExampleCustomInput = forwardRef(

@@ -40,8 +40,7 @@ function Itinerary({ open, onClose, sheet }) {
             limit: Number.parseInt(params.limit) || 10,
             key: params.key || '',
             provinceId: params.provinceId || null,
-            serviceManagerId: params.serviceManagerId || '',
-            corpTourId: params.corpTourId || ''
+            serviceManagerId: params.serviceManagerId || ''
         }
     }, [location.search])
     const profile = useSelector(selectUser)
@@ -170,80 +169,80 @@ function Itinerary({ open, onClose, sheet }) {
 
                 {currentDestination &&
                     currentDestination?.itineraries?.length > 0 && (
-                    <Container
-                        // {...column.props}
-                        // groupName="column"
-                        onDrop={onDropItinerary}
-                        getChildPayload={index =>
-                            currentDestination.itineraries[index]
-                        }
-                        dragClass="card-ghost"
-                        dropClass="card-ghost-drop"
-                        // onDropReady={p => console.log('Drop ready: ', p)}
-                        dropPlaceholder={{
-                            animationDuration: 150,
-                            showOnTop: true,
-                            className: 'card-drop-preview'
-                        }}
-                        dropPlaceholderAnimationDuration={200}
-                    >
-                        {currentDestination.itineraries.map(
-                            (itinerary, index) => (
-                                <Draggable key={index}>
-                                    <div
-                                        key={itinerary.id}
-                                        className="w-full bg-slate-100 hover:bg-slate-200 font-medium mb-3 p-3 rounded-2xl cursor-pointer flex justify-between items-center"
-                                    >
-                                        <span>
-                                            {itinerary.title}
-                                        </span>
-                                        <div>
-                                            <div className="group relative text-2xl">
-                                                <button className="bg-gray-300 text-gray-700 rounded inline-flex items-center group">
-                                                    <svg
-                                                        className="fill-current h-4 w-4 group-hover:rotate-180 transition-transform"
-                                                        xmlns="http://www.w3.org/2000/svg"
-                                                        viewBox="0 0 20 20"
-                                                    >
-                                                        <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
-                                                    </svg>
-                                                </button>
-                                                <ul className="rounded absolute hidden pt-1 group-hover:block w-20 right-[16px] bottom-[-10px] text-sm overflow-hidden z-auto">
-                                                    <li
-                                                        className="bg-gray-200 hover:bg-gray-400 cursor-pointer p-1 rounded"
-                                                        onClick={() => {
-                                                            setItineraryData(
-                                                                itinerary
-                                                            )
-                                                            setCurrentItinerary(
-                                                                itinerary
-                                                            )
-                                                            setShowForm(
-                                                                true
-                                                            )
-                                                        }}
-                                                    >
-                                                        Update
-                                                    </li>
-                                                    <li
-                                                        className="bg-gray-200 hover:bg-gray-400 cursor-pointer p-1 rounded"
-                                                        onClick={() =>
-                                                            handleDeleteItinerary(
-                                                                itinerary.id
-                                                            )
-                                                        }
-                                                    >
-                                                        Delete
-                                                    </li>
-                                                </ul>
+                        <Container
+                            // {...column.props}
+                            // groupName="column"
+                            onDrop={onDropItinerary}
+                            getChildPayload={index =>
+                                currentDestination.itineraries[index]
+                            }
+                            dragClass="card-ghost"
+                            dropClass="card-ghost-drop"
+                            // onDropReady={p => console.log('Drop ready: ', p)}
+                            dropPlaceholder={{
+                                animationDuration: 150,
+                                showOnTop: true,
+                                className: 'card-drop-preview'
+                            }}
+                            dropPlaceholderAnimationDuration={200}
+                        >
+                            {currentDestination.itineraries.map(
+                                (itinerary, index) => (
+                                    <Draggable key={index}>
+                                        <div
+                                            key={itinerary.id}
+                                            className="w-full bg-slate-100 hover:bg-slate-200 font-medium mb-3 p-3 rounded-2xl cursor-pointer flex justify-between items-center"
+                                        >
+                                            <span>
+                                                {itinerary.title}
+                                            </span>
+                                            <div>
+                                                <div className="group relative text-2xl">
+                                                    <button className="bg-gray-300 text-gray-700 rounded inline-flex items-center group">
+                                                        <svg
+                                                            className="fill-current h-4 w-4 group-hover:rotate-180 transition-transform"
+                                                            xmlns="http://www.w3.org/2000/svg"
+                                                            viewBox="0 0 20 20"
+                                                        >
+                                                            <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
+                                                        </svg>
+                                                    </button>
+                                                    <ul className="rounded absolute hidden pt-1 group-hover:block w-20 right-[16px] bottom-[-10px] text-sm overflow-hidden z-auto">
+                                                        <li
+                                                            className="bg-gray-200 hover:bg-gray-400 cursor-pointer p-1 rounded"
+                                                            onClick={() => {
+                                                                setItineraryData(
+                                                                    itinerary
+                                                                )
+                                                                setCurrentItinerary(
+                                                                    itinerary
+                                                                )
+                                                                setShowForm(
+                                                                    true
+                                                                )
+                                                            }}
+                                                        >
+                                                            Update
+                                                        </li>
+                                                        <li
+                                                            className="bg-gray-200 hover:bg-gray-400 cursor-pointer p-1 rounded"
+                                                            onClick={() =>
+                                                                handleDeleteItinerary(
+                                                                    itinerary.id
+                                                                )
+                                                            }
+                                                        >
+                                                            Delete
+                                                        </li>
+                                                    </ul>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                </Draggable>
-                            )
-                        )}
-                    </Container>
-                )}
+                                    </Draggable>
+                                )
+                            )}
+                        </Container>
+                    )}
                 <div className="text-right">
                     <Mybutton
                         onClick={addNewItinerary}

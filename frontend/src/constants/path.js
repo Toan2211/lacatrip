@@ -18,10 +18,14 @@ class Path {
         this.restaurants = '/system/restaurants'
         this.formRestaurant = '/system/restaurants/form'
         this.formUpdateRestaurant = '/system/restaurants/form/:id'
-        this.corpTours = '/system/corp-tours'
         this.destinations = '/system/destination-travel'
         this.formDestination = '/system/destination-travel/form'
         this.formUpdateDestination = '/system/destination-travel/form/:id'
+        this.bookingHotelSystem = '/system/booking-hotel'
+        this.notificationSystem = '/system/notifications'
+        this.bookingDestinationTravelSystem = '/system/booking-destination-travel'
+        this.revenue = '/system/revenue'
+        this.trackingPayment = '/system/tracking-payment'
         //client
         this.clientDestinationTravelDetail = '/destination-travel/:id'
         this.clientHotelDetail = '/hotel/:id'
@@ -30,6 +34,17 @@ class Path {
         this.clientTripDetail = '/trip/:id'
         this.accountInvite = '/create/user-invite'
         this.notification = '/notifications'
+        this.destinationList = '/destination-travels/province/:id'
+        this.hotelList = '/hotels/province/:id'
+        this.restaurantList = '/restaurants/province/:id'
+        this.detailProvince = '/province/:id'
+        //booking
+        this.bookingmeHotel = '/booking/me/hotel'
+        this.bookingmeDestinationTravel = '/booking/me/destination-travel'
+        this.bookingHotel = '/hotel/booking'
+        this.bookingDestiantionTravel = '/destination-travel/booking'
+        this.paymentSuccess = '/payment/success'
+        this.paymentFail = '/payment/fail'
     }
 }
 

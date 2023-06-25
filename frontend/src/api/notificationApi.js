@@ -12,6 +12,9 @@ const notificationApi = {
     },
     deleteNotify(id) {
         return http.delete(`/notification/${id}`)
+    },
+    getDetailNotify(id) {
+        return http.get(`/notification/${id}`)
     }
 }
 export default notificationApi

@@ -64,6 +64,7 @@ const update = async (id, data) => {
         })
         if (!servicemanager) return false
         // delete data.email
+        delete data.id
         await db.User.update(data, {
             where: {
                 id: servicemanager.userId
@@ -96,9 +97,37 @@ const findByUserId = async userId => {
         throw new Error(error)
     }
 }
+const findOne = async id => {
+    try {
+        const serviceManager = await db.ServiceManager.findOne({
+            where: {
+                id
+            }
+        })
+        return serviceManager
+    } catch (error) {
+        throw new Error(error)
+    }
+}
+const updatePaymentAccount = async (id, paymentAccount) => {
+    try {
+        const result = await db.ServiceManager.update({
+            paymentAccount: paymentAccount
+        }, {
+            where: {
+                id: id
+            }
+        })
+        return result
+    } catch (error) {
+        throw new Error(error)
+    }
+}
 module.exports = {
     find,
     create,
     update,
-    findByUserId
+    findByUserId,
+    findOne,
+    updatePaymentAccount
 }

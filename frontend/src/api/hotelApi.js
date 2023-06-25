@@ -15,6 +15,9 @@ const hotelApi = {
     },
     togglePublic(hotelId) {
         return http.put(`/hotel/public/${hotelId}`)
+    },
+    getRoomAvailable(data) {
+        return http.get('/hotel/room-available', { params: data })
     }
 }
 export default hotelApi

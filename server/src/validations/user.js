@@ -31,15 +31,9 @@ const update = () => [
     body('phone').optional().isString(),
     body('country').optional().isString()
 ]
-const destroy = () => [
-    param('id')
-        .notEmpty()
-        .isUUID()
-]
+const destroy = () => [param('id').notEmpty().isUUID()]
 const changePass = () => [
-    param('id')
-        .notEmpty()
-        .isUUID(),
+    param('id').notEmpty().isUUID(),
     body('oldPassword').notEmpty().isString().isStrongPassword({
         minLength: 8,
         minLowercase: 1,
@@ -53,12 +47,18 @@ const changePass = () => [
         minUppercase: 1,
         minNumbers: 1,
         minSymbols: 1
-    }),
+    })
+]
+
+const updatePaymentAccount = () => [
+    param('id').notEmpty().isUUID(),
+    body('paymentAccount').notEmpty().isEmail()
 ]
 module.exports = {
     create,
     findById,
     update,
     destroy,
-    changePass
+    changePass,
+    updatePaymentAccount
 }

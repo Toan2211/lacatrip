@@ -7,13 +7,14 @@ function NotificationCard({ notification }) {
     const dispatch = useDispatch()
     const handleActionClick = event => {
         event.preventDefault()
-        setShowActionForm(true)
+        setShowActionForm(!showActionForm)
     }
     const [showActionForm, setShowActionForm] = useState(false)
     const handleReadNotify = () => {
         dispatch(
             readNotification({
-                tripId: notification.tripId
+                tripId: notification.tripId,
+                notificationId: notification.id
             })
         )
         setShowActionForm(false)
@@ -28,13 +29,13 @@ function NotificationCard({ notification }) {
             to={notification.url}
             className="flex py-4 px-2 border-b border-gray-300 cursor-pointer gap-4 hover:bg-slate-50"
         >
-            <div className="flex w-14 h-14">
+            <div className="flex w-14 h-14" onClick={handleReadNotify}>
                 <img
                     src={notification.trip.image}
                     className="w-full h-full rounded-full"
                 />
             </div>
-            <div className="flex-1">
+            <div className="flex-1" onClick={handleReadNotify}>
                 <div className=" font-bold text-lg">
                     From {notification.trip.name}
                 </div>
@@ -76,7 +77,7 @@ function NotificationCard({ notification }) {
                     </ul>
                 )}
             </div>
-            <div className="w-10 flex justify-center items-center">
+            <div className="w-10 flex justify-center items-center" onClick={handleReadNotify}>
                 {!notification.isReaded && (
                     <div className="w-4 h-4 rounded-full bg-blue-500"></div>
                 )}

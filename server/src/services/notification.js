@@ -1,5 +1,26 @@
 const db = require('../models')
-
+const createNotifyBooking = async data => {
+    try {
+        let notify = await db.Notification.create(data)
+        notify = await db.Notification.findByPk(notify.id, {
+            include: [
+                {
+                    model: db.User,
+                    as: 'sender',
+                    attributes: ['avatar', 'firstname', 'lastname']
+                },
+                {
+                    model: db.User,
+                    as: 'receiver',
+                    attributes: ['avatar', 'firstname', 'lastname']
+                }
+            ]
+        })
+        return notify
+    } catch (error) {
+        throw new Error(error)
+    }
+}
 const create = async data => {
     try {
         let [notifiInDB] = await db.Notification.findAll({
@@ -96,7 +117,32 @@ const getNotifications = async query => {
         throw new Error(error)
     }
 }
-const readNotification = async ({ receiverId, tripId }) => {
+const fineOne = async id => {
+    try {
+        const notify = await db.Notification.findByPk(id, {
+            include: [
+                {
+                    model: db.User,
+                    as: 'sender',
+                    attributes: ['avatar', 'firstname', 'lastname']
+                },
+                {
+                    model: db.Trip,
+                    as: 'trip',
+                    attributes: ['id', 'name', 'image']
+                }
+            ]
+        })
+        return notify
+    } catch (error) {
+        throw new Error(error)
+    }
+}
+const readNotification = async ({
+    receiverId,
+    tripId,
+    notificationId
+}) => {
     try {
         const result = await db.Notification.update(
             {
@@ -104,6 +150,7 @@ const readNotification = async ({ receiverId, tripId }) => {
             },
             {
                 where: {
+                    id: notificationId,
                     receiverId: receiverId,
                     tripId: tripId,
                     isReaded: false
@@ -114,7 +161,8 @@ const readNotification = async ({ receiverId, tripId }) => {
             const [notify] = await db.Notification.findAll({
                 where: {
                     receiverId: receiverId,
-                    tripId: tripId
+                    tripId: tripId,
+                    id: notificationId
                 }
             })
             return notify
@@ -158,5 +206,7 @@ module.exports = {
     getNotifications,
     readNotification,
     countNotifyNotReaded,
-    deleteNotify
+    deleteNotify,
+    createNotifyBooking,
+    fineOne
 }

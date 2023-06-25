@@ -11,11 +11,33 @@ export const getDetailRoom = createAsyncThunk(
 )
 export const createRoom = createAsyncThunk(
     'rooms/createRoom',
-    payloadCreator(roomApi.create)
+    async (payload, { rejectWithValue }) => {
+        try {
+            const data = await roomApi.create(payload, {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            })
+            return data
+        } catch (err) {
+            return rejectWithValue(err)
+        }
+    }
 )
 export const updateRoom = createAsyncThunk(
     'rooms/updateRoom',
-    payloadCreator(roomApi.update)
+    async (payload, { rejectWithValue }) => {
+        try {
+            const data = await roomApi.update(payload, {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            })
+            return data
+        } catch (err) {
+            return rejectWithValue(err)
+        }
+    }
 )
 const getAllFulfilled = (state, action) => {
     const { rooms, pagination } = action.payload.data

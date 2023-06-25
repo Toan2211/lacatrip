@@ -7,7 +7,6 @@ import baseProperty from '@pages/CommonProperty/baseproperty'
 import hotelsReducer from '@pages/System/Hotel/hotel.slice.js'
 import roomsReducer from '@pages/System/Hotel/Room/room.slice.js'
 import restaurantsReducer from '@pages/System/Restaurant/restaurant.slice.js'
-import corpToursReducer from '@pages/System/CorpTour/corptour.slice.js'
 import destinationReducer from '@pages/System/DestinationTravel/destination.slice.js'
 import itineraryReducer from '@pages/System/DestinationTravel/itinerary.slice.js'
 import destinationClientReducer from '@pages/DestinationTravelList/destinationclient.slice.js'
@@ -18,6 +17,12 @@ import tripReducer from '@pages/TripList/trip.slice.js'
 import socketReducer from '@pages/Chat/socket.slice.js'
 import messageReducer from '@pages/Chat/message.slice.js'
 import notificationReducer from '@pages/Notification/notification.slice.js'
+import bookingHotelClientReducer from '@pages/BookingHotel/bookinghotelclient.slice.js'
+import bookingHotelReducer from '@pages/System/BookingHotel/bookinghotel.slice.js'
+import bookingDestinationReducer from '@pages/System/BookingDestinationTravel/bookingdestinationtravel.slice.js'
+import bookingDestinationClientReducer from '@pages/BookingDestinationTravel/bookingdestinationtravel.slice.js'
+import revenueReducer from '@pages/System/Revenue/revenue.slice.js'
+import trackingPaymentReducer from '@pages/System/TrackingPayment/trackingpayment.slice.js'
 const rootReducer = {
     propertys: baseProperty,
     auth: authReducer,
@@ -28,9 +33,10 @@ const rootReducer = {
     hotels: hotelsReducer,
     rooms: roomsReducer,
     restaurants: restaurantsReducer,
-    corpTours: corpToursReducer,
     destinations: destinationReducer,
     itineraries: itineraryReducer,
+    bookingHotels: bookingHotelReducer,
+    bookingDestinationTravels: bookingDestinationReducer,
     // client page
     destinationClients: destinationClientReducer,
     restaurantsClient: restaurantClientReducer,
@@ -40,7 +46,13 @@ const rootReducer = {
     //chat
     socket: socketReducer,
     messages: messageReducer,
-    notifications: notificationReducer
+    notifications: notificationReducer,
+    //booking
+    bookingHotelClients: bookingHotelClientReducer,
+    bookingDestinationTravelClients: bookingDestinationClientReducer,
+    //revenue
+    revenues: revenueReducer,
+    trackingPayments : trackingPaymentReducer
 }
 const store = configureStore({
     reducer: rootReducer,

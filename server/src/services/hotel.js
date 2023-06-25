@@ -1,7 +1,11 @@
-const { Op, where } = require('sequelize')
+const { Op, where, sequelize, QueryTypes } = require('sequelize')
 const db = require('../models')
 const imageService = require('./image')
-const { ADMINID, EMPLOYEEID, SERVICEMANAGERID } = require('../constants/variable')
+const {
+    ADMINID,
+    EMPLOYEEID,
+    SERVICEMANAGERID
+} = require('../constants/variable')
 const create = async data => {
     try {
         const dataHotel = {
@@ -16,7 +20,11 @@ const create = async data => {
             serviceManagerId: data.serviceManagerId,
             longtitude: data.longtitude,
             latitude: data.latitude,
-            address: data.address
+            address: data.address,
+            commissionPercent:
+                data.commissionPercent >= 10
+                    ? data.commissionPercent
+                    : 10
         }
         const hotel = await db.Hotel.create(dataHotel)
         if (data.amenitiesIds) {
@@ -168,13 +176,16 @@ const find = async params => {
                 },
                 public: 1
             }
-        
+
         const { count, rows } = await db.Hotel.findAndCountAll({
             offset: (page - 1) * limit,
             limit: +limit,
             include: [...includeModels],
             where: whereParams,
-            distinct: true
+            distinct: true,
+            order: [
+                ['commissionPercent', 'DESC'],
+            ]
         })
         return {
             hotels: rows,
@@ -258,6 +269,9 @@ const findByProvince = async (provinceId, page, limit) => {
                         id: provinceId
                     }
                 }
+            ],
+            order: [
+                ['commissionPercent', 'DESC'],
             ]
         })
         return {
@@ -273,9 +287,110 @@ const findByProvince = async (provinceId, page, limit) => {
         throw new Error(error)
     }
 }
+
+const getAvailableRooms = async query => {
+    //Rooms DB
+    //childrenCount
+    //adultCount
+
+    //query: countAdults, countChildrens, countRooms, hotelId
+
+    try {
+        const {
+            checkIn,
+            checkOut,
+            countAdults,
+            countChildrens,
+            countRooms,
+            hotelId
+        } = query
+        const includeParams = []
+        if (query.checkIn) {
+            const RoomDetailList = await db.sequelize.query(
+                `SELECT BookingHotel_RoomDetail.RoomDetailId FROM BookingHotels
+                left join BookingHotel_RoomDetail on BookingHotels.id=BookingHotel_RoomDetail.BookingHotelId
+                left join RoomDetails on RoomDetails.id=BookingHotel_RoomDetail.RoomDetailId
+                where BookingHotels.hotelId=:hotelId
+                and checkIn>=:checkIn
+                and checkOut<=:checkOut
+                `,
+                {
+                    replacements: {
+                        hotelId: hotelId,
+                        checkIn,
+                        checkOut
+                    },
+                    type: QueryTypes.SELECT
+                }
+            )
+            const roomDetailIdBusy = RoomDetailList.map(
+                item => item.RoomDetailId
+            )
+            includeParams.push({
+                model: db.Room,
+                as: 'rooms',
+                include: {
+                    model: db.RoomDetail,
+                    as: 'roomDetails',
+                    where: {
+                        id: {
+                            [Op.notIn]: roomDetailIdBusy
+                        }
+                    }
+                }
+            })
+        } else {
+            includeParams.push({
+                model: db.Room,
+                as: 'rooms',
+                include: {
+                    model: db.RoomDetail,
+                    as: 'roomDetails'
+                }
+            })
+        }
+
+        let hotel = await db.Hotel.findByPk(hotelId, {
+            include: includeParams
+        })
+        hotel = hotel.toJSON()
+        if (countRooms) {
+            let countAdultsQuery = 0
+            let countChildrensQuery = 0
+            let countRoomDetailQuery = 0
+            for (const room of hotel.rooms) {
+                countAdultsQuery +=
+                    room.roomDetails.length * room.adultCount
+                countChildrensQuery +=
+                    room.roomDetails.length * room.childrenCount
+                countRoomDetailQuery += room.roomDetails.length
+            }
+            if (
+                !(
+                    countAdultsQuery + countChildrensQuery >=
+                        +countAdults + +countChildrens &&
+                    countAdultsQuery >= +countAdults &&
+                    countRoomDetailQuery >= +countRooms
+                )
+            ) {
+                for (const room of hotel.rooms) {
+                    room.roomDetails = []
+                }
+            }
+        }
+
+        return hotel.rooms
+    } catch (error) {
+        throw new Error(error)
+    }
+}
+
 const findOne = async id => {
     try {
-        const hotel = await db.Hotel.findByPk(id, {
+        const [hotel] = await db.Hotel.findAll({
+            where: {
+                id: id
+            },
             include: [
                 {
                     model: db.AmenitiesHotel,
@@ -292,10 +407,18 @@ const findOne = async id => {
                 {
                     model: db.Province,
                     as: 'province'
+                },
+                {
+                    model: db.Room,
+                    as: 'rooms',
+                    include: {
+                        model: db.RoomDetail,
+                        as: 'roomDetails'
+                    }
                 }
             ]
         })
-        return hotel
+        return hotel.toJSON()
     } catch (error) {
         throw new Error(error)
     }
@@ -370,5 +493,6 @@ module.exports = {
     update,
     find,
     findByServiceManager,
-    findByProvince
+    findByProvince,
+    getAvailableRooms
 }

@@ -1,3 +1,5 @@
+import moment from 'moment'
+
 Date.prototype.addDays = function (days) {
     var date = new Date(this.valueOf())
     date.setDate(date.getDate() + days)
@@ -12,4 +14,11 @@ export function getDates(startDate, stopDate) {
         currentDate = currentDate.addDays(1)
     }
     return dateArray
+}
+
+export function getLengthDay(startDate, endDate) {
+    const start = moment(startDate, 'YYYY-MM-DD')
+    const end = moment(endDate, 'YYYY-MM-DD')
+
+    return end.diff(start, 'days')
 }

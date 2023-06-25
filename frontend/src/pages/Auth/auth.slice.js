@@ -63,7 +63,10 @@ const handleForgotPasswordReject = state => {
 }
 const handleUpdateUserFulfilled = (state, action) => {
     state.profile = action.payload.data.user
-    localStorage.setItem(LocalStorage.PROFILE, JSON.stringify(action.payload.data.user))
+    localStorage.setItem(
+        LocalStorage.PROFILE,
+        JSON.stringify(action.payload.data.user)
+    )
     state.loading = false
 }
 const handleChangePassPending = state => {
@@ -85,6 +88,12 @@ const authSlice = createSlice({
         loadingChangePass: false
     },
     reducers: {
+        setPaymentAccountSV(state, action) {
+            state.profile = {
+                ...state.profile,
+                paymentAccount: action.payload
+            }
+        },
         logout(state) {
             localStorage.removeItem(LocalStorage.PROFILE)
             localStorage.removeItem(LocalStorage.ACCESS_TOKEN)
@@ -111,7 +120,8 @@ const authSlice = createSlice({
 })
 export const selectLoadingAuth = state => state.auth.loading
 export const selectUser = state => state.auth.profile
-export const loadingChangePassSelector = state => state.auth.loadingChangePass
+export const loadingChangePassSelector = state =>
+    state.auth.loadingChangePass
 const { actions, reducer } = authSlice
-export const { logout } = actions
+export const { logout, setPaymentAccountSV } = actions
 export default reducer

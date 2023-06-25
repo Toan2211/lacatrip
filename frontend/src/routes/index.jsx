@@ -22,7 +22,6 @@ import FormHotel from '@pages/System/Hotel/Form'
 import Rooms from '@pages/System/Hotel/Room'
 import Restaurants from '@pages/System/Restaurant'
 import RestaurantForm from '@pages/System/Restaurant/Form'
-import CorpTour from '@pages/System/CorpTour'
 import DestinationTravel from '@pages/System/DestinationTravel'
 import DestinationForm from '@pages/System/DestinationTravel/Form'
 import DestinationTravelClient from '@pages/DestinationTravelList/DestinationTravel'
@@ -32,6 +31,21 @@ import TripId from '@pages/TripList/TripId'
 import TripList from '@pages/TripList'
 import AccountInvite from '@pages/Auth/AccountInvite'
 import Notification from '@pages/Notification'
+import DestinationList from '@pages/DestinationTravelList'
+import HotelList from '@pages/HotelList'
+import RestaurantList from '@pages/RestaurantList'
+import DetailProvince from '@pages/DetailProvince'
+import BookingHotel from '@pages/BookingHotel'
+import PaymentSuccess from '@pages/Payment/Success'
+import PaymentFail from '@pages/Payment/Fail'
+import BookingList from '@pages/BookingList'
+import BookingHotelListSystem from '@pages/System/BookingHotel'
+import NotificationSystem from '@pages/System/Notification'
+import BookingDestinationTravel from '@pages/BookingDestinationTravel'
+import BookingDestinationTravelSystem from '@pages/System/BookingDestinationTravel'
+import BookingListDestinationTravel from '@pages/BookingDestinationTravel/BookingList'
+import Revenue from '@pages/System/Revenue'
+import TrackingPayment from '@pages/System/TrackingPayment'
 function RoutesComponent() {
     return (
         <BrowserRouter>
@@ -57,6 +71,22 @@ function RoutesComponent() {
                         path={path.clientRestaurantDetail}
                         element={<RestaurantId />}
                     />
+                    <Route
+                        path={path.destinationList}
+                        element={<DestinationList />}
+                    />
+                    <Route
+                        path={path.hotelList}
+                        element={<HotelList />}
+                    />
+                    <Route
+                        path={path.restaurantList}
+                        element={<RestaurantList />}
+                    />
+                    <Route
+                        path={path.detailProvince}
+                        element={<DetailProvince />}
+                    />
                 </Route>
                 <Route element={<AuthenticatedGuard />}>
                     <Route element={<MainLayout />}>
@@ -79,6 +109,22 @@ function RoutesComponent() {
                         <Route
                             path={path.notification}
                             element={<Notification />}
+                        />
+                        <Route
+                            path={path.bookingHotel}
+                            element={<BookingHotel />}
+                        />
+                        <Route
+                            path={path.bookingmeHotel}
+                            element={<BookingList />}
+                        />
+                        <Route
+                            path={path.bookingmeDestinationTravel}
+                            element={<BookingListDestinationTravel />}
+                        />
+                        <Route
+                            path={path.bookingDestiantionTravel}
+                            element={<BookingDestinationTravel />}
                         />
                     </Route>
                 </Route>
@@ -132,10 +178,6 @@ function RoutesComponent() {
                             element={<RestaurantForm />}
                         />
                         <Route
-                            path={path.corpTours}
-                            element={<CorpTour />}
-                        />
-                        <Route
                             path={path.destinations}
                             element={<DestinationTravel />}
                         />
@@ -146,6 +188,28 @@ function RoutesComponent() {
                         <Route
                             path={path.formUpdateDestination}
                             element={<DestinationForm />}
+                        />
+                        <Route
+                            path={path.bookingHotelSystem}
+                            element={<BookingHotelListSystem />}
+                        />
+                        <Route
+                            path={path.notificationSystem}
+                            element={<NotificationSystem />}
+                        />
+                        <Route
+                            path={path.bookingDestinationTravelSystem}
+                            element={
+                                <BookingDestinationTravelSystem />
+                            }
+                        />
+                        <Route
+                            path={path.revenue}
+                            element={<Revenue />}
+                        />
+                        <Route
+                            path={path.trackingPayment}
+                            element={<TrackingPayment />}
                         />
                     </Route>
                 </Route>
@@ -169,6 +233,14 @@ function RoutesComponent() {
                         />
                     </Route>
                 </Route>
+                <Route
+                    path={path.paymentSuccess}
+                    element={<PaymentSuccess />}
+                />
+                <Route
+                    path={path.paymentFail}
+                    element={<PaymentFail />}
+                />
             </Routes>
         </BrowserRouter>
     )

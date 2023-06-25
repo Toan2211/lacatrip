@@ -75,6 +75,7 @@ const signin = async (req, res) => {
             const servicemanager =
                 await serviceManagerService.findByUserId(user.id)
             user.dataValues.serviceManagerId = servicemanager.id
+            user.dataValues.paymentAccount = servicemanager.paymentAccount
         }
         const access_token = createAccessToken(user)
         return res.status(200).json({

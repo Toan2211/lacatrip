@@ -159,7 +159,7 @@ function Comment({ rating, totalRating }) {
                                 </span>
                             </div>
                             <span className="font-normal text-gray-400">
-                                {rating.toFixed(1)} / 5
+                                {rating ? rating.toFixed(1) : rating} / 5
                             </span>
                         </div>
                         <span className="font-normal text-gray-400">

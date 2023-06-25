@@ -9,7 +9,6 @@ import Mybutton from '@components/MyButton'
 import * as yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { toast } from 'react-toastify'
-import { serviceManagersSelector } from '@pages/System/ServiceManagers/servicemanager.slice'
 import { getServiceManagers } from '@pages/System/ServiceManagers/servicemanager.slice'
 import MySelect from '@components/MySelect'
 import { unwrapResult } from '@reduxjs/toolkit'
@@ -24,14 +23,13 @@ import {
     loadingDestinationSelector,
     updateDestination
 } from '../destination.slice'
-import { corpToursSelector } from '@pages/System/CorpTour/corptour.slice'
-import { getCorpTours } from '@pages/System/CorpTour/corptour.slice'
+import { selectUser } from '@pages/Auth/auth.slice'
 function DestinationForm() {
     const dispatch = useDispatch()
-    const serviceManagers = useSelector(serviceManagersSelector)
+    const profile = useSelector(selectUser)
+
     const currentDestination = useSelector(currentDestinationSelector)
     const provinces = useSelector(provincesSelector)
-    const corpTours = useSelector(corpToursSelector)
     const navigate = useNavigate()
     const loading = useSelector(loadingDestinationSelector)
     const id = useParams().id
@@ -41,14 +39,13 @@ function DestinationForm() {
     useEffect(() => {
         document.title = 'Form Destination'
         dispatch(getServiceManagers({ limit: 1000 }))
-        dispatch(getCorpTours({ limit: 1000 }))
     }, [dispatch])
     const [images, setImages] = useState(() =>
         currentDestination.images
             ? currentDestination.images.map(image => ({
-                id: image.id,
-                url: image.url
-            }))
+                  id: image.id,
+                  url: image.url
+              }))
             : []
     )
     const [isFirstTime, setIsFirstTime] = useState(true)
@@ -80,11 +77,7 @@ function DestinationForm() {
             .required(
                 'Input Address and generate map to get latitude'
             ),
-        serviceManagerId: yup
-            .string()
-            .required('Service Manager is required'),
-        provinceId: yup.string().required('Province is required'),
-        corpTourId: yup.string().required('Company Tour is required')
+        provinceId: yup.string().required('Province is required')
     })
     const form = useForm({
         defaultValues: {
@@ -115,9 +108,9 @@ function DestinationForm() {
             provinceId: currentDestination.provinceId
                 ? currentDestination.provinceId
                 : '',
-            corpTourId: currentDestination.corpTourId
-                ? currentDestination.corpTourId
-                : ''
+            commissionPercent: currentDestination.commissionPercent
+                ? currentDestination.commissionPercent
+                : 10
         },
         resolver: yupResolver(schema)
     })
@@ -141,7 +134,7 @@ function DestinationForm() {
                 currentDestination.serviceManagerId
             )
             form.setValue('provinceId', currentDestination.provinceId)
-            form.setValue('corpTourId', currentDestination.corpTourId)
+            form.setValue('commissionPercent', currentDestination.commissionPercent)
             setImages(
                 currentDestination.images.map(image => ({
                     id: image.id,
@@ -149,7 +142,7 @@ function DestinationForm() {
                 }))
             )
         }
-    }, [form, currentDestination])
+    }, [form, currentDestination, profile])
     const handleOnChangeImage = data => {
         setImages(data)
     }
@@ -164,9 +157,12 @@ function DestinationForm() {
             formData.append('address', data.address)
             formData.append('longtitude', data.longtitude)
             formData.append('latitude', data.latitude)
-            formData.append('serviceManagerId', data.serviceManagerId)
+            formData.append(
+                'serviceManagerId',
+                profile.serviceManagerId
+            )
             formData.append('provinceId', data.provinceId)
-            formData.append('corpTourId', data.corpTourId)
+            formData.append('commissionPercent', data.commissionPercent)
             for (const image of images) {
                 if (image.file) formData.append('images', image.file)
             }
@@ -221,52 +217,10 @@ function DestinationForm() {
                                 className="block uppercase text-sm font-bold mb-2"
                                 htmlFor="grid-password"
                             >
-                                Company Tour
-                            </label>
-                            <MySelect
-                                placeholder="Company manage tour"
-                                form={form}
-                                name="corpTourId"
-                                options={corpTours.map(
-                                    corpTour => ({
-                                        value: corpTour.id,
-                                        label: corpTour.name
-                                    })
-                                )}
-                            />
-                        </div>
-                        <div className="relative w-full mb-3">
-                            <label
-                                className="block uppercase text-sm font-bold mb-2"
-                                htmlFor="grid-password"
-                            >
-                                Service Manager
-                            </label>
-                            <MySelect
-                                placeholder="Service Manager manage tour"
-                                form={form}
-                                name="serviceManagerId"
-                                options={serviceManagers.map(
-                                    servicemanager => ({
-                                        value: servicemanager.id,
-                                        label:
-                                            servicemanager.user
-                                                .firstname +
-                                            servicemanager.user
-                                                .lastname
-                                    })
-                                )}
-                            />
-                        </div>
-                        <div className="relative w-full mb-3">
-                            <label
-                                className="block uppercase text-sm font-bold mb-2"
-                                htmlFor="grid-password"
-                            >
                                 Name
                             </label>
                             <InputField
-                                placeholder="Name Hotel"
+                                placeholder="Name Destination Travel"
                                 form={form}
                                 name="name"
                             />
@@ -279,7 +233,7 @@ function DestinationForm() {
                                 Description
                             </label>
                             <TextArea
-                                placeholder="Description Hotel..."
+                                placeholder="Description Destination Travel..."
                                 form={form}
                                 name="description"
                                 rows={2}
@@ -346,9 +300,28 @@ function DestinationForm() {
                             />
                             {images.length === 0 && !isFirstTime && (
                                 <span className="text-[14px] text-red-500 pl-2 mt-1">
-                                    Please upload photos of hotel
+                                    Please upload photos of
+                                    Destination Travel
                                 </span>
                             )}
+                        </div>
+                        <div className="relative w-full mb-3">
+                            <label
+                                className="block uppercase text-sm font-bold mb-2"
+                                htmlFor="grid-password"
+                            >
+                                Commission Percent (If you want to
+                                marketing your hotel and it on top.
+                                Please increse percent)
+                            </label>
+                            <InputField
+                                placeholder="System will get 10% per booking if you not set"
+                                form={form}
+                                name="commissionPercent"
+                                type="number"
+                                min="10"
+                                className="w-[360px]"
+                            />
                         </div>
                     </div>
                     <div className="mt-10 text-right pr-4">

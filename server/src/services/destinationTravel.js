@@ -57,10 +57,6 @@ const findOne = async id => {
                     as: 'province'
                 },
                 {
-                    model: db.CorpTour,
-                    as: 'corpTour'
-                },
-                {
                     model: db.Itinerary,
                     as: 'itineraries',
                     order: [['Itinerary.step', 'ASC']]
@@ -87,12 +83,15 @@ const find = async params => {
             limit,
             serviceManagerId,
             provinceId,
-            corpTourId,
-            roleId
+            roleId,
+            minPrice,
+            maxPrice
         } = params
         key = key ? key : ''
         page = page ? +page : 1
         limit = limit ? +limit : 10
+        minPrice = minPrice ? +minPrice : 0
+        maxPrice = maxPrice ? +maxPrice : 99999999
         const includeModels = [
             {
                 model: db.Itinerary,
@@ -103,19 +102,6 @@ const find = async params => {
                 as: 'images'
             }
         ]
-        if (corpTourId)
-            includeModels.push({
-                model: db.CorpTour,
-                as: 'corpTour',
-                where: {
-                    id: corpTourId
-                }
-            })
-        else
-            includeModels.push({
-                model: db.CorpTour,
-                as: 'corpTour'
-            })
         if (serviceManagerId)
             includeModels.push({
                 model: db.ServiceManager,
@@ -158,24 +144,32 @@ const find = async params => {
                 model: db.Province,
                 as: 'province'
             })
-        let whereParams
+
+        let whereParams = {
+            price: {
+                [Op.between]: [minPrice, maxPrice]
+            }
+        }
         if (
             +roleId === ADMINID ||
             +roleId === EMPLOYEEID ||
             +roleId === SERVICEMANAGERID
         )
             whereParams = {
+                ...whereParams,
                 name: {
                     [Op.like]: `%${key}%`
                 }
             }
         else
             whereParams = {
+                ...whereParams,
                 name: {
                     [Op.like]: `%${key}%`
                 },
                 public: 1
             }
+
         const { count, rows } =
             await db.DestinationTravel.findAndCountAll({
                 offset: (page - 1) * limit,
@@ -188,7 +182,8 @@ const find = async params => {
                         { model: db.Itinerary, as: 'itineraries' },
                         'step',
                         'asc'
-                    ]
+                    ],
+                    ['commissionPercent', 'DESC'],
                 ]
             })
         return {
