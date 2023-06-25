@@ -73,14 +73,14 @@ const getAmountToPayServiceManager = async () => {
         let [dataAmount, _] = await db.sequelize.query(`
                 SELECT 
                 Payments.serviceManagerId,
-                Servicemanagers.paymentAccount as email,
+                ServiceManagers.paymentAccount as email,
                 SUM(CASE WHEN Payments.isPayedForServiceManager = false THEN (Payments.amount - Payments.commissionAmount) ELSE 0 END) AS amount
                 FROM
                     Payments
                 JOIN
-                    Servicemanagers ON Payments.serviceManagerId = Servicemanagers.id
+                    ServiceManagers ON Payments.serviceManagerId = ServiceManagers.id
                 JOIN
-                    Users ON Servicemanagers.userId = Users.id
+                    Users ON ServiceManagers.userId = Users.id
                 WHERE
                     Payments.payerId IS NOT NULL
                 GROUP BY
