@@ -182,7 +182,8 @@ const find = async params => {
                         { model: db.Itinerary, as: 'itineraries' },
                         'step',
                         'asc'
-                    ]
+                    ],
+                    ['commissionPercent', 'DESC'],
                 ]
             })
         return {

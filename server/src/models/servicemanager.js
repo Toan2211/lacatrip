@@ -37,6 +37,10 @@ module.exports = (sequelize, DataTypes) => {
                 foreignKey: 'serviceManagerId',
                 as: 'bookingDestinationTravels'
             })
+            this.hasMany(models.TrackingPayment, {
+                foreignKey: 'serviceManagerId',
+                as: 'trackingPayments'
+            })
         }
     }
     ServiceManager.init(

@@ -4,6 +4,7 @@ const paymentService = require('../services/payment')
 const notificationService = require('../services/notification')
 const serviceManagerService = require('../services/servicemanager')
 const bookingDestinationTravelService = require('../services/bookingDestinationTravel')
+const trackingPayment = require('../services/trackingPayment')
 require('dotenv').config()
 paypal.configure({
     mode: 'sandbox', //sandbox or live
@@ -109,7 +110,6 @@ const payOutToServiceManager = async (req, res) => {
     try {
         const { dataAmount, now } =
             await paymentService.getAmountToPayServiceManager()
-        console.log('run job')
         if (dataAmount.length > 0) {
             dataAmount.forEach(payment => {
                 console.log(payment)
@@ -138,8 +138,20 @@ const payOutToServiceManager = async (req, res) => {
                         if (error) {
                             console.error(error.response)
                         } else {
-                            await paymentService.updateIsPayedForServiceManager(payment.serviceManagerId, now)
-                            console.log('update success', payment.serviceManagerId)
+                            await paymentService.updateIsPayedForServiceManager(
+                                payment.serviceManagerId,
+                                now
+                            )
+                            await trackingPayment.create({
+                                serviceManagerId:
+                                    payment.serviceManagerId,
+                                paymentAccount: payment.email,
+                                amount: payment.amount
+                            })
+                            console.log(
+                                'update success',
+                                payment.serviceManagerId
+                            )
                         }
                     }
                 )

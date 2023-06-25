@@ -6,6 +6,7 @@ import { AiFillStar, AiOutlineSearch } from 'react-icons/ai'
 import { IoCalendarOutline } from 'react-icons/io5'
 import { useLocation, useNavigate } from 'react-router'
 import { getDateString } from '@utils/getDateString'
+import moment from 'moment'
 
 function Sidebar() {
     const navigate = useNavigate()
@@ -17,8 +18,11 @@ function Sidebar() {
             minPrice: params.minPrice || '',
             maxPrice: params.maxPrice || '',
             star: params.star || '',
-            checkIn: params.checkIn || '',
-            checkOut: params.checkOut || ''
+            checkIn:
+                params.checkIn || getDateString(new Date(moment())),
+            checkOut:
+                params.checkOut ||
+                getDateString(new Date(moment().add(1, 'days')))
         }
     }, [location.search])
     const [keyword, setKeyword] = useState(() => queryParams.key)
@@ -31,11 +35,9 @@ function Sidebar() {
         () => queryParams.maxPrice
     )
     const handleOnchangeMaxPrice = e => setMaxPrice(e.target.value)
-    const [checkIn, setCheckIn] = useState(
-        () => new Date(queryParams.checkIn) || null
-    )
+    const [checkIn, setCheckIn] = useState(() => new Date(queryParams.checkIn))
     const [checkOut, setCheckOut] = useState(
-        () => new Date(queryParams.checkOut) || null
+        new Date(queryParams.checkOut)
     )
     const ExampleCustomCheckIn = forwardRef(
         ({ value, onClick }, ref) => (

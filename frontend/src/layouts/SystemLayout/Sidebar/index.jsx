@@ -8,7 +8,10 @@ import { useSelector } from 'react-redux'
 import { selectUser } from '@pages/Auth/auth.slice'
 import { BiRestaurant } from 'react-icons/bi'
 import ROLE from '@constants/ROLE'
-import { MdOutlineAttachMoney, MdOutlineTravelExplore } from 'react-icons/md'
+import {
+    MdOutlineAttachMoney,
+    MdOutlineTravelExplore
+} from 'react-icons/md'
 export default function Sidebar() {
     const [collapseShow, setCollapseShow] = React.useState('hidden')
     const currentUser = useSelector(selectUser)
@@ -210,6 +213,23 @@ export default function Sidebar() {
                                     Revenue Booking
                                 </NavLink>
                             </li>
+                            {currentUser.role.name === ROLE.ADMIN && (
+                                <li className="items-center ">
+                                    <NavLink
+                                        className={({ isActive }) =>
+                                            isActive
+                                                ? 'text-blue-600 hover:opacity-75 text-xs uppercase py-3 font-bold flex'
+                                                : 'hover:text-blue-600 text-xs uppercase py-3 font-bold flex'
+                                        }
+                                        to={path.trackingPayment}
+                                    >
+                                        <span className="mr-2">
+                                            <MdOutlineAttachMoney />
+                                        </span>
+                                        Tracking Payment
+                                    </NavLink>
+                                </li>
+                            )}
                         </ul>
                     </div>
                 </div>

@@ -29,16 +29,19 @@ function NotificationCard({ notification }) {
     }
     return (
         <Link
-            to={notification.url}
+            to={`/${notification.url}`}
             className="flex py-4 px-2 border-b border-gray-300 cursor-pointer gap-4 hover:bg-slate-50"
         >
-            <div className="flex w-14 h-14">
+            <div
+                className="flex w-14 h-14"
+                onClick={handleReadNotify}
+            >
                 <img
                     src={notification.sender.avatar}
                     className="w-full h-full rounded-full"
                 />
             </div>
-            <div className="flex-1">
+            <div className="flex-1" onClick={handleReadNotify}>
                 <div className=" font-bold text-lg">
                     Booking Request
                 </div>
@@ -80,7 +83,10 @@ function NotificationCard({ notification }) {
                     </ul>
                 )}
             </div>
-            <div className="w-10 flex justify-center items-center">
+            <div
+                className="w-10 flex justify-center items-center"
+                onClick={handleReadNotify}
+            >
                 {!notification.isReaded && (
                     <div className="w-4 h-4 rounded-full bg-blue-500"></div>
                 )}

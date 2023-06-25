@@ -182,7 +182,10 @@ const find = async params => {
             limit: +limit,
             include: [...includeModels],
             where: whereParams,
-            distinct: true
+            distinct: true,
+            order: [
+                ['commissionPercent', 'DESC'],
+            ]
         })
         return {
             hotels: rows,
@@ -266,6 +269,9 @@ const findByProvince = async (provinceId, page, limit) => {
                         id: provinceId
                     }
                 }
+            ],
+            order: [
+                ['commissionPercent', 'DESC'],
             ]
         })
         return {

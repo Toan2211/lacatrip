@@ -1,6 +1,5 @@
 const { QueryTypes } = require('sequelize')
 const db = require('../models')
-const moment = require('moment')
 
 const createPayment = async paymentData => {
     try {
@@ -67,7 +66,7 @@ const deletePayment = async params => {
 
 const getAmountToPayServiceManager = async () => {
     try {
-        const now = moment().startOf('day').format('YYYY-MM-DD')
+        const now = (new Date()).toISOString().replace('T', ' ').substring(0,19)
         let [dataAmount, _] = await db.sequelize.query(`
                 SELECT 
                 payments.serviceManagerId,
@@ -97,6 +96,7 @@ const updateIsPayedForServiceManager = async (
     serviceManagerId,
     now
 ) => {
+    console.log(now)
     try {
         await db.sequelize.query(
             `

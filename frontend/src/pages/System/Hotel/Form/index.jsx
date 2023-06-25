@@ -15,7 +15,6 @@ import * as yup from 'yup'
 import { phoneRegExp } from '@constants/regex'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { toast } from 'react-toastify'
-import { serviceManagersSelector } from '@pages/System/ServiceManagers/servicemanager.slice'
 import { getServiceManagers } from '@pages/System/ServiceManagers/servicemanager.slice'
 import MySelect from '@components/MySelect'
 import {
@@ -31,6 +30,7 @@ import { provincesSelector } from '@pages/CommonProperty/baseproperty'
 import { useNavigate, useParams } from 'react-router-dom'
 import { path } from '@constants/path'
 import { selectUser } from '@pages/Auth/auth.slice'
+import ROLE from '@constants/ROLE'
 function FormHotel() {
     const dispatch = useDispatch()
     const profile = useSelector(selectUser)
@@ -133,7 +133,9 @@ function FormHotel() {
             provinceId: currentHotel.provinceId
                 ? currentHotel.provinceId
                 : '',
-            commissionPercent: currentHotel.commissionPercent ? currentHotel.commissionPercent : 10
+            commissionPercent: currentHotel.commissionPercent
+                ? currentHotel.commissionPercent
+                : 10
         },
         resolver: yupResolver(schema)
     })
@@ -154,7 +156,10 @@ function FormHotel() {
                 profile.serviceManagerId
             )
             form.setValue('provinceId', currentHotel.provinceId)
-            form.setValue('commissionPercent', currentHotel.commissionPercent)
+            form.setValue(
+                'commissionPercent',
+                currentHotel.commissionPercent
+            )
             setAmenityIds(
                 currentHotel.amenitieshotel.map(item => ({
                     value: item.id,
@@ -200,7 +205,10 @@ function FormHotel() {
                 profile.serviceManagerId
             )
             formData.append('provinceId', data.provinceId)
-            formData.append('commissionPercent', data.commissionPercent)
+            formData.append(
+                'commissionPercent',
+                data.commissionPercent
+            )
             for (const image of images) {
                 if (image.file) formData.append('images', image.file)
             }
@@ -477,20 +485,23 @@ function FormHotel() {
                             />
                         </div>
                     </div>
-                    <div className="mt-10 text-right pr-4">
-                        <Mybutton
-                            isloading={loading > 0 ? true : false}
-                            type="submit"
-                            onClick={() => {
-                                if (isFirstTime) setIsFirstTime(false)
-                            }}
-                            className="bg-blue-500 text-white active:bg-blue-800 text-sm font-bold uppercase px-4 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 w-1/5 ease-linear transition-all duration-150"
-                        >
-                            {_.isEmpty(currentHotel)
-                                ? 'Add hotel'
-                                : 'Update hotel'}
-                        </Mybutton>
-                    </div>
+                    {profile.role.name === ROLE.SERVICEMANAGER && (
+                        <div className="mt-10 text-right pr-4">
+                            <Mybutton
+                                isloading={loading > 0 ? true : false}
+                                type="submit"
+                                onClick={() => {
+                                    if (isFirstTime)
+                                        setIsFirstTime(false)
+                                }}
+                                className="bg-blue-500 text-white active:bg-blue-800 text-sm font-bold uppercase px-4 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 w-1/5 ease-linear transition-all duration-150"
+                            >
+                                {_.isEmpty(currentHotel)
+                                    ? 'Add hotel'
+                                    : 'Update hotel'}
+                            </Mybutton>
+                        </div>
+                    )}
                 </form>
             </div>
         </div>
