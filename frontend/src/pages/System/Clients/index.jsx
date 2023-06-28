@@ -44,7 +44,7 @@ function Clients() {
         try {
             const res = dispatch(toggleStatusClient(clientId))
             unwrapResult(res)
-            toast.success('Change status client successful', {
+            toast.success('Thay đổi trạng thái thành công', {
                 position: toast.POSITION.BOTTOM_CENTER,
                 autoClose: 1000,
                 hideProgressBar: true
@@ -66,7 +66,7 @@ function Clients() {
         dispatch(setCurrentClient({}))
     }
     useEffect(() => {
-        document.title = 'System Clients'
+        document.title = 'Quản lý khách du lịch'
     }, [])
     return (
         <div>
@@ -75,7 +75,7 @@ function Clients() {
                     <div className="flex flex-wrap items-center">
                         <div className="relative w-full px-4 max-w-full flex">
                             <h3 className="font-semibold text-lg text-blue-600">
-                                Manage Clients
+                                Quản lý khách du lịch
                             </h3>
                         </div>
                     </div>
@@ -83,14 +83,14 @@ function Clients() {
                 <div className="block w-full overflow-x-auto h-[66vh]">
                     <Table hoverable={true}>
                         <Table.Head>
-                            <Table.HeadCell>Fullname</Table.HeadCell>
+                            <Table.HeadCell>Họ tên</Table.HeadCell>
                             <Table.HeadCell>Email</Table.HeadCell>
                             <Table.HeadCell>
-                                PhoneNumber
+                                Số điện thoại
                             </Table.HeadCell>
-                            <Table.HeadCell>Gender</Table.HeadCell>
-                            <Table.HeadCell>Status</Table.HeadCell>
-                            <Table.HeadCell>Action</Table.HeadCell>
+                            <Table.HeadCell>Giới tính</Table.HeadCell>
+                            <Table.HeadCell>Trạng thái</Table.HeadCell>
+                            <Table.HeadCell></Table.HeadCell>
                         </Table.Head>
                         <Table.Body className="divide-y">
                             {clients &&
@@ -110,8 +110,8 @@ function Clients() {
                                         </Table.Cell>
                                         <Table.Cell>
                                             {client.gender
-                                                ? 'Male'
-                                                : 'Female'}
+                                                ? 'Nam'
+                                                : 'Nữ'}
                                         </Table.Cell>
                                         <Table.Cell>
                                             <ToggleButton

@@ -21,16 +21,15 @@ function CardProfile() {
     const schema = yup.object().shape({
         email: yup
             .string()
-            .required('Email is required')
-            .email('Invalid email'),
-        firstname: yup.string().required('Firstname is required'),
-        lastname: yup.string().required('Lastname is required'),
-        gender: yup.string().required('Gender is required'),
-        country: yup.string().required('Country is required'),
+            .required('Hãy nhập email')
+            .email('Email không hợp lệ'),
+        firstname: yup.string().required('Hãy nhập họ'),
+        lastname: yup.string().required('Hãy nhập tên'),
+        gender: yup.string().required('Hãy chọn giới tính'),
         phone: yup
             .string()
-            .required('Phone number is required')
-            .matches(phoneRegExp, 'Phone number is not valid')
+            .required('Hãy nhập số điện thoại')
+            .matches(phoneRegExp, 'Số điện thoại không hợp lệ')
     })
     const form = useForm({
         defaultValues: {
@@ -39,7 +38,6 @@ function CardProfile() {
             firstname: user.firstname,
             lastname: user.lastname,
             gender: user.gender ? '1' : '0',
-            country: user.country,
             avatar: user.avatar,
             phone: user.phone
         },
@@ -52,7 +50,6 @@ function CardProfile() {
         formData.append('firstname', data.firstname)
         formData.append('lastname', data.lastname)
         formData.append('gender', +data.gender)
-        formData.append('country', data.country)
         formData.append('phone', data.phone)
         if (data.avatar && typeof data.avatar !== 'string')
             formData.append('avatar', data.avatar)
@@ -60,7 +57,7 @@ function CardProfile() {
         try {
             const res = await dispatch(updateUser(formData))
             unwrapResult(res)
-            toast.success('Update user successful', {
+            toast.success('Cập nhật thông tin thành công', {
                 position: toast.POSITION.BOTTOM_CENTER,
                 autoClose: 1000,
                 hideProgressBar: true
@@ -79,20 +76,20 @@ function CardProfile() {
                 <div className="rounded-t bg-white mb-7 px-6 py-6">
                     <div className="text-center flex justify-between ">
                         <h6 className="text-xl font-bold">
-                            My account
+                            Tài khoản của tôi
                         </h6>
                         <Mybutton
                             className=" bg-blue-500 text-white active:bg-blue-800 text-sm font-bold uppercase px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 w-1/8 ease-linear transition-all duration-150"
                             type="submit"
                             isloading={+loading}
                         >
-                            Edit
+                            Cập nhật
                         </Mybutton>
                     </div>
                 </div>
                 <div className="flex px-4 lg:px-10 py-10 pt-0">
                     <h6 className="text-blueGray-400 text-sm mt-3 mb-6 font-bold uppercase">
-                        User Information
+                        Thông tin người dùng
                     </h6>
                     <div className="flex flex-wrap">
                         <div className="w-full lg:w-6/12 px-4">
@@ -101,10 +98,10 @@ function CardProfile() {
                                     className="block uppercase text-gray-600 text-xs font-bold mb-2"
                                     htmlFor="grid-password"
                                 >
-                                    Phone Number
+                                    Số điện thoại
                                 </label>
                                 <InputField
-                                    placeholder="Phone Number"
+                                    placeholder="Số điện thoại"
                                     type="input"
                                     form={form}
                                     name="phone"
@@ -117,7 +114,7 @@ function CardProfile() {
                                     className="block uppercase text-gray-600  text-xs font-bold mb-2"
                                     htmlFor="grid-password"
                                 >
-                                    Email address
+                                    Email
                                 </label>
                                 <InputField
                                     placeholder="Email"
@@ -134,10 +131,10 @@ function CardProfile() {
                                     className="block uppercase text-gray-600  text-xs font-bold mb-2"
                                     htmlFor="grid-password"
                                 >
-                                    First Name
+                                    Họ
                                 </label>
                                 <InputField
-                                    placeholder="Firstname"
+                                    placeholder="Họ"
                                     type="input"
                                     form={form}
                                     name="firstname"
@@ -150,10 +147,10 @@ function CardProfile() {
                                     className="block uppercase text-gray-600  text-xs font-bold mb-2"
                                     htmlFor="grid-password"
                                 >
-                                    Last Name
+                                    Tên
                                 </label>
                                 <InputField
-                                    placeholder="Lastname"
+                                    placeholder="Tên"
                                     type="input"
                                     form={form}
                                     name="lastname"
@@ -166,7 +163,7 @@ function CardProfile() {
                                     className="block uppercase text-gray-600  text-xs font-bold mb-2"
                                     htmlFor="grid-password"
                                 >
-                                    Gender
+                                    Giới tính
                                 </label>
                                 <div className="flex space-x-4">
                                     <label
@@ -181,7 +178,7 @@ function CardProfile() {
                                             value="1"
                                             id="male"
                                         />
-                                        Male
+                                        Nam
                                     </label>
                                     <label
                                         htmlFor="female"
@@ -195,7 +192,7 @@ function CardProfile() {
                                             value="0"
                                             id="female"
                                         />
-                                        Female
+                                       Nữ
                                     </label>
                                 </div>
                                 {form.formState.errors['gender'] && (
@@ -207,27 +204,6 @@ function CardProfile() {
                                         }
                                     </span>
                                 )}
-                            </div>
-                        </div>
-                        <div className="w-full lg:w-6/12 px-4">
-                            <div className="relative w-full mb-3">
-                                <label
-                                    className="block uppercase text-gray-600  text-xs font-bold mb-2"
-                                    htmlFor="grid-password"
-                                >
-                                    Country
-                                </label>
-                                <MySelect
-                                    placeholder="Country"
-                                    form={form}
-                                    name="country"
-                                    options={countrys.map(country =>
-                                        Object({
-                                            value: country,
-                                            label: country
-                                        })
-                                    )}
-                                />
                             </div>
                         </div>
                     </div>

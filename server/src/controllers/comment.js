@@ -18,7 +18,7 @@ const create = async (req, res) => {
         const comment = await commentService.create(req.body)
         if (!comment)
             return res.status(400).json({
-                message: 'You already comment !'
+                message: 'Bạn đã đánh giá dịch vụ này !'
             })
         return res
             .status(200)

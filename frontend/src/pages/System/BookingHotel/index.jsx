@@ -32,7 +32,7 @@ function BookingHotelListSystem() {
     const [checkOut, setCheckOut] = useState(null)
     const [serviceManagerInput, setServiceManagerInput] = useState({
         value: 999,
-        label: 'Filter service manager...'
+        label: 'Tìm kiếm theo nhà cung cấp dịch vụ...'
     })
     const [keyword, setKeyword] = useState('')
     const handleChangeKeyword = e => {
@@ -81,12 +81,12 @@ function BookingHotelListSystem() {
                 className="flex-1 flex gap-3 items-center cursor-pointer justify-center  border border-slate-300 hover:border-blue-500 rounded-md overflow-hidden bg-white"
                 onClick={onClick}
             >
-                <div className="flex flex-col">
+                <div className="flex flex-col items-center">
                     <span className="font-medium text-md">
-                        Check in
+                        Ngày nhận phòng
                     </span>
                     <span className="text-gray-400 text-sm" ref={ref}>
-                        {value || 'Add Date'}
+                        {value || 'Thêm ngày'}
                     </span>
                 </div>
             </div>
@@ -98,12 +98,12 @@ function BookingHotelListSystem() {
                 className=" bg-white flex-1 flex gap-3 items-center cursor-pointer justify-center border border-slate-300 hover:border-blue-500 rounded-md overflow-hidden"
                 onClick={onClick}
             >
-                <div className="flex flex-col">
+                <div className="flex flex-col items-center">
                     <span className="font-medium text-md">
-                        Check out
+                        Ngày trả phòng
                     </span>
                     <span className="text-gray-400 text-sm" ref={ref}>
-                        {value || 'Add Date'}
+                        {value || 'Thêm ngày'}
                     </span>
                 </div>
             </div>
@@ -146,7 +146,7 @@ function BookingHotelListSystem() {
                     <div className="flex flex-wrap items-center">
                         <div className="relative w-full px-4 max-w-full flex">
                             <h3 className="font-semibold text-lg text-blue-600">
-                                Manage Booking Hotel
+                                Quản lý đặt lịch khách sạn
                             </h3>
                         </div>
                     </div>
@@ -158,7 +158,7 @@ function BookingHotelListSystem() {
                             onChange={handleChangeKeyword}
                             onBlur={handleBlurKeyword}
                             onKeyDown={handleKeyDownKeyword}
-                            placeholder="Search by name hotel, name client..."
+                            placeholder="Tìm kiếm theo tên nhà hàng, khách hàng..."
                             className=" border border-gray-300 px-4 py-[10px] bg-white rounded text-sm focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
                         />
                     </div>
@@ -195,12 +195,12 @@ function BookingHotelListSystem() {
                                 onChange={handleChaneServiceManager}
                                 value={serviceManagerInput}
                                 placeholder={
-                                    'Filter by service manager...'
+                                    'Tìm kiếm theo nhà cung cấp dịch vụ...'
                                 }
                                 options={[
                                     {
                                         value: 999,
-                                        label: 'Filter by service manager...'
+                                        label: 'Tìm kiếm theo nhà cung cấp dịch vụ...'
                                     },
                                     ...serviceManagers.map(
                                         servicemanager => ({

@@ -114,20 +114,20 @@ function TripListItem({
             <div className="w-full h-[300vh] pb-[500px] z-100">
                 <div className=" mt-[80px] h-[60px] bg-slate-50 flex justify-between px-3 py-3 mb-3">
                     <div className="font-semibold">
-                        Trip List Item
+                        Danh sách dịch vụ
                     </div>
                     <div className="flex gap-2">
                         <button
                             onClick={handleOnSaveClick}
                             className="bg-blue-500 text-white active:bg-blue-800 text-sm font-bold uppercase px-2 py-1 rounded-lg shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 w-full ease-linear transition-all duration-150"
                         >
-                            Save
+                            Lưu
                         </button>
                         <button
                             onClick={onClose}
                             className=" bg-gray-300 text-white active:bg-gray-400 text-sm font-bold uppercase px-2 py-1 rounded-lg shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 w-full ease-linear transition-all duration-150"
                         >
-                            Cancel
+                            Bỏ
                         </button>
                     </div>
                 </div>
@@ -135,7 +135,7 @@ function TripListItem({
                     {currentTrip.hotels.length > 0 && (
                         <div>
                             <header className="w-full bg-slate-50 px-3 py-2 font-semibold">
-                                Hotels
+                                Khách sạn
                             </header>
                             <ul>
                                 {currentTrip.hotels.map(
@@ -183,7 +183,7 @@ function TripListItem({
                     {currentTrip.restaurants.length > 0 && (
                         <div>
                             <header className="w-full bg-slate-50 px-3 py-2 font-semibold">
-                                Restaurants
+                                Nhà hàng
                             </header>
                             <ul>
                                 {currentTrip.restaurants.map(
@@ -237,7 +237,7 @@ function TripListItem({
                     {currentTrip.destinationTravels.length > 0 && (
                         <div>
                             <header className="w-full bg-slate-50 px-3 py-2 font-semibold">
-                                Destination Travels
+                                Tour du lịch
                             </header>
                             <ul>
                                 {currentTrip.destinationTravels.map(

@@ -62,14 +62,14 @@ const successPaymentPaypal = async (req, res) => {
                                         bookingId
                                     )
                                 url = `system/booking-hotel/?keyword=${booking.id}`
-                                message = `${booking.user.firstname} ${booking.user.lastname} already booked rooms in ${booking.hotel.name}. Please check !`
+                                message = `${booking.user.firstname} ${booking.user.lastname} đã đặt phòng in ${booking.hotel.name}. Hãy kiểm tra !`
                             } else {
                                 booking =
                                     await bookingDestinationTravelService.getBookingById(
                                         bookingDestinationId
                                     )
                                 url = `system/booking-destination-travel/?keyword=${booking.id}`
-                                message = `${booking.user.firstname} ${booking.user.lastname} already booked ${booking.countPeople} ticket ${booking.destinationTravel.name}. Please check !`
+                                message = `${booking.user.firstname} ${booking.user.lastname} đã đặt chỗ cho ${booking.countPeople} người ${booking.destinationTravel.name}.Hãy kiểm tra !`
                             }
                             await paymentService.updatePayment(
                                 {

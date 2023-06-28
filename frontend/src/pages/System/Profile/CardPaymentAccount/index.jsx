@@ -17,8 +17,8 @@ function CardPaymentAccount() {
     const schema = yup.object().shape({
         paymentAccount: yup
             .string()
-            .required('Payment Account is required')
-            .email('Invalid Payment Account')
+            .required('Hãy nhập tài khoản thanh toán')
+            .email('Tài khoản thanh toán không hợp lệ')
     })
     const form = useForm({
         defaultValues: {
@@ -31,7 +31,7 @@ function CardPaymentAccount() {
         try {
             const res = await dispatch(updatePaymentAccount(data))
             unwrapResult(res)
-            toast.success('Update user successful', {
+            toast.success('Cập nhật thành công', {
                 position: toast.POSITION.BOTTOM_CENTER,
                 autoClose: 1000,
                 hideProgressBar: true
@@ -51,15 +51,14 @@ function CardPaymentAccount() {
                 <div className="rounded-t bg-white mb-0 px-6 py-6">
                     <div className="text-center flex justify-between ">
                         <h6 className="text-xl font-bold">
-                            Change Payment Account (Payment Receive
-                            Money From Booking)
+                            Thay đổi tài khoản thanh toán
                         </h6>
                         <Mybutton
                             className=" bg-blue-500 text-white active:bg-blue-800 text-sm font-bold uppercase px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 w-1/8 ease-linear transition-all duration-150"
                             type="submit"
                             // isloading={+loading}
                         >
-                            Change
+                            Thay đổi
                         </Mybutton>
                     </div>
                 </div>

@@ -151,7 +151,7 @@ function DestinationTravelClient() {
             {currentDestination.itineraries.length > 0 && (
                 <div className="mt-20 min-h-[400px]">
                     <header className="font-semibold text-lg mb-5">
-                        Itinerary
+                        Hành trình
                     </header>
                     <div className="flex flex-col lg:flex-row">
                         <div className="w-full lg:basis-1/3 cursor-pointer">
@@ -171,7 +171,7 @@ function DestinationTravelClient() {
                                 </div>
                                 <div>
                                     <span className="font-semibold text-lg">
-                                        You will get picked up
+                                        Bạn sẽ được đón
                                     </span>
                                 </div>
                             </div>
@@ -223,8 +223,7 @@ function DestinationTravelClient() {
                                 </div>
                                 <div>
                                     <span className="font-semibold text-lg">
-                                        You will return to the
-                                        starting point
+                                        Bạn sẽ được trả về tại điểm đón
                                     </span>
                                 </div>
                             </div>

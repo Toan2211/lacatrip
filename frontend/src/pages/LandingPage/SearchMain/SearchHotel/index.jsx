@@ -33,10 +33,10 @@ function SearchHotel({
                 </span>
                 <div className="flex flex-col">
                     <span className="font-medium text-md">
-                        Check in
+                        Ngày nhận phòng
                     </span>
                     <span className="text-gray-400 text-sm" ref={ref}>
-                        {value || 'Add Date'}
+                        {value || 'Thêm ngày'}
                     </span>
                 </div>
             </div>
@@ -53,10 +53,10 @@ function SearchHotel({
                 </span>
                 <div className="flex flex-col">
                     <span className="font-medium text-md">
-                        Check out
+                        Ngày trả phòng
                     </span>
                     <span className="text-gray-400 text-sm" ref={ref}>
-                        {value || 'Add Date'}
+                        {value || 'Thêm ngày'}
                     </span>
                 </div>
             </div>
@@ -80,7 +80,7 @@ function SearchHotel({
                 </span>
                 <div className="flex flex-col w-full">
                     <div className="font-medium text-md ml-2">
-                        Location
+                        Địa điểm
                     </div>
                     <Select
                         styles={style}
@@ -124,7 +124,7 @@ function SearchHotel({
                         <span className="text-2xl">
                             <AiOutlineSearch />
                         </span>
-                        <span>Search</span>
+                        <span>Tìm kiếm</span>
                     </div>
                 </Mybutton>
             </div>

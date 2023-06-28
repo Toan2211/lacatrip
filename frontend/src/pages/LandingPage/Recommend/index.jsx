@@ -8,7 +8,7 @@ function Recommend() {
     return (
         <section className="max-w-[1535px] px-8 py-5 mt-[26vh] md:mt-40 md:px-10 lg:mt-16 lg:px-20 bg-slate-50 mb-[20vh] pb-[100px]">
             <header className="text-center font-semibold text-3xl mb-5">
-                Recommend For You
+                Gợi ý dành cho bạn
             </header>
             <div className="flex gap-3 justify-center font-semibold mb-10">
                 <button
@@ -19,7 +19,7 @@ function Recommend() {
                             : 'bg-white'
                     } border-gray-300 border  p-2 rounded-md`}
                 >
-                    Hotel
+                    Khách sạn
                 </button>
                 <button
                     onClick={() => setTypeFlag(1)}
@@ -29,7 +29,7 @@ function Recommend() {
                             : 'bg-white'
                     } border-gray-300 border  p-2 rounded-md`}
                 >
-                    Restaurant
+                    Nhà hàng
                 </button>
                 <button
                     onClick={() => setTypeFlag(2)}
@@ -39,7 +39,7 @@ function Recommend() {
                             : 'bg-white'
                     } border-gray-300 border  p-2 rounded-md`}
                 >
-                    Activity
+                    Tour du lịch
                 </button>
             </div>
             {typeFlag === 0 && <RecommendHotel />}

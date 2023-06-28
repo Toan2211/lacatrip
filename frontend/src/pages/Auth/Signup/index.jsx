@@ -20,26 +20,26 @@ function Signup() {
     const schema = yup.object().shape({
         email: yup
             .string()
-            .required('Email is required')
-            .email('Invalid email'),
+            .required('Hãy nhập Email')
+            .email('Email không hợp lệ'),
         password: yup
             .string()
-            .required('Password is required')
+            .required('Hãy nhập mật khẩu')
             .matches(
                 // eslint-disable-next-line
                 /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/,
-                'Must Contain 8 Characters, One Uppercase, One Lowercase, One Number and One Special Case Character'
+                'Mật khẩu phải gồm 8 kí tự, ít nhất 1 chữ hoa, 1 chữ thường, 1 số và 1 kí tự đặc biệt'
             ),
-        firstname: yup.string().required('Firstname is required'),
-        lastname: yup.string().required('Lastname is required'),
-        gender: yup.string().required('Gender is required'),
-        country: yup.string().required('Country is required'),
+        firstname: yup.string().required('Hãy nhập họ'),
+        lastname: yup.string().required('Hãy nhập tên'),
+        gender: yup.string().required('Chọn giới tính của bạn'),
+        country: yup.string().required('Chọn quốc gia của bạn'),
         confirmpassword: yup
             .string()
-            .required('ConfirmPassword is required')
+            .required('Hãy nhập mật khẩu xác nhận')
             .oneOf(
                 [yup.ref('password'), null],
-                'Passwords must match'
+                'Mật khẩu không khớp'
             )
     })
     const form = useForm({
@@ -69,7 +69,7 @@ function Signup() {
         }
     }
     useEffect(() => {
-        document.title = 'Signup'
+        document.title = 'Đăng ký'
     }, [])
     return (
         <div className="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded-lg bg-slate-50 border-0">
@@ -99,10 +99,10 @@ function Signup() {
                                 className="block uppercase text-xs font-bold mb-2"
                                 htmlFor="grid-password"
                             >
-                                Firstname
+                                Họ
                             </label>
                             <InputField
-                                placeholder="Firstname"
+                                placeholder="Họ"
                                 type="input"
                                 form={form}
                                 name="firstname"
@@ -113,10 +113,10 @@ function Signup() {
                                 className="block uppercase text-xs font-bold mb-2"
                                 htmlFor="grid-password"
                             >
-                                Lastname
+                                Tên
                             </label>
                             <InputField
-                                placeholder="Lastname"
+                                placeholder="Tên"
                                 type="input"
                                 form={form}
                                 name="lastname"
@@ -128,7 +128,7 @@ function Signup() {
                             className="block uppercase text-xs font-bold mb-2"
                             htmlFor="grid-password"
                         >
-                            Gender
+                            Giới tính
                         </label>
                         <div className="flex space-x-4">
                             <label
@@ -141,7 +141,7 @@ function Signup() {
                                     value="1"
                                     id="male"
                                 />
-                                Male
+                                Nam
                             </label>
                             <label
                                 htmlFor="female"
@@ -153,7 +153,7 @@ function Signup() {
                                     value="0"
                                     id="female"
                                 />
-                                Female
+                                Nữ
                             </label>
                         </div>
                         {form.formState.errors['gender'] && (
@@ -170,10 +170,10 @@ function Signup() {
                             className="block uppercase text-xs font-bold mb-2"
                             htmlFor="grid-password"
                         >
-                            Country
+                            Quốc gia
                         </label>
                         <MySelect
-                            placeholder="Country"
+                            placeholder="Quốc gia"
                             form={form}
                             name="country"
                             options={countrys.map(country =>
@@ -189,10 +189,10 @@ function Signup() {
                             className="block uppercase text-xs font-bold mb-2"
                             htmlFor="grid-password"
                         >
-                            Password
+                            Mật khẩu
                         </label>
                         <InputField
-                            placeholder="Password"
+                            placeholder="Mật khẩu"
                             type="password"
                             form={form}
                             name="password"
@@ -203,10 +203,10 @@ function Signup() {
                             className="block uppercase text-xs font-bold mb-2"
                             htmlFor="grid-password"
                         >
-                            Confirm Password
+                            Mật khẩu xác nhận
                         </label>
                         <InputField
-                            placeholder="Confirm Password"
+                            placeholder="Mật khẩu xác nhận"
                             type="password"
                             form={form}
                             name="confirmpassword"
@@ -218,7 +218,7 @@ function Signup() {
                             type="submit"
                             isloading={+loading}
                         >
-                            Signup
+                            Đăng ký
                         </Mybutton>
                     </div>
                 </form>
@@ -228,7 +228,7 @@ function Signup() {
                             className="text-blueGray-200"
                             to={path.forgotPass}
                         >
-                            <small>Forgot password ?</small>
+                            <small>Quên mật khẩu ?</small>
                         </Link>
                     </div>
                     <div className="w-1/2 text-right">
@@ -236,7 +236,7 @@ function Signup() {
                             className="text-blueGray-200"
                             to={path.signin}
                         >
-                            <small>Signin</small>
+                            <small>Đăng nhập</small>
                         </Link>
                     </div>
                 </div>
@@ -246,13 +246,12 @@ function Signup() {
                     <div className="relative flex flex-col min-w-0 break-words w-full lg:w-1/3 md:w-1/2 mb-6 shadow-lg rounded-lg bg-slate-50 border-0 p-4 mx-4">
                         <div className="text-center">
                             <h1 className="text-2xl font-bold mb-4">
-                                Signup Successfully
+                                Đăng ký thành công
                             </h1>
                             <h2>
-                                Congratulations, your account has been
-                                successfully created. Please check
-                                inbox mail and verify account. Thanks
-                                you !
+                                Chúc mừng bạn, tài khoản của bạn đã tạo thành công.
+                                Vui lòng kiểm tra Email và xác nhận tạo tài khoản.
+                                Chân thành cảm ơn !
                             </h2>
                         </div>
                         <div className="mt-4 flex justify-end">
@@ -260,7 +259,7 @@ function Signup() {
                                 className="bg-blue-500 text-white active:bg-blue-800 text-sm font-bold uppercase px-3 py-2 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 w-1/4 ease-linear transition-all duration-150"
                                 onClick={() => navigate(path.signin)}
                             >
-                                start now
+                                Bắt đầu
                             </button>
                         </div>
                     </div>

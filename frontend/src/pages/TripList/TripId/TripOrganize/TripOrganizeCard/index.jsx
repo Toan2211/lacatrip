@@ -30,13 +30,13 @@ function TripOrganizeCard({ dataOfDate, handleUpdateDataOfDate }) {
                                     'en-US',
                                     options
                                 )
-                                : 'Unschedule'}
+                                : 'Chưa lên kế hoạch'}
                         </header>
                         <span
                             className="font-semibold text-sm hover:text-blue-500"
                             onClick={handleAddItem}
                         >
-                            Add item
+                            Thêm
                         </span>
                     </div>
                     {dataOfDate.itineraries.map(item => {

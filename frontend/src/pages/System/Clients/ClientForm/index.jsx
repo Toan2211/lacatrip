@@ -6,8 +6,6 @@ import { useSelector } from 'react-redux'
 import { currentClientSelector } from '../client.slice'
 import { useForm } from 'react-hook-form'
 import _ from 'lodash'
-import MySelect from '@components/MySelect'
-import countrys from '@constants/countrys'
 
 function ClientForm({ onClose, open }) {
     const currentClient = useSelector(currentClientSelector)
@@ -17,7 +15,6 @@ function ClientForm({ onClose, open }) {
             firstname: '',
             lastname: '',
             gender: '',
-            country: '',
             avatar: '',
             phone: ''
         }
@@ -31,7 +28,6 @@ function ClientForm({ onClose, open }) {
                 'gender',
                 currentClient.gender ? '1' : '0'
             )
-            form.setValue('country', currentClient.country)
             form.setValue(
                 'avatar',
                 currentClient.avatar ? currentClient.avatar : undefined
@@ -45,7 +41,7 @@ function ClientForm({ onClose, open }) {
     return (
         <Drawer isOpen={open} onClose={onClose}>
             <header className="font-bold bg-slate-50 p-4">
-                View Client
+                Xem thông tin khách hàng
             </header>
             <div className="p-5">
                 <form >
@@ -58,10 +54,10 @@ function ClientForm({ onClose, open }) {
                                 className="block uppercase text-xs font-bold mb-2"
                                 htmlFor="grid-password"
                             >
-                                Firstname
+                                Họ
                             </label>
                             <InputField
-                                placeholder="Firstname"
+                                placeholder="Họ"
                                 type="input"
                                 form={form}
                                 name="firstname"
@@ -72,10 +68,10 @@ function ClientForm({ onClose, open }) {
                                 className="block uppercase text-xs font-bold mb-2"
                                 htmlFor="grid-password"
                             >
-                                Lastname
+                                Tên
                             </label>
                             <InputField
-                                placeholder="Lastname"
+                                placeholder="Tên"
                                 type="input"
                                 form={form}
                                 name="lastname"
@@ -87,7 +83,7 @@ function ClientForm({ onClose, open }) {
                             className="block uppercase text-xs font-bold mb-2"
                             htmlFor="grid-password"
                         >
-                            Gender
+                            Giới tính
                         </label>
                         <div className="flex space-x-4">
                             <label
@@ -100,7 +96,7 @@ function ClientForm({ onClose, open }) {
                                     value="1"
                                     id="male"
                                 />
-                                Male
+                                Nam
                             </label>
                             <label
                                 htmlFor="female"
@@ -112,7 +108,7 @@ function ClientForm({ onClose, open }) {
                                     value="0"
                                     id="female"
                                 />
-                                Female
+                                Nữ
                             </label>
                         </div>
                         {form.formState.errors['gender'] && (
@@ -148,32 +144,13 @@ function ClientForm({ onClose, open }) {
                             className="block uppercase text-xs font-bold mb-2"
                             htmlFor="grid-password"
                         >
-                            PhoneNumber
+                            Số điện thoại
                         </label>
                         <InputField
-                            placeholder="Phone Number"
+                            placeholder="Số điện thoại"
                             type="input"
                             form={form}
                             name="phone"
-                        />
-                    </div>
-                    <div className="relative w-full mb-2">
-                        <label
-                            className="block uppercase text-xs font-bold mb-2"
-                            htmlFor="grid-password"
-                        >
-                            Country
-                        </label>
-                        <MySelect
-                            placeholder="Country"
-                            form={form}
-                            name="country"
-                            options={countrys.map(country =>
-                                Object({
-                                    value: country,
-                                    label: country
-                                })
-                            )}
                         />
                     </div>
                 </form>

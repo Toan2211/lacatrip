@@ -53,7 +53,7 @@ function ServiceManger() {
         dispatch(setCurrentServicemanager({}))
     }
     useEffect(() => {
-        document.title = 'System Service Managers'
+        document.title = 'Quản lý nhà cung cấp dịch vụ'
     }, [])
     return (
         <div>
@@ -62,11 +62,11 @@ function ServiceManger() {
                     <div className="flex flex-wrap items-center">
                         <div className="relative w-full px-4 max-w-full flex">
                             <h3 className="font-semibold text-lg text-blue-600">
-                                Manage ServiceManagers
+                                Quản lý nhà cung cấp dịch vụ
                             </h3>
                             <div className="relative flex flex-col items-center group w-10">
                                 <Tooltip
-                                    content="Create"
+                                    content="Tạo mới"
                                     style="light"
                                 >
                                     <button
@@ -94,14 +94,14 @@ function ServiceManger() {
                 <div className="block w-full overflow-x-auto h-[66vh]">
                     <Table hoverable={true}>
                         <Table.Head>
-                            <Table.HeadCell>Fullname</Table.HeadCell>
+                            <Table.HeadCell>Họ tên</Table.HeadCell>
                             <Table.HeadCell>Email</Table.HeadCell>
                             <Table.HeadCell>
-                                PhoneNumber
+                                Số điện thoại
                             </Table.HeadCell>
-                            <Table.HeadCell>Gender</Table.HeadCell>
-                            <Table.HeadCell>Status</Table.HeadCell>
-                            <Table.HeadCell>Action</Table.HeadCell>
+                            <Table.HeadCell>Giới tính</Table.HeadCell>
+                            <Table.HeadCell>Trạng thái</Table.HeadCell>
+                            <Table.HeadCell></Table.HeadCell>
                         </Table.Head>
                         <Table.Body className="divide-y">
                             {serviceManagers &&

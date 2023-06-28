@@ -18,17 +18,17 @@ function Sidebar() {
     }
     return (
         <div className="w-full  border-slate-200 border rounded-lg px-2 py-2">
-            <header className=' ml-2 font-semibold text-xl text-slate-500'>Choose your favorite</header>
+            <header className=' ml-2 font-semibold text-xl text-slate-500'>Lựa chọn theo sở thích của bạn</header>
             <div className="flex-1 flex gap-3 items-center w-full mb-4">
                 <span className="text-3xl"></span>
                 <div className="flex flex-col w-full">
                     <div className="font-medium text-md ml-2 mb-2">
-                        Name
+                        Tên nhà hàng
                     </div>
                     <input
                         value={keyword}
                         onChange={handleOnchangeKeyWord}
-                        placeholder="Search by name"
+                        placeholder="Tìm kiếm theo tên"
                         className="border  border-slate-200 outline-none px-2 py-1 rounded-md focus:border-blue-800 "
                     />
                 </div>
@@ -37,12 +37,12 @@ function Sidebar() {
                 <span className="text-3xl"></span>
                 <div className="flex flex-col w-full">
                     <div className="font-medium text-md ml-2 mb-2">
-                        Min Price
+                        Giá thấp nhất
                     </div>
                     <input
                         value={minPrice}
                         onChange={handleOnchangeMinPrice}
-                        placeholder="Search by name"
+                        placeholder="0"
                         className="border  border-slate-200 outline-none px-2 py-1 rounded-md focus:border-blue-800 "
                     />
                 </div>
@@ -51,12 +51,12 @@ function Sidebar() {
                 <span className="text-3xl"></span>
                 <div className="flex flex-col w-full">
                     <div className="font-medium text-md ml-2 mb-2">
-                        MaxPrice
+                        Giá cao nhất
                     </div>
                     <input
                         value={maxPrice}
                         onChange={handleOnchangeMaxPrice}
-                        placeholder="Search by name"
+                        placeholder="10000"
                         className="border border-slate-200 outline-none px-2 py-1 rounded-md focus:border-blue-800 "
                     />
                 </div>
@@ -70,7 +70,7 @@ function Sidebar() {
                         <span className="text-2xl">
                             <AiOutlineSearch />
                         </span>
-                        <span>Search</span>
+                        <span>Tìm kiếm</span>
                     </div>
                 </Mybutton>
             </div>

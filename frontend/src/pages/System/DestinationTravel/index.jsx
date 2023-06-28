@@ -69,7 +69,7 @@ function DestinationTravel() {
         try {
             const res = await dispatch(togglePublic(destinationId))
             unwrapResult(res)
-            toast.success('Change status Destination successful', {
+            toast.success('Cập nhật trạng thái Tour du lịch thành công', {
                 position: toast.POSITION.BOTTOM_CENTER,
                 autoClose: 1000,
                 hideProgressBar: true
@@ -105,7 +105,7 @@ function DestinationTravel() {
     }
 
     useEffect(() => {
-        document.title = 'Destination Travel'
+        document.title = 'Quản lý Tour du lịch'
         dispatch(getServiceManagers({ limit: 1000 }))
         // dispatch(getDestinations({ limit: 1000 }))
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -127,12 +127,12 @@ function DestinationTravel() {
                     <div className="flex flex-wrap items-center">
                         <div className="relative w-full px-4 max-w-full flex">
                             <h3 className="font-semibold text-lg text-blue-600">
-                                Manage Destination Travel
+                                Quản lý Tour du lịch
                             </h3>
                             {profile.serviceManagerId && (
                                 <div className="relative flex flex-col items-center group w-10">
                                     <Tooltip
-                                        content="Create"
+                                        content="Tạo mới"
                                         style="light"
                                     >
                                         <button
@@ -166,7 +166,7 @@ function DestinationTravel() {
                         >
                             <div className="flex-1">
                                 <InputField
-                                    placeholder="Name Destination Travel"
+                                    placeholder="Tên tour tìm kiếm"
                                     form={form}
                                     name="key"
                                 />
@@ -174,7 +174,7 @@ function DestinationTravel() {
                             {!profile.serviceManagerId && (
                                 <div className="flex-1">
                                     <MySelect
-                                        placeholder="Service Manager"
+                                        placeholder="Nhà cung cấp dịch vụ"
                                         form={form}
                                         name="serviceManagerId"
                                         options={serviceManagers.map(
@@ -194,7 +194,7 @@ function DestinationTravel() {
 
                             <div className="flex-1">
                                 <MySelect
-                                    placeholder="Province"
+                                    placeholder="Tỉnh thành"
                                     form={form}
                                     name="provinceId"
                                     options={provinces.map(
@@ -212,7 +212,7 @@ function DestinationTravel() {
                                         type="submit"
                                         className="bg-blue-500 text-white active:bg-blue-800 text-sm font-bold uppercase px-3 py-2 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 w-full ease-linear transition-all duration-150"
                                     >
-                                        Search
+                                        Tìm kiếm
                                     </Mybutton>
                                 </div>
                                 <div className="flex-1">
@@ -223,7 +223,7 @@ function DestinationTravel() {
                                         }
                                         className="bg-blue-500 text-white active:bg-blue-800 text-sm font-bold uppercase px-3 py-2 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 w-full ease-linear transition-all duration-150"
                                     >
-                                        Reset
+                                        Làm mới
                                     </Mybutton>
                                 </div>
                             </div>
@@ -233,14 +233,14 @@ function DestinationTravel() {
                 <div className="block w-full overflow-x-auto h-[66vh]">
                     <Table hoverable={true}>
                         <Table.Head>
-                            <Table.HeadCell>Name</Table.HeadCell>
+                            <Table.HeadCell>Tên Tour</Table.HeadCell>
                             <Table.HeadCell>
-                                Service Manager
+                                Quản lý
                             </Table.HeadCell>
-                            <Table.HeadCell>Province</Table.HeadCell>
-                            <Table.HeadCell>Rating</Table.HeadCell>
-                            <Table.HeadCell>Public</Table.HeadCell>
-                            <Table.HeadCell>Action</Table.HeadCell>
+                            <Table.HeadCell>Tỉnh thành</Table.HeadCell>
+                            <Table.HeadCell>Đánh giá</Table.HeadCell>
+                            <Table.HeadCell>Hiển thị</Table.HeadCell>
+                            <Table.HeadCell></Table.HeadCell>
                         </Table.Head>
                         <Table.Body className="divide-y">
                             {destinations &&
@@ -283,7 +283,7 @@ function DestinationTravel() {
                                         </Table.Cell>
                                         <Table.Cell className="flex gap-4">
                                             <Tooltip
-                                                content="Detail destination"
+                                                content="Chi tiết"
                                                 style="light"
                                             >
                                                 <Mybutton
@@ -312,7 +312,7 @@ function DestinationTravel() {
                                             </Tooltip>
 
                                             <Tooltip
-                                                content="Manage Itineraries"
+                                                content="Quản lý hành trình"
                                                 style="light"
                                             >
                                                 <Mybutton

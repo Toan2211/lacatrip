@@ -13,7 +13,7 @@ const create = async (req, res) => {
         const booking = await bookingDestinationTravelService.createBooking(
             req.body
         )
-        const description = `Payment ${booking.countPeople} ticket for ${booking.destinationTravel.name}`
+        const description = `Thanh toán ${booking.countPeople} vé cho Tour du lịch ${booking.destinationTravel.name}`
         const payment = {
             intent: 'sale',
             payer: {

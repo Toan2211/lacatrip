@@ -44,7 +44,7 @@ function TripCard({ trip }) {
                         {trip.hotels.length +
                             trip.restaurants.length +
                             trip.destinationTravels.length}{' '}
-                        places
+                        Địa điểm
                     </span>
                 </div>
             </div>

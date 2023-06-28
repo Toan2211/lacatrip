@@ -36,7 +36,7 @@ function BookingDestinationTravelSystem() {
     const [date, setDate] = useState(null)
     const [serviceManagerInput, setServiceManagerInput] = useState({
         value: 999,
-        label: 'Filter service manager...'
+        label: 'Tìm kiếm theo nhà cung cấp dịch vụ...'
     })
     const [keyword, setKeyword] = useState('')
     const handleChangeKeyword = e => {
@@ -84,12 +84,12 @@ function BookingDestinationTravelSystem() {
                 className="flex-1 flex gap-3 items-center cursor-pointer justify-center  border border-slate-300 hover:border-blue-500 rounded-md overflow-hidden bg-white"
                 onClick={onClick}
             >
-                <div className="flex flex-col">
+                <div className="flex flex-col items-center">
                     <span className="font-medium text-md">
-                        Filter by Date
+                        Ngày tham gia Tour
                     </span>
                     <span className="text-gray-400 text-sm" ref={ref}>
-                        {value || 'Add Date'}
+                        {value || 'Thêm ngày'}
                     </span>
                 </div>
             </div>
@@ -116,7 +116,7 @@ function BookingDestinationTravelSystem() {
         dispatch(getAllBooking(queryParams))
     }, [queryParams, dispatch])
     useEffect(() => {
-        document.title = 'Booking Destination Travels Manage'
+        document.title = 'Quản lý đặt lịch Tour du lịch'
         dispatch(
             getServiceManagers({
                 limit: 100
@@ -129,7 +129,7 @@ function BookingDestinationTravelSystem() {
                 <div className="flex flex-wrap items-center">
                     <div className="relative w-full px-4 max-w-full flex">
                         <h3 className="font-semibold text-lg text-blue-600">
-                            Manage Booking Destination Travel
+                            Quản lý đặt lịch Tour du lịch
                         </h3>
                     </div>
                 </div>
@@ -141,7 +141,7 @@ function BookingDestinationTravelSystem() {
                         onChange={handleChangeKeyword}
                         onBlur={handleBlurKeyword}
                         onKeyDown={handleKeyDownKeyword}
-                        placeholder="Search by name destination travel, name client..."
+                        placeholder="Tìm kiếm theo tên Tour du lịch, khách hàng, ..."
                         className=" border border-gray-300 px-4 py-[10px] bg-white rounded text-sm focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
                     />
                 </div>
@@ -165,12 +165,12 @@ function BookingDestinationTravelSystem() {
                             onChange={handleChaneServiceManager}
                             value={serviceManagerInput}
                             placeholder={
-                                'Filter by service manager...'
+                                'Tìm kiếm theo nhà cung cấp...'
                             }
                             options={[
                                 {
                                     value: 999,
-                                    label: 'Filter by service manager...'
+                                    label: 'Tìm kiếm theo nhà cung cấp...'
                                 },
                                 ...serviceManagers.map(
                                     servicemanager => ({

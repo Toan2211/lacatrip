@@ -37,7 +37,7 @@ function DestinationForm() {
         if (id && !currentDestination.id) dispatch(getDetail(id))
     }, [id, currentDestination, dispatch])
     useEffect(() => {
-        document.title = 'Form Destination'
+        document.title = 'Form Tour du lịch'
         dispatch(getServiceManagers({ limit: 1000 }))
     }, [dispatch])
     const [images, setImages] = useState(() =>
@@ -50,34 +50,26 @@ function DestinationForm() {
     )
     const [isFirstTime, setIsFirstTime] = useState(true)
     const schema = yup.object().shape({
-        name: yup.string().required('Name is required'),
-        description: yup.string().required('Description is required'),
+        name: yup.string().required('Hãy nhập tên Tour du lịch'),
+        description: yup.string().required('Hãy nhập mô tả chi tiết'),
         price: yup
             .number()
-            .typeError('Price must be number')
-            .required('Price is required'),
+            .typeError('Hãy nhập giá Tour du lịch')
+            .required('Hãy nhập giá Tour du lịch'),
         originalPrice: yup
             .number()
-            .typeError('originalPrice must be number')
-            .required('originalPrice is required'),
-        address: yup.string().required('Address is required'),
+            .typeError('Hãy nhập giá Tour du lịch')
+            .required('Hãy nhập giá Tour du lịch'),
+        address: yup.string().required('Hãy nhập địa chỉ'),
         longtitude: yup
             .string()
-            .typeError(
-                'Input Address and generate map to get longtitude'
-            )
-            .required(
-                'Input Address and generate map to get longtitude'
-            ),
+            .typeError('Hãy nhập địa chỉ để lấy kinh độ')
+            .required('Hãy nhập địa chỉ để lấy kinh độ'),
         latitude: yup
             .number()
-            .typeError(
-                'Input Address and generate map to get latitude'
-            )
-            .required(
-                'Input Address and generate map to get latitude'
-            ),
-        provinceId: yup.string().required('Province is required')
+            .typeError('Hãy nhập địa chỉ để lấy vĩ độ')
+            .required('Hãy nhập địa chỉ để lấy vĩ độ'),
+        provinceId: yup.string().required('Hãy chọn tỉnh thành')
     })
     const form = useForm({
         defaultValues: {
@@ -134,7 +126,10 @@ function DestinationForm() {
                 currentDestination.serviceManagerId
             )
             form.setValue('provinceId', currentDestination.provinceId)
-            form.setValue('commissionPercent', currentDestination.commissionPercent)
+            form.setValue(
+                'commissionPercent',
+                currentDestination.commissionPercent
+            )
             setImages(
                 currentDestination.images.map(image => ({
                     id: image.id,
@@ -162,7 +157,10 @@ function DestinationForm() {
                 profile.serviceManagerId
             )
             formData.append('provinceId', data.provinceId)
-            formData.append('commissionPercent', data.commissionPercent)
+            formData.append(
+                'commissionPercent',
+                data.commissionPercent
+            )
             for (const image of images) {
                 if (image.file) formData.append('images', image.file)
             }
@@ -179,8 +177,8 @@ function DestinationForm() {
             }
             toast.success(
                 _.isEmpty(currentDestination)
-                    ? 'Create Destination successfully'
-                    : 'Update Destination successfully',
+                    ? 'Tạo mới Tour du lịch thành công'
+                    : 'Cập nhật Tour du lịch thành công',
                 {
                     position: toast.POSITION.BOTTOM_CENTER,
                     autoClose: 1000,
@@ -204,8 +202,8 @@ function DestinationForm() {
                         <div className="relative w-full px-4 max-w-full flex">
                             <h3 className="font-semibold text-lg text-blue-600">
                                 {_.isEmpty(currentDestination)
-                                    ? 'Add Destination Travel'
-                                    : 'Update Destination Travel'}
+                                    ? 'Tạo mới'
+                                    : 'Cập nhật'}
                             </h3>
                         </div>
                     </div>
@@ -217,10 +215,10 @@ function DestinationForm() {
                                 className="block uppercase text-sm font-bold mb-2"
                                 htmlFor="grid-password"
                             >
-                                Name
+                                Tên Tour du lịch
                             </label>
                             <InputField
-                                placeholder="Name Destination Travel"
+                                placeholder="Tên Tour du lịch"
                                 form={form}
                                 name="name"
                             />
@@ -230,10 +228,10 @@ function DestinationForm() {
                                 className="block uppercase text-sm font-bold mb-2"
                                 htmlFor="grid-password"
                             >
-                                Description
+                                Mô tả
                             </label>
                             <TextArea
-                                placeholder="Description Destination Travel..."
+                                placeholder="Mô tả ngắn về Tour du lich..."
                                 form={form}
                                 name="description"
                                 rows={2}
@@ -244,10 +242,10 @@ function DestinationForm() {
                                 className="block uppercase text-sm font-bold mb-2"
                                 htmlFor="grid-password"
                             >
-                                Original Price ($)
+                                Giá ban đầu($)
                             </label>
                             <InputField
-                                placeholder="Price"
+                                placeholder="Giá ban đầu"
                                 form={form}
                                 name="originalPrice"
                                 type="number"
@@ -259,10 +257,10 @@ function DestinationForm() {
                                 className="block uppercase text-sm font-bold mb-2"
                                 htmlFor="grid-password"
                             >
-                                Price ($)
+                                Giá chính thức($)
                             </label>
                             <InputField
-                                placeholder="Price"
+                                placeholder="Giá chính thức"
                                 form={form}
                                 name="price"
                                 type="number"
@@ -274,10 +272,10 @@ function DestinationForm() {
                                 className="block uppercase text-xs font-bold mb-2"
                                 htmlFor="grid-password"
                             >
-                                Province
+                                Tỉnh thành
                             </label>
                             <MySelect
-                                placeholder="Province"
+                                placeholder="Tỉnh thành"
                                 form={form}
                                 name="provinceId"
                                 options={provinces.map(province => ({
@@ -292,7 +290,7 @@ function DestinationForm() {
                                 className="block uppercase text-sm font-bold mb-2"
                                 htmlFor="grid-password"
                             >
-                                Photos
+                                Hình ảnh
                             </label>
                             <PhotoUploads
                                 addedPhotos={images}
@@ -300,8 +298,7 @@ function DestinationForm() {
                             />
                             {images.length === 0 && !isFirstTime && (
                                 <span className="text-[14px] text-red-500 pl-2 mt-1">
-                                    Please upload photos of
-                                    Destination Travel
+                                    Vui lòng đăng tải vài hình ảnh về Tour du lịch
                                 </span>
                             )}
                         </div>
@@ -310,12 +307,12 @@ function DestinationForm() {
                                 className="block uppercase text-sm font-bold mb-2"
                                 htmlFor="grid-password"
                             >
-                                Commission Percent (If you want to
-                                marketing your hotel and it on top.
-                                Please increse percent)
+                                Phí hoa hồng (Nếu bạn muốn khách sạn
+                                được hiển thị đầu lượt tìm kiếm. Hãy
+                                tăng phí hoa hồng cho hệ thống)
                             </label>
                             <InputField
-                                placeholder="System will get 10% per booking if you not set"
+                                placeholder="Hệ thống mặc định sẽ lấy 10% / đơn đặt lịch"
                                 form={form}
                                 name="commissionPercent"
                                 type="number"
@@ -334,8 +331,8 @@ function DestinationForm() {
                             className="bg-blue-500 text-white active:bg-blue-800 text-sm font-bold uppercase px-4 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 w-1/5 ease-linear transition-all duration-150"
                         >
                             {_.isEmpty(currentDestination)
-                                ? 'Add'
-                                : 'Update'}
+                                ? 'Tạo mới'
+                                : 'Cập nhật'}
                         </Mybutton>
                     </div>
                 </form>

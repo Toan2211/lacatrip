@@ -19,8 +19,8 @@ function ForgotPassword() {
     const schema = yup.object().shape({
         email: yup
             .string()
-            .required('Email is required')
-            .email('Invalid email')
+            .required('Hãy nhập Email')
+            .email('Email không hợp lệ')
     })
     const form = useForm({
         defaultValues: {
@@ -42,7 +42,7 @@ function ForgotPassword() {
         }
     }
     useEffect(() => {
-        document.title = 'Forgot Password'
+        document.title = 'Lấy lại mật khẩu'
     }, [])
     return (
         <div className="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded-lg bg-slate-50 border-0">
@@ -71,7 +71,7 @@ function ForgotPassword() {
                             type="submit"
                             isloading={+loading}
                         >
-                            Get password
+                            Lấy lại mật khẩu
                         </Mybutton>
                     </div>
                 </form>
@@ -81,7 +81,7 @@ function ForgotPassword() {
                             className="text-blueGray-200"
                             to={path.signin}
                         >
-                            <small>Signin</small>
+                            <small>Đăng nhập</small>
                         </Link>
                     </div>
                     <div className="w-1/2 text-right">
@@ -89,7 +89,7 @@ function ForgotPassword() {
                             className="text-blueGray-200"
                             to={path.signup}
                         >
-                            <small>Create new account</small>
+                            <small>Tạo tài khoản mới</small>
                         </Link>
                     </div>
                 </div>
@@ -99,10 +99,10 @@ function ForgotPassword() {
                     <div className="relative flex flex-col min-w-0 break-words w-full lg:w-1/3 md:w-1/2 mb-6 shadow-lg rounded-lg bg-slate-50 border-0 p-4 mx-4">
                         <div className="text-center">
                             <h1 className="text-2xl font-bold mb-4">
-                                Reset Password Successfully
+                                Đặt lại mật khẩu thành công
                             </h1>
                             <h2>
-                                Please check inbox mail and signin to Application. Thanks you !
+                                Vui lòng kiểm tra Email và đăng nhập vào hệ thống. Cảm ơn bạn !
                             </h2>
                         </div>
                         <div className="mt-4 flex justify-end">
@@ -110,7 +110,7 @@ function ForgotPassword() {
                                 className="bg-blue-500 text-white active:bg-blue-800 text-sm font-bold uppercase px-3 py-2 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 w-1/4 ease-linear transition-all duration-150"
                                 onClick={() => navigate(path.signin)}
                             >
-                                start now
+                                Tiếp tục
                             </button>
                         </div>
                     </div>

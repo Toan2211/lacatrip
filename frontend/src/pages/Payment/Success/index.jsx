@@ -82,7 +82,7 @@ const PaymentSuccess = () => {
         }
     }, [dispatch, queryParams, socket])
     useEffect(() => {
-        document.title = 'Payment Success'
+        document.title = 'Thanh toán thành công'
     }, [])
     return (
         <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-b from-purple-600 to-pink-600">
@@ -120,17 +120,17 @@ const PaymentSuccess = () => {
                             ></path>
                         </svg>
                         <h1 className="text-2xl text-center font-bold text-gray-800 mt-4">
-                            Payment Successful!
+                            Thanh toán thành công
                         </h1>
                         <p className="text-gray-600 text-center mt-2">
-                            Thank you for your payment.
+                            Chúc mừng bạn đã đặt lịch thành công
                         </p>
                         <div className="flex justify-center mt-6">
                             <a
                                 href="/"
                                 className="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded"
                             >
-                                Go Back Home
+                                Trở lại
                             </a>
                         </div>
                     </div>

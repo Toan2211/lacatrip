@@ -21,16 +21,16 @@ function Profile() {
     const schema = yup.object().shape({
         email: yup
             .string()
-            .required('Email is required')
-            .email('Invalid email'),
-        firstname: yup.string().required('Firstname is required'),
-        lastname: yup.string().required('Lastname is required'),
-        gender: yup.string().required('Gender is required'),
-        country: yup.string().required('Country is required'),
+            .required('Hãy nhập email')
+            .email('Email không hợp lệ'),
+        firstname: yup.string().required('Hãy nhập họ'),
+        lastname: yup.string().required('Hãy nhập tên'),
+        gender: yup.string().required('Hãy chọn giới tính'),
+        country: yup.string().required('Hãy chọn quốc gia'),
         phone: yup
             .string()
-            .required('Phone number is required')
-            .matches(phoneRegExp, 'Phone number is not valid')
+            .required('Hãy nhập số điện thoại')
+            .matches(phoneRegExp, 'Số điện thoại không hợp lệ')
     })
     const form = useForm({
         defaultValues: {
@@ -60,13 +60,13 @@ function Profile() {
             try {
                 const res = await dispatch(updateUser(formData))
                 unwrapResult(res)
-                toast.success('Update user successful', {
+                toast.success('Cập nhật thông tin thành công', {
                     position: toast.POSITION.BOTTOM_CENTER,
                     autoClose: 1000,
                     hideProgressBar: true
                 })
             } catch (error) {
-                toast.error(error.message, {
+                toast.error(error.message ? error.message : 'Đã xảy ra lỗi', {
                     position: toast.POSITION.BOTTOM_CENTER,
                     autoClose: 1000,
                     hideProgressBar: true
@@ -84,7 +84,7 @@ function Profile() {
     return (
         <div className="ml-[16%] w-[50%] pt-5">
             <header className="font-bold text-2xl mb-3 mt-5">
-                Account Information
+                Thông tin cá nhân
             </header>
             <form onSubmit={form.handleSubmit(handleSubmit)}>
                 <div className="relative w-full mb-8">
@@ -96,10 +96,10 @@ function Profile() {
                             className="block uppercase text-xs font-bold mb-2"
                             htmlFor="grid-password"
                         >
-                            Firstname
+                            Họ
                         </label>
                         <InputField
-                            placeholder="Firstname"
+                            placeholder="Họ"
                             type="input"
                             form={form}
                             name="firstname"
@@ -110,10 +110,10 @@ function Profile() {
                             className="block uppercase text-xs font-bold mb-2"
                             htmlFor="grid-password"
                         >
-                            Lastname
+                            Tên
                         </label>
                         <InputField
-                            placeholder="Lastname"
+                            placeholder="Tên"
                             type="input"
                             form={form}
                             name="lastname"
@@ -125,7 +125,7 @@ function Profile() {
                         className="block uppercase text-xs font-bold mb-2"
                         htmlFor="grid-password"
                     >
-                        Gender
+                        Giới tính
                     </label>
                     <div className="flex space-x-4">
                         <label
@@ -138,7 +138,7 @@ function Profile() {
                                 value="1"
                                 id="male"
                             />
-                            Male
+                            Nam
                         </label>
                         <label
                             htmlFor="female"
@@ -150,7 +150,7 @@ function Profile() {
                                 value="0"
                                 id="female"
                             />
-                            Female
+                            Nữ
                         </label>
                     </div>
                     {form.formState.errors['gender'] && (
@@ -179,10 +179,10 @@ function Profile() {
                         className="block uppercase text-xs font-bold mb-2"
                         htmlFor="grid-password"
                     >
-                        PhoneNumber
+                        Số điện thoại
                     </label>
                     <InputField
-                        placeholder="Phone Number"
+                        placeholder="Số điện thoại"
                         type="input"
                         form={form}
                         name="phone"
@@ -193,10 +193,10 @@ function Profile() {
                         className="block uppercase text-xs font-bold mb-2"
                         htmlFor="grid-password"
                     >
-                        Country
+                        Quốc gia
                     </label>
                     <MySelect
-                        placeholder="Country"
+                        placeholder="Quốc gia"
                         form={form}
                         name="country"
                         options={countrys.map(country =>
@@ -213,7 +213,7 @@ function Profile() {
                         type="submit"
                         isloading={+loading}
                     >
-                        Edit
+                        Cập nhật
                     </Mybutton>
                 </div>
             </form>

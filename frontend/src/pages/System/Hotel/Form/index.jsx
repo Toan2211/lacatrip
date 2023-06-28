@@ -44,7 +44,7 @@ function FormHotel() {
         if (id && !currentHotel.id) dispatch(getHotelById(id))
     }, [id, currentHotel, dispatch])
     useEffect(() => {
-        document.title = 'Form Hotel'
+        document.title = 'Form khách sạn'
         dispatch(getServiceManagers({ limit: 1000 }))
     }, [dispatch])
     const [amenityIds, setAmenityIds] = useState(() =>
@@ -72,39 +72,30 @@ function FormHotel() {
     )
     const [isFirstTime, setIsFirstTime] = useState(true)
     const schema = yup.object().shape({
-        name: yup.string().required('Name is required'),
-        description: yup.string().required('Description is required'),
+        name: yup.string().required('Hãy nhập tên'),
+        description: yup.string().required('Hãy nhập mô tả'),
         phone: yup
             .string()
-            .required('Phone number is required')
-            .matches(phoneRegExp, 'Phone number is not valid'),
-        website: yup.string().required('Website is required'),
+            .required('Hãy nhập số điện thoại')
+            .matches(phoneRegExp, 'Số điện thoại không hợp lệ'),
         hotelClass: yup
             .number()
-            .typeError('Hotel class must be number')
-            .required('Website is required'),
+            .typeError('Chất lượng khách sạn')
+            .required('Hãy chọn số sao chỉ chất lượngs'),
         cheapestPrice: yup
             .number()
-            .typeError('Staring Price must be number')
-            .required('Staring Price is required'),
-        address: yup.string().required('Address is required'),
+            .typeError('Hãy nhập giá thấp nhất')
+            .required('Hãy nhập giá thấp nhất'),
+        address: yup.string().required('Hãy nhập địa chỉ'),
         longtitude: yup
             .string()
-            .typeError(
-                'Input Address and generate map to get longtitude'
-            )
-            .required(
-                'Input Address and generate map to get longtitude'
-            ),
+            .typeError('Hãy nhập địa chỉ để lấy kinh độ')
+            .required('Hãy nhập địa chỉ để lấy kinh độ'),
         latitude: yup
             .number()
-            .typeError(
-                'Input Address and generate map to get latitude'
-            )
-            .required(
-                'Input Address and generate map to get latitude'
-            ),
-        provinceId: yup.string().required('Province is required')
+            .typeError('Hãy nhập địa chỉ để lấy vĩ độ')
+            .required('Hãy nhập địa chỉ để lấy vĩ độ'),
+        provinceId: yup.string().required('Hãy chọn tỉnh thành')
     })
     const form = useForm({
         defaultValues: {
@@ -232,8 +223,8 @@ function FormHotel() {
             }
             toast.success(
                 _.isEmpty(currentHotel)
-                    ? 'Create hotel successfully'
-                    : 'Update hotel successfully',
+                    ? 'Tạo khách sạn thành công'
+                    : 'Cập nhật khách sạn thành công',
                 {
                     position: toast.POSITION.BOTTOM_CENTER,
                     autoClose: 1000,
@@ -257,8 +248,8 @@ function FormHotel() {
                         <div className="relative w-full px-4 max-w-full flex">
                             <h3 className="font-semibold text-lg text-blue-600">
                                 {_.isEmpty(currentHotel)
-                                    ? 'Add Hotel'
-                                    : 'Update Hotel'}
+                                    ? 'Tạo mới khách sạn'
+                                    : 'Cập nhật khách sạn'}
                             </h3>
                         </div>
                     </div>
@@ -270,10 +261,10 @@ function FormHotel() {
                                 className="block uppercase text-sm font-bold mb-2"
                                 htmlFor="grid-password"
                             >
-                                Name
+                                Tên khách sạn
                             </label>
                             <InputField
-                                placeholder="Name Hotel"
+                                placeholder="Tên khách sạn"
                                 form={form}
                                 name="name"
                             />
@@ -283,10 +274,10 @@ function FormHotel() {
                                 className="block uppercase text-sm font-bold mb-2"
                                 htmlFor="grid-password"
                             >
-                                Description
+                                Mô tả ngắn gọn
                             </label>
                             <TextArea
-                                placeholder="Description Hotel..."
+                                placeholder="Mô tả ngắn gọn..."
                                 form={form}
                                 name="description"
                                 rows={2}
@@ -297,26 +288,12 @@ function FormHotel() {
                                 className="block uppercase text-sm font-bold mb-2"
                                 htmlFor="grid-password"
                             >
-                                Phone
+                                Số điện thoại
                             </label>
                             <InputField
-                                placeholder="Phone hotel to contact"
+                                placeholder="Số điện thoại"
                                 form={form}
                                 name="phone"
-                            />
-                        </div>
-                        <div className="relative w-full mb-3">
-                            <label
-                                className="block uppercase text-sm font-bold mb-2"
-                                htmlFor="grid-password"
-                            >
-                                Website
-                            </label>
-                            <InputField
-                                placeholder="Website of hotel"
-                                form={form}
-                                name="website"
-                                type="input"
                             />
                         </div>
                         <div className="relative w-full mb-3">
@@ -330,7 +307,7 @@ function FormHotel() {
                                 type="number"
                                 min="1"
                                 max="5"
-                                placeholder="Range Hotel from 1 to 5 stars"
+                                placeholder="Chất lượng khách sạn"
                                 form={form}
                                 name="hotelClass"
                             />
@@ -340,7 +317,7 @@ function FormHotel() {
                                 className="block uppercase text-sm font-bold mb-2"
                                 htmlFor="grid-password"
                             >
-                                Hotel Style
+                                Phong cách
                             </label>
                             <Select
                                 styles={{
@@ -359,7 +336,7 @@ function FormHotel() {
                                 value={hotelStyles}
                                 closeMenuOnSelect={false}
                                 placeholder={
-                                    'Style of Hotel. Ex: Romantic, Loves,...'
+                                    'Phong cách. Ex: Lãng mạn, tình yêu,...'
                                 }
                                 components={animatedComponents}
                                 isMulti
@@ -371,7 +348,7 @@ function FormHotel() {
                             {hotelStyles.length === 0 &&
                                 !isFirstTime && (
                                     <span className="text-[14px] text-red-500 pl-2 mt-1">
-                                        Please select styles of hotel
+                                        Hãy chọn ít nhất 1 phong cách
                                     </span>
                                 )}
                         </div>
@@ -380,10 +357,10 @@ function FormHotel() {
                                 className="block uppercase text-sm font-bold mb-2"
                                 htmlFor="grid-password"
                             >
-                                Staring Price ($)
+                                Giá thấp nhất ($)
                             </label>
                             <InputField
-                                placeholder="Staring Price (Price of normal room)"
+                                placeholder="Giá của loại phòng rẻ nhất"
                                 form={form}
                                 name="cheapestPrice"
                                 type="number"
@@ -395,7 +372,7 @@ function FormHotel() {
                                 className="block uppercase text-sm font-bold mb-2"
                                 htmlFor="grid-password"
                             >
-                                Amenities Of Hotel
+                                Tiện nghi
                             </label>
                             <Select
                                 styles={{
@@ -411,9 +388,7 @@ function FormHotel() {
                                 onChange={data => setAmenityIds(data)}
                                 value={amenityIds}
                                 closeMenuOnSelect={false}
-                                placeholder={
-                                    'Select amenity of hotel...'
-                                }
+                                placeholder={'Tiện nghi khách sạn...'}
                                 components={animatedComponents}
                                 isMulti
                                 options={amenitiesHotel.map(
@@ -426,8 +401,8 @@ function FormHotel() {
                             {amenityIds.length === 0 &&
                                 !isFirstTime && (
                                     <span className="text-[14px] text-red-500 pl-2 mt-1">
-                                        Please select amenities of
-                                        hotel
+                                        Hãy chọn những tiện nghi khách
+                                        sạn bạn có
                                     </span>
                                 )}
                         </div>
@@ -436,10 +411,10 @@ function FormHotel() {
                                 className="block uppercase text-xs font-bold mb-2"
                                 htmlFor="grid-password"
                             >
-                                Province
+                                Tỉnh thành
                             </label>
                             <MySelect
-                                placeholder="Province"
+                                placeholder="Tỉnh thành"
                                 form={form}
                                 name="provinceId"
                                 options={provinces.map(province => ({
@@ -454,7 +429,7 @@ function FormHotel() {
                                 className="block uppercase text-sm font-bold mb-2"
                                 htmlFor="grid-password"
                             >
-                                Photos
+                                Hình ảnh
                             </label>
                             <PhotoUploads
                                 addedPhotos={images}
@@ -462,7 +437,7 @@ function FormHotel() {
                             />
                             {images.length === 0 && !isFirstTime && (
                                 <span className="text-[14px] text-red-500 pl-2 mt-1">
-                                    Please upload photos of hotel
+                                    Vui lòng đăng tải một vài hình ảnh
                                 </span>
                             )}
                         </div>
@@ -471,12 +446,12 @@ function FormHotel() {
                                 className="block uppercase text-sm font-bold mb-2"
                                 htmlFor="grid-password"
                             >
-                                Commission Percent (If you want to
-                                marketing your hotel and it on top.
-                                Please increse percent)
+                                Phí hoa hồng (Nếu bạn muốn khách sạn
+                                được hiển thị đầu lượt tìm kiếm. Hãy
+                                tăng phí hoa hồng cho hệ thống)
                             </label>
                             <InputField
-                                placeholder="System will get 10% per booking if you not set"
+                                placeholder="Hệ thống mặc định sẽ lấy 10% / đơn đặt lịch"
                                 form={form}
                                 name="commissionPercent"
                                 type="number"
@@ -497,8 +472,8 @@ function FormHotel() {
                                 className="bg-blue-500 text-white active:bg-blue-800 text-sm font-bold uppercase px-4 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 w-1/5 ease-linear transition-all duration-150"
                             >
                                 {_.isEmpty(currentHotel)
-                                    ? 'Add hotel'
-                                    : 'Update hotel'}
+                                    ? 'Tạo mới'
+                                    : 'Cập nhật'}
                             </Mybutton>
                         </div>
                     )}

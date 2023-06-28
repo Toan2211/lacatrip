@@ -50,10 +50,10 @@ function Sidebar() {
                 </span>
                 <div className="flex flex-col">
                     <span className="font-medium text-md">
-                        Check in
+                        Ngày nhận phòng
                     </span>
                     <span className="text-gray-400 text-sm" ref={ref}>
-                        {value || 'Add Date'}
+                        {value || 'Thêm ngày'}
                     </span>
                 </div>
             </div>
@@ -70,10 +70,10 @@ function Sidebar() {
                 </span>
                 <div className="flex flex-col">
                     <span className="font-medium text-md">
-                        Check out
+                        Ngày trả phòng
                     </span>
                     <span className="text-gray-400 text-sm" ref={ref}>
-                        {value || 'Add Date'}
+                        {value || 'Thêm ngày'}
                     </span>
                 </div>
             </div>
@@ -114,18 +114,18 @@ function Sidebar() {
     return (
         <div className="w-full  border-slate-200 border rounded-lg px-2 py-2">
             <header className=" ml-2 font-semibold text-xl text-slate-500">
-                Choose your favorite
+                Chọn theo sở thích của bạn
             </header>
             <div className="flex-1 flex gap-3 items-center w-full mb-4">
                 <span className="text-3xl"></span>
                 <div className="flex flex-col w-full">
                     <div className="font-medium text-md ml-2 mb-2">
-                        Name
+                        Tên
                     </div>
                     <input
                         value={keyword}
                         onChange={handleOnchangeKeyWord}
-                        placeholder="Search by name"
+                        placeholder="Tìm kiếm theo tên"
                         className="border  border-slate-200 outline-none px-2 py-1 rounded-md focus:border-blue-800 "
                     />
                 </div>
@@ -134,7 +134,7 @@ function Sidebar() {
                 <span className="text-3xl"></span>
                 <div className="flex flex-col w-full">
                     <div className="font-medium text-md ml-2 mb-2">
-                        Check In
+                        Ngày nhận phòng
                     </div>
                     <ReactDatePicker
                         closeOnScroll={true}
@@ -151,7 +151,7 @@ function Sidebar() {
                 <span className="text-3xl"></span>
                 <div className="flex flex-col w-full">
                     <div className="font-medium text-md ml-2 mb-2">
-                        Check Out
+                        Ngày trả phòng
                     </div>
                     <ReactDatePicker
                         closeOnScroll={true}
@@ -169,7 +169,7 @@ function Sidebar() {
                 <span className="text-3xl"></span>
                 <div className="flex flex-col w-full">
                     <div className="font-medium text-md ml-2 mb-2">
-                        Min Price
+                        Giá thấp nhất
                     </div>
                     <input
                         value={minPrice}
@@ -183,7 +183,7 @@ function Sidebar() {
                 <span className="text-3xl"></span>
                 <div className="flex flex-col w-full">
                     <div className="font-medium text-md ml-2 mb-2">
-                        MaxPrice
+                        Giá cao nhất
                     </div>
                     <input
                         value={maxPrice}
@@ -198,13 +198,13 @@ function Sidebar() {
                 <div className="flex flex-col w-full">
                     <div className="flex items-center gap-4">
                         <div className="font-medium text-md ml-2">
-                            Star
+                            Chất lượng
                         </div>
                         <div
                             onClick={() => handleChangeStar('')}
                             className=" hover:underline hover:text-blue-500 text-sm cursor-pointer"
                         >
-                            All
+                            Tất cả
                         </div>
                     </div>
 
@@ -261,7 +261,7 @@ function Sidebar() {
                         <span className="text-2xl">
                             <AiOutlineSearch />
                         </span>
-                        <span>Search</span>
+                        <span>Tìm kiếm</span>
                     </div>
                 </Mybutton>
             </div>

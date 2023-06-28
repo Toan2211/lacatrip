@@ -100,7 +100,7 @@ function DetailProvince() {
         <div className="max-w-[1535px] px-8 py-5 md:mt-40 md:px-10 lg:mt-16 lg:px-20 mb-[20vh]">
             <header className=" font-bold text-4xl mb-3">
                 <span className=" text-5xl text-red-500">
-                    Explore{' '}
+                    Hãy khám phá{' '}
                 </span>
                 {province.name}
             </header>
@@ -114,24 +114,23 @@ function DetailProvince() {
             </div>
             <div>
                 <header className=" font-bold text-2xl mb-3">
-                    Esstential {province.name}
+                    Những điểm đến thú vị tại {province.name}
                 </header>
                 {destinations.length > 0 && (
                     <div className="flex gap-3 mb-10 lg:h-[300px] ">
                         <div className="flex flex-col w-1/4 gap-4">
                             <header className="font-semibold text-2xl">
-                                Do
+                                Trải nghiệm
                             </header>
                             <div className=" text-sm">
-                                Places to see, ways to wander, and
-                                signature experiences that define{' '}
+                                Những địa điểm, cung đường tuyệt vời để lang thang và nhiều trải nghiệm đặc sắc tại {' '}
                                 {province.name}
                             </div>
                             <Link
                                 to={`/destination-travels/province/${province.id}`}
                                 className=" underline text-sm font-semibold"
                             >
-                                See all
+                                Xem thêm
                             </Link>
                         </div>
                         <div className="h-full lg:w-[75%]">
@@ -159,17 +158,16 @@ function DetailProvince() {
                     <div className="flex  gap-3 mb-10 lg:h-[300px] ">
                         <div className="flex flex-col w-1/4 flex-grow gap-4">
                             <header className="font-semibold text-2xl">
-                                Stay
+                                Nghỉ dưỡng
                             </header>
                             <div className=" text-sm">
-                                A mix of the charming, modern, and
-                                tried and true.
+                                Với đầy đủ phong cách nghỉ dưỡng: Hiện đại, cổ điển, thơ mộng,...
                             </div>
                             <Link
                                 to={`/hotels/province/${province.id}`}
                                 className=" underline text-sm font-semibold"
                             >
-                                See all
+                                Xem thêm
                             </Link>
                         </div>
                         <div className="h-full lg:w-[75%]">
@@ -197,18 +195,18 @@ function DetailProvince() {
                     <div className="flex gap-3 mb-10 lg:h-[300px]">
                         <div className="flex flex-col w-1/4 flex-grow gap-4">
                             <header className="font-semibold text-2xl">
-                                Eat
+                                Ăn uống
                             </header>
                             <div className=" text-sm">
                                 {
-                                    'Cant-miss spots to dine, drink, and feast.'
+                                    'Không thể bỏ lỡ những đồ ăn, thức uống tuyệt vời nơi đây.'
                                 }
                             </div>
                             <Link
                                 to={`/restaurants/province/${province.id}`}
                                 className=" underline text-sm font-semibold"
                             >
-                                See all
+                                Xem thêm
                             </Link>
                         </div>
                         <div className="h-full lg:w-[75%]">

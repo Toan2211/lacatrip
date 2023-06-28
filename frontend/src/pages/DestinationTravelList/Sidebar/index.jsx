@@ -56,7 +56,7 @@ function Sidebar() {
         <div className="w-full  border-slate-200 border rounded-lg px-2 py-2">
             <div className="flex justify-between items-center">
                 <header className=" ml-2 font-semibold text-xl text-slate-500">
-                    Choose your favorite
+                    Lọc theo sở thích của bạn
                 </header>
             </div>
             <div className="flex-1 flex gap-3 items-center w-full mb-4">
@@ -77,7 +77,7 @@ function Sidebar() {
                                 className="mr-2"
                                 checked={fee}
                             />
-                            Fee
+                            Trả phí
                         </label>
                         <label
                             htmlFor="notFee"
@@ -90,7 +90,7 @@ function Sidebar() {
                                 className="mr-2"
                                 checked={!fee}
                             />
-                            Not Fee
+                            Miễn phí
                         </label>
                     </div>
                 </div>
@@ -99,12 +99,12 @@ function Sidebar() {
                 <span className="text-3xl"></span>
                 <div className="flex flex-col w-full">
                     <div className="font-medium text-md ml-2 mb-2">
-                        Name
+                        Tên
                     </div>
                     <input
                         value={keyword}
                         onChange={handleOnchangeKeyWord}
-                        placeholder="Search by name"
+                        placeholder="Tìm kiếm theo tên"
                         className="border  border-slate-200 outline-none px-2 py-1 rounded-md focus:border-blue-800 "
                     />
                 </div>
@@ -113,7 +113,7 @@ function Sidebar() {
                 <span className="text-3xl"></span>
                 <div className="flex flex-col w-full">
                     <div className="font-medium text-md ml-2 mb-2">
-                        Min Price
+                        Giá khởi điểm
                     </div>
                     <input
                         value={minPrice}
@@ -128,7 +128,7 @@ function Sidebar() {
                 <span className="text-3xl"></span>
                 <div className="flex flex-col w-full">
                     <div className="font-medium text-md ml-2 mb-2">
-                        MaxPrice
+                        Giá cao nhất
                     </div>
                     <input
                         value={maxPrice}
@@ -148,7 +148,7 @@ function Sidebar() {
                         <span className="text-2xl">
                             <AiOutlineSearch />
                         </span>
-                        <span>Search</span>
+                        <span>Tìm kiếm</span>
                     </div>
                 </Mybutton>
             </div>

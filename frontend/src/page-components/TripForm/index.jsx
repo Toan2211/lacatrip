@@ -13,7 +13,7 @@ function TripForm({ showModal, onClose }) {
     const schema = yup.object().shape({
         name: yup
             .string()
-            .required('Please enter your trip plan name!')
+            .required('Hãy nhập tên lịch trình!')
     })
     const form = useForm({
         defaultValues: {
@@ -25,7 +25,7 @@ function TripForm({ showModal, onClose }) {
         try {
             const res = await dispatch(createTrip(data))
             unwrapResult(res)
-            toast.success('Create trip successfully', {
+            toast.success('Tạo lịch trình thành công', {
                 position: toast.POSITION.BOTTOM_CENTER,
                 autoClose: 1000,
                 hideProgressBar: true
@@ -42,7 +42,7 @@ function TripForm({ showModal, onClose }) {
     return (
         <Modal show={showModal} onClose={onClose} size="md">
             <Modal.Header className=" bg-slate-100">
-                Create Trip
+                Tạo lịch trình du lịch
             </Modal.Header>
             <Modal.Body>
                 <form onSubmit={form.handleSubmit(handleSubmit)}>
@@ -51,10 +51,10 @@ function TripForm({ showModal, onClose }) {
                             className="block uppercase text-xs font-bold mb-2"
                             htmlFor="grid-password"
                         >
-                            Trip Name
+                            Tên lịch trình
                         </label>
                         <InputField
-                            placeholder="Trip Name"
+                            placeholder="Tên lịch trình"
                             type="input"
                             form={form}
                             name="name"
@@ -64,7 +64,7 @@ function TripForm({ showModal, onClose }) {
                         type="submit"
                         className="bg-blue-500 text-white active:bg-blue-800 text-sm font-bold px-4 py-2 rounded-lg shadow hover:shadow-lg outline-none focus:outline-none  ease-linear transition-all duration-150 flex items-center ml-auto"
                     >
-                        Create
+                        Tạo lịch trình
                     </button>
                 </form>
             </Modal.Body>

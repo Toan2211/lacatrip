@@ -43,7 +43,7 @@ function RoomCard({ data }) {
                 <ul className="mt-2 flex gap-2 mx-auto">
                     <li className="text-center">
                         <span className="border-[1px] border-slate-200 p-2 w-10 flex justify-center items-center rounded-lg">
-                            <Tooltip content="Area" style="light">
+                            <Tooltip content="Diện tích" style="light">
                                 <BiArea />
                             </Tooltip>
                         </span>
@@ -51,7 +51,7 @@ function RoomCard({ data }) {
                     </li>
                     <li className="text-center">
                         <span className="border-[1px] border-slate-200 p-2 w-10 flex justify-center items-center rounded-lg">
-                            <Tooltip content="Bed" style="light">
+                            <Tooltip content="Giường" style="light">
                                 <BiBed />
                             </Tooltip>
                         </span>
@@ -61,7 +61,7 @@ function RoomCard({ data }) {
                     </li>
                     <li className="text-center">
                         <span className="border-[1px] border-slate-200 p-2 w-10 flex justify-center items-center rounded-lg">
-                            <Tooltip content="Adult" style="light">
+                            <Tooltip content="Người lớn" style="light">
                                 <FaChild />
                             </Tooltip>
                         </span>
@@ -71,7 +71,7 @@ function RoomCard({ data }) {
                     </li>
                     <li className="text-center">
                         <span className="border-[1px] border-slate-200 p-2 w-10 flex justify-center items-center rounded-lg">
-                            <Tooltip content="Children" style="light">
+                            <Tooltip content="Trẻ em" style="light">
                                 <MdChildCare />
                             </Tooltip>
                         </span>
@@ -104,7 +104,7 @@ function RoomCard({ data }) {
                         </div>
                     </div>
                 )}
-                ${data.price} / night
+                ${data.price} / đêm
                 <Link
                     to={{
                         pathname: path.bookingHotel,
@@ -116,7 +116,7 @@ function RoomCard({ data }) {
                     }}
                     className="bg-blue-500 text-white active:bg-blue-800 text-sm font-bold uppercase px-4 py-2 rounded-full shadow hover:shadow-lg outline-none focus:outline-none mb-1 ease-linear transition-all duration-150"
                 >
-                    Book Now
+                    Đặt lịch
                 </Link>
             </div>
         </div>

@@ -35,7 +35,7 @@ function SearchDestination({
                 </span>
                 <div className="flex flex-col w-full">
                     <div className="font-medium text-md ml-2">
-                        Location
+                        Địa điểm
                     </div>
                     <Select
                         styles={style}
@@ -53,7 +53,7 @@ function SearchDestination({
                 </span>
                 <div className="flex flex-col w-full">
                     <div className="font-medium text-md ml-2">
-                        Name
+                        Tên tour du lịch
                     </div>
                     <input
                         value={keyword}
@@ -72,7 +72,7 @@ function SearchDestination({
                         <span className="text-2xl">
                             <AiOutlineSearch />
                         </span>
-                        <span>Search</span>
+                        <span>Tìm kiếm</span>
                     </div>
                 </Mybutton>
             </div>

@@ -10,7 +10,7 @@ function TripList() {
     const [showModal, setShowModal] = useState(false)
     const onClose = () => setShowModal(false)
     useEffect(() => {
-        document.title = 'Trips'
+        document.title = 'Lịch trình của bạn'
     }, [])
     const user = useSelector(selectUser)
     const trips = useSelector(allTripsSelector)
@@ -18,13 +18,13 @@ function TripList() {
         dispatch(getAllTrip())
     }, [dispatch])
     if (!user.id)
-        return <div className='h-screen'>Please login to countiue create Trip</div>
+        return <div className='h-screen'>Vui lòng đăng nhập để tạo lịch trình</div>
     return (
         <>
             <div className="max-w-[1535px] px-8 py-5 mt-[100px] md:mt-40 md:px-10 lg:mt-16 lg:px-20 mb-[20vh] pb-[100px] min-h-[100vh]">
                 <div className="flex justify-between mb-10">
                     <header className="font-bold text-3xl">
-                        Your Plan Trip
+                        Lịch trình của bạn
                     </header>
                     <button
                         onClick={() => setShowModal(true)}
@@ -33,7 +33,7 @@ function TripList() {
                         <span className="font-semibold text-lg mr-3 mb-1">
                             +
                         </span>
-                        <span className="text-sm">Plan new trip</span>
+                        <span className="text-sm">Tạo lịch trình mới</span>
                     </button>
                 </div>
                 <div className="grid gap-6 grid-cols-1 md:grid-cols-2 xl:grid-cols-4">

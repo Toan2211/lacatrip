@@ -72,7 +72,7 @@ function BookingCard({ booking }) {
                         ))}
                         <li className="text-center">
                             <span className="border-[1px] border-slate-200 p-2 w-10 flex justify-center items-center rounded-lg">
-                                <Tooltip content="Room" style="light">
+                                <Tooltip content="Phòng" style="light">
                                     <BiBed />
                                 </Tooltip>
                             </span>
@@ -83,7 +83,7 @@ function BookingCard({ booking }) {
                         <li className="text-center">
                             <span className="border-[1px] border-slate-200 p-2 w-10 flex justify-center items-center rounded-lg">
                                 <Tooltip
-                                    content="Adult"
+                                    content="Người lớn"
                                     style="light"
                                 >
                                     <FaChild />
@@ -96,7 +96,7 @@ function BookingCard({ booking }) {
                         <li className="text-center">
                             <span className="border-[1px] border-slate-200 p-2 w-10 flex justify-center items-center rounded-lg">
                                 <Tooltip
-                                    content="Children"
+                                    content="Trẻ em"
                                     style="light"
                                 >
                                     <MdChildCare />
@@ -111,10 +111,10 @@ function BookingCard({ booking }) {
                 <div className="w-[250px] border-r border-gray-200">
                     <div className="flex gap-2 items-center">
                         <span className="text-sm text-slate-500">
-                            Service Manger:
+                            Nhà cung cấp:
                         </span>
                         <Tooltip
-                            content="Service Manager Hotel"
+                            content="Quản lý"
                             style="light"
                         >
                             <div
@@ -136,9 +136,9 @@ function BookingCard({ booking }) {
                     </div>
                     <div className="flex gap-2 items-center">
                         <span className="text-sm text-slate-500">
-                            Client:
+                            Khách hàng:
                         </span>
-                        <Tooltip content="Client" style="light">
+                        <Tooltip content="Khách hàng" style="light">
                             <div
                                 className=" hover:underline hover:text-blue-500 cursor-pointer"
                                 onClick={() =>
@@ -185,7 +185,7 @@ function BookingCard({ booking }) {
                     <div className="px-14">
                         <div className="flex gap-3">
                             <label className=" font-semibold">
-                                Name:{' '}
+                                Họ tên:{' '}
                             </label>
                             <div>
                                 {dataUser.firstname}{' '}
@@ -200,15 +200,9 @@ function BookingCard({ booking }) {
                         </div>
                         <div className="flex gap-3">
                             <label className=" font-semibold">
-                                Phone:{' '}
+                                Số điện thoại:{' '}
                             </label>
                             <div>{dataUser.phone}</div>
-                        </div>
-                        <div className="flex gap-3">
-                            <label className=" font-semibold">
-                                Country:{' '}
-                            </label>
-                            <div>{dataUser.country}</div>
                         </div>
                     </div>
                 </Modal.Body>

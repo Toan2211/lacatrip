@@ -18,15 +18,15 @@ function Signin() {
     const schema = yup.object().shape({
         email: yup
             .string()
-            .required('Email is required')
-            .email('Invalid email'),
+            .required('Hãy nhập email')
+            .email('Email không hợp lệ'),
         password: yup
             .string()
-            .required('Password is required')
+            .required('Hãy nhập mật khẩu')
             .matches(
                 // eslint-disable-next-line
                 /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/,
-                'Must Contain 8 Characters, One Uppercase, One Lowercase, One Number and One Special Case Character'
+                'Mật khẩu phải gồm 8 kí tự, ít nhất 1 chữ hoa, 1 chữ thường, 1 số và 1 kí tự đặc biệt'
             )
     })
     const form = useForm({
@@ -40,7 +40,7 @@ function Signin() {
         try {
             const res = await dispatch(signin(data))
             unwrapResult(res)
-            toast.success('Singin successfully', {
+            toast.success('Đăng nhập thành công', {
                 position: toast.POSITION.BOTTOM_CENTER,
                 autoClose: 1000,
                 hideProgressBar: true
@@ -54,7 +54,7 @@ function Signin() {
         }
     }
     useEffect(() => {
-        document.title = 'Signin'
+        document.title = 'Đăng nhập'
     }, [])
     return (
         <div className="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded-lg bg-slate-50 border-0">
@@ -83,10 +83,10 @@ function Signin() {
                             className="block uppercase text-xs font-bold mb-2"
                             htmlFor="grid-password"
                         >
-                            Password
+                            Mật khẩu
                         </label>
                         <InputField
-                            placeholder="Password"
+                            placeholder="Mật khẩu"
                             type="password"
                             form={form}
                             name="password"
@@ -98,7 +98,7 @@ function Signin() {
                             type="submit"
                             isloading={+loading}
                         >
-                            Signin
+                            Đăng nhập
                         </Mybutton>
                     </div>
                 </form>
@@ -108,7 +108,7 @@ function Signin() {
                             className="text-blueGray-200"
                             to={path.forgotPass}
                         >
-                            <small>Forgot password ?</small>
+                            <small>Quên mật khẩu ?</small>
                         </Link>
                     </div>
                     <div className="w-1/2 text-right">
@@ -116,7 +116,7 @@ function Signin() {
                             className="text-blueGray-200"
                             to={path.signup}
                         >
-                            <small>Create new account</small>
+                            <small>Tạo tài khoản mới</small>
                         </Link>
                     </div>
                 </div>

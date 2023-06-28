@@ -16,13 +16,13 @@ const CardTopProvince = ({ province }) => {
                 </span>
                 <span className="font-semibold flex gap-2">
                     <span>
-                        {province.countDestination} Activities
+                        {province.countDestination} Tour du lịch
                     </span>
                     <span>•</span>
-                    <span>{province.countHotel} Hotels</span>
+                    <span>{province.countHotel} Khách sạn</span>
                     <span>•</span>
                     <span>
-                        {province.countRestaurant} Restaurants
+                        {province.countRestaurant} Nhà hàng
                     </span>
                 </span>
             </div>
@@ -34,7 +34,7 @@ function TopProvince({ provinces }) {
     return (
         <section className="max-w-[1535px] px-8 py-5 mt-[26vh] md:mt-40 md:px-10 lg:mt-16 lg:px-20">
             <header className="text-center font-semibold text-3xl mb-5">
-                Top destinations
+                Những điểm đến hấp dẫn
             </header>
             <div className="grid gap-1 grid-cols-1 md:grid-cols-2 xl:grid-cols-3">
                 {provinces.length > 0 && provinces.slice(0, 6).map(province => (

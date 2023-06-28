@@ -45,10 +45,10 @@ function SearchForm() {
             >
                 <div className="flex flex-col">
                     <span className="font-medium text-md">
-                        Check in
+                        Ngày nhận phòng
                     </span>
                     <span className="text-gray-400 text-sm" ref={ref}>
-                        {value || 'Add Date'}
+                        {value || 'Thêm ngày'}
                     </span>
                 </div>
             </div>
@@ -62,10 +62,10 @@ function SearchForm() {
             >
                 <div className="flex flex-col">
                     <span className="font-medium text-md">
-                        Check out
+                        Ngày trả phòng
                     </span>
                     <span className="text-gray-400 text-sm" ref={ref}>
-                        {value || 'Add Date'}
+                        {value || 'Thêm ngày'}
                     </span>
                 </div>
             </div>
@@ -97,7 +97,7 @@ function SearchForm() {
                 <div className="px-4 pb-4 flex justify-between items-center">
                     <div className="mt-4">
                         <span className="font-normal text-gray-400">
-                            From:
+                            Giá chỉ từ:
                         </span>
                         <span className="font-bold text-xl">
                             ${currentHotel.cheapestPrice}
@@ -113,7 +113,7 @@ function SearchForm() {
                             {currentHotel.rating}{' '}
                         </span>
                         <span className="font-normal text-gray-400">
-                            ({currentHotel.totalRating} Reviews)
+                            ({currentHotel.totalRating} Đánh giá)
                         </span>
                     </div>
                 </div>
@@ -145,7 +145,7 @@ function SearchForm() {
                         className=" bg-blue-500 text-white active:bg-blue-800 text-base font-semibold px-4 py-2 rounded-full shadow hover:shadow-lg outline-none focus:outline-none w-full ease-linear transition-all duration-150"
                         onClick={handleCheckAvailability}
                     >
-                        Check availability
+                        Kiểm tra phòng trống
                     </Mybutton>
                 </div>
             </div>

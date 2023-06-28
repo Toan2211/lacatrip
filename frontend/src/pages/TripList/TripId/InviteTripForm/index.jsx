@@ -14,8 +14,8 @@ function InviteTripForm({ showModal, onClose, tripId }) {
     const schema = yup.object().shape({
         email: yup
             .string()
-            .required('Email is required')
-            .email('Invalid email')
+            .required('Hãy nhập Email')
+            .email('Email không hợp lệ')
     })
     const { register, handleSubmit } = useForm({
         defaultValues: {
@@ -33,13 +33,13 @@ function InviteTripForm({ showModal, onClose, tripId }) {
             }
             await dispatch(inviteMember(sendData)).then(res => unwrapResult(res))
             onClose()
-            toast.success('Invite tripmate successful', {
+            toast.success('Thêm thành viên thành công', {
                 position: toast.POSITION.BOTTOM_CENTER,
                 autoClose: 1000,
                 hideProgressBar: true
             })
         } catch (error) {
-            toast.error(error.message ? error.message : 'Error', {
+            toast.error(error.message ? error.message : 'Đã xảy ra lỗi', {
                 position: toast.POSITION.BOTTOM_CENTER,
                 autoClose: 1000,
                 hideProgressBar: true
@@ -59,7 +59,7 @@ function InviteTripForm({ showModal, onClose, tripId }) {
                 onSubmit={handleSubmit(handleSubmitInvite)}
             >
                 <div className="font-bold text-lg text-center mb-4">
-                    Invite Trip
+                    Mời thành viên
                 </div>
                 <div className="flex justify-center mb-2">
                     <div className="w-50% bg-slate-200 p-1 rounded-lg flex gap-1">
@@ -72,7 +72,7 @@ function InviteTripForm({ showModal, onClose, tripId }) {
                             }`}
                             onClick={() => setEditable(!editable)}
                         >
-                            Can edit
+                            Có thể chỉnh sửa
                         </button>
                         <button
                             type="button"
@@ -83,7 +83,7 @@ function InviteTripForm({ showModal, onClose, tripId }) {
                             }`}
                             onClick={() => setEditable(!editable)}
                         >
-                            View only
+                            Chỉ xem
                         </button>
                     </div>
                 </div>
@@ -92,7 +92,7 @@ function InviteTripForm({ showModal, onClose, tripId }) {
                     <input
                         {...register('email')}
                         className="ml-2 py-2 text-lg focus:outline-none w-full"
-                        placeholder="Invite tripmate by email"
+                        placeholder="Mời thành viên thông qua Email"
                     />
                 </div>
                 <div className="text-center mt-4">
@@ -100,7 +100,7 @@ function InviteTripForm({ showModal, onClose, tripId }) {
                         type="submit"
                         className="bg-blue-500 text-white w-1/4 active:bg-blue-800 text-sm font-bold uppercase px-3 py-2 rounded-lg shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
                     >
-                        Invite
+                        Mời
                     </button>
                 </div>
             </form>

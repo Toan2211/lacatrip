@@ -75,7 +75,7 @@ const UserDropdown = () => {
                     }
                     onClick={handleClickProfile}
                 >
-                    Profile
+                    Trang cá nhân
                 </div>
                 {user.role.name === ROLE.AUTHENTICATED && (
                     <div
@@ -84,7 +84,7 @@ const UserDropdown = () => {
                         }
                         onClick={handleClickChangePassword}
                     >
-                        Change Password
+                        Thay đổi mật khẩu
                     </div>
                 )}
 
@@ -95,7 +95,7 @@ const UserDropdown = () => {
                     }
                     onClick={handleLogOut}
                 >
-                    Logout
+                    Thoát
                 </div>
             </div>
         </>

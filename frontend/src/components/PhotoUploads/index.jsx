@@ -41,7 +41,7 @@ function PhotoUploads({ addedPhotos, onChange }) {
             onChange([
                 ...addedPhotos.filter((photo, index) => index !== indexItem)
             ])
-            toast.success('Delete image successfully',
+            toast.success('Xoá ảnh thành công',
                 {
                     position: toast.POSITION.BOTTOM_CENTER,
                     autoClose: 1000,
@@ -49,7 +49,7 @@ function PhotoUploads({ addedPhotos, onChange }) {
                 }
             )
         } catch (error) {
-            toast.error(error.message ? error.message : 'Error', {
+            toast.error(error.message ? error.message : 'Đã xảy ra lỗi', {
                 position: toast.POSITION.BOTTOM_CENTER,
                 autoClose: 1000,
                 hideProgressBar: true
@@ -114,7 +114,7 @@ function PhotoUploads({ addedPhotos, onChange }) {
                             d="M12 16.5V9.75m0 0l3 3m-3-3l-3 3M6.75 19.5a4.5 4.5 0 01-1.41-8.775 5.25 5.25 0 0110.233-2.33 3 3 0 013.758 3.848A3.752 3.752 0 0118 19.5H6.75z"
                         />
                     </svg>
-                    Upload
+                    Tải ảnh lên
                 </label>
             </div>
         </>

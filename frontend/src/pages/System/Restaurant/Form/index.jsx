@@ -72,46 +72,45 @@ function RestaurantForm() {
     }, [dispatch])
     const [isFirstTime, setIsFirstTime] = useState(true)
     const schema = yup.object().shape({
-        name: yup.string().required('Name is required'),
-        description: yup.string().required('Description is required'),
+        name: yup.string().required('Hãy nhập tên nhà hàng'),
+        description: yup.string().required('Hãy nhập mô tả'),
         phone: yup
             .string()
-            .required('Phone number is required')
-            .matches(phoneRegExp, 'Phone number is not valid'),
-        website: yup.string().required('Website is required'),
-        address: yup.string().required('Address is required'),
+            .required('Hãy nhập số điện thoại')
+            .matches(phoneRegExp, 'Số điện thoại không hợp lệ'),
+        address: yup.string().required('Hãy nhập địa chỉ'),
         longtitude: yup
             .string()
             .typeError(
-                'Input Address and generate map to get longtitude'
+                'Hãy nhập địa chỉ để lấy kinh độ'
             )
             .required(
-                'Input Address and generate map to get longtitude'
+                'Hãy nhập địa chỉ để lấy kinh độ'
             ),
         latitude: yup
             .string()
             .typeError(
-                'Input Address and generate map to get latitude'
+                'Hãy nhập địa chỉ để lấy vĩ độ'
             )
             .required(
-                'Input Address and generate map to get latitude'
+                'Hãy nhập địa chỉ để lấy vĩ độ'
             ),
         provinceId: yup
             .string()
-            .typeError('Province is required')
-            .required('Province is required'),
+            .typeError('Hãy chọn tỉnh thành')
+            .required('Hãy chọn tỉnh thành'),
         minPrice: yup
             .string()
-            .typeError('Min Price is required')
-            .required('Min Price  is required'),
+            .typeError('Hãy giá giá món rẻ nhất')
+            .required('Hãy nhập giá món rẻ nhất'),
         maxPrice: yup
             .string()
-            .typeError('Max Price is required')
-            .required('Max Price is required'),
+            .typeError('Hãy giá giá món đắt nhất')
+            .required('Hãy giá giá món đắt nhất'),
         limitBookPerDay: yup
             .string()
-            .typeError('Limit book is required')
-            .required('Limit book is required')
+            .typeError('Hãy nhập số người tối đa đặt / ngày')
+            .required('Hãy nhập số người tối đa đặt / ngày')
     })
     const form = useForm({
         defaultValues: {
@@ -162,7 +161,6 @@ function RestaurantForm() {
                 currentRestaurant.description
             )
             form.setValue('phone', currentRestaurant.phone)
-            form.setValue('website', currentRestaurant.website)
             form.setValue('address', currentRestaurant.address)
             form.setValue('longtitude', currentRestaurant.longtitude)
             form.setValue('latitude', currentRestaurant.latitude)
@@ -205,7 +203,6 @@ function RestaurantForm() {
             formData.append('name', data.name)
             formData.append('description', data.description)
             formData.append('phone', data.phone)
-            formData.append('website', data.website)
             formData.append('address', data.address)
             formData.append('longtitude', data.longtitude)
             formData.append('latitude', data.latitude)
@@ -238,8 +235,8 @@ function RestaurantForm() {
             }
             toast.success(
                 _.isEmpty(currentRestaurant)
-                    ? 'Create restaurant successfully'
-                    : 'Update restaurant successfully',
+                    ? 'Tạo nhà hàng thành công'
+                    : 'Cập nhật nhà hàng thành công',
                 {
                     position: toast.POSITION.BOTTOM_CENTER,
                     autoClose: 1000,
@@ -263,8 +260,8 @@ function RestaurantForm() {
                         <div className="relative w-full px-4 max-w-full flex">
                             <h3 className="font-semibold text-lg text-blue-600">
                                 {_.isEmpty(currentRestaurant)
-                                    ? 'Add Restaurant'
-                                    : 'Update Restaurant'}
+                                    ? 'Tạo mới nhà hàng'
+                                    : 'Cập nhật nhà hàng'}
                             </h3>
                         </div>
                     </div>
@@ -276,10 +273,10 @@ function RestaurantForm() {
                                 className="block uppercase text-sm font-bold mb-2"
                                 htmlFor="grid-password"
                             >
-                                Name
+                                Tên nhà hàng
                             </label>
                             <InputField
-                                placeholder="Name Restaurant"
+                                placeholder="Tên nhà hàng"
                                 form={form}
                                 name="name"
                             />
@@ -289,10 +286,10 @@ function RestaurantForm() {
                                 className="block uppercase text-sm font-bold mb-2"
                                 htmlFor="grid-password"
                             >
-                                Description
+                                Mô tả ngắn
                             </label>
                             <TextArea
-                                placeholder="Description Restaurant..."
+                                placeholder="Mô tả ngắn về nhà hàng..."
                                 form={form}
                                 name="description"
                                 rows={2}
@@ -303,10 +300,10 @@ function RestaurantForm() {
                                 className="block uppercase text-sm font-bold mb-2"
                                 htmlFor="grid-password"
                             >
-                                Phone
+                                Số điện thoại
                             </label>
                             <InputField
-                                placeholder="Phone Restaurant to contact"
+                                placeholder="Số điện thoại"
                                 form={form}
                                 name="phone"
                             />
@@ -316,21 +313,7 @@ function RestaurantForm() {
                                 className="block uppercase text-sm font-bold mb-2"
                                 htmlFor="grid-password"
                             >
-                                Website
-                            </label>
-                            <InputField
-                                placeholder="Website of Restaurant"
-                                form={form}
-                                name="website"
-                                type="input"
-                            />
-                        </div>
-                        <div className="relative w-full mb-3">
-                            <label
-                                className="block uppercase text-sm font-bold mb-2"
-                                htmlFor="grid-password"
-                            >
-                                Cusines Restaurant
+                                Ẩm thực của nhà hàng
                             </label>
                             <Select
                                 styles={{
@@ -347,7 +330,7 @@ function RestaurantForm() {
                                 value={cusines}
                                 closeMenuOnSelect={false}
                                 placeholder={
-                                    'Cusines of restaurant...'
+                                    'Ẩm thực của nhà hàng...'
                                 }
                                 components={animatedComponents}
                                 isMulti
@@ -360,8 +343,7 @@ function RestaurantForm() {
                             />
                             {cusines.length === 0 && !isFirstTime && (
                                 <span className="text-[14px] text-red-500 pl-2 mt-1">
-                                    Please select cusines of
-                                    restaurant
+                                    Vui lòng chọn phong cách ẩm thực của nhà hàng
                                 </span>
                             )}
                         </div>
@@ -370,7 +352,7 @@ function RestaurantForm() {
                                 className="block uppercase text-sm font-bold mb-2"
                                 htmlFor="grid-password"
                             >
-                                SPECIAL DIETS
+                                Chế độ ăn uống đặc biệt
                             </label>
                             <Select
                                 styles={{
@@ -389,7 +371,7 @@ function RestaurantForm() {
                                 value={specialDiets}
                                 closeMenuOnSelect={false}
                                 placeholder={
-                                    'SPECIAL DIETS of restaurant...'
+                                    'Chế độ ăn uống đặc biệt...'
                                 }
                                 components={animatedComponents}
                                 isMulti
@@ -403,8 +385,7 @@ function RestaurantForm() {
                             {specialDiets.length === 0 &&
                                 !isFirstTime && (
                                 <span className="text-[14px] text-red-500 pl-2 mt-1">
-                                        Please select SPECIAL DIETS of
-                                        restaurant
+                                    Hãy chọn chế độ ăn uống đặc biệt
                                 </span>
                             )}
                         </div>
@@ -413,10 +394,10 @@ function RestaurantForm() {
                                 className="block uppercase text-sm font-bold mb-2"
                                 htmlFor="grid-password"
                             >
-                                Min price
+                                Giá từ
                             </label>
                             <InputField
-                                placeholder="Min price"
+                                placeholder="Giá món thấp nhất"
                                 form={form}
                                 name="minPrice"
                                 type="number"
@@ -427,26 +408,12 @@ function RestaurantForm() {
                                 className="block uppercase text-sm font-bold mb-2"
                                 htmlFor="grid-password"
                             >
-                                Max price
+                                Giá cao nhất
                             </label>
                             <InputField
-                                placeholder="Max price"
+                                placeholder="Giá món cao nhất"
                                 form={form}
                                 name="maxPrice"
-                                type="number"
-                            />
-                        </div>
-                        <div className="relative w-full mb-3">
-                            <label
-                                className="block uppercase text-sm font-bold mb-2"
-                                htmlFor="grid-password"
-                            >
-                                Limit book per day
-                            </label>
-                            <InputField
-                                placeholder="Limit book per day"
-                                form={form}
-                                name="limitBookPerDay"
                                 type="number"
                             />
                         </div>
@@ -455,10 +422,10 @@ function RestaurantForm() {
                                 className="block uppercase text-xs font-bold mb-2"
                                 htmlFor="grid-password"
                             >
-                                Province
+                                Tỉnh thành
                             </label>
                             <MySelect
-                                placeholder="Province"
+                                placeholder="Tỉnh thành"
                                 form={form}
                                 name="provinceId"
                                 options={provinces.map(province => ({
@@ -473,7 +440,7 @@ function RestaurantForm() {
                                 className="block uppercase text-sm font-bold mb-2"
                                 htmlFor="grid-password"
                             >
-                                Photos
+                                Hình ảnh
                             </label>
                             <PhotoUploads
                                 addedPhotos={images}
@@ -481,7 +448,7 @@ function RestaurantForm() {
                             />
                             {images.length === 0 && !isFirstTime && (
                                 <span className="text-[14px] text-red-500 pl-2 mt-1">
-                                    Please upload photos of hotel
+                                    Vui lòng đăng tải một vài hình ảnh
                                 </span>
                             )}
                         </div>
@@ -496,8 +463,8 @@ function RestaurantForm() {
                             className="bg-blue-500 text-white active:bg-blue-800 text-sm font-bold uppercase px-4 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 w-1/5 ease-linear transition-all duration-150"
                         >
                             {_.isEmpty(currentRestaurant)
-                                ? 'Add restaurant'
-                                : 'Update restaurant'}
+                                ? 'Tạo mới'
+                                : 'Cập nhật'}
                         </Mybutton>
                     </div>
                 </form>

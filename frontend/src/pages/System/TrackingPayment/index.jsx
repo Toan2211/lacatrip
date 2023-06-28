@@ -33,7 +33,7 @@ function TrackingPayment() {
     const [month, setMonth] = useState(null)
     const [serviceManagerInput, setServiceManagerInput] = useState({
         value: 999,
-        label: 'Filter service manager...'
+        label: 'Tìm kiếm theo nhà cung cấp dịch vụ...'
     })
     const queryParams = useMemo(() => {
         const params = queryString.parse(location.search)
@@ -55,9 +55,9 @@ function TrackingPayment() {
                 onClick={onClick}
             >
                 <div className="flex flex-col items-center">
-                    <span className="font-medium text-md">Month</span>
+                    <span className="font-medium text-md">Tháng</span>
                     <span className="text-gray-400 text-sm" ref={ref}>
-                        {value || 'Add Date'}
+                        {value || 'Chọn tháng'}
                     </span>
                 </div>
             </div>
@@ -115,7 +115,7 @@ function TrackingPayment() {
                     <div className="flex flex-wrap items-center">
                         <div className="relative w-full px-4 max-w-full flex">
                             <h3 className="font-semibold text-lg text-blue-600">
-                                Manage Tracking Payment
+                                Quản lý khoản thanh toán định kỳ
                             </h3>
                         </div>
                     </div>
@@ -143,12 +143,12 @@ function TrackingPayment() {
                             onChange={handleChaneServiceManager}
                             value={serviceManagerInput}
                             placeholder={
-                                'Filter by service manager...'
+                                'Tìm kiếm theo nhà cung cấp dịch vụ...'
                             }
                             options={[
                                 {
                                     value: 999,
-                                    label: 'Filter by service manager...'
+                                    label: 'Tìm kiếm theo nhà cung cấp dịch vụ...'
                                 },
                                 ...serviceManagers.map(
                                     servicemanager => ({
@@ -168,18 +168,18 @@ function TrackingPayment() {
                     <Table hoverable={true}>
                         <Table.Head>
                             <Table.HeadCell>Email</Table.HeadCell>
-                            <Table.HeadCell>Name</Table.HeadCell>
+                            <Table.HeadCell>Họ tên</Table.HeadCell>
                             <Table.HeadCell>
-                                PhoneNumber
+                                Số điện thoại
                             </Table.HeadCell>
                             <Table.HeadCell>
-                                Payment Account
+                                Tài khoản thanh toán
                             </Table.HeadCell>
                             <Table.HeadCell>
-                                Total Payment ($)
+                                Tổng tiền ($)
                             </Table.HeadCell>
                             <Table.HeadCell>
-                                Date Payment
+                                Ngày thanh toán
                             </Table.HeadCell>
                         </Table.Head>
                         <Table.Body className="divide-y">

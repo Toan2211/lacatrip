@@ -221,7 +221,7 @@ function TripId() {
                                     onChange={handleChangeImg}
                                 />
                                 <Tooltip
-                                    content="Update thumbnail trip"
+                                    content="Cập nhật ảnh nền"
                                     style="light"
                                 >
                                     ...
@@ -241,7 +241,7 @@ function TripId() {
                                     onClick={() => setIsOpen(true)}
                                 >
                                     <Tooltip
-                                        content="Edit trip"
+                                        content="Cập nhật"
                                         style="light"
                                     >
                                         <AiFillSetting />
@@ -305,7 +305,7 @@ function TripId() {
                                         )}
                                     </div>
                                     <Tooltip
-                                        content="Add Tripmate"
+                                        content="Thêm thành viên"
                                         style="light"
                                     >
                                         <span
@@ -341,7 +341,7 @@ function TripId() {
                     <div className="px-10 lg:px-10 mt-3">
                         <div>
                             <header className="font-bold text-xl mb-2">
-                                Notes
+                                Mô tả
                             </header>
                             <textarea
                                 className="w-full border border-gray-300 px-3 py-3 bg-white rounded text-sm shadow focus:outline-none focus:ring ease-linear transition-all duration-150 resize-none"
@@ -353,7 +353,7 @@ function TripId() {
                         {currentTrip.tripDates.length > 0 && (
                             <div>
                                 <header className="font-bold text-xl mb-2">
-                                    Itinerary
+                                    Hành trình
                                 </header>
                                 {currentTrip.tripDates &&
                                     currentTrip.tripDates.map(
@@ -419,7 +419,7 @@ function TripId() {
                         )}
                         <div className="mt-5">
                             <header className="font-bold text-xl mb-2">
-                                All Item
+                                Tất cả điểm đến
                             </header>
                             {currentTrip.hotels.length > 0 && (
                                 <div>

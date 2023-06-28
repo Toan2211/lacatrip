@@ -37,7 +37,7 @@ function NotificationCard({ notification }) {
             </div>
             <div className="flex-1" onClick={handleReadNotify}>
                 <div className=" font-bold text-lg">
-                    From {notification.trip.name}
+                    Từ {notification.trip.name}
                 </div>
                 <div>
                     <span className="font-bold text-sm">
@@ -66,13 +66,13 @@ function NotificationCard({ notification }) {
                             className="hover:bg-slate-100 p-1"
                             onClick={handleReadNotify}
                         >
-                            Mark already read
+                            Đánh dấu đã đọc
                         </li>
                         <li
                             className="hover:bg-slate-100 p-1"
                             onClick={handleDeleteNotify}
                         >
-                            Delete
+                            Xoá
                         </li>
                     </ul>
                 )}

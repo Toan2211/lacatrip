@@ -34,7 +34,7 @@ function LikeToTrip({ id, type }) {
     const handleCLickTym = () => {
         if (!profile.id) {
             navigate(path.signin)
-            toast.success('Please sign to create trip :D', {
+            toast.success('Vui lòng đăng nhập để thêm vào lịch trình :D', {
                 position: toast.POSITION.TOP_CENTER,
                 autoClose: 1000,
                 hideProgressBar: true
@@ -98,7 +98,7 @@ function LikeToTrip({ id, type }) {
                 await dispatch(removeInstaceFromTripList(data)).then(res =>
                     unwrapResult(res)
                 )
-                toast.success('Remove From Trip Successfully', {
+                toast.success('Xoá dịch vụ khỏi lịch trình thành công', {
                     position: toast.POSITION.TOP_CENTER,
                     autoClose: 1000,
                     hideProgressBar: true
@@ -107,7 +107,7 @@ function LikeToTrip({ id, type }) {
                 await dispatch(addInstanceToTripList(data)).then(res =>
                     unwrapResult(res)
                 )
-                toast.success('Add To Trip Successfully', {
+                toast.success('Thêm dịch vụ vào lịch trình thành công', {
                     position: toast.POSITION.TOP_CENTER,
                     autoClose: 1000,
                     hideProgressBar: true
@@ -151,7 +151,7 @@ function LikeToTrip({ id, type }) {
             </div>
             <Modal show={showModal} onClose={onClose} size="md">
                 <Modal.Header className=" bg-slate-100">
-                    Create Trip Plan
+                    Tạo lịch trình du lịch
                 </Modal.Header>
                 <Modal.Body>
                     {trips &&
@@ -228,7 +228,7 @@ function LikeToTrip({ id, type }) {
                         </div>
                         <div className="flex-1 flex items-center">
                             <div className="font-bold p-1">
-                                Create new trip
+                                Tạo lịch trình mới
                             </div>
                         </div>
                     </div>

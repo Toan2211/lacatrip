@@ -55,7 +55,7 @@ function BookingDestinationCard({ booking }) {
                         <li className="text-center w-[40px]">
                             <span className="border-[1px] border-slate-200 p-2 w-10 flex justify-center items-center rounded-lg">
                                 <Tooltip
-                                    content="Count Ticket"
+                                    content="Người"
                                     style="light"
                                 >
                                     <MdAirplaneTicket />
@@ -70,10 +70,10 @@ function BookingDestinationCard({ booking }) {
                 <div className="w-[250px] border-r border-gray-200">
                     <div className="flex gap-2 items-center">
                         <span className="text-sm text-slate-500">
-                            Service Manger:
+                            Nhà cung cấp:
                         </span>
                         <Tooltip
-                            content="Service Manager"
+                            content="Nhà cung cấp"
                             style="light"
                         >
                             <div
@@ -95,9 +95,9 @@ function BookingDestinationCard({ booking }) {
                     </div>
                     <div className="flex gap-2 items-center">
                         <span className="text-sm text-slate-500">
-                            Client:
+                            Khách hàng:
                         </span>
-                        <Tooltip content="Client" style="light">
+                        <Tooltip content="Khách hàng" style="light">
                             <div
                                 className=" hover:underline hover:text-blue-500 cursor-pointer"
                                 onClick={() =>
@@ -131,8 +131,8 @@ function BookingDestinationCard({ booking }) {
             >
                 <Modal.Header className=" bg-slate-100">
                     {type
-                        ? 'Information about Service Manager'
-                        : 'Information about Client'}
+                        ? 'Thông tin nhà cung cấp dịch vụ'
+                        : 'Thông tin khách hàng'}
                 </Modal.Header>
                 <Modal.Body>
                     <div className="my-2 text-center">
@@ -144,7 +144,7 @@ function BookingDestinationCard({ booking }) {
                     <div className="px-14">
                         <div className="flex gap-3">
                             <label className=" font-semibold">
-                                Name:{' '}
+                                Họ tên:{' '}
                             </label>
                             <div>
                                 {dataUser.firstname}{' '}
@@ -159,15 +159,9 @@ function BookingDestinationCard({ booking }) {
                         </div>
                         <div className="flex gap-3">
                             <label className=" font-semibold">
-                                Phone:{' '}
+                                Số điện thoại:{' '}
                             </label>
                             <div>{dataUser.phone}</div>
-                        </div>
-                        <div className="flex gap-3">
-                            <label className=" font-semibold">
-                                Country:{' '}
-                            </label>
-                            <div>{dataUser.country}</div>
                         </div>
                     </div>
                 </Modal.Body>

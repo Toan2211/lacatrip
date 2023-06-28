@@ -18,7 +18,6 @@ function AddressGenMap({ form }) {
     //     })
     // }, [])
     const handleGenAddressToMap = () => {
-        setLat(lat - lat/10000)
         form.setValue('longtitude', 108.224)
         form.setValue('latitude', 16.0748)
         Geocode.fromAddress(form.getValues('address')).then(
@@ -43,12 +42,12 @@ function AddressGenMap({ form }) {
                     className="block uppercase text-sm font-bold mb-2"
                     htmlFor="grid-password"
                 >
-                    Address
+                    Địa chỉ
                 </label>
                 <div className="flex gap-5 items-center">
                     <div className="flex-1">
                         <InputField
-                            placeholder="Address is required, it will show in Maps"
+                            placeholder="Hãy nhập địa chỉ, nó sẽ hiển thị trên bản đồ"
                             form={form}
                             name="address"
                         />
@@ -58,7 +57,7 @@ function AddressGenMap({ form }) {
                         onClick={handleGenAddressToMap}
                         className="bg-blue-500 text-white active:bg-blue-800 text-sm font-bold uppercase px-6 py-2 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 w-1/4 ease-linear transition-all duration-150"
                     >
-                        Show in Map
+                        Tìm kiếm
                     </Mybutton>
                 </div>
             </div>
@@ -68,10 +67,10 @@ function AddressGenMap({ form }) {
                         className="block uppercase text-xs font-bold mb-2"
                         htmlFor="grid-password"
                     >
-                        Longtitude
+                        Kinh độ
                     </label>
                     <InputField
-                        placeholder="Longtitude of hotel"
+                        placeholder="Kinh độ"
                         type="number"
                         form={form}
                         name="longtitude"
@@ -83,10 +82,10 @@ function AddressGenMap({ form }) {
                         className="block uppercase text-xs font-bold mb-2"
                         htmlFor="grid-password"
                     >
-                        Latitude
+                        Vĩ độ
                     </label>
                     <InputField
-                        placeholder="Latitude of hotel"
+                        placeholder="Vĩ độ"
                         type="number"
                         form={form}
                         name="latitude"
@@ -99,7 +98,7 @@ function AddressGenMap({ form }) {
                     className="block uppercase text-sm font-bold mb-2"
                     htmlFor="grid-password"
                 >
-                    Map
+                    Bản đồ
                 </label>
                 <div className="h-[400px] w-2/3">
                     <GoogleMaps

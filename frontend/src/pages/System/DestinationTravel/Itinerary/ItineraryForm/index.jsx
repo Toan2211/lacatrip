@@ -78,8 +78,8 @@ function ItineraryForm({
             }
             toast.success(
                 data.id
-                    ? 'Update itinerary successfully'
-                    : 'Create itinerary successfully',
+                    ? 'Cập nhật hành trình thành công'
+                    : 'Tạo mới hành trình thành công',
                 {
                     position: toast.POSITION.BOTTOM_CENTER,
                     autoClose: 1000,
@@ -108,10 +108,10 @@ function ItineraryForm({
             <div className="relative w-full mb-2 flex space-x-4 ">
                 <div className="relative w-1/2">
                     <label className="block uppercase text-xs font-bold mb-2">
-                        Title
+                        Tên hành trình
                     </label>
                     <InputField
-                        placeholder="Title"
+                        placeholder="Tên hành trình"
                         type="input"
                         form={form}
                         name="title"
@@ -119,10 +119,10 @@ function ItineraryForm({
                 </div>
                 <div className="relative w-1/2">
                     <label className="block uppercase text-xs font-bold mb-2">
-                        Step
+                        Thứ tự
                     </label>
                     <InputField
-                        placeholder="Step"
+                        placeholder="Thứ tự"
                         type="number"
                         form={form}
                         name="step"
@@ -132,10 +132,10 @@ function ItineraryForm({
             </div>
             <div className="relative w-full mb-3">
                 <label className="block uppercase text-sm font-bold mb-2">
-                    Description
+                    Mô tả
                 </label>
                 <TextArea
-                    placeholder="Description Itinerary..."
+                    placeholder="Mô tả ngắn về hành trình"
                     form={form}
                     name="description"
                     rows={2}
@@ -146,9 +146,9 @@ function ItineraryForm({
                 <Mybutton
                     // isloading={loadingItinerary > 0 ? true : false}
                     type="submit"
-                    className="bg-blue-500 text-white active:bg-blue-800 text-sm font-bold uppercase px-4 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 w-1/5 ease-linear transition-all duration-150"
+                    className="bg-blue-500 text-white active:bg-blue-800 text-sm font-bold uppercase px-2 py-1 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 w-1/5 ease-linear transition-all duration-150"
                 >
-                    {!_.isEmpty(data) ? 'Update' : 'Add'}
+                    {!_.isEmpty(data) ? 'Cập nhật' : 'Tạo mới'}
                 </Mybutton>
             </div>
         </form>

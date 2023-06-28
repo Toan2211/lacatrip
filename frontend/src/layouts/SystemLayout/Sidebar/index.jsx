@@ -47,7 +47,7 @@ export default function Sidebar() {
                             <>
                                 <hr className="my-2 md:min-w-full" />
                                 <h6 className="md:min-w-full text-blueGray-500 text-xs uppercase font-bold block pt-1 pb-4 no-underline">
-                                    Manage Users
+                                    Quản lý người dùng
                                 </h6>
                                 <ul className="md:flex-col md:min-w-full flex flex-col list-none text-bl">
                                     <li className="items-center ">
@@ -64,7 +64,7 @@ export default function Sidebar() {
                                             <span className="mr-2">
                                                 <BsFillPersonFill />
                                             </span>
-                                            Employees
+                                            Nhân viên
                                         </NavLink>
                                     </li>
                                     <li className="items-center ">
@@ -81,7 +81,7 @@ export default function Sidebar() {
                                             <span className="mr-2">
                                                 <BsFillPersonFill />
                                             </span>
-                                            Clients
+                                            Khách du lịch
                                         </NavLink>
                                     </li>
                                     <li className="items-center ">
@@ -98,7 +98,7 @@ export default function Sidebar() {
                                             <span className="mr-2">
                                                 <BsFillPersonFill />
                                             </span>
-                                            ServiceManagers
+                                            Nhà cung cấp dịch vụ
                                         </NavLink>
                                     </li>
                                 </ul>
@@ -106,7 +106,7 @@ export default function Sidebar() {
                         )}
                         <hr className="my-2 md:min-w-full" />
                         <h6 className="md:min-w-full text-blueGray-500 text-xs uppercase font-bold block pt-1 pb-4 no-underline">
-                            Manage Property
+                            Quản lý dịch vụ du lịch
                         </h6>
                         <ul className="md:flex-col md:min-w-full flex flex-col list-none text-bl">
                             <li className="items-center ">
@@ -121,7 +121,7 @@ export default function Sidebar() {
                                     <span className="mr-2">
                                         <FaHotel />
                                     </span>
-                                    Hotels
+                                    Khách sạn
                                 </NavLink>
                             </li>
                             <li className="items-center ">
@@ -136,7 +136,7 @@ export default function Sidebar() {
                                     <span className="mr-2">
                                         <BiRestaurant />
                                     </span>
-                                    Restaurants
+                                    Nhà hàng
                                 </NavLink>
                             </li>
                             <li className="items-center ">
@@ -151,13 +151,13 @@ export default function Sidebar() {
                                     <span className="mr-2">
                                         <MdOutlineTravelExplore />
                                     </span>
-                                    Destinations Travel
+                                    Tour du lịch
                                 </NavLink>
                             </li>
                         </ul>
                         <hr className="my-2 md:min-w-full" />
                         <h6 className="md:min-w-full text-blueGray-500 text-xs uppercase font-bold block pt-1 pb-4 no-underline">
-                            Manage Booking
+                            Quản lý đặt lịch
                         </h6>
                         <ul className="md:flex-col md:min-w-full flex flex-col list-none text-bl">
                             <li className="items-center ">
@@ -172,7 +172,7 @@ export default function Sidebar() {
                                     <span className="mr-2">
                                         <FaHotel />
                                     </span>
-                                    Booking Hotel
+                                    Đặt lịch khách sạn
                                 </NavLink>
                             </li>
                             <li className="items-center ">
@@ -189,13 +189,13 @@ export default function Sidebar() {
                                     <span className="mr-2">
                                         <BsFillTicketFill />
                                     </span>
-                                    Booking Destination Travel
+                                    Đặt lịch Tour du lịch
                                 </NavLink>
                             </li>
                         </ul>
                         <hr className="my-2 md:min-w-full" />
                         <h6 className="md:min-w-full text-blueGray-500 text-xs uppercase font-bold block pt-1 pb-4 no-underline">
-                            Manage Revenue
+                            Quản lý doanh thu
                         </h6>
                         <ul className="md:flex-col md:min-w-full flex flex-col list-none text-bl">
                             <li className="items-center ">
@@ -210,7 +210,7 @@ export default function Sidebar() {
                                     <span className="mr-2">
                                         <MdOutlineAttachMoney />
                                     </span>
-                                    Revenue Booking
+                                    Doanh thu đặt lịch
                                 </NavLink>
                             </li>
                             {currentUser.role.name === ROLE.ADMIN && (
@@ -226,7 +226,7 @@ export default function Sidebar() {
                                         <span className="mr-2">
                                             <MdOutlineAttachMoney />
                                         </span>
-                                        Tracking Payment
+                                        Theo dõi thanh toán
                                     </NavLink>
                                 </li>
                             )}

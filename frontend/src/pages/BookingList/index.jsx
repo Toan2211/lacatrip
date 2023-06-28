@@ -37,14 +37,14 @@ function BookingList() {
         dispatch(getAllBookingHotelMe(queryParams))
     }, [queryParams, dispatch])
     useEffect(() => {
-        document.title = 'Booking List'
+        document.title = 'Danh sách đặt lịch'
     }, [])
     if (loading) return <div>Loading...</div>
     return (
         <div className="max-w-[1535px] px-8 py-5 mt-[100px] md:mt-40 md:px-10 lg:mt-16 lg:px-80 mb-[20vh] pb-[100px] min-h-[100vh]">
             <div className="flex justify-between items-center mb-3">
                 <header className=" text-2xl font-semibold mb-4 flex gap-5 items-center">
-                    <span>Bookings</span>
+                    <span>Danh sách đặt lịch</span>
                     <ul className='flex gap-2'>
                         <NavLink
                             to={path.bookingmeHotel}
@@ -59,7 +59,7 @@ function BookingList() {
                             <span>
                                 <FaHotel />
                             </span>
-                            <span>Booking Hotel</span>
+                            <span>Đặt lịch khách sạn</span>
                         </NavLink>
                         <NavLink
                             to={path.bookingmeDestinationTravel}
@@ -74,7 +74,7 @@ function BookingList() {
                             <span>
                                 <BsFillTicketFill />
                             </span>
-                            <span>Booking Destination Travel</span>
+                            <span>Đặt lịch địa điểm du lịch</span>
                         </NavLink>
                     </ul>
                 </header>

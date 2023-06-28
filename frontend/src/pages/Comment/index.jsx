@@ -107,7 +107,7 @@ function Comment({ rating, totalRating }) {
                         )
                     }
                 })
-                toast.success('Comment successful', {
+                toast.success('Đánh giá thành công', {
                     position: toast.POSITION.BOTTOM_CENTER,
                     autoClose: 1000,
                     hideProgressBar: true
@@ -136,7 +136,7 @@ function Comment({ rating, totalRating }) {
             <div className="mt-20">
                 <div className="flex gap-3 items-center">
                     <header className="font-semibold text-lg">
-                        Reviews
+                        Đánh giá
                     </header>
                     <div className="flex items-center">
                         <span>
@@ -146,7 +146,7 @@ function Comment({ rating, totalRating }) {
                             className="hover:underline cursor-pointer hover:text-blue-500"
                             onClick={() => setShowModal(true)}
                         >
-                            Write your review
+                            Viết đánh giá !
                         </span>
                     </div>
                 </div>
@@ -168,7 +168,7 @@ function Comment({ rating, totalRating }) {
                     </div>
                     <div className="px-20 py-2 basis-2/3 text-gray-500">
                         <div className="flex justify-between items-center">
-                            <span>Excellent</span>
+                            <span>Tuyệt vời</span>
                             <span>
                                 {comments &&
                                     comments.filter(
@@ -177,7 +177,7 @@ function Comment({ rating, totalRating }) {
                             </span>
                         </div>
                         <div className="flex justify-between items-center">
-                            <span>Very Good</span>
+                            <span>Rất tốt</span>
                             <span>
                                 {comments &&
                                     comments.filter(
@@ -186,7 +186,7 @@ function Comment({ rating, totalRating }) {
                             </span>
                         </div>
                         <div className="flex justify-between items-center">
-                            <span>Average</span>
+                            <span>Trung bình</span>
                             <span>
                                 {comments &&
                                     comments.filter(
@@ -195,7 +195,7 @@ function Comment({ rating, totalRating }) {
                             </span>
                         </div>
                         <div className="flex justify-between items-center">
-                            <span>Poor</span>
+                            <span>Tệ</span>
                             <span>
                                 {comments &&
                                     comments.filter(
@@ -204,7 +204,7 @@ function Comment({ rating, totalRating }) {
                             </span>
                         </div>
                         <div className="flex justify-between items-center">
-                            <span>Terrible</span>
+                            <span>Rất tệ</span>
                             <span>
                                 {comments &&
                                     comments.filter(
@@ -228,13 +228,12 @@ function Comment({ rating, totalRating }) {
                 <form
                     onSubmit={form.handleSubmit(handleCreateComment)}
                 >
-                    <Modal.Header>Write a review</Modal.Header>
+                    <Modal.Header>Đánh giá dịch vụ</Modal.Header>
                     <Modal.Body>
                         <div>
                             <div className="relative w-full mb-3">
                                 <label className="block uppercase text-sm font-bold mb-2">
-                                    How would you rate your
-                                    experience?
+                                    Bạn cảm thấy dịch vụ như thế nào ?
                                 </label>
                                 <ul className="flex gap-1 text-3xl cursor-pointer text-yellow-400">
                                     {Array.from(
@@ -273,7 +272,7 @@ function Comment({ rating, totalRating }) {
                                     className="block uppercase text-sm font-bold mb-2"
                                     htmlFor="grid-password"
                                 >
-                                    Title your review
+                                    Tiêu đề đánh giá
                                 </label>
                                 <InputField
                                     placeholder="Title"
@@ -286,10 +285,10 @@ function Comment({ rating, totalRating }) {
                                     className="block uppercase text-sm font-bold mb-2"
                                     htmlFor="grid-password"
                                 >
-                                    Your review
+                                    Đánh giá của bạn
                                 </label>
                                 <TextArea
-                                    placeholder="Review our servive..."
+                                    placeholder="Đánh giá về dịch vụ của chúng tôi..."
                                     form={form}
                                     name="content"
                                     rows={2}
@@ -300,7 +299,7 @@ function Comment({ rating, totalRating }) {
                                     className="block uppercase text-sm font-bold mb-2"
                                     htmlFor="grid-password"
                                 >
-                                    Share more moment in here
+                                    Chia sẻ những khoảnh khắc của bạn tại đây
                                 </label>
                                 <PhotoUploads
                                     addedPhotos={images}
@@ -310,9 +309,9 @@ function Comment({ rating, totalRating }) {
                         </div>
                     </Modal.Body>
                     <Modal.Footer>
-                        <Button type="submit">Review</Button>
+                        <Button type="submit">Đánh giá</Button>
                         <Button color="gray" onClick={onClose}>
-                            Cancel
+                            Bỏ
                         </Button>
                     </Modal.Footer>
                 </form>

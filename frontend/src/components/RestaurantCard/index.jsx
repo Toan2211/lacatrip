@@ -35,12 +35,12 @@ function RestaurantCard({ data }) {
                             {data.rating} / 5
                         </span>
                         <span className="font-normal text-gray-400">
-                            {data.totalRating} Reviews
+                            {data.totalRating} Đánh giá
                         </span>
                     </span>
                     <div className="mt-4">
                         <span className="font-normal text-gray-400">
-                            From:{' '}
+                            Giá từ:{' '}
                         </span>
                         <span className="font-bold">
                             ${data.minPrice} - ${data.maxPrice}

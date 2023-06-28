@@ -55,7 +55,7 @@ function BookingDestinationTravel() {
         )
     }, [queryParams, dispatch])
     useEffect(() => {
-        document.title = 'Booking Destination Travel'
+        document.title = 'Đặt vé địa điểm du lịch'
     }, [])
     if (_.isEmpty(currentDestiantionTravel))
         return <div>Loading...</div>
@@ -63,7 +63,7 @@ function BookingDestinationTravel() {
         <div className="max-w-[1535px] px-8 py-5 mt-[100px] md:mt-40 md:px-10 lg:mt-16 lg:px-20 pb-[100px] bg-slate-50">
             <div className="w-[40%] mx-auto bg-white">
                 <header className=" font-bold text-2xl pb-5 bg-slate-50">
-                    Your booking
+                    Đơn đặt lịch của bạn
                 </header>
                 <div className="px-5 py-8 border rounded-md border-gray-300 shadow-md">
                     <div className=" border-b border-slate-300 pb-5">
@@ -111,11 +111,11 @@ function BookingDestinationTravel() {
                     </div>
                     <div className="mt-5 border-b border-slate-300 pb-5">
                         <div className=" font-bold text-xl">
-                            Your trip
+                            Lịch trình
                         </div>
                         <div className="flex justify-between">
                             <div className=" text-gray-500 text-lg">
-                                Date
+                                Ngày
                             </div>
                             <div className="font-semibold">
                                 {queryParams.date}
@@ -123,18 +123,18 @@ function BookingDestinationTravel() {
                         </div>
                         <div className="flex justify-between">
                             <div className=" text-gray-500 text-lg">
-                                People
+                                Số người
                             </div>
                             <div>{queryParams.countPeople}</div>
                         </div>
                     </div>
                     <div className="mt-5">
                         <div className=" font-semibold text-xl">
-                            Price
+                            Giá
                         </div>
                         <div className="flex justify-between">
                             <div className=" text-gray-500 text-lg">
-                                Price per night
+                                Giá/đêm
                             </div>
                             <div className="font-bold text-lg">
                                 {currentDestiantionTravel.price}
@@ -142,7 +142,7 @@ function BookingDestinationTravel() {
                         </div>
                         <div className="flex justify-between">
                             <div className=" text-gray-500 text-lg">
-                                Total Price
+                                Tổng tiền
                             </div>
                             <div className="font-bold text-lg">
                                 $
@@ -158,7 +158,7 @@ function BookingDestinationTravel() {
                             onClick={() => handleBooking()}
                             className="w-[40%] bg-blue-500 text-white active:bg-blue-800 text-sm font-bold uppercase px-4 py-2 rounded-full shadow hover:shadow-lg outline-none focus:outline-none mb-1 ease-linear transition-all duration-150"
                         >
-                            Banking Now
+                            Thanh toán
                         </button>
                     </div>
                 </div>

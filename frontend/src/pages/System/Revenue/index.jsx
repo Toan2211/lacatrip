@@ -27,7 +27,7 @@ function Revenue() {
     const [month, setMonth] = useState(null)
     const [serviceManagerInput, setServiceManagerInput] = useState({
         value: 999,
-        label: 'Filter service manager...'
+        label: 'Tìm kiếm theo nhà cung cấp dịch vụ...'
     })
     const revenues = useSelector(revenuesSelector)
     const queryParams = useMemo(() => {
@@ -50,9 +50,9 @@ function Revenue() {
                 onClick={onClick}
             >
                 <div className="flex flex-col items-center">
-                    <span className="font-medium text-md">Month</span>
+                    <span className="font-medium text-md">Tháng</span>
                     <span className="text-gray-400 text-sm" ref={ref}>
-                        {value || 'Add Date'}
+                        {value || 'Chọn tháng'}
                     </span>
                 </div>
             </div>
@@ -81,8 +81,8 @@ function Revenue() {
             startDate: queryParams.monthDate,
             endDate: queryParams.monthDate
                 ? moment(queryParams.monthDate)
-                    .add(1, 'months')
-                    .format('YYYY-MM')
+                      .add(1, 'months')
+                      .format('YYYY-MM')
                 : ''
         }
         dispatch(getAllRevenue(params))
@@ -94,7 +94,7 @@ function Revenue() {
     }, [queryParams, dispatch])
 
     useEffect(() => {
-        document.title = 'Manage Revenue'
+        document.title = 'Quản lý doanh thu'
     }, [])
     return (
         <div className="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded bg-white min-h-[70vh]">
@@ -102,7 +102,7 @@ function Revenue() {
                 <div className="flex flex-wrap items-center">
                     <div className="relative w-full px-4 max-w-full flex">
                         <h3 className="font-semibold text-lg text-blue-600">
-                            Manage Revenue
+                            Quản lý doanh thu
                         </h3>
                     </div>
                 </div>
@@ -131,12 +131,12 @@ function Revenue() {
                             onChange={handleChaneServiceManager}
                             value={serviceManagerInput}
                             placeholder={
-                                'Filter by service manager...'
+                                'Tìm kiếm theo nhà cung cấp dịch vụ...'
                             }
                             options={[
                                 {
                                     value: 999,
-                                    label: 'Filter by service manager...'
+                                    label: 'Tìm kiếm theo nhà cung cấp dịch vụ...'
                                 },
                                 ...serviceManagers.map(
                                     servicemanager => ({
@@ -157,20 +157,20 @@ function Revenue() {
                 <Table hoverable={true}>
                     <Table.Head>
                         <Table.HeadCell>Email</Table.HeadCell>
-                        <Table.HeadCell>Name</Table.HeadCell>
-                        <Table.HeadCell>PhoneNumber</Table.HeadCell>
+                        <Table.HeadCell>Họ tên</Table.HeadCell>
+                        <Table.HeadCell>Số điện thoại</Table.HeadCell>
                         <Table.HeadCell>
-                            Total Revenue ($)
+                            Tổng doanh thu($)
                         </Table.HeadCell>
                         <Table.HeadCell>
-                            Total Commission ($)
+                            Tổng hoa hồng ($)
                         </Table.HeadCell>
                         <Table.HeadCell>
-                            System Unpaid ($)
+                            Hệ thống chưa thanh toán($)
                         </Table.HeadCell>
                         {(queryParams.monthDate ||
                             queryParams.serviceManagerId) && (
-                            <Table.HeadCell>Month</Table.HeadCell>
+                            <Table.HeadCell>Tháng</Table.HeadCell>
                         )}
                     </Table.Head>
                     <Table.Body className="divide-y">

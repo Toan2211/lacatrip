@@ -76,11 +76,11 @@ function Rooms() {
                     <div className="flex flex-wrap items-center">
                         <div className="relative w-full px-4 max-w-full flex">
                             <h3 className="font-semibold text-lg text-blue-600">
-                                Manage Rooms of {currentHotel.name}
+                                Quản lý phòng của {currentHotel.name}
                             </h3>
                             <div className="relative flex flex-col items-center group w-10">
                                 <Tooltip
-                                    content="Create"
+                                    content="Tạo mới"
                                     style="light"
                                 >
                                     <button
@@ -107,15 +107,15 @@ function Rooms() {
                     <Table hoverable={true}>
                         <Table.Head>
                             {/* <Table.HeadCell>Room ID</Table.HeadCell> */}
-                            <Table.HeadCell>Room type</Table.HeadCell>
+                            <Table.HeadCell>Loại phòng</Table.HeadCell>
                             <Table.HeadCell>
-                                Description
+                                Mô tả
                             </Table.HeadCell>
-                            <Table.HeadCell>Price</Table.HeadCell>
+                            <Table.HeadCell>Giá</Table.HeadCell>
                             <Table.HeadCell>
-                                Original Price
+                                Giá ban đầu
                             </Table.HeadCell>
-                            <Table.HeadCell>Action</Table.HeadCell>
+                            <Table.HeadCell></Table.HeadCell>
                         </Table.Head>
                         <Table.Body className="divide-y">
                             {rooms &&
@@ -141,7 +141,7 @@ function Rooms() {
                                         </Table.Cell>
                                         <Table.Cell className="flex gap-4">
                                             <Tooltip
-                                                content="Detail Room"
+                                                content="Chi tiết phòng"
                                                 style="light"
                                             >
                                                 <Mybutton
@@ -169,7 +169,7 @@ function Rooms() {
                                                 </Mybutton>
                                             </Tooltip>
                                             <Tooltip
-                                                content="Detail Rooms Manage"
+                                                content="Chi tiết"
                                                 style="light"
                                             >
                                                 <Mybutton

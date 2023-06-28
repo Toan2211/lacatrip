@@ -28,16 +28,15 @@ function EmployeeForm({ onClose, open }) {
     const schema = yup.object().shape({
         email: yup
             .string()
-            .required('Email is required')
-            .email('Invalid email'),
-        firstname: yup.string().required('Firstname is required'),
-        lastname: yup.string().required('Lastname is required'),
-        gender: yup.string().required('Gender is required'),
-        country: yup.string().required('Country is required'),
+            .required('Hãy nhập Email')
+            .email('Email không hợp lệ'),
+        firstname: yup.string().required('Hãy nhập họ'),
+        lastname: yup.string().required('Hãy nhập tên'),
+        gender: yup.string().required('Hãy chọn giới tính'),
         phone: yup
             .string()
-            .required('Phone number is required')
-            .matches(phoneRegExp, 'Phone number is not valid')
+            .required('Hãy nhập số điện thoại')
+            .matches(phoneRegExp, 'Số điện thoại không hợp lệ')
     })
     const form = useForm({
         defaultValues: {
@@ -45,7 +44,6 @@ function EmployeeForm({ onClose, open }) {
             firstname: '',
             lastname: '',
             gender: '',
-            country: '',
             avatar: '',
             phone: ''
         },
@@ -60,7 +58,6 @@ function EmployeeForm({ onClose, open }) {
                 'gender',
                 currentEmployee.gender ? '1' : '0'
             )
-            form.setValue('country', currentEmployee.country)
             form.setValue(
                 'avatar',
                 currentEmployee.avatar ? currentEmployee.avatar : undefined
@@ -80,7 +77,6 @@ function EmployeeForm({ onClose, open }) {
         formData.append('firstname', data.firstname)
         formData.append('lastname', data.lastname)
         formData.append('gender', data.gender)
-        formData.append('country', data.country)
         formData.append('phone', data.phone)
         if (data.avatar && typeof data.avatar !== 'string')
             formData.append('avatar', data.avatar)
@@ -95,8 +91,8 @@ function EmployeeForm({ onClose, open }) {
             unwrapResult(res)
             toast.success(
                 _.isEmpty(currentEmployee)
-                    ? 'Create employee successfully'
-                    : 'Update employee successfully',
+                    ? 'Tạo mới nhân viên thành công'
+                    : 'Cập nhật nhân viên thành công',
                 {
                     position: toast.POSITION.BOTTOM_CENTER,
                     autoClose: 1000,
@@ -116,7 +112,7 @@ function EmployeeForm({ onClose, open }) {
     return (
         <Drawer isOpen={open} onClose={onClose}>
             <header className="font-bold bg-slate-50 p-4">
-                Add Employee
+                Thêm nhân viên mới
             </header>
             <div className="p-5">
                 <form onSubmit={form.handleSubmit(handleSubmit)}>
@@ -129,10 +125,10 @@ function EmployeeForm({ onClose, open }) {
                                 className="block uppercase text-xs font-bold mb-2"
                                 htmlFor="grid-password"
                             >
-                                Firstname
+                                Họ
                             </label>
                             <InputField
-                                placeholder="Firstname"
+                                placeholder="Họ"
                                 type="input"
                                 form={form}
                                 name="firstname"
@@ -143,10 +139,10 @@ function EmployeeForm({ onClose, open }) {
                                 className="block uppercase text-xs font-bold mb-2"
                                 htmlFor="grid-password"
                             >
-                                Lastname
+                                Tên
                             </label>
                             <InputField
-                                placeholder="Lastname"
+                                placeholder="Tên"
                                 type="input"
                                 form={form}
                                 name="lastname"
@@ -158,7 +154,7 @@ function EmployeeForm({ onClose, open }) {
                             className="block uppercase text-xs font-bold mb-2"
                             htmlFor="grid-password"
                         >
-                            Gender
+                            Giới tính
                         </label>
                         <div className="flex space-x-4">
                             <label
@@ -171,7 +167,7 @@ function EmployeeForm({ onClose, open }) {
                                     value="1"
                                     id="male"
                                 />
-                                Male
+                                Nam
                             </label>
                             <label
                                 htmlFor="female"
@@ -183,7 +179,7 @@ function EmployeeForm({ onClose, open }) {
                                     value="0"
                                     id="female"
                                 />
-                                Female
+                                Nữ
                             </label>
                         </div>
                         {form.formState.errors['gender'] && (
@@ -215,43 +211,24 @@ function EmployeeForm({ onClose, open }) {
                             className="block uppercase text-xs font-bold mb-2"
                             htmlFor="grid-password"
                         >
-                            PhoneNumber
+                            Số điện thoại
                         </label>
                         <InputField
-                            placeholder="Phone Number"
+                            placeholder="Số điện thoại"
                             type="input"
                             form={form}
                             name="phone"
                         />
                     </div>
-                    <div className="relative w-full mb-2">
-                        <label
-                            className="block uppercase text-xs font-bold mb-2"
-                            htmlFor="grid-password"
-                        >
-                            Country
-                        </label>
-                        <MySelect
-                            placeholder="Country"
-                            form={form}
-                            name="country"
-                            options={countrys.map(country =>
-                                Object({
-                                    value: country,
-                                    label: country
-                                })
-                            )}
-                        />
-                    </div>
                     <div className="mt-6 text-right">
                         <Mybutton
-                            className=" bg-blue-500 text-white active:bg-blue-800 text-sm font-bold uppercase px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 w-1/4 ease-linear transition-all duration-150"
+                            className=" bg-blue-500 text-white active:bg-blue-800 text-sm font-bold uppercase px-3 py-2 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 w-1/4 ease-linear transition-all duration-150"
                             type="submit"
                             isloading={+loading}
                         >
                             {_.isEmpty(currentEmployee)
-                                ? 'Create'
-                                : 'Update'}
+                                ? 'Tạo mới'
+                                : 'Cập nhật'}
                         </Mybutton>
                     </div>
                 </form>

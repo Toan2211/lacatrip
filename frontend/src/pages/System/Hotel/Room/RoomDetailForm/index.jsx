@@ -26,7 +26,7 @@ function RoomDetailForm({ onClose, open }) {
     return (
         <Drawer isOpen={open} onClose={onClose}>
             <header className="font-bold bg-slate-50 p-4">
-                Manage room type {currentRoom && currentRoom.title} of{' '}
+                Quản lý phòng chi tiết {currentRoom && currentRoom.title} của {' '}
                 {currentHotel.name}
             </header>
             <ul className="p-6">
@@ -50,7 +50,7 @@ function RoomDetailForm({ onClose, open }) {
                             className=" bg-blue-500 text-white active:bg-blue-800 text-sm font-bold uppercase px-3 py-2 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
                             type="button"
                         >
-                            Add Room Detail
+                            Thêm phòng
                         </Mybutton>
                     </div>
                 </div>

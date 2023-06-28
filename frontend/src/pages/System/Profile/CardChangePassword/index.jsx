@@ -18,26 +18,26 @@ function CardChangePassword() {
     const schema = yup.object().shape({
         oldPassword: yup
             .string()
-            .required('Password is required')
+            .required('Hãy nhập mật khẩu')
             .matches(
                 // eslint-disable-next-line
                 /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/,
-                'Must Contain 8 Characters, One Uppercase, One Lowercase, One Number and One Special Case Character'
+                'Mật khẩu phải gồm 8 kí tự, ít nhất 1 chữ hoa, 1 chữ thường, 1 số và 1 kí tự đặc biệt'
             ),
         newPassword: yup
             .string()
-            .required('Password is required')
+            .required('Hãy nhập mật khẩu mới')
             .matches(
                 // eslint-disable-next-line
                 /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/,
-                'Must Contain 8 Characters, One Uppercase, One Lowercase, One Number and One Special Case Character'
+                'Mật khẩu phải gồm 8 kí tự, ít nhất 1 chữ hoa, 1 chữ thường, 1 số và 1 kí tự đặc biệt'
             ),
         confirmNewPassword: yup
             .string()
-            .required('ConfirmPassword is required')
+            .required('Hãy nhập mật khẩu xác nhận')
             .oneOf(
                 [yup.ref('newPassword'), null],
-                'Passwords must match'
+                'Mật khẩu không khớp'
             )
     })
     const form = useForm({
@@ -73,14 +73,14 @@ function CardChangePassword() {
                 <div className="rounded-t bg-white mb-0 px-6 py-6">
                     <div className="text-center flex justify-between ">
                         <h6 className="text-xl font-bold">
-                            Change Password
+                            Thay đổi mật khẩu
                         </h6>
                         <Mybutton
                             className=" bg-blue-500 text-white active:bg-blue-800 text-sm font-bold uppercase px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 w-1/8 ease-linear transition-all duration-150"
                             type="submit"
                             isloading={+loading}
                         >
-                            Change
+                            Thay đổi
                         </Mybutton>
                     </div>
                 </div>
@@ -92,10 +92,10 @@ function CardChangePassword() {
                                     className="block uppercase text-gray-600 text-xs font-bold mb-2"
                                     htmlFor="grid-password"
                                 >
-                                    Old Password
+                                    Mật khẩu cũ
                                 </label>
                                 <InputField
-                                    placeholder="Old Password"
+                                    placeholder="Mật khẩu cũ"
                                     type="password"
                                     form={form}
                                     name="oldPassword"
@@ -108,10 +108,10 @@ function CardChangePassword() {
                                     className="block uppercase text-gray-600  text-xs font-bold mb-2"
                                     htmlFor="grid-password"
                                 >
-                                    New Password
+                                    Mật khẩu mới
                                 </label>
                                 <InputField
-                                    placeholder="New Password"
+                                    placeholder="Mật khẩu mới"
                                     type="password"
                                     form={form}
                                     name="newPassword"
@@ -124,10 +124,10 @@ function CardChangePassword() {
                                     className="block uppercase text-gray-600  text-xs font-bold mb-2"
                                     htmlFor="grid-password"
                                 >
-                                    Confirm New Password
+                                    Mật khẩu xác nhận
                                 </label>
                                 <InputField
-                                    placeholder="Confirm New Password"
+                                    placeholder="Mật khẩu xác nhận"
                                     type="password"
                                     form={form}
                                     name="confirmNewPassword"

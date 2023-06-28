@@ -22,7 +22,7 @@ const signup = async (req, res) => {
         if (await checkEmailExist(email))
             return res
                 .status(400)
-                .json({ message: 'This email already exists.' })
+                .json({ message: 'Email đã tồn tại.' })
         req.body.roleId = AUTHENTICATEDID
         req.body.confirmtoken = crypto.randomBytes(64).toString('hex')
         req.avatar = 'https://res.cloudinary.com/djgkj9nli/image/upload/v1681614915/lacatrip/lhwrnxjhgw5uhrvinh6r.jpg'
@@ -63,12 +63,12 @@ const signin = async (req, res) => {
             )
         if (!user || !passwordIsMatch)
             return res.status(400).json({
-                message: 'Invalid email or password',
+                message: 'Email hoặc mật khẩu không hợp lệ',
                 data: {}
             })
         if (!user.confirm || user.block)
             return res.status(400).json({
-                message: 'Account is not confirmed or blocked',
+                message: 'Tài khoản chưa xác nhận hoặc đã bị khoá',
                 data: {}
             })
         if (user.roleId === SERVICEMANAGERID) {
@@ -95,7 +95,7 @@ const forgotPassword = async (req, res) => {
         const user = await checkEmailExist(email)
         if (!user) {
             return res.status(400).json({
-                message: 'Email does not exist',
+                message: 'Email không tồn tại',
                 data: {}
             })
         }
@@ -107,7 +107,7 @@ const forgotPassword = async (req, res) => {
             newPassword: newPass
         })
         return res.status(201).json({
-            message: 'Reset password successfully'
+            message: 'Thay đổi mật khẩu thành công'
         })
     } catch (err) {
         return res.status(500).json({ message: err.message })

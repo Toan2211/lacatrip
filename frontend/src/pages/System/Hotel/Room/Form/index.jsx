@@ -24,20 +24,20 @@ function RoomForm({ onClose, open }) {
     const dispatch = useDispatch()
     const schema = yup.object().shape({
         // roomNo: yup.string().required('Room No is required'),
-        title: yup.string().required('Name is required'),
-        description: yup.string().required('Description is required'),
+        title: yup.string().required('Hãy nhập tên loại phòng'),
+        description: yup.string().required('Hãy nhập mô tả ngắn'),
         price: yup
             .number()
-            .typeError('Price must be number')
-            .required('Price is required'),
+            .typeError('Hãy nhập giá')
+            .required('Hãy nhập giá'),
         originalPrice: yup
             .number()
-            .typeError('Original Price must be number')
-            .required('Original Price is required'),
+            .typeError('Hãy nhập giá ban đầu')
+            .required('Hãy nhập giá ban đầu'),
         adultCount: yup
             .number()
-            .typeError('adultCount must be number')
-            .required('adultCounte is required')
+            .typeError('Hãy nhập số người')
+            .required('Hãy nhập số người')
     })
     const form = useForm({
         defaultValues: {
@@ -105,7 +105,7 @@ function RoomForm({ onClose, open }) {
                     await dispatch(createRoom(formData)).then(res =>
                         unwrapResult(res)
                     )
-                    toast.success('Create rooms successful !', {
+                    toast.success('Tạo loại phòng thành công !', {
                         position: toast.POSITION.BOTTOM_CENTER,
                         autoClose: 1000,
                         hideProgressBar: true
@@ -115,7 +115,7 @@ function RoomForm({ onClose, open }) {
                     await dispatch(updateRoom(formData)).then(res =>
                         unwrapResult(res)
                     )
-                    toast.success('Update room successful !', {
+                    toast.success('Cập nhật loại phòng thành công !', {
                         position: toast.POSITION.BOTTOM_CENTER,
                         autoClose: 1000,
                         hideProgressBar: true
@@ -144,7 +144,7 @@ function RoomForm({ onClose, open }) {
     return (
         <Drawer isOpen={open} onClose={onClose}>
             <header className="font-bold bg-slate-50 p-4">
-                {_.isEmpty(currentRoom) ? 'Add Room' : 'Edit Room'}
+                {_.isEmpty(currentRoom) ? 'Thêm phòng' : 'Cập nhật phòng'}
             </header>
             <div className="p-5">
                 <form onSubmit={form.handleSubmit(handleSubmit)}>
@@ -160,7 +160,7 @@ function RoomForm({ onClose, open }) {
                                 Room No
                             </label>
                             <InputField
-                                placeholder="Please split room no by comma(,)"
+                                placeholder="Tạo nhiều phòng bằng cách chia bởi dấu ,"
                                 type="input"
                                 form={form}
                                 name="roomNo"
@@ -174,10 +174,10 @@ function RoomForm({ onClose, open }) {
                             className="block uppercase text-xs font-bold mb-2"
                             htmlFor="grid-password"
                         >
-                            Title
+                            Loại phòng
                         </label>
                         <InputField
-                            placeholder="Title"
+                            placeholder="Loại phòng"
                             type="input"
                             form={form}
                             name="title"
@@ -188,10 +188,10 @@ function RoomForm({ onClose, open }) {
                             className="block uppercase text-sm font-bold mb-2"
                             htmlFor="grid-password"
                         >
-                            Description
+                            Mô tả
                         </label>
                         <TextArea
-                            placeholder="Description Hotel..."
+                            placeholder="Mô tả ngắn về loại phòng..."
                             form={form}
                             name="description"
                             rows={2}
@@ -203,7 +203,7 @@ function RoomForm({ onClose, open }) {
                                 className="block uppercase text-xs font-bold mb-2"
                                 htmlFor="grid-password"
                             >
-                                Price
+                                Giá
                             </label>
                             <InputField
                                 placeholder="Price"
@@ -217,7 +217,7 @@ function RoomForm({ onClose, open }) {
                                 className="block uppercase text-xs font-bold mb-2"
                                 htmlFor="grid-password"
                             >
-                                Original Price
+                                Giá ban đầu
                             </label>
                             <InputField
                                 placeholder="Price"
@@ -232,10 +232,10 @@ function RoomForm({ onClose, open }) {
                             className="block uppercase text-xs font-bold mb-2"
                             htmlFor="grid-password"
                         >
-                            Adults Limit
+                            Số người lớn tối đa
                         </label>
                         <InputField
-                            placeholder="Max adults"
+                            placeholder="Số người lớn tối đa"
                             type="number"
                             form={form}
                             name="adultCount"
@@ -246,10 +246,10 @@ function RoomForm({ onClose, open }) {
                             className="block uppercase text-xs font-bold mb-2"
                             htmlFor="grid-password"
                         >
-                            Childrens Limit
+                            Số trẻ em tối đa
                         </label>
                         <InputField
-                            placeholder="Max childrens"
+                            placeholder="Số trẻ em tối đa"
                             type="number"
                             form={form}
                             name="childrenCount"
@@ -260,10 +260,10 @@ function RoomForm({ onClose, open }) {
                             className="block uppercase text-xs font-bold mb-2"
                             htmlFor="grid-password"
                         >
-                            Bed Count
+                            Số giường
                         </label>
                         <InputField
-                            placeholder="Bed Count"
+                            placeholder="Số giường"
                             type="number"
                             form={form}
                             name="bedCount"
@@ -274,10 +274,10 @@ function RoomForm({ onClose, open }) {
                             className="block uppercase text-xs font-bold mb-2"
                             htmlFor="grid-password"
                         >
-                            Area
+                            Diện tích
                         </label>
                         <InputField
-                            placeholder="Area"
+                            placeholder="Diện tích"
                             type="number"
                             form={form}
                             name="area"
@@ -288,7 +288,7 @@ function RoomForm({ onClose, open }) {
                             className=" bg-blue-500 text-white active:bg-blue-800 text-sm font-bold uppercase px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 w-1/4 ease-linear transition-all duration-150"
                             type="submit"
                         >
-                            {_.isEmpty(currentRoom) ? 'Add' : 'Edit'}
+                            {_.isEmpty(currentRoom) ? 'Tạo mới' : 'Cập nhật'}
                         </Mybutton>
                     </div>
                 </form>

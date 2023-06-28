@@ -100,7 +100,7 @@ function Itinerary({ open, onClose, sheet }) {
         }
         await dispatch(getDetail(currentDestination.id))
         await dispatch(getDestinations(queryParams))
-        toast.success('Update step itinerary successfully', {
+        toast.success('Cập nhật thứ tự hành trình thành công', {
             position: toast.POSITION.BOTTOM_CENTER,
             autoClose: 1000,
             hideProgressBar: true
@@ -136,7 +136,7 @@ function Itinerary({ open, onClose, sheet }) {
             }
             await dispatch(getDetail(currentDestination.id))
             await dispatch(getDestinations(queryParams))
-            toast.success('Delete itinerary successfully', {
+            toast.success('Xoá thành công', {
                 position: toast.POSITION.BOTTOM_CENTER,
                 autoClose: 1000,
                 hideProgressBar: true
@@ -152,7 +152,7 @@ function Itinerary({ open, onClose, sheet }) {
     return (
         <Drawer isOpen={open} onClose={onClose}>
             <header className="font-bold bg-slate-50 p-4">
-                Manage itinerary of {currentDestination.name}
+                Quản lý hành trình của Tour {currentDestination.name}
             </header>
             <div className="p-5">
                 {currentDestination?.itineraries?.length > 0 && (
@@ -162,7 +162,7 @@ function Itinerary({ open, onClose, sheet }) {
                             type="button"
                             className="bg-blue-500 text-white active:bg-blue-800 text-sm font-bold uppercase px-1 py-1 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 w-1/3 ease-linear transition-all duration-150"
                         >
-                            Update Step
+                            Cập nhật thứ tự
                         </Mybutton>
                     </div>
                 )}
@@ -222,7 +222,7 @@ function Itinerary({ open, onClose, sheet }) {
                                                                 )
                                                             }}
                                                         >
-                                                            Update
+                                                            Cập nhật
                                                         </li>
                                                         <li
                                                             className="bg-gray-200 hover:bg-gray-400 cursor-pointer p-1 rounded"
@@ -232,7 +232,7 @@ function Itinerary({ open, onClose, sheet }) {
                                                                 )
                                                             }
                                                         >
-                                                            Delete
+                                                            Xoá
                                                         </li>
                                                     </ul>
                                                 </div>
@@ -247,9 +247,9 @@ function Itinerary({ open, onClose, sheet }) {
                     <Mybutton
                         onClick={addNewItinerary}
                         type="button"
-                        className="bg-blue-500 text-white active:bg-blue-800 text-sm font-bold uppercase px-1 py-2 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 w-1/3 ease-linear transition-all duration-150"
+                        className="bg-blue-500 text-white active:bg-blue-800 text-sm font-bold uppercase px-1 py-2 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 w-1/2 ease-linear transition-all duration-150"
                     >
-                        Add new Itinerary
+                        Tạo mới hành trình
                     </Mybutton>
                 </div>
                 {showForm && (

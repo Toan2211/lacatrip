@@ -16,9 +16,9 @@ function Footer() {
             </div>
             <div className="flex-1 justify-center font-semibold">
                 <ul className="cursor-pointer flex gap-3 justify-center flex-col md:flex-row">
-                    <li>Terms & Conditions</li>
-                    <li>Privacy</li>
-                    <li>Policy</li>
+                    <li>Điều khoản và điều kiện</li>
+                    <li>Sự riêng tư</li>
+                    <li>Chính sách</li>
                     <li>Cookies</li>
                 </ul>
             </div>

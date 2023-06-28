@@ -59,7 +59,7 @@ function Header() {
                         </svg>
                     </div>
                 </div>
-                <div className="flex-1 justify-center items-center">
+                <div className="w-[300px] justify-center items-center">
                     <Link
                         to={path.landingPage}
                         className="w-full h-full block lg:hidden"
@@ -85,7 +85,7 @@ function Header() {
                         <span>
                             <SiGooglecalendar />
                         </span>
-                        <span>Bookings</span>
+                        <span>Đặt lịch</span>
                     </Link>
                     <Link
                         to={path.clientTrips}
@@ -100,7 +100,7 @@ function Header() {
                         <span>
                             <SlPaperPlane />
                         </span>
-                        <span>Trips</span>
+                        <span>Lịch trình</span>
                     </Link>
                     <Link
                         to={path.notification}
@@ -121,7 +121,7 @@ function Header() {
                                 </span>
                             )}
                         </span>
-                        <span>Notifications</span>
+                        <span>Thông báo</span>
                     </Link>
                     {user.id ? (
                         <UserDropdown />
@@ -130,7 +130,7 @@ function Header() {
                             to={path.signin}
                             className="flex gap-1 items-center cursor-pointer bg-slate-100 border-slate-200 border-2  border-transparent px-4 py-2 rounded-xl"
                         >
-                            <span>Signin</span>
+                            <span>Đăng nhập</span>
                         </Link>
                     )}
                 </div>
@@ -149,7 +149,7 @@ function Header() {
                             <span>
                                 <SlPaperPlane />
                             </span>
-                            Trips
+                            Lịch trình
                         </NavLink>
                     </li>
                     <li className="items-center border-b">
@@ -164,7 +164,7 @@ function Header() {
                             <span>
                                 <GrNotification />
                             </span>
-                            Notifications
+                            Thông báo
                         </NavLink>
                     </li>
                 </ul>

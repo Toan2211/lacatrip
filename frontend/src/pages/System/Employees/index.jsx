@@ -58,13 +58,13 @@ function Employees() {
         try {
             const res = dispatch(toggleStatusEmployee(employeeId))
             unwrapResult(res)
-            toast.success('Change status employee successful', {
+            toast.success('Thay đổi trạng thái nhân viên thành công ', {
                 position: toast.POSITION.BOTTOM_CENTER,
                 autoClose: 1000,
                 hideProgressBar: true
             })
         } catch (error) {
-            toast.error(error.message, {
+            toast.error(error.message ? error.message : 'Đã xảy ra lỗi', {
                 position: toast.POSITION.BOTTOM_CENTER,
                 autoClose: 1000,
                 hideProgressBar: true
@@ -72,7 +72,7 @@ function Employees() {
         }
     }
     useEffect(() => {
-        document.title = 'System Employees'
+        document.title = 'Quản lý nhân viên'
     }, [])
     return (
         <div>
@@ -81,10 +81,10 @@ function Employees() {
                     <div className="flex flex-wrap items-center">
                         <div className="relative w-full px-4 max-w-full flex">
                             <h3 className="font-semibold text-lg text-blue-600">
-                                Manage Employees
+                                Quản lý nhân viên
                             </h3>
                             <div className="relative flex flex-col items-center group w-10">
-                                <Tooltip content="Create" style="light">
+                                <Tooltip content="Tạo mới" style="light">
                                     <button
                                         className="inline-flex items-center justify-center w-6 h-6 mr-2 text-indigo-100 transition-colors duration-150  bg-green-700 rounded-lg focus:shadow-outline hover:bg-green-500 ml-4"
                                         onClick={() =>
@@ -110,14 +110,14 @@ function Employees() {
                 <div className="block w-full overflow-x-auto h-[66vh]">
                     <Table hoverable={true}>
                         <Table.Head>
-                            <Table.HeadCell>Fullname</Table.HeadCell>
+                            <Table.HeadCell>Họ tên</Table.HeadCell>
                             <Table.HeadCell>Email</Table.HeadCell>
                             <Table.HeadCell>
-                                PhoneNumber
+                                Số điện thoại
                             </Table.HeadCell>
-                            <Table.HeadCell>Gender</Table.HeadCell>
-                            <Table.HeadCell>Status</Table.HeadCell>
-                            <Table.HeadCell>Action</Table.HeadCell>
+                            <Table.HeadCell>Giới tính</Table.HeadCell>
+                            <Table.HeadCell>Trạng thái</Table.HeadCell>
+                            <Table.HeadCell></Table.HeadCell>
                         </Table.Head>
                         <Table.Body className="divide-y">
                             {employees &&

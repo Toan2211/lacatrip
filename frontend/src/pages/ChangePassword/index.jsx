@@ -15,26 +15,26 @@ function ChangePassword() {
     const schema = yup.object().shape({
         oldPassword: yup
             .string()
-            .required('Password is required')
+            .required('Hãy nhập mật khẩu')
             .matches(
                 // eslint-disable-next-line
                 /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/,
-                'Must Contain 8 Characters, One Uppercase, One Lowercase, One Number and One Special Case Character'
+                'Mật khẩu phải gồm 8 kí tự, ít nhất 1 chữ hoa, 1 chữ thường, 1 số và 1 kí tự đặc biệt'
             ),
         newPassword: yup
             .string()
-            .required('Password is required')
+            .required('Hãy nhập mật khẩu mới')
             .matches(
                 // eslint-disable-next-line
                 /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/,
-                'Must Contain 8 Characters, One Uppercase, One Lowercase, One Number and One Special Case Character'
+                'Mật khẩu phải gồm 8 kí tự, ít nhất 1 chữ hoa, 1 chữ thường, 1 số và 1 kí tự đặc biệt'
             ),
         confirmNewPassword: yup
             .string()
-            .required('ConfirmPassword is required')
+            .required('Hãy nhập mật khẩu xác nhận')
             .oneOf(
                 [yup.ref('newPassword'), null],
-                'Passwords must match'
+                'Mật khẩu không khớp'
             )
     })
     const form = useForm({
@@ -50,7 +50,7 @@ function ChangePassword() {
         try {
             const res = await dispatch(changePassword(data))
             unwrapResult(res)
-            toast.success('Change password successful', {
+            toast.success('Thay đổi mật khẩu thành công', {
                 position: toast.POSITION.BOTTOM_CENTER,
                 autoClose: 1000,
                 hideProgressBar: true
@@ -67,7 +67,7 @@ function ChangePassword() {
     return (
         <div className="ml-[16%] w-[50%] pt-5">
             <header className="font-bold text-2xl mb-3 mt-5">
-                Change Password
+                Thay đổi mật khẩu
             </header>
             <form onSubmit={form.handleSubmit(handleSubmit)}>
                 <div className="flex flex-col mt-5">
@@ -77,10 +77,10 @@ function ChangePassword() {
                                 className="block uppercase text-gray-600 text-xs font-bold mb-2"
                                 htmlFor="grid-password"
                             >
-                                Old Password
+                                Mật khẩu cũ
                             </label>
                             <InputField
-                                placeholder="Old Password"
+                                placeholder="Mật khẩu cũ"
                                 type="password"
                                 form={form}
                                 name="oldPassword"
@@ -93,10 +93,10 @@ function ChangePassword() {
                                 className="block uppercase text-gray-600  text-xs font-bold mb-2"
                                 htmlFor="grid-password"
                             >
-                                New Password
+                                Mật khẩu mới
                             </label>
                             <InputField
-                                placeholder="New Password"
+                                placeholder="Mật khẩu mới"
                                 type="password"
                                 form={form}
                                 name="newPassword"
@@ -109,10 +109,10 @@ function ChangePassword() {
                                 className="block uppercase text-gray-600  text-xs font-bold mb-2"
                                 htmlFor="grid-password"
                             >
-                                Confirm New Password
+                                Mật khẩu xác nhận
                             </label>
                             <InputField
-                                placeholder="Confirm New Password"
+                                placeholder="Mật khẩu xác nhận"
                                 type="password"
                                 form={form}
                                 name="confirmNewPassword"
@@ -126,7 +126,7 @@ function ChangePassword() {
                         type="submit"
                         isloading={+loading}
                     >
-                        Change
+                        Thay đổi
                     </Mybutton>
                 </div>
             </form>

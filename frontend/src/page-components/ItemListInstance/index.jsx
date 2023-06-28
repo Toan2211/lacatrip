@@ -70,7 +70,7 @@ function ItemListInstance({ item, type }) {
                         <div className=" flex items-center justify-center">
                             <div>
                                 <div className="text-sm text-gray-500">
-                                    from
+                                    Giá từ
                                 </div>
 
                                 {type === DESTINATIONTYPE && (
@@ -79,7 +79,7 @@ function ItemListInstance({ item, type }) {
                                             ${item.price}
                                         </div>
                                         <div className="text-sm text-gray-500">
-                                            per adult
+                                            / người
                                         </div>
                                     </>
                                 )}
@@ -89,7 +89,7 @@ function ItemListInstance({ item, type }) {
                                             ${item.cheapestPrice}
                                         </div>
                                         <div className="text-sm text-gray-500">
-                                            per room
+                                            / Room
                                         </div>
                                     </>
                                 )}
@@ -99,13 +99,13 @@ function ItemListInstance({ item, type }) {
                                             ${item.minPrice}
                                         </div>
                                         <div className="text-sm text-gray-500">
-                                            to
+                                            đến
                                         </div>
                                         <div className=" font-semibold text-xl">
                                             ${item.maxPrice}
                                         </div>
                                         <div className=" text-sm text-gray-500">
-                                            per dish
+                                            / món
                                         </div>
                                     </>
                                 )}
@@ -116,7 +116,7 @@ function ItemListInstance({ item, type }) {
                                 to={link}
                                 className="bg-blue-500 text-white active:bg-blue-800 text-sm font-bold uppercase px-6 py-2 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 w-[100px] ease-linear transition-all duration-150"
                             >
-                                Detail
+                                Chi tiết
                             </Link>
                         </div>
                     </div>

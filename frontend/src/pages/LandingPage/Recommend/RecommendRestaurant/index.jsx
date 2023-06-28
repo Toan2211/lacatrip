@@ -41,7 +41,7 @@ function RecommendRestaurant() {
                         isloading={+loading}
                         onClick={handleLoadMoreClick}
                     >
-                        Load more
+                        Xem thêm
                     </Mybutton>
                 </div>
             )}

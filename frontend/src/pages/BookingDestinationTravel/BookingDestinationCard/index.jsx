@@ -44,7 +44,7 @@ function BookingDestinationCard({ booking }) {
                     <li className="text-center w-[40px]">
                         <span className="border-[1px] border-slate-200 p-2 w-10 flex justify-center items-center rounded-lg">
                             <Tooltip
-                                content="Count Ticket"
+                                content="Số vé"
                                 style="light"
                             >
                                 <MdAirplaneTicket />

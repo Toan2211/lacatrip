@@ -86,15 +86,15 @@ function BookingHotel() {
             setCountChildrens(prev => prev - 1)
     }
     useEffect(() => {
-        document.title = 'Booking Hotel'
+        document.title = 'Đặt phòng khách sạn'
     }, [])
     if (_.isEmpty(currentHotel) || _.isEmpty(currentRoom))
-        return <div>Loading...</div>
+        return <div>Đang tải...</div>
     return (
         <div className="max-w-[1535px] px-8 py-5 mt-[100px] md:mt-40 md:px-10 lg:mt-16 lg:px-20 pb-[100px] bg-slate-50">
             <div className="w-[40%] mx-auto bg-white">
                 <header className=" font-bold text-2xl pb-5 bg-slate-50">
-                    Your booking
+                    Đơn đặt lịch
                 </header>
                 <div className="px-5 py-8 border rounded-md border-gray-300 shadow-md">
                     <div className=" border-b border-slate-300 pb-5">
@@ -138,18 +138,18 @@ function BookingHotel() {
                         </div>
                         <div className="flex justify-between">
                             <div className=" text-gray-500 text-lg">
-                                Room type
+                                Loại phòng
                             </div>
                             <div>{currentRoom.title}</div>
                         </div>
                     </div>
                     <div className="mt-5 border-b border-slate-300 pb-5">
                         <div className=" font-bold text-xl">
-                            Your trip
+                            Lịch trình
                         </div>
                         <div className="flex justify-between">
                             <div className=" text-gray-500 text-lg">
-                                Date
+                                Ngày
                             </div>
                             <div className="font-semibold">
                                 {queryParams.checkIn} to{' '}
@@ -158,7 +158,7 @@ function BookingHotel() {
                         </div>
                         <div className="flex justify-between mb-2">
                             <div className=" text-gray-500 text-lg">
-                                Adults
+                                Số người lớn
                             </div>
                             <div>
                                 {' '}
@@ -191,7 +191,7 @@ function BookingHotel() {
                         </div>
                         <div className="flex justify-between">
                             <div className=" text-gray-500 text-lg">
-                                Childrens
+                                Số trẻ em
                             </div>
                             <div>
                                 <div className="flex gap-1 items-center">
@@ -225,18 +225,18 @@ function BookingHotel() {
                         </div>
                         <div className="flex justify-between">
                             <div className=" text-gray-500 text-lg">
-                                Room
+                                Số phòng
                             </div>
                             <div>{queryParams.countRooms}</div>
                         </div>
                     </div>
                     <div className="mt-5">
                         <div className=" font-semibold text-xl">
-                            Price
+                            Giá
                         </div>
                         <div className="flex justify-between">
                             <div className=" text-gray-500 text-lg">
-                                Price per night
+                                Giá/đêm
                             </div>
                             <div className="font-bold text-lg">
                                 {currentRoom.price}
@@ -244,7 +244,7 @@ function BookingHotel() {
                         </div>
                         <div className="flex justify-between">
                             <div className=" text-gray-500 text-lg">
-                                Night
+                                Số ngày
                             </div>
                             <div className="font-bold text-lg">
                                 {getLengthDay(
@@ -255,7 +255,7 @@ function BookingHotel() {
                         </div>
                         <div className="flex justify-between">
                             <div className=" text-gray-500 text-lg">
-                                Total Price
+                                Tổng tiền
                             </div>
                             <div className="font-bold text-lg">
                                 $
@@ -275,7 +275,7 @@ function BookingHotel() {
                             onClick={() => handleBookingHotel()}
                             className="w-[40%] bg-blue-500 text-white active:bg-blue-800 text-sm font-bold uppercase px-4 py-2 rounded-full shadow hover:shadow-lg outline-none focus:outline-none mb-1 ease-linear transition-all duration-150"
                         >
-                            Banking Now
+                            Thanh toán
                         </button>
                     </div>
                 </div>

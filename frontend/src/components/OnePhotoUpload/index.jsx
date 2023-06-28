@@ -53,7 +53,7 @@ function OnePhotoUpload({ form, name }) {
                     htmlFor="chooseAvatar"
                     className="mt-2 leading-normal px-4 py-2 bg-blue-500 text-white text-sm rounded-full cursor-pointer"
                 >
-                    Select Photo
+                    Chọn ảnh
                 </label>
                 <input
                     type="file"

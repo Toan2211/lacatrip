@@ -13,7 +13,7 @@ function NotificationSystem() {
     const pagination = useSelector(notificationPaginationSelector)
     const dispatch = useDispatch()
     useEffect(() => {
-        document.title = 'Notifications'
+        document.title = 'Thông báo'
     }, [])
     const handlePageChange = page => {
         if (!page <= 1 || !page >= pagination.totalPages) {
@@ -30,7 +30,7 @@ function NotificationSystem() {
                 <div className="flex flex-wrap items-center">
                     <div className="relative w-full px-4 max-w-full flex justify-center">
                         <h3 className="font-semibold text-lg text-blue-600">
-                            Notifications
+                            Thông báo
                         </h3>
                     </div>
                 </div>

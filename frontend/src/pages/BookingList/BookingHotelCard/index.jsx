@@ -57,7 +57,7 @@ function BookingHotelCard({ booking }) {
                 <ul className="mt-2 flex gap-2 mx-auto">
                     <li className="text-center">
                         <span className="border-[1px] border-slate-200 p-2 w-10 flex justify-center items-center rounded-lg">
-                            <Tooltip content="Room" style="light">
+                            <Tooltip content="Phòng" style="light">
                                 <BiBed />
                             </Tooltip>
                         </span>
@@ -67,7 +67,7 @@ function BookingHotelCard({ booking }) {
                     </li>
                     <li className="text-center">
                         <span className="border-[1px] border-slate-200 p-2 w-10 flex justify-center items-center rounded-lg">
-                            <Tooltip content="Adult" style="light">
+                            <Tooltip content="Người lớn" style="light">
                                 <FaChild />
                             </Tooltip>
                         </span>
@@ -77,7 +77,7 @@ function BookingHotelCard({ booking }) {
                     </li>
                     <li className="text-center">
                         <span className="border-[1px] border-slate-200 p-2 w-10 flex justify-center items-center rounded-lg">
-                            <Tooltip content="Children" style="light">
+                            <Tooltip content="Trẻ em" style="light">
                                 <MdChildCare />
                             </Tooltip>
                         </span>

@@ -34,7 +34,7 @@ function TripOrganize({ isOpen, onClose }) {
                     <MdOutlineCalendarMonth />
                 </span>
                 <div className="flex flex-col">
-                    <span className="font-semibold">Start date</span>
+                    <span className="font-semibold">Ngày bắt đầu</span>
                     <span
                         className="cursor-pointer text-sm font-semibold"
                         ref={ref}
@@ -55,7 +55,7 @@ function TripOrganize({ isOpen, onClose }) {
                     <MdOutlineCalendarMonth />
                 </span>
                 <div className="flex flex-col">
-                    <span className="font-semibold">End date</span>
+                    <span className="font-semibold">Ngày kết thúc</span>
                     <span
                         className="cursor-pointer text-sm font-semibold"
                         ref={ref}
@@ -157,20 +157,20 @@ function TripOrganize({ isOpen, onClose }) {
             <div className="w-full h-[300vh] pb-[500px]">
                 <div className=" mt-[80px] h-[60px] bg-slate-50 flex justify-between px-3 py-3">
                     <div className="font-semibold">
-                        Organize Your Trip
+                        Hành trình của bạn
                     </div>
                     <div className="flex gap-2">
                         <button
                             onClick={handleUpdate}
                             className="bg-blue-500 text-white active:bg-blue-800 text-sm font-bold uppercase px-2 py-1 rounded-lg shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 w-full ease-linear transition-all duration-150"
                         >
-                            Save
+                            Lưu
                         </button>
                         <button
                             onClick={handleCancel}
                             className=" bg-gray-300 text-white active:bg-gray-400 text-sm font-bold uppercase px-2 py-1 rounded-lg shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 w-full ease-linear transition-all duration-150"
                         >
-                            Cancel
+                            Bỏ
                         </button>
                     </div>
                 </div>

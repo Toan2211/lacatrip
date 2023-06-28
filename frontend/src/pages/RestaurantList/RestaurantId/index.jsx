@@ -113,17 +113,17 @@ function RestaurantId() {
             <div className="flex flex-col lg:flex-row gap-3 min-h-[300px]">
                 <div className="flex-1 border-[1px] border-gray-200 p-4">
                     <header className="font-semibold">
-                        Description about restaurant
+                        Mô tả ngắn về nhà hàng
                     </header>
                     <span>{currentRestaurant.description}</span>
                 </div>
                 <div className="flex-1 border-[1px] border-gray-200 p-4">
                     <header className="font-semibold mb-3">
-                        Detail service
+                        Chi tiết
                     </header>
                     <span className="flex flex-col text-sm mb-2">
                         <span className="font-semibold">
-                            PRICE RANGE
+                            Mức giá
                         </span>
                         <span className="flex flex-col">
                             ${currentRestaurant.minPrice} - $
@@ -132,20 +132,20 @@ function RestaurantId() {
                     </span>
                     <span className="flex flex-col text-sm mb-2">
                         <span className="font-semibold">
-                            CUISINES
+                            Món ăn
                         </span>
                         <span>{currentRestaurant.cusines}</span>
                     </span>
                     <span className="flex flex-col text-sm mb-2">
                         <span className="font-semibold">
-                            SPECIAL DIETS
+                            Chế độ ăn đặc biệt
                         </span>
                         <span>{currentRestaurant.specialDiets}</span>
                     </span>
                 </div>
                 <div className="flex-1 border-[1px] border-gray-200 p-4">
                     <header className="font-semibold">
-                        Location and contact
+                        Địa điểm và thông tin liên lạc
                     </header>
                     <div className="h-[240px] mt-4">
                         <GoogleMap

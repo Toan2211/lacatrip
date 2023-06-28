@@ -2,8 +2,6 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import Drawer from '@components/Drawer'
 import InputField from '@components/InputField'
 import Mybutton from '@components/MyButton'
-import MySelect from '@components/MySelect'
-import countrys from '@constants/countrys'
 import React, { useEffect, useMemo, useRef } from 'react'
 import { useForm } from 'react-hook-form'
 import { useDispatch, useSelector } from 'react-redux'
@@ -32,16 +30,15 @@ function ServiceManagerForm({ onClose, open }) {
     const schema = yup.object().shape({
         email: yup
             .string()
-            .required('Email is required')
-            .email('Invalid email'),
-        firstname: yup.string().required('Firstname is required'),
-        lastname: yup.string().required('Lastname is required'),
-        gender: yup.string().required('Gender is required'),
-        country: yup.string().required('Country is required'),
+            .required('Hãy nhập Email')
+            .email('Email không hợp lệ'),
+        firstname: yup.string().required('Hãy nhập họ'),
+        lastname: yup.string().required('Hãy nhập tên'),
+        gender: yup.string().required('Hãy chọn giới tính'),
         phone: yup
             .string()
-            .required('Phone number is required')
-            .matches(phoneRegExp, 'Phone number is not valid')
+            .required('Hãy nhập số điện thoại')
+            .matches(phoneRegExp, 'Số điện thoại không hợp lệ')
     })
     const form = useForm({
         defaultValues: {
@@ -49,7 +46,6 @@ function ServiceManagerForm({ onClose, open }) {
             firstname: '',
             lastname: '',
             gender: '',
-            country: '',
             avatar: '',
             phone: ''
         },
@@ -69,10 +65,6 @@ function ServiceManagerForm({ onClose, open }) {
             form.setValue(
                 'gender',
                 currentServiceManager.user.gender ? '1' : '0'
-            )
-            form.setValue(
-                'country',
-                currentServiceManager.user.country
             )
             form.setValue(
                 'avatar',
@@ -104,7 +96,6 @@ function ServiceManagerForm({ onClose, open }) {
         formData.append('firstname', data.firstname)
         formData.append('lastname', data.lastname)
         formData.append('gender', data.gender)
-        formData.append('country', data.country)
         formData.append('phone', data.phone)
         if (data.avatar && typeof data.avatar !== 'string')
             formData.append('avatar', data.avatar)
@@ -119,8 +110,8 @@ function ServiceManagerForm({ onClose, open }) {
             unwrapResult(res)
             toast.success(
                 _.isEmpty(currentServiceManager)
-                    ? 'Create service manager successfully'
-                    : 'Update service manager successfully',
+                    ? 'Tạo mới nhà cung cấp dịch vụ thành công'
+                    : 'Cập nhật nhà cung cấp dịch vụ thành công',
                 {
                     position: toast.POSITION.BOTTOM_CENTER,
                     autoClose: 1000,
@@ -141,9 +132,9 @@ function ServiceManagerForm({ onClose, open }) {
         <Drawer isOpen={open} onClose={onClose}>
             <header className="font-bold bg-slate-50 p-4">
                 {_.isEmpty(currentServiceManager)
-                    ? 'Create'
-                    : 'Update'}{' '}
-                Serivce Manager
+                    ? 'Tạo mới '
+                    : 'Cập nhật '}{' '}
+                Nhà cung cấp dịch vụ
             </header>
             <div className="p-5">
                 <form onSubmit={form.handleSubmit(handleSubmit)}>
@@ -156,10 +147,10 @@ function ServiceManagerForm({ onClose, open }) {
                                 className="block uppercase text-xs font-bold mb-2"
                                 htmlFor="grid-password"
                             >
-                                Firstname
+                                Họ
                             </label>
                             <InputField
-                                placeholder="Firstname"
+                                placeholder="Họ"
                                 type="input"
                                 form={form}
                                 name="firstname"
@@ -170,10 +161,10 @@ function ServiceManagerForm({ onClose, open }) {
                                 className="block uppercase text-xs font-bold mb-2"
                                 htmlFor="grid-password"
                             >
-                                Lastname
+                                Tên
                             </label>
                             <InputField
-                                placeholder="Lastname"
+                                placeholder="Tên"
                                 type="input"
                                 form={form}
                                 name="lastname"
@@ -185,7 +176,7 @@ function ServiceManagerForm({ onClose, open }) {
                             className="block uppercase text-xs font-bold mb-2"
                             htmlFor="grid-password"
                         >
-                            Gender
+                            Giới tính
                         </label>
                         <div className="flex space-x-4">
                             <label
@@ -198,7 +189,7 @@ function ServiceManagerForm({ onClose, open }) {
                                     value="1"
                                     id="male"
                                 />
-                                Male
+                                Nam
                             </label>
                             <label
                                 htmlFor="female"
@@ -210,7 +201,7 @@ function ServiceManagerForm({ onClose, open }) {
                                     value="0"
                                     id="female"
                                 />
-                                Female
+                                Nữ
                             </label>
                         </div>
                         {form.formState.errors['gender'] && (
@@ -246,43 +237,24 @@ function ServiceManagerForm({ onClose, open }) {
                             className="block uppercase text-xs font-bold mb-2"
                             htmlFor="grid-password"
                         >
-                            PhoneNumber
+                            Số điện thoại
                         </label>
                         <InputField
-                            placeholder="Phone Number"
+                            placeholder="Số điện thoại"
                             type="input"
                             form={form}
                             name="phone"
                         />
                     </div>
-                    <div className="relative w-full mb-2">
-                        <label
-                            className="block uppercase text-xs font-bold mb-2"
-                            htmlFor="grid-password"
-                        >
-                            Country
-                        </label>
-                        <MySelect
-                            placeholder="Country"
-                            form={form}
-                            name="country"
-                            options={countrys.map(country =>
-                                Object({
-                                    value: country,
-                                    label: country
-                                })
-                            )}
-                        />
-                    </div>
                     <div className="mt-6 text-right">
                         <Mybutton
-                            className=" bg-blue-500 text-white active:bg-blue-800 text-sm font-bold uppercase px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 w-1/4 ease-linear transition-all duration-150"
+                            className=" bg-blue-500 text-white active:bg-blue-800 text-sm font-bold uppercase px-3 py-2 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 w-1/4 ease-linear transition-all duration-150"
                             type="submit"
                             isloading={+loading}
                         >
                             {_.isEmpty(currentServiceManager)
-                                ? 'Create'
-                                : 'Update'}
+                                ? 'Tạo mới'
+                                : 'Cập nhật'}
                         </Mybutton>
                     </div>
                 </form>

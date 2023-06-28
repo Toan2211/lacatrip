@@ -12,7 +12,7 @@ function SearchMain() {
     const [type, setType] = useState(1)
     const [searchProvince, setSearchProvince] = useState({
         value: 9999,
-        label: 'Where are you going?'
+        label: 'Địa điểm bạn muốn đến?'
     })
     const [options, setOptions] = useState([])
 
@@ -27,7 +27,7 @@ function SearchMain() {
         }))
         _options.push({
             value: 9999,
-            label: 'Where are you going?'
+            label: 'Địa điểm bạn muốn đến?'
         })
         setOptions(_options)
     }, [provinces])
@@ -40,7 +40,7 @@ function SearchMain() {
                     }basis-1/3 text-center border-r hover:bg-blue-500 p-2 hover:text-white`}
                     onClick={() => handleSetType(1)}
                 >
-                    Hotels
+                    Khách sạn
                 </div>
 
                 <div
@@ -49,7 +49,7 @@ function SearchMain() {
                     }basis-1/3 text-center border-r hover:bg-blue-500 p-2 hover:text-white`}
                     onClick={() => handleSetType(2)}
                 >
-                    Restaurants
+                    Nhà hàng
                 </div>
                 <div
                     className={`${
@@ -57,7 +57,7 @@ function SearchMain() {
                     }basis-1/3 text-center border-r hover:bg-blue-500 p-2 hover:text-white`}
                     onClick={() => handleSetType(3)}
                 >
-                    Tours
+                    Tour du lịch
                 </div>
             </div>
             {type === 1 && (
