@@ -20,6 +20,7 @@ import { toast } from 'react-toastify'
 import { socketSelector } from '@pages/Chat/socket.slice'
 import Chat from '@pages/Chat'
 import { setCurrentOnline } from '@pages/Chat/message.slice'
+import { useTranslation } from 'react-i18next'
 var options = {
     weekday: 'long',
     year: 'numeric',
@@ -29,7 +30,12 @@ var options = {
 const ItemCard = ({ data, link, onClick }) => {
     return (
         <li className="flex flex-col border-[1px] border-slate-300 rounded-2xl overflow-hidden shadow-xl mb-3">
-            <div className="w-full h-[200px]" onClick={() => onClick(data.longtitude, data.latitude)}>
+            <div
+                className="w-full h-[200px]"
+                onClick={() =>
+                    onClick(data.longtitude, data.latitude)
+                }
+            >
                 <img
                     src={data.images[0].url}
                     className="w-full h-full object-cover rounded-xl"
@@ -48,6 +54,7 @@ const ItemCard = ({ data, link, onClick }) => {
     )
 }
 function TripId() {
+    const { t } = useTranslation()
     const dispatch = useDispatch()
     const socket = useSelector(socketSelector)
     const currentTrip = useSelector(currentTripSelector)
@@ -241,7 +248,7 @@ function TripId() {
                                     onClick={() => setIsOpen(true)}
                                 >
                                     <Tooltip
-                                        content="Edit trip"
+                                        content={t('editTrip')}
                                         style="light"
                                     >
                                         <AiFillSetting />
@@ -305,7 +312,7 @@ function TripId() {
                                         )}
                                     </div>
                                     <Tooltip
-                                        content="Add Tripmate"
+                                        content={t('addMember')}
                                         style="light"
                                     >
                                         <span
@@ -341,7 +348,7 @@ function TripId() {
                     <div className="px-10 lg:px-10 mt-3">
                         <div>
                             <header className="font-bold text-xl mb-2">
-                                Notes
+                                {t('notes')}
                             </header>
                             <textarea
                                 className="w-full border border-gray-300 px-3 py-3 bg-white rounded text-sm shadow focus:outline-none focus:ring ease-linear transition-all duration-150 resize-none"
@@ -378,7 +385,9 @@ function TripId() {
                                                                     hotel
                                                                 }
                                                                 link={`/hotel/${hotel.id}`}
-                                                                onClick = {handleChangeCenterMap}
+                                                                onClick={
+                                                                    handleChangeCenterMap
+                                                                }
                                                             />
                                                         )
                                                     )}
@@ -393,7 +402,9 @@ function TripId() {
                                                                         restaurant
                                                                     }
                                                                     link={`/restaurant/${restaurant.id}`}
-                                                                    onClick = {handleChangeCenterMap}
+                                                                    onClick={
+                                                                        handleChangeCenterMap
+                                                                    }
                                                                 />
                                                             )
                                                         )}
@@ -407,7 +418,9 @@ function TripId() {
                                                                     destinationTravel
                                                                 }
                                                                 link={`/destination-travel/${destinationTravel.id}`}
-                                                                onClick = {handleChangeCenterMap}
+                                                                onClick={
+                                                                    handleChangeCenterMap
+                                                                }
                                                             />
                                                         )
                                                     )}
@@ -419,12 +432,12 @@ function TripId() {
                         )}
                         <div className="mt-5">
                             <header className="font-bold text-xl mb-2">
-                                All Item
+                                {t('allItem')}
                             </header>
                             {currentTrip.hotels.length > 0 && (
                                 <div>
                                     <header className="w-full px-3 py-2 font-semibold">
-                                        Hotels
+                                        {t('hotel')}
                                     </header>
                                     <ul>
                                         {currentTrip.hotels.map(
@@ -433,7 +446,9 @@ function TripId() {
                                                     key={hotel.id}
                                                     data={hotel}
                                                     link={`/hotel/${hotel.id}`}
-                                                    onClick = {handleChangeCenterMap}
+                                                    onClick={
+                                                        handleChangeCenterMap
+                                                    }
                                                 />
                                             )
                                         )}
@@ -443,7 +458,7 @@ function TripId() {
                             {currentTrip.restaurants.length > 0 && (
                                 <div>
                                     <header className="w-full bg-slate-50 px-3 py-2 font-semibold">
-                                        Restaurants
+                                        {t('restaurant')}
                                     </header>
                                     <ul>
                                         {currentTrip.restaurants.map(
@@ -454,7 +469,9 @@ function TripId() {
                                                     }
                                                     data={restaurant}
                                                     link={`/restaurant/${restaurant.id}`}
-                                                    onClick = {handleChangeCenterMap}
+                                                    onClick={
+                                                        handleChangeCenterMap
+                                                    }
                                                 />
                                             )
                                         )}
@@ -465,7 +482,7 @@ function TripId() {
                                 0 && (
                                 <div>
                                     <header className="w-full bg-slate-50 px-3 py-2 font-semibold">
-                                        Destination Travels
+                                        {t('tour')}
                                     </header>
                                     <ul>
                                         {currentTrip.destinationTravels.map(
@@ -478,7 +495,9 @@ function TripId() {
                                                         destinationTravel
                                                     }
                                                     link={`/destination-travel/${destinationTravel.id}`}
-                                                    onClick = {handleChangeCenterMap}
+                                                    onClick={
+                                                        handleChangeCenterMap
+                                                    }
                                                 />
                                             )
                                         )}

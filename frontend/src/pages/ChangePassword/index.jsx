@@ -2,39 +2,46 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import { unwrapResult } from '@reduxjs/toolkit'
 import InputField from '@components/InputField'
 import Mybutton from '@components/MyButton'
-import { changePassword, loadingChangePassSelector, logout, selectUser } from '@pages/Auth/auth.slice'
+import {
+    changePassword,
+    loadingChangePassSelector,
+    logout,
+    selectUser
+} from '@pages/Auth/auth.slice'
 import React from 'react'
 import { useForm } from 'react-hook-form'
 import { useDispatch, useSelector } from 'react-redux'
 import { toast } from 'react-toastify'
 import * as yup from 'yup'
+import { useTranslation } from 'react-i18next'
 function ChangePassword() {
+    const { t } = useTranslation()
     const user = useSelector(selectUser)
     const loading = useSelector(loadingChangePassSelector)
     const dispatch = useDispatch()
     const schema = yup.object().shape({
         oldPassword: yup
             .string()
-            .required('Password is required')
+            .required(t('requiredPassword'))
             .matches(
                 // eslint-disable-next-line
                 /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/,
-                'Must Contain 8 Characters, One Uppercase, One Lowercase, One Number and One Special Case Character'
+                t('invalidPassword')
             ),
         newPassword: yup
             .string()
-            .required('Password is required')
+            .required(t('requiredPassword'))
             .matches(
                 // eslint-disable-next-line
                 /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/,
-                'Must Contain 8 Characters, One Uppercase, One Lowercase, One Number and One Special Case Character'
+                t('invalidPassword')
             ),
         confirmNewPassword: yup
             .string()
-            .required('ConfirmPassword is required')
+            .required(t('requiredConfirmPassword'))
             .oneOf(
                 [yup.ref('newPassword'), null],
-                'Passwords must match'
+                t('paswordNotMatch')
             )
     })
     const form = useForm({
@@ -50,7 +57,7 @@ function ChangePassword() {
         try {
             const res = await dispatch(changePassword(data))
             unwrapResult(res)
-            toast.success('Change password successful', {
+            toast.success(t('changePasswordSuccessful'), {
                 position: toast.POSITION.BOTTOM_CENTER,
                 autoClose: 1000,
                 hideProgressBar: true
@@ -67,7 +74,7 @@ function ChangePassword() {
     return (
         <div className="ml-[16%] w-[50%] pt-5">
             <header className="font-bold text-2xl mb-3 mt-5">
-                Change Password
+                {t('changePassword')}
             </header>
             <form onSubmit={form.handleSubmit(handleSubmit)}>
                 <div className="flex flex-col mt-5">
@@ -77,10 +84,10 @@ function ChangePassword() {
                                 className="block uppercase text-gray-600 text-xs font-bold mb-2"
                                 htmlFor="grid-password"
                             >
-                                Old Password
+                                {t('oldPassword')}
                             </label>
                             <InputField
-                                placeholder="Old Password"
+                                placeholder={t('oldPassword')}
                                 type="password"
                                 form={form}
                                 name="oldPassword"
@@ -93,10 +100,10 @@ function ChangePassword() {
                                 className="block uppercase text-gray-600  text-xs font-bold mb-2"
                                 htmlFor="grid-password"
                             >
-                                New Password
+                                {t('newPassword')}
                             </label>
                             <InputField
-                                placeholder="New Password"
+                                placeholder={t('newPassword')}
                                 type="password"
                                 form={form}
                                 name="newPassword"
@@ -109,10 +116,10 @@ function ChangePassword() {
                                 className="block uppercase text-gray-600  text-xs font-bold mb-2"
                                 htmlFor="grid-password"
                             >
-                                Confirm New Password
+                                {t('confirmPassword')}
                             </label>
                             <InputField
-                                placeholder="Confirm New Password"
+                                placeholder={t('confirmPassword')}
                                 type="password"
                                 form={form}
                                 name="confirmNewPassword"
@@ -126,7 +133,7 @@ function ChangePassword() {
                         type="submit"
                         isloading={+loading}
                     >
-                        Change
+                        {t('change')}
                     </Mybutton>
                 </div>
             </form>

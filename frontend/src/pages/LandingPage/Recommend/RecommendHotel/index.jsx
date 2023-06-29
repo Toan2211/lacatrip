@@ -10,8 +10,10 @@ import { useDispatch, useSelector } from 'react-redux'
 import { getHotelsClientLoadMore } from '@pages/HotelList/hotelclient.slice'
 import { paginationHotelClient } from '@pages/HotelList/hotelclient.slice'
 import RecommendSkeletonCard from '@components/RecommendSkeletonCard'
+import { useTranslation } from 'react-i18next'
 
 function RecommendHotel() {
+    const { t } = useTranslation()
     const dispatch = useDispatch()
     const hotels = useSelector(hotelsClientSelector)
     const loading = useSelector(loadingHotelClient)
@@ -35,9 +37,10 @@ function RecommendHotel() {
                     hotels.map((hotel, index) => (
                         <HotelCard key={index} data={hotel} />
                     ))}
-                {
-                    !!loading && Array.from(Array(8).keys()).map(index => <RecommendSkeletonCard key={index}/>)
-                }
+                {!!loading &&
+                    Array.from(Array(8).keys()).map(index => (
+                        <RecommendSkeletonCard key={index} />
+                    ))}
             </div>
             {pagination.page < pagination.totalPages && (
                 <div className="text-center mt-4">
@@ -46,7 +49,7 @@ function RecommendHotel() {
                         isloading={+loading}
                         onClick={handleLoadMoreClick}
                     >
-                        Load more
+                        {t('loadMore')}
                     </Mybutton>
                 </div>
             )}

@@ -6,6 +6,7 @@ import { IoCalendarOutline, IoLocationOutline } from 'react-icons/io5'
 import { useNavigate } from 'react-router'
 import Select from 'react-select'
 import { getDateString } from '@utils/getDateString'
+import { useTranslation } from 'react-i18next'
 const style = {
     control: base => ({
         ...base,
@@ -19,6 +20,7 @@ function SearchHotel({
     searchProvince,
     handleOnChangeProvince
 }) {
+    const { t } = useTranslation()
     const navigate = useNavigate()
     const [checkIn, setCheckIn] = useState(null)
     const [checkOut, setCheckOut] = useState(null)
@@ -33,10 +35,10 @@ function SearchHotel({
                 </span>
                 <div className="flex flex-col">
                     <span className="font-medium text-md">
-                        Check in
+                        {t('checkIn')}
                     </span>
                     <span className="text-gray-400 text-sm" ref={ref}>
-                        {value || 'Add Date'}
+                        {value || t('addDate')}
                     </span>
                 </div>
             </div>
@@ -53,10 +55,10 @@ function SearchHotel({
                 </span>
                 <div className="flex flex-col">
                     <span className="font-medium text-md">
-                        Check out
+                        {t('checkOut')}
                     </span>
                     <span className="text-gray-400 text-sm" ref={ref}>
-                        {value || 'Add Date'}
+                        {value || t('addDate')}
                     </span>
                 </div>
             </div>
@@ -80,11 +82,11 @@ function SearchHotel({
                 </span>
                 <div className="flex flex-col w-full">
                     <div className="font-medium text-md ml-2">
-                        Location
+                        {t('location')}
                     </div>
                     <Select
                         styles={style}
-                        placeholder={'Where are you going?'}
+                        placeholder={t('locationQuestion')}
                         options={options}
                         value={searchProvince}
                         onChange={handleOnChangeProvince}
@@ -124,7 +126,7 @@ function SearchHotel({
                         <span className="text-2xl">
                             <AiOutlineSearch />
                         </span>
-                        <span>Search</span>
+                        <span>{t('search')}</span>
                     </div>
                 </Mybutton>
             </div>

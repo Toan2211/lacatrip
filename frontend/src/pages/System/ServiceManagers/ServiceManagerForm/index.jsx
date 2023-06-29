@@ -22,7 +22,9 @@ import {
 } from '../servicemanager.slice'
 import { useLocation } from 'react-router-dom'
 import queryString from 'query-string'
+import { useTranslation } from 'react-i18next'
 function ServiceManagerForm({ onClose, open }) {
+    const { t } = useTranslation()
     const loading = useSelector(loadingServiceManager)
     const currentServiceManager = useSelector(
         currentServiceManagerSelector
@@ -32,16 +34,16 @@ function ServiceManagerForm({ onClose, open }) {
     const schema = yup.object().shape({
         email: yup
             .string()
-            .required('Email is required')
-            .email('Invalid email'),
-        firstname: yup.string().required('Firstname is required'),
-        lastname: yup.string().required('Lastname is required'),
-        gender: yup.string().required('Gender is required'),
-        country: yup.string().required('Country is required'),
+            .required(t('requiredEmail'))
+            .email(t('invalidEmail')),
+        firstname: yup.string().required(t('requiredFirstName')),
+        lastname: yup.string().required(t('requiredLastname')),
+        gender: yup.string().required(t('requiredGender')),
+        country: yup.string().required(t('requiredCountry')),
         phone: yup
             .string()
-            .required('Phone number is required')
-            .matches(phoneRegExp, 'Phone number is not valid')
+            .required(t('requiredPhone'))
+            .matches(phoneRegExp, t('invalidPhone'))
     })
     const form = useForm({
         defaultValues: {
@@ -119,7 +121,7 @@ function ServiceManagerForm({ onClose, open }) {
             unwrapResult(res)
             toast.success(
                 _.isEmpty(currentServiceManager)
-                    ? 'Create service manager successfully'
+                    ? t('createServiceManagerSuccessful')
                     : 'Update service manager successfully',
                 {
                     position: toast.POSITION.BOTTOM_CENTER,
@@ -140,10 +142,6 @@ function ServiceManagerForm({ onClose, open }) {
     return (
         <Drawer isOpen={open} onClose={onClose}>
             <header className="font-bold bg-slate-50 p-4">
-                {_.isEmpty(currentServiceManager)
-                    ? 'Create'
-                    : 'Update'}{' '}
-                Serivce Manager
             </header>
             <div className="p-5">
                 <form onSubmit={form.handleSubmit(handleSubmit)}>
@@ -156,10 +154,10 @@ function ServiceManagerForm({ onClose, open }) {
                                 className="block uppercase text-xs font-bold mb-2"
                                 htmlFor="grid-password"
                             >
-                                Firstname
+                                {t('firstName')}
                             </label>
                             <InputField
-                                placeholder="Firstname"
+                                placeholder={t('firstName')}
                                 type="input"
                                 form={form}
                                 name="firstname"
@@ -170,10 +168,10 @@ function ServiceManagerForm({ onClose, open }) {
                                 className="block uppercase text-xs font-bold mb-2"
                                 htmlFor="grid-password"
                             >
-                                Lastname
+                                {t('lastName')}
                             </label>
                             <InputField
-                                placeholder="Lastname"
+                                placeholder={t('lastName')}
                                 type="input"
                                 form={form}
                                 name="lastname"
@@ -185,7 +183,7 @@ function ServiceManagerForm({ onClose, open }) {
                             className="block uppercase text-xs font-bold mb-2"
                             htmlFor="grid-password"
                         >
-                            Gender
+                            {t('gender')}
                         </label>
                         <div className="flex space-x-4">
                             <label
@@ -198,7 +196,7 @@ function ServiceManagerForm({ onClose, open }) {
                                     value="1"
                                     id="male"
                                 />
-                                Male
+                                {t('male')}
                             </label>
                             <label
                                 htmlFor="female"
@@ -210,7 +208,7 @@ function ServiceManagerForm({ onClose, open }) {
                                     value="0"
                                     id="female"
                                 />
-                                Female
+                                {t('female')}
                             </label>
                         </div>
                         {form.formState.errors['gender'] && (
@@ -246,10 +244,10 @@ function ServiceManagerForm({ onClose, open }) {
                             className="block uppercase text-xs font-bold mb-2"
                             htmlFor="grid-password"
                         >
-                            PhoneNumber
+                            {t('phone')}
                         </label>
                         <InputField
-                            placeholder="Phone Number"
+                            placeholder={t('phone')}
                             type="input"
                             form={form}
                             name="phone"
@@ -260,10 +258,10 @@ function ServiceManagerForm({ onClose, open }) {
                             className="block uppercase text-xs font-bold mb-2"
                             htmlFor="grid-password"
                         >
-                            Country
+                            {t('country')}
                         </label>
                         <MySelect
-                            placeholder="Country"
+                            placeholder={t('country')}
                             form={form}
                             name="country"
                             options={countrys.map(country =>
@@ -274,17 +272,17 @@ function ServiceManagerForm({ onClose, open }) {
                             )}
                         />
                     </div>
-                    <div className="mt-6 text-right">
-                        <Mybutton
-                            className=" bg-blue-500 text-white active:bg-blue-800 text-sm font-bold uppercase px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 w-1/4 ease-linear transition-all duration-150"
-                            type="submit"
-                            isloading={+loading}
-                        >
-                            {_.isEmpty(currentServiceManager)
-                                ? 'Create'
-                                : 'Update'}
-                        </Mybutton>
-                    </div>
+                    {_.isEmpty(currentServiceManager) && (
+                        <div className="mt-6 text-right">
+                            <Mybutton
+                                className=" bg-blue-500 text-white active:bg-blue-800 text-sm font-bold uppercase px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 w-1/4 ease-linear transition-all duration-150"
+                                type="submit"
+                                isloading={+loading}
+                            >
+                                {t('create')}
+                            </Mybutton>
+                        </div>
+                    )}
                 </form>
             </div>
         </Drawer>

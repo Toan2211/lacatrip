@@ -15,7 +15,9 @@ import ToggleButton from '@components/ToggleButton/index.jsx'
 import { toast } from 'react-toastify'
 import { unwrapResult } from '@reduxjs/toolkit'
 import { Pagination, Table, Tooltip } from 'flowbite-react'
+import { useTranslation } from 'react-i18next'
 function Employees() {
+    const { t } = useTranslation()
     const dispatch = useDispatch()
     const navigate = useNavigate()
     const employees = useSelector(employeesSelector)
@@ -58,7 +60,7 @@ function Employees() {
         try {
             const res = dispatch(toggleStatusEmployee(employeeId))
             unwrapResult(res)
-            toast.success('Change status employee successful', {
+            toast.success(t('changeStatusEmployeeSuccess'), {
                 position: toast.POSITION.BOTTOM_CENTER,
                 autoClose: 1000,
                 hideProgressBar: true
@@ -72,8 +74,8 @@ function Employees() {
         }
     }
     useEffect(() => {
-        document.title = 'System Employees'
-    }, [])
+        document.title = t('manageEmployees')
+    }, [t])
     return (
         <div>
             <div className="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded bg-white min-h-[70vh]">
@@ -81,10 +83,13 @@ function Employees() {
                     <div className="flex flex-wrap items-center">
                         <div className="relative w-full px-4 max-w-full flex">
                             <h3 className="font-semibold text-lg text-blue-600">
-                                Manage Employees
+                                {t('manageEmployees')}
                             </h3>
                             <div className="relative flex flex-col items-center group w-10">
-                                <Tooltip content="Create" style="light">
+                                <Tooltip
+                                    content={t('create')}
+                                    style="light"
+                                >
                                     <button
                                         className="inline-flex items-center justify-center w-6 h-6 mr-2 text-indigo-100 transition-colors duration-150  bg-green-700 rounded-lg focus:shadow-outline hover:bg-green-500 ml-4"
                                         onClick={() =>
@@ -110,14 +115,14 @@ function Employees() {
                 <div className="block w-full overflow-x-auto h-[66vh]">
                     <Table hoverable={true}>
                         <Table.Head>
-                            <Table.HeadCell>Fullname</Table.HeadCell>
+                            <Table.HeadCell>{t('fullname')}</Table.HeadCell>
                             <Table.HeadCell>Email</Table.HeadCell>
                             <Table.HeadCell>
-                                PhoneNumber
+                                {t('phone')}
                             </Table.HeadCell>
-                            <Table.HeadCell>Gender</Table.HeadCell>
-                            <Table.HeadCell>Status</Table.HeadCell>
-                            <Table.HeadCell>Action</Table.HeadCell>
+                            <Table.HeadCell>{t('gender')}</Table.HeadCell>
+                            <Table.HeadCell>{t('status')}</Table.HeadCell>
+                            <Table.HeadCell></Table.HeadCell>
                         </Table.Head>
                         <Table.Body className="divide-y">
                             {employees &&
@@ -137,8 +142,8 @@ function Employees() {
                                         </Table.Cell>
                                         <Table.Cell>
                                             {employee.gender
-                                                ? 'Male'
-                                                : 'Female'}
+                                                ? t('male')
+                                                : t('female')}
                                         </Table.Cell>
                                         <Table.Cell>
                                             <ToggleButton

@@ -14,7 +14,9 @@ import {
 } from '../bookingdestinationtravel.slice'
 import { BsFillTicketFill } from 'react-icons/bs'
 import BookingDestinationCard from '../BookingDestinationCard'
+import { useTranslation } from 'react-i18next'
 function BookingListDestinationTravel() {
+    const {t} = useTranslation()
     const location = useLocation()
     const dispatch = useDispatch()
     const navigate = useNavigate()
@@ -42,14 +44,14 @@ function BookingListDestinationTravel() {
         dispatch(getAllBookingDestinationTravelMe(queryParams))
     }, [queryParams, dispatch])
     useEffect(() => {
-        document.title = 'Booking List Destination Travel'
-    }, [])
+        document.title = t('bookingDestinationTravel')
+    }, [t])
     if (loading) return <div>Loading...</div>
     return (
         <div className="max-w-[1535px] px-8 py-5 mt-[100px] md:mt-40 md:px-10 lg:mt-16 lg:px-80 mb-[20vh] pb-[100px] min-h-[100vh]">
             <div className="flex justify-between items-center mb-3">
                 <header className=" text-2xl font-semibold mb-4 flex gap-5 items-center">
-                    <span>Bookings</span>
+                    <span>{t('bookings')}</span>
                     <ul className="flex gap-2">
                         <ul className="flex gap-2">
                             <NavLink
@@ -65,7 +67,7 @@ function BookingListDestinationTravel() {
                                 <span>
                                     <FaHotel />
                                 </span>
-                                <span>Booking Hotel</span>
+                                <span>{t('bookingHotel')}</span>
                             </NavLink>
                             <NavLink
                                 to={path.bookingmeDestinationTravel}
@@ -81,7 +83,7 @@ function BookingListDestinationTravel() {
                                     <BsFillTicketFill />
                                 </span>
                                 <span>
-                                    Booking Destination Travel
+                                    {t('bookingDestinationTravel')}
                                 </span>
                             </NavLink>
                         </ul>

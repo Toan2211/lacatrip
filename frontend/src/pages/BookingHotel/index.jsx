@@ -15,8 +15,10 @@ import { currentRoomClientSelector } from '@pages/HotelList/hotelclient.slice'
 import { createBookingHotel } from './bookinghotelclient.slice'
 import { unwrapResult } from '@reduxjs/toolkit'
 import { getLengthDay } from '@utils/getDates'
+import { useTranslation } from 'react-i18next'
 
 function BookingHotel() {
+    const { t } = useTranslation()
     const location = useLocation()
     const dispatch = useDispatch()
     const currentHotel = useSelector(currentHotelClientSelector)
@@ -86,15 +88,15 @@ function BookingHotel() {
             setCountChildrens(prev => prev - 1)
     }
     useEffect(() => {
-        document.title = 'Booking Hotel'
-    }, [])
+        document.title = t('bookingHotel')
+    }, [t])
     if (_.isEmpty(currentHotel) || _.isEmpty(currentRoom))
         return <div>Loading...</div>
     return (
         <div className="max-w-[1535px] px-8 py-5 mt-[100px] md:mt-40 md:px-10 lg:mt-16 lg:px-20 pb-[100px] bg-slate-50">
             <div className="w-[40%] mx-auto bg-white">
                 <header className=" font-bold text-2xl pb-5 bg-slate-50">
-                    Your booking
+                    {t('yourBooking')}
                 </header>
                 <div className="px-5 py-8 border rounded-md border-gray-300 shadow-md">
                     <div className=" border-b border-slate-300 pb-5">

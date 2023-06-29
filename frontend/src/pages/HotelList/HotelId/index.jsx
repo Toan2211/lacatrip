@@ -15,8 +15,10 @@ import RoomCard from './RoomCard'
 import LikeAndShare from '@components/LikeAndShare'
 import Comment from '@pages/Comment'
 import SearchForm from './SearchForm'
+import { useTranslation } from 'react-i18next'
 
 function HotelId() {
+    const { t } = useTranslation()
     const dispatch = useDispatch()
     const id = useParams().id
     const currentHotel = useSelector(currentHotelClientSelector)
@@ -126,14 +128,14 @@ function HotelId() {
                 <div className="flex-1">
                     <div>
                         <header className="font-semibold text-xl mb-3">
-                            About this hotel
+                            {t('descriptionHotel')}
                         </header>
                         <span>{currentHotel.description}</span>
                     </div>
                     <div className="border-t-2 border-slate-200 my-4"></div>
                     <div>
                         <header className="font-semibold text-xl mb-3">
-                            Property amenities
+                            {t('amenities')}
                         </header>
                         <ul className="grid gap-1 grid-cols-2 lg:grid-cols-3">
                             {currentHotel.amenitieshotel.map(item => (
@@ -152,7 +154,7 @@ function HotelId() {
                     <div className="border-t-2 border-slate-200 my-4"></div>
                     <div>
                         <header className="font-semibold text-xl mb-3">
-                            Hotel Style
+                            {t('hotelStyle')}
                         </header>
                         <ul className="flex flex-col">
                             {currentHotel.hotelStyle
@@ -170,7 +172,7 @@ function HotelId() {
                     <div className="border-t-2 border-slate-200 my-4"></div>
                     <div>
                         <header className="font-semibold text-xl mb-3">
-                            Availability
+                            {t('detailRoom')}
                         </header>
                         <div className="flex flex-col gap-5">
                             {roomAvailable &&

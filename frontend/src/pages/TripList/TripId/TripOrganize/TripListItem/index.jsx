@@ -7,6 +7,7 @@ import {
     DESTINATIONTYPE,
     RESTAURANTTYPE
 } from '@constants/instanceType'
+import { useTranslation } from 'react-i18next'
 
 function TripListItem({
     isOpen,
@@ -14,6 +15,7 @@ function TripListItem({
     dataOfDate,
     handleUpdateDataOfDate
 }) {
+    const { t } = useTranslation()
     const [dataLocal, setDataLocal] = useState()
     const [listCheckedHotel, setListCheckedHotel] = useState([])
     const [listCheckedRestaurant, setListCheckedRestaurant] =
@@ -114,20 +116,20 @@ function TripListItem({
             <div className="w-full h-[300vh] pb-[500px] z-100">
                 <div className=" mt-[80px] h-[60px] bg-slate-50 flex justify-between px-3 py-3 mb-3">
                     <div className="font-semibold">
-                        Trip List Item
+                        {t('tripListItem')}
                     </div>
-                    <div className="flex gap-2">
+                    <div className="flex gap-2 w-[200px]">
                         <button
                             onClick={handleOnSaveClick}
                             className="bg-blue-500 text-white active:bg-blue-800 text-sm font-bold uppercase px-2 py-1 rounded-lg shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 w-full ease-linear transition-all duration-150"
                         >
-                            Save
+                            {t('save')}
                         </button>
                         <button
                             onClick={onClose}
                             className=" bg-gray-300 text-white active:bg-gray-400 text-sm font-bold uppercase px-2 py-1 rounded-lg shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 w-full ease-linear transition-all duration-150"
                         >
-                            Cancel
+                            {t('cancel')}
                         </button>
                     </div>
                 </div>
@@ -135,7 +137,7 @@ function TripListItem({
                     {currentTrip.hotels.length > 0 && (
                         <div>
                             <header className="w-full bg-slate-50 px-3 py-2 font-semibold">
-                                Hotels
+                                {t('hotel')}
                             </header>
                             <ul>
                                 {currentTrip.hotels.map(
@@ -152,7 +154,10 @@ function TripListItem({
                                                             index
                                                         ]
                                                     }
-                                                    id={hotel.id + dataOfDate.date}
+                                                    id={
+                                                        hotel.id +
+                                                        dataOfDate.date
+                                                    }
                                                     value={hotel.id}
                                                     onChange={e =>
                                                         handleOnChangeCheckbox(
@@ -165,7 +170,10 @@ function TripListItem({
                                             </div>
                                             <label
                                                 className="flex flex-col cursor-pointer flex-1 w-full"
-                                                htmlFor={hotel.id + dataOfDate.date}
+                                                htmlFor={
+                                                    hotel.id +
+                                                    dataOfDate.date
+                                                }
                                             >
                                                 <span className="text-sm font-semibold">
                                                     {hotel.name}
@@ -183,7 +191,7 @@ function TripListItem({
                     {currentTrip.restaurants.length > 0 && (
                         <div>
                             <header className="w-full bg-slate-50 px-3 py-2 font-semibold">
-                                Restaurants
+                                {t('restaurant')}
                             </header>
                             <ul>
                                 {currentTrip.restaurants.map(
@@ -195,7 +203,10 @@ function TripListItem({
                                             <div>
                                                 <input
                                                     type="checkbox"
-                                                    id={restaurant.id + dataOfDate.date}
+                                                    id={
+                                                        restaurant.id +
+                                                        dataOfDate.date
+                                                    }
                                                     checked={
                                                         listCheckedRestaurant[
                                                             index
@@ -216,7 +227,8 @@ function TripListItem({
                                             <label
                                                 className="flex flex-col cursor-pointer flex-1 w-full"
                                                 htmlFor={
-                                                    restaurant.id + dataOfDate.date
+                                                    restaurant.id +
+                                                    dataOfDate.date
                                                 }
                                             >
                                                 <span className="text-sm font-semibold">
@@ -237,7 +249,7 @@ function TripListItem({
                     {currentTrip.destinationTravels.length > 0 && (
                         <div>
                             <header className="w-full bg-slate-50 px-3 py-2 font-semibold">
-                                Destination Travels
+                                {t('tour')}
                             </header>
                             <ul>
                                 {currentTrip.destinationTravels.map(
@@ -250,7 +262,8 @@ function TripListItem({
                                                 <input
                                                     type="checkbox"
                                                     id={
-                                                        destinationTravel.id + dataOfDate.date
+                                                        destinationTravel.id +
+                                                        dataOfDate.date
                                                     }
                                                     checked={
                                                         listCheckedDestination[
@@ -272,7 +285,8 @@ function TripListItem({
                                             <label
                                                 className="flex flex-col cursor-pointer flex-1 w-full"
                                                 htmlFor={
-                                                    destinationTravel.id + dataOfDate.date
+                                                    destinationTravel.id +
+                                                    dataOfDate.date
                                                 }
                                             >
                                                 <span className="text-sm font-semibold">

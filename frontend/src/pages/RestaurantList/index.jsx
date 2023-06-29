@@ -10,8 +10,10 @@ import {
 import { RESTAURANTTYPE } from '@constants/instanceType'
 import queryString from 'query-string'
 import Sidebar from './Sidebar'
+import { useTranslation } from 'react-i18next'
 
 function RestaurantList() {
+    const { t } = useTranslation()
     const location = useLocation()
     const provinces = useSelector(provincesSelector)
     const [province, setProvince] = useState('')
@@ -51,7 +53,7 @@ function RestaurantList() {
             <div className="flex items-center h-[330px] pb-4 relative">
                 <div className="flex justify-center items-center absolute z-10 w-full">
                     <div className="font-semibold text-2xl text-white">
-                        Restaurants in {province.name}
+                        {t('restaurant')} {t('in')} {province.name}
                     </div>
                 </div>
                 <div className="w-full h-full">

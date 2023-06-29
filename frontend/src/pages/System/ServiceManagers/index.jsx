@@ -13,8 +13,10 @@ import { Pagination, Table, Tooltip } from 'flowbite-react'
 import Mybutton from '@components/MyButton'
 import ToggleButton from '@components/ToggleButton'
 import ServiceManagerForm from './ServiceManagerForm'
+import { useTranslation } from 'react-i18next'
 
 function ServiceManger() {
+    const { t } = useTranslation()
     const dispatch = useDispatch()
     const navigate = useNavigate()
     const serviceManagers = useSelector(serviceManagersSelector)
@@ -53,8 +55,8 @@ function ServiceManger() {
         dispatch(setCurrentServicemanager({}))
     }
     useEffect(() => {
-        document.title = 'System Service Managers'
-    }, [])
+        document.title = t('manageServiceManagers')
+    }, [t])
     return (
         <div>
             <div className="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded bg-white min-h-[70vh]">
@@ -62,11 +64,11 @@ function ServiceManger() {
                     <div className="flex flex-wrap items-center">
                         <div className="relative w-full px-4 max-w-full flex">
                             <h3 className="font-semibold text-lg text-blue-600">
-                                Manage ServiceManagers
+                                {t('manageServiceManagers')}
                             </h3>
                             <div className="relative flex flex-col items-center group w-10">
                                 <Tooltip
-                                    content="Create"
+                                    content={t('create')}
                                     style="light"
                                 >
                                     <button
@@ -94,14 +96,20 @@ function ServiceManger() {
                 <div className="block w-full overflow-x-auto h-[66vh]">
                     <Table hoverable={true}>
                         <Table.Head>
-                            <Table.HeadCell>Fullname</Table.HeadCell>
+                            <Table.HeadCell>
+                                {t('fullname')}
+                            </Table.HeadCell>
                             <Table.HeadCell>Email</Table.HeadCell>
                             <Table.HeadCell>
-                                PhoneNumber
+                                {t('phone')}
                             </Table.HeadCell>
-                            <Table.HeadCell>Gender</Table.HeadCell>
-                            <Table.HeadCell>Status</Table.HeadCell>
-                            <Table.HeadCell>Action</Table.HeadCell>
+                            <Table.HeadCell>
+                                {t('gender')}
+                            </Table.HeadCell>
+                            <Table.HeadCell>
+                                {t('status')}
+                            </Table.HeadCell>
+                            <Table.HeadCell></Table.HeadCell>
                         </Table.Head>
                         <Table.Body className="divide-y">
                             {serviceManagers &&
@@ -131,8 +139,8 @@ function ServiceManger() {
                                             <Table.Cell>
                                                 {serviceManager.user
                                                     .gender
-                                                    ? 'Male'
-                                                    : 'Female'}
+                                                    ? t('male')
+                                                    : t('female')}
                                             </Table.Cell>
                                             <Table.Cell>
                                                 <ToggleButton

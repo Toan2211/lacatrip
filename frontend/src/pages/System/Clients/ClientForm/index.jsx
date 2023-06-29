@@ -8,8 +8,10 @@ import { useForm } from 'react-hook-form'
 import _ from 'lodash'
 import MySelect from '@components/MySelect'
 import countrys from '@constants/countrys'
+import { useTranslation } from 'react-i18next'
 
 function ClientForm({ onClose, open }) {
+    const { t } = useTranslation()
     const currentClient = useSelector(currentClientSelector)
     const form = useForm({
         defaultValues: {
@@ -27,14 +29,13 @@ function ClientForm({ onClose, open }) {
             form.setValue('email', currentClient.email)
             form.setValue('firstname', currentClient.firstname)
             form.setValue('lastname', currentClient.lastname)
-            form.setValue(
-                'gender',
-                currentClient.gender ? '1' : '0'
-            )
+            form.setValue('gender', currentClient.gender ? '1' : '0')
             form.setValue('country', currentClient.country)
             form.setValue(
                 'avatar',
-                currentClient.avatar ? currentClient.avatar : undefined
+                currentClient.avatar
+                    ? currentClient.avatar
+                    : undefined
             )
             form.setValue('phone', currentClient.phone)
         }
@@ -45,10 +46,10 @@ function ClientForm({ onClose, open }) {
     return (
         <Drawer isOpen={open} onClose={onClose}>
             <header className="font-bold bg-slate-50 p-4">
-                View Client
+                {t('viewClient')}
             </header>
             <div className="p-5">
-                <form >
+                <form>
                     <div className="relative w-full mb-8">
                         <AvatarUpload form={form} name={'avatar'} />
                     </div>
@@ -58,10 +59,10 @@ function ClientForm({ onClose, open }) {
                                 className="block uppercase text-xs font-bold mb-2"
                                 htmlFor="grid-password"
                             >
-                                Firstname
+                                {t('firstName')}
                             </label>
                             <InputField
-                                placeholder="Firstname"
+                                placeholder={t('firstName')}
                                 type="input"
                                 form={form}
                                 name="firstname"
@@ -72,10 +73,10 @@ function ClientForm({ onClose, open }) {
                                 className="block uppercase text-xs font-bold mb-2"
                                 htmlFor="grid-password"
                             >
-                                Lastname
+                                {t('lastName')}
                             </label>
                             <InputField
-                                placeholder="Lastname"
+                                placeholder={t('lastName')}
                                 type="input"
                                 form={form}
                                 name="lastname"
@@ -87,7 +88,7 @@ function ClientForm({ onClose, open }) {
                             className="block uppercase text-xs font-bold mb-2"
                             htmlFor="grid-password"
                         >
-                            Gender
+                            {t('gender')}
                         </label>
                         <div className="flex space-x-4">
                             <label
@@ -100,7 +101,7 @@ function ClientForm({ onClose, open }) {
                                     value="1"
                                     id="male"
                                 />
-                                Male
+                                {t('male')}
                             </label>
                             <label
                                 htmlFor="female"
@@ -112,7 +113,7 @@ function ClientForm({ onClose, open }) {
                                     value="0"
                                     id="female"
                                 />
-                                Female
+                                {t('female')}
                             </label>
                         </div>
                         {form.formState.errors['gender'] && (
@@ -148,10 +149,10 @@ function ClientForm({ onClose, open }) {
                             className="block uppercase text-xs font-bold mb-2"
                             htmlFor="grid-password"
                         >
-                            PhoneNumber
+                            {t('phone')}
                         </label>
                         <InputField
-                            placeholder="Phone Number"
+                            placeholder={t('phone')}
                             type="input"
                             form={form}
                             name="phone"
@@ -162,10 +163,10 @@ function ClientForm({ onClose, open }) {
                             className="block uppercase text-xs font-bold mb-2"
                             htmlFor="grid-password"
                         >
-                            Country
+                            {t('country')}
                         </label>
                         <MySelect
-                            placeholder="Country"
+                            placeholder={t('country')}
                             form={form}
                             name="country"
                             options={countrys.map(country =>

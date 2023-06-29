@@ -9,8 +9,10 @@ import { Link, useLocation } from 'react-router-dom'
 import { Pagination } from 'swiper'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import { AiFillStar } from 'react-icons/ai'
+import { useTranslation } from 'react-i18next'
 
 function ItemListInstance({ item, type }) {
+    const {t} = useTranslation()
     const location = useLocation()
     const [link, setLink] = useState('')
     useEffect(() => {
@@ -70,7 +72,7 @@ function ItemListInstance({ item, type }) {
                         <div className=" flex items-center justify-center">
                             <div>
                                 <div className="text-sm text-gray-500">
-                                    from
+                                    {t('from')}
                                 </div>
 
                                 {type === DESTINATIONTYPE && (
@@ -79,7 +81,7 @@ function ItemListInstance({ item, type }) {
                                             ${item.price}
                                         </div>
                                         <div className="text-sm text-gray-500">
-                                            per adult
+                                            / {t('people')}
                                         </div>
                                     </>
                                 )}
@@ -89,7 +91,7 @@ function ItemListInstance({ item, type }) {
                                             ${item.cheapestPrice}
                                         </div>
                                         <div className="text-sm text-gray-500">
-                                            per room
+                                            / {t('room')}
                                         </div>
                                     </>
                                 )}
@@ -99,13 +101,13 @@ function ItemListInstance({ item, type }) {
                                             ${item.minPrice}
                                         </div>
                                         <div className="text-sm text-gray-500">
-                                            to
+                                            {t('to')}
                                         </div>
                                         <div className=" font-semibold text-xl">
                                             ${item.maxPrice}
                                         </div>
                                         <div className=" text-sm text-gray-500">
-                                            per dish
+                                            / {t('dish')}
                                         </div>
                                     </>
                                 )}
@@ -116,7 +118,7 @@ function ItemListInstance({ item, type }) {
                                 to={link}
                                 className="bg-blue-500 text-white active:bg-blue-800 text-sm font-bold uppercase px-6 py-2 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 w-[100px] ease-linear transition-all duration-150"
                             >
-                                Detail
+                                {t('detail')}
                             </Link>
                         </div>
                     </div>
