@@ -3,10 +3,12 @@ import {
     readNotification
 } from '@pages/Notification/notification.slice'
 import React, { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { useDispatch } from 'react-redux'
 import { Link } from 'react-router-dom'
 
 function NotificationCard({ notification }) {
+    const { t } = useTranslation()
     const dispatch = useDispatch()
     const handleActionClick = event => {
         event.preventDefault()
@@ -43,7 +45,7 @@ function NotificationCard({ notification }) {
             </div>
             <div className="flex-1" onClick={handleReadNotify}>
                 <div className=" font-bold text-lg">
-                    Booking Request
+                    {t('bookingRequest')}
                 </div>
                 <div>
                     <span className="font-bold text-sm">
@@ -72,13 +74,13 @@ function NotificationCard({ notification }) {
                             className="hover:bg-slate-100 p-1"
                             onClick={handleReadNotify}
                         >
-                            Mark already read
+                            {t('markReaded')}
                         </li>
                         <li
                             className="hover:bg-slate-100 p-1"
                             onClick={handleDeleteNotify}
                         >
-                            Delete
+                            {t('delete')}
                         </li>
                     </ul>
                 )}

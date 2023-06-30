@@ -14,8 +14,11 @@ import { useDispatch, useSelector } from 'react-redux'
 import { toast } from 'react-toastify'
 import * as yup from 'yup'
 import { useTranslation } from 'react-i18next'
+import { useNavigate } from 'react-router-dom'
+import { path } from '@constants/path'
 function ChangePassword() {
     const { t } = useTranslation()
+    const navigate = useNavigate()
     const user = useSelector(selectUser)
     const loading = useSelector(loadingChangePassSelector)
     const dispatch = useDispatch()
@@ -62,6 +65,7 @@ function ChangePassword() {
                 autoClose: 1000,
                 hideProgressBar: true
             })
+            navigate(path.signin)
             dispatch(logout())
         } catch (error) {
             toast.error(error.message, {

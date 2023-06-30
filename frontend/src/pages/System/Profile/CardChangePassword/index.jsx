@@ -11,33 +11,38 @@ import { changePassword } from '@pages/Auth/auth.slice'
 import { logout } from '@pages/Auth/auth.slice'
 import { unwrapResult } from '@reduxjs/toolkit'
 import { loadingChangePassSelector } from '@pages/Auth/auth.slice'
+import { path } from '@constants/path'
+import { useNavigate } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 function CardChangePassword() {
+    const { t } = useTranslation()
+    const navigate = useNavigate()
     const user = useSelector(selectUser)
     const loading = useSelector(loadingChangePassSelector)
     const dispatch = useDispatch()
     const schema = yup.object().shape({
         oldPassword: yup
             .string()
-            .required('Password is required')
+            .required(t('requiredPassword'))
             .matches(
                 // eslint-disable-next-line
                 /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/,
-                'Must Contain 8 Characters, One Uppercase, One Lowercase, One Number and One Special Case Character'
+                t('invalidPassword')
             ),
         newPassword: yup
             .string()
-            .required('Password is required')
+            .required(t('requiredPassword'))
             .matches(
                 // eslint-disable-next-line
                 /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/,
-                'Must Contain 8 Characters, One Uppercase, One Lowercase, One Number and One Special Case Character'
+                t('invalidPassword')
             ),
         confirmNewPassword: yup
             .string()
-            .required('ConfirmPassword is required')
+            .required(t('requiredConfirmPassword'))
             .oneOf(
                 [yup.ref('newPassword'), null],
-                'Passwords must match'
+                t('paswordNotMatch')
             )
     })
     const form = useForm({
@@ -53,11 +58,12 @@ function CardChangePassword() {
         try {
             const res = await dispatch(changePassword(data))
             unwrapResult(res)
-            toast.success('Change password successful', {
+            toast.success(t('changePasswordSuccessful'), {
                 position: toast.POSITION.BOTTOM_CENTER,
                 autoClose: 1000,
                 hideProgressBar: true
             })
+            navigate(path.signin)
             dispatch(logout())
         } catch (error) {
             toast.error(error.message, {
@@ -73,14 +79,14 @@ function CardChangePassword() {
                 <div className="rounded-t bg-white mb-0 px-6 py-6">
                     <div className="text-center flex justify-between ">
                         <h6 className="text-xl font-bold">
-                            Change Password
+                            {t('changePassword')}
                         </h6>
                         <Mybutton
                             className=" bg-blue-500 text-white active:bg-blue-800 text-sm font-bold uppercase px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 w-1/8 ease-linear transition-all duration-150"
                             type="submit"
                             isloading={+loading}
                         >
-                            Change
+                            {t('change')}
                         </Mybutton>
                     </div>
                 </div>
@@ -92,10 +98,10 @@ function CardChangePassword() {
                                     className="block uppercase text-gray-600 text-xs font-bold mb-2"
                                     htmlFor="grid-password"
                                 >
-                                    Old Password
+                                    {t('oldPassword')}
                                 </label>
                                 <InputField
-                                    placeholder="Old Password"
+                                    placeholder={t('oldPassword')}
                                     type="password"
                                     form={form}
                                     name="oldPassword"
@@ -108,10 +114,10 @@ function CardChangePassword() {
                                     className="block uppercase text-gray-600  text-xs font-bold mb-2"
                                     htmlFor="grid-password"
                                 >
-                                    New Password
+                                    {t('newPassword')}
                                 </label>
                                 <InputField
-                                    placeholder="New Password"
+                                    placeholder={t('newPassword')}
                                     type="password"
                                     form={form}
                                     name="newPassword"
@@ -124,10 +130,10 @@ function CardChangePassword() {
                                     className="block uppercase text-gray-600  text-xs font-bold mb-2"
                                     htmlFor="grid-password"
                                 >
-                                    Confirm New Password
+                                    {t('confirmPassword')}
                                 </label>
                                 <InputField
-                                    placeholder="Confirm New Password"
+                                    placeholder={t('confirmPassword')}
                                     type="password"
                                     form={form}
                                     name="confirmNewPassword"

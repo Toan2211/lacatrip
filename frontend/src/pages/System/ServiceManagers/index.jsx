@@ -70,6 +70,7 @@ function ServiceManger() {
                                 <Tooltip
                                     content={t('create')}
                                     style="light"
+                                    className='w-[80px]'
                                 >
                                     <button
                                         className="inline-flex items-center justify-center w-6 h-6 mr-2 text-indigo-100 transition-colors duration-150  bg-green-700 rounded-lg focus:shadow-outline hover:bg-green-500 ml-4"

@@ -5,11 +5,13 @@ import { useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import { selectUser } from '@pages/Auth/auth.slice'
 import CardPaymentAccount from './CardPaymentAccount'
+import { useTranslation } from 'react-i18next'
 
 function Profile() {
+    const { t } = useTranslation()
     useEffect(() => {
-        document.title = 'System Profile'
-    }, [])
+        document.title = t('systemProfile')
+    }, [t])
     const user = useSelector(selectUser)
     return (
         <div>

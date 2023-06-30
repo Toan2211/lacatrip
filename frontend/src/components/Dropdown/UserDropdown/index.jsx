@@ -39,7 +39,9 @@ const UserDropdown = () => {
         setDropdownPopoverShow(false)
     }
     const handleLogOut = () => {
+        navigate(path.signin)
         dispatch(logout())
+
         window.location.reload(true)
     }
     return (

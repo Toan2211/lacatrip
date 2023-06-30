@@ -5,6 +5,7 @@ import { currentRoomSelector } from '../room.slice'
 import { currentHotelSelector } from '../../hotel.slice'
 import Mybutton from '@components/MyButton'
 import ToggleButton from '@components/ToggleButton'
+import { useTranslation } from 'react-i18next'
 const DetailRoomCard = ({ roomDetail }) => {
     return (
         <li className="flex gap-4 mb-3 items-center">
@@ -21,12 +22,14 @@ const DetailRoomCard = ({ roomDetail }) => {
     )
 }
 function RoomDetailForm({ onClose, open }) {
+    const { t } = useTranslation()
     const currentHotel = useSelector(currentHotelSelector)
     const currentRoom = useSelector(currentRoomSelector)
     return (
         <Drawer isOpen={open} onClose={onClose}>
             <header className="font-bold bg-slate-50 p-4">
-                Manage room type {currentRoom && currentRoom.title} of{' '}
+                {t('manageRoomType')}{' '}
+                {currentRoom && currentRoom.title} {t('of')}{' '}
                 {currentHotel.name}
             </header>
             <ul className="p-6">
@@ -50,7 +53,7 @@ function RoomDetailForm({ onClose, open }) {
                             className=" bg-blue-500 text-white active:bg-blue-800 text-sm font-bold uppercase px-3 py-2 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
                             type="button"
                         >
-                            Add Room Detail
+                            {t('add') + ' ' + t('room')}
                         </Mybutton>
                     </div>
                 </div>

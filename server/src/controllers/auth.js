@@ -25,7 +25,7 @@ const signup = async (req, res) => {
                 .json({ message: 'This email already exists.' })        
         req.body.roleId = Number(req.body.roleId)
         req.body.confirmtoken = crypto.randomBytes(64).toString('hex')
-        req.avatar = 'https://res.cloudinary.com/djgkj9nli/image/upload/v1681614915/lacatrip/lhwrnxjhgw5uhrvinh6r.jpg'
+        req.body.avatar = 'https://res.cloudinary.com/djgkj9nli/image/upload/v1681614915/lacatrip/lhwrnxjhgw5uhrvinh6r.jpg'
         const user = await userService.create(req.body)
         await serviceManagerService.create(user.id)
         await sendEmailConfirm({

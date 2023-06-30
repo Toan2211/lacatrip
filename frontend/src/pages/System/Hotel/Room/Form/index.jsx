@@ -17,27 +17,35 @@ import {
 import _ from 'lodash'
 import { unwrapResult } from '@reduxjs/toolkit'
 import OnePhotoUpload from '@components/OnePhotoUpload'
+import { useTranslation } from 'react-i18next'
 // eslint-disable-next-line no-useless-escape
 function RoomForm({ onClose, open }) {
+    const { t } = useTranslation()
     const currentHotel = useSelector(currentHotelSelector)
     const currentRoom = useSelector(currentRoomSelector)
     const dispatch = useDispatch()
     const schema = yup.object().shape({
         // roomNo: yup.string().required('Room No is required'),
-        title: yup.string().required('Name is required'),
-        description: yup.string().required('Description is required'),
+        title: yup.string().required(t('requiredName')),
+        description: yup
+            .string()
+            .required(
+                t('requiredDescription') +
+                    ' ' +
+                    t('room').toLocaleLowerCase()
+            ),
         price: yup
             .number()
-            .typeError('Price must be number')
-            .required('Price is required'),
+            .typeError(t('invalidPrice'))
+            .required(t('requiredPrice')),
         originalPrice: yup
             .number()
-            .typeError('Original Price must be number')
-            .required('Original Price is required'),
+            .typeError(t('invalidOriginalPrice'))
+            .required(t('requiredOriginalPrice')),
         adultCount: yup
             .number()
-            .typeError('adultCount must be number')
-            .required('adultCounte is required')
+            .typeError(t('invalid'))
+            .required(t('required'))
     })
     const form = useForm({
         defaultValues: {
@@ -96,6 +104,7 @@ function RoomForm({ onClose, open }) {
                 if (typeof data.image !== 'string')
                     formData.append('image', data.image)
                 if (_.isEmpty(currentRoom)) {
+                    if (!data.roomNo) return
                     if (!data.roomNo.includes(','))
                         formData.append('roomNo', data.roomNo)
                     else
@@ -105,7 +114,7 @@ function RoomForm({ onClose, open }) {
                     await dispatch(createRoom(formData)).then(res =>
                         unwrapResult(res)
                     )
-                    toast.success('Create rooms successful !', {
+                    toast.success(`${t('create')} ${t('room')}  ${t('successfully')}`, {
                         position: toast.POSITION.BOTTOM_CENTER,
                         autoClose: 1000,
                         hideProgressBar: true
@@ -115,7 +124,7 @@ function RoomForm({ onClose, open }) {
                     await dispatch(updateRoom(formData)).then(res =>
                         unwrapResult(res)
                     )
-                    toast.success('Update room successful !', {
+                    toast.success(`${t('update')} ${t('room')}  ${t('successfully')}`, {
                         position: toast.POSITION.BOTTOM_CENTER,
                         autoClose: 1000,
                         hideProgressBar: true
@@ -160,7 +169,7 @@ function RoomForm({ onClose, open }) {
                                 Room No
                             </label>
                             <InputField
-                                placeholder="Please split room no by comma(,)"
+                                placeholder={t('roomNoPlaceHolder')}
                                 type="input"
                                 form={form}
                                 name="roomNo"
@@ -174,10 +183,10 @@ function RoomForm({ onClose, open }) {
                             className="block uppercase text-xs font-bold mb-2"
                             htmlFor="grid-password"
                         >
-                            Title
+                            {t('name')}
                         </label>
                         <InputField
-                            placeholder="Title"
+                            placeholder={t('name')}
                             type="input"
                             form={form}
                             name="title"
@@ -188,10 +197,10 @@ function RoomForm({ onClose, open }) {
                             className="block uppercase text-sm font-bold mb-2"
                             htmlFor="grid-password"
                         >
-                            Description
+                            {t('description')}
                         </label>
                         <TextArea
-                            placeholder="Description Hotel..."
+                            placeholder={t('description')}
                             form={form}
                             name="description"
                             rows={2}
@@ -203,10 +212,10 @@ function RoomForm({ onClose, open }) {
                                 className="block uppercase text-xs font-bold mb-2"
                                 htmlFor="grid-password"
                             >
-                                Price
+                                {t('price')}
                             </label>
                             <InputField
-                                placeholder="Price"
+                                placeholder={t('price')}
                                 type="number"
                                 form={form}
                                 name="price"
@@ -217,10 +226,10 @@ function RoomForm({ onClose, open }) {
                                 className="block uppercase text-xs font-bold mb-2"
                                 htmlFor="grid-password"
                             >
-                                Original Price
+                                {t('originalPrice')}
                             </label>
                             <InputField
-                                placeholder="Price"
+                                placeholder={t('originalPrice')}
                                 type="number"
                                 form={form}
                                 name="originalPrice"
@@ -232,10 +241,10 @@ function RoomForm({ onClose, open }) {
                             className="block uppercase text-xs font-bold mb-2"
                             htmlFor="grid-password"
                         >
-                            Adults Limit
+                            {`${t('adult')} ${t('limit')}`}
                         </label>
                         <InputField
-                            placeholder="Max adults"
+                            placeholder={`${t('adult')} ${t('limit')}`}
                             type="number"
                             form={form}
                             name="adultCount"
@@ -246,10 +255,10 @@ function RoomForm({ onClose, open }) {
                             className="block uppercase text-xs font-bold mb-2"
                             htmlFor="grid-password"
                         >
-                            Childrens Limit
+                            {`${t('children')} ${t('limit')}`}
                         </label>
                         <InputField
-                            placeholder="Max childrens"
+                            placeholder={`${t('children')} ${t('limit')}`}
                             type="number"
                             form={form}
                             name="childrenCount"
@@ -260,10 +269,10 @@ function RoomForm({ onClose, open }) {
                             className="block uppercase text-xs font-bold mb-2"
                             htmlFor="grid-password"
                         >
-                            Bed Count
+                            {`${t('bed')} ${t('limit')}`}
                         </label>
                         <InputField
-                            placeholder="Bed Count"
+                            placeholder={`${t('bed')} ${t('limit')}`}
                             type="number"
                             form={form}
                             name="bedCount"
@@ -274,10 +283,10 @@ function RoomForm({ onClose, open }) {
                             className="block uppercase text-xs font-bold mb-2"
                             htmlFor="grid-password"
                         >
-                            Area
+                            {`${t('area')}`}
                         </label>
                         <InputField
-                            placeholder="Area"
+                            placeholder={`${t('area')}`}
                             type="number"
                             form={form}
                             name="area"
@@ -285,10 +294,10 @@ function RoomForm({ onClose, open }) {
                     </div>
                     <div className="mt-6 text-right">
                         <Mybutton
-                            className=" bg-blue-500 text-white active:bg-blue-800 text-sm font-bold uppercase px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 w-1/4 ease-linear transition-all duration-150"
+                            className=" bg-blue-500 text-white active:bg-blue-800 text-sm font-bold uppercase px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 w-1/2 ease-linear transition-all duration-150"
                             type="submit"
                         >
-                            {_.isEmpty(currentRoom) ? 'Add' : 'Edit'}
+                            {_.isEmpty(currentRoom) ? t('create') : t('update') }
                         </Mybutton>
                     </div>
                 </form>
