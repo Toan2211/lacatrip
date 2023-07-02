@@ -11,6 +11,7 @@ const create = async data => {
         const dataRestaurant = {
             name: data.name,
             description: data.description,
+            descriptionVN: data.descriptionVN,
             phone: data.phone,
             longtitude: data.longtitude,
             latitude: data.latitude,
