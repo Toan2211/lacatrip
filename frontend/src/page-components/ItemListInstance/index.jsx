@@ -12,17 +12,17 @@ import { AiFillStar } from 'react-icons/ai'
 import { useTranslation } from 'react-i18next'
 
 function ItemListInstance({ item, type }) {
-    const {t} = useTranslation()
+    const { t, i18n } = useTranslation()
     const location = useLocation()
     const [link, setLink] = useState('')
     useEffect(() => {
         if (type === DESTINATIONTYPE) {
-            setLink(`/destination-travel/${item.id}${location.search}`)
-        }
-        else if (type === HOTELTYPE) {
+            setLink(
+                `/destination-travel/${item.id}${location.search}`
+            )
+        } else if (type === HOTELTYPE) {
             setLink(`/hotel/${item.id}${location.search}`)
-        }
-        else if (type === RESTAURANTTYPE) {
+        } else if (type === RESTAURANTTYPE) {
             setLink(`/restaurant/${item.id}${location.search}`)
         }
     }, [type, item, location])
@@ -66,7 +66,9 @@ function ItemListInstance({ item, type }) {
                 )}
                 <div className="flex mt-3">
                     <div className="flex-1 line-clamp-4 text-sm text-gray-500 h-[80px] overflow-hidden">
-                        {item.description}
+                        {i18n.language === 'vn' && item.descriptionVN
+                            ? item.descriptionVN
+                            : item.description}
                     </div>
                     <div className="w-1/3 flex flex-col justify-center items-center">
                         <div className=" flex items-center justify-center">

@@ -13,7 +13,7 @@ import LikeAndShare from '@components/LikeAndShare'
 import Comment from '@pages/Comment'
 import { useTranslation } from 'react-i18next'
 function RestaurantId() {
-    const { t } = useTranslation()
+    const { t, i18n } = useTranslation()
     const dispatch = useDispatch()
     const id = useParams().id
     const currentRestaurant = useSelector(
@@ -117,7 +117,13 @@ function RestaurantId() {
                     <header className="font-semibold">
                         {t('descriptionRestaurant')}
                     </header>
-                    <span>{currentRestaurant.description}</span>
+                    <span>
+                        {' '}
+                        {i18n.language === 'vn' &&
+                        currentRestaurant.descriptionVN
+                            ? currentRestaurant.descriptionVN
+                            : currentRestaurant.description}
+                    </span>
                 </div>
                 <div className="flex-1 border-[1px] border-gray-200 p-4">
                     <header className="font-semibold mb-3">

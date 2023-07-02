@@ -58,24 +58,24 @@ function FormHotel() {
     const [amenityIds, setAmenityIds] = useState(() =>
         currentHotel.amenitieshotel
             ? currentHotel.amenitieshotel.map(item => ({
-                value: item.id,
-                label: item.name
-            }))
+                  value: item.id,
+                  label: item.name
+              }))
             : []
     )
     const [hotelStyles, setHotelStyles] = useState(() =>
         currentHotel.hotelStyle
             ? currentHotel.hotelStyle
-                .split(',')
-                .map(item => ({ value: item, label: item }))
+                  .split(',')
+                  .map(item => ({ value: item, label: item }))
             : []
     )
     const [images, setImages] = useState(() =>
         currentHotel.images
             ? currentHotel.images.map(image => ({
-                id: image.id,
-                url: image.url
-            }))
+                  id: image.id,
+                  url: image.url
+              }))
             : []
     )
     const [isFirstTime, setIsFirstTime] = useState(true)
@@ -117,6 +117,9 @@ function FormHotel() {
             description: currentHotel.description
                 ? currentHotel.description
                 : '',
+            descriptionVN: currentHotel.descriptionVN
+                ? currentHotel.descriptionVN
+                : '',
             phone: currentHotel.phone ? currentHotel.phone : '',
             hotelClass: currentHotel.hotelClass
                 ? currentHotel.hotelClass
@@ -148,6 +151,7 @@ function FormHotel() {
             form.setValue('name', currentHotel.name)
             form.setValue('name', currentHotel.name)
             form.setValue('description', currentHotel.description)
+            form.setValue('descriptionVN', currentHotel.descriptionVN)
             form.setValue('phone', currentHotel.phone)
             form.setValue('hotelClass', currentHotel.hotelClass)
             form.setValue('cheapestPrice', currentHotel.cheapestPrice)
@@ -196,6 +200,7 @@ function FormHotel() {
             const formData = new FormData()
             formData.append('name', data.name)
             formData.append('description', data.description)
+            formData.append('descriptionVN', data.descriptionVN)
             formData.append('phone', data.phone)
             formData.append('hotelClass', data.hotelClass)
             formData.append('cheapestPrice', data.cheapestPrice)
@@ -235,11 +240,11 @@ function FormHotel() {
             toast.success(
                 _.isEmpty(currentHotel)
                     ? `${t('create')} ${t('hotel').toLowerCase()} ${t(
-                        'successfully'
-                    )}`
+                          'successfully'
+                      )}`
                     : `${t('update')} ${t('hotel').toLowerCase()} ${t(
-                        'successfully'
-                    )}`,
+                          'successfully'
+                      )}`,
                 {
                     position: toast.POSITION.BOTTOM_CENTER,
                     autoClose: 1000,
@@ -289,10 +294,13 @@ function FormHotel() {
                                 className="block uppercase text-sm font-bold mb-2"
                                 htmlFor="grid-password"
                             >
-                                {t('descriptionHotel')} {t('languageEn')}
+                                {t('descriptionHotel')}{' '}
+                                {t('languageEn')}
                             </label>
                             <TextArea
-                                placeholder={`${t('descriptionHotel')} ${t('languageEn')}`}
+                                placeholder={`${t(
+                                    'descriptionHotel'
+                                )} ${t('languageEn')}`}
                                 form={form}
                                 name="description"
                                 rows={2}
@@ -303,10 +311,14 @@ function FormHotel() {
                                 className="block uppercase text-sm font-bold mb-2"
                                 htmlFor="grid-password"
                             >
-                                {`${t('descriptionHotel')} ${t('languageVN')}`}
+                                {`${t('descriptionHotel')} ${t(
+                                    'languageVN'
+                                )}`}
                             </label>
                             <TextArea
-                                placeholder={`${t('descriptionHotel')} ${t('languageVN')}`}
+                                placeholder={`${t(
+                                    'descriptionHotel'
+                                )} ${t('languageVN')}`}
                                 form={form}
                                 name="descriptionVN"
                                 rows={2}
@@ -380,10 +392,10 @@ function FormHotel() {
                             />
                             {hotelStyles.length === 0 &&
                                 !isFirstTime && (
-                                <span className="text-[14px] text-red-500 pl-2 mt-1">
-                                    {t('requiredHotelStyle')}
-                                </span>
-                            )}
+                                    <span className="text-[14px] text-red-500 pl-2 mt-1">
+                                        {t('requiredHotelStyle')}
+                                    </span>
+                                )}
                         </div>
                         <div className="relative w-full mb-3">
                             <label
@@ -435,10 +447,10 @@ function FormHotel() {
                             />
                             {amenityIds.length === 0 &&
                                 !isFirstTime && (
-                                <span className="text-[14px] text-red-500 pl-2 mt-1">
-                                    {t('requiredAmenities')}
-                                </span>
-                            )}
+                                    <span className="text-[14px] text-red-500 pl-2 mt-1">
+                                        {t('requiredAmenities')}
+                                    </span>
+                                )}
                         </div>
                         <div className="relative w-full mb-2">
                             <label

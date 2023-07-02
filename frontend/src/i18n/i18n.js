@@ -269,7 +269,10 @@ const resources = {
             changePaymentAccount: 'Change Payment Account (Payment Receive Money From Booking)',
             'Invalid email or password': 'Invalid email or password',
             'languageEn': 'WITH ENGLISH',
-            'languageVN': 'WITH VIETNAMESE'
+            'languageVN': 'WITH VIETNAMESE',
+            itineraryStart: 'You will get picked up',
+            itineraryEnd: 'You will return to the starting point',
+            pleaseSignin: 'PLEASE SIGN IN'
         }
     },
     vn: {
@@ -544,7 +547,10 @@ const resources = {
             changePaymentAccount: 'Cập nhật tài khoản thanh toán(Tài khoản nhận tiền từ đơn đặt lịch)',
             'Invalid email or password': 'Email hoặc mật khẩu không đúng',
             'languageEn': 'VỚI NGÔN NGỮ ANH',
-            'languageVN':'VỚI NGÔN NGỮ VIỆT'
+            'languageVN':'VỚI NGÔN NGỮ VIỆT',
+            itineraryStart: 'Bạn sẽ được đón',
+            itineraryEnd: 'Bạn sẽ được trả về điểm xuất phát',
+            pleaseSignin: 'Vui lòng đăng nhập để thực hiện'
         }
     }
 }

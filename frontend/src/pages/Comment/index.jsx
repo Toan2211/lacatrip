@@ -52,6 +52,14 @@ function Comment({ rating, totalRating }) {
     }
     const onClose = () => setShowModal(false)
     const handleCreateComment = async data => {
+        if (!profile.id) {
+            toast.error(t('pleaseSignin'), {
+                position: toast.POSITION.BOTTOM_CENTER,
+                autoClose: 1000,
+                hideProgressBar: true
+            })
+            return
+        }
         try {
             if (instanceId && profile.id) {
                 const { title, content } = data

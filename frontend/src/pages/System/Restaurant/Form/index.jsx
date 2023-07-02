@@ -80,6 +80,7 @@ function RestaurantForm() {
     const schema = yup.object().shape({
         name: yup.string().required(t('requiredName')),
         description: yup.string().required(t('requiredDescription')),
+        descriptionVN: yup.string().required(t('requiredDescription')),
         phone: yup
             .string()
             .required(t('requiredPhone'))
@@ -113,6 +114,9 @@ function RestaurantForm() {
                 : '',
             description: currentRestaurant.description
                 ? currentRestaurant.description
+                : '',
+            descriptionVN: currentRestaurant.descriptionVN
+                ? currentRestaurant.descriptionVN
                 : '',
             phone: currentRestaurant.phone
                 ? currentRestaurant.phone
@@ -148,6 +152,10 @@ function RestaurantForm() {
                 'description',
                 currentRestaurant.description
             )
+            form.setValue(
+                'descriptionVN',
+                currentRestaurant.descriptionVN
+            )
             form.setValue('phone', currentRestaurant.phone)
             form.setValue('address', currentRestaurant.address)
             form.setValue('longtitude', currentRestaurant.longtitude)
@@ -181,11 +189,13 @@ function RestaurantForm() {
         setImages(data)
     }
     const handleButtonForm = async data => {
+        console.log(data)
         try {
             if (!images.length) return
             const formData = new FormData()
             formData.append('name', data.name)
             formData.append('description', data.description)
+            formData.append('descriptionVN', data.descriptionVN)
             formData.append('phone', data.phone)
             formData.append('address', data.address)
             formData.append('longtitude', data.longtitude)
@@ -291,7 +301,9 @@ function RestaurantForm() {
                             <TextArea
                                 placeholder={`${t('description')} ${t(
                                     'restaurant'
-                                ).toLowerCase()}  ${t('languageEn')}...`}
+                                ).toLowerCase()}  ${t(
+                                    'languageEn'
+                                )}...`}
                                 form={form}
                                 name="description"
                                 rows={2}
@@ -311,7 +323,7 @@ function RestaurantForm() {
                                     'languageVN'
                                 )}`}
                                 form={form}
-                                name="description"
+                                name="descriptionVN"
                                 rows={2}
                             />
                         </div>
