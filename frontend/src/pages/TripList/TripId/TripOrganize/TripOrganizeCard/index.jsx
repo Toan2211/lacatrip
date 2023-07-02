@@ -3,6 +3,7 @@ import TripListItem from '../TripListItem'
 import { useSelector } from 'react-redux'
 import { currentTripSelector } from '@pages/TripList/trip.slice'
 import { HOTELTYPE, RESTAURANTTYPE } from '@constants/instanceType'
+import { useTranslation } from 'react-i18next'
 var options = {
     weekday: 'long',
     year: 'numeric',
@@ -11,6 +12,7 @@ var options = {
 }
 // date.toLocaleDateString('en-US', options)
 function TripOrganizeCard({ dataOfDate, handleUpdateDataOfDate }) {
+    const {t} = useTranslation()
     const currentTrip = useSelector(currentTripSelector)
     const [listItemOpen, setListItemOpen] = useState(false)
     const onCloseListItem = () => setListItemOpen(false)
@@ -36,7 +38,7 @@ function TripOrganizeCard({ dataOfDate, handleUpdateDataOfDate }) {
                             className="font-semibold text-sm hover:text-blue-500"
                             onClick={handleAddItem}
                         >
-                            Add item
+                            {t('addItem')}
                         </span>
                     </div>
                     {dataOfDate.itineraries.map(item => {

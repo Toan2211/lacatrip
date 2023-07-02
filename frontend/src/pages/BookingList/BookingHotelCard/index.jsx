@@ -6,7 +6,9 @@ import { MdChildCare, MdOutlinePayment } from 'react-icons/md'
 import { GoClock } from 'react-icons/go'
 import { Link } from 'react-router-dom'
 import moment from 'moment'
+import { useTranslation } from 'react-i18next'
 function BookingHotelCard({ booking }) {
+    const { t } = useTranslation()
     return (
         <div className="w-full min-h-[60px] border-2 border-gray-200 rounded flex p-5 gap-2 items-center">
             <div className="flex flex-col gap-1 font-bold w-[100px] text-3xl items-center justify-center border-r border-gray-200">
@@ -47,9 +49,12 @@ function BookingHotelCard({ booking }) {
                     {booking.roomType.title} -{' '}
                     {booking.roomType.description}
                 </div>
-                <ul className='flex gap-2'>
+                <ul className="flex gap-2">
                     {booking.roomDetails.map(roomDetail => (
-                        <li key={roomDetail.id} className="border border-slate-200 bg-slate-50 rounded text-sm inline-block px-2 py-1">
+                        <li
+                            key={roomDetail.id}
+                            className="border border-slate-200 bg-slate-50 rounded text-sm inline-block px-2 py-1"
+                        >
                             No.{roomDetail.roomNo}
                         </li>
                     ))}
@@ -57,7 +62,7 @@ function BookingHotelCard({ booking }) {
                 <ul className="mt-2 flex gap-2 mx-auto">
                     <li className="text-center">
                         <span className="border-[1px] border-slate-200 p-2 w-10 flex justify-center items-center rounded-lg">
-                            <Tooltip content="Room" style="light">
+                            <Tooltip content={t('room')} style="light">
                                 <BiBed />
                             </Tooltip>
                         </span>
@@ -67,7 +72,7 @@ function BookingHotelCard({ booking }) {
                     </li>
                     <li className="text-center">
                         <span className="border-[1px] border-slate-200 p-2 w-10 flex justify-center items-center rounded-lg">
-                            <Tooltip content="Adult" style="light">
+                            <Tooltip content={t('adult')} style="light">
                                 <FaChild />
                             </Tooltip>
                         </span>
@@ -77,7 +82,10 @@ function BookingHotelCard({ booking }) {
                     </li>
                     <li className="text-center">
                         <span className="border-[1px] border-slate-200 p-2 w-10 flex justify-center items-center rounded-lg">
-                            <Tooltip content="Children" style="light">
+                            <Tooltip
+                                content={t('children')}
+                                style="light"
+                            >
                                 <MdChildCare />
                             </Tooltip>
                         </span>

@@ -16,6 +16,7 @@ import { setSocket } from '@pages/Chat/socket.slice'
 import { selectUser } from '@pages/Auth/auth.slice'
 import SocketClient from './SocketClient'
 import { socketSelector } from '@pages/Chat/socket.slice'
+import './i18n/i18n'
 function App() {
     const dispatch = useDispatch()
     const profile = useSelector(selectUser)

@@ -1,16 +1,25 @@
 import Mybutton from '@components/MyButton'
-import { destinationsClientSelector, getDestinationsLoadMore, loadingDestinationClientSelector, paginationDestinationClientSelector } from '@pages/DestinationTravelList/destinationclient.slice'
+import {
+    destinationsClientSelector,
+    getDestinationsLoadMore,
+    loadingDestinationClientSelector,
+    paginationDestinationClientSelector
+} from '@pages/DestinationTravelList/destinationclient.slice'
 import DestinationCard from '@components/DestinationCard'
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { getDestinations } from '@pages/DestinationTravelList/destinationclient.slice'
 import RecommendSkeletonCard from '@components/RecommendSkeletonCard'
+import { useTranslation } from 'react-i18next'
 
 function RecommendDestination() {
+    const { t } = useTranslation()
     const dispatch = useDispatch()
     const destinations = useSelector(destinationsClientSelector)
     const loading = useSelector(loadingDestinationClientSelector)
-    const pagination = useSelector(paginationDestinationClientSelector)
+    const pagination = useSelector(
+        paginationDestinationClientSelector
+    )
     useEffect(() => {
         dispatch(getDestinations({ limit: 8 }))
     }, [dispatch])
@@ -28,11 +37,15 @@ function RecommendDestination() {
             <div className="grid gap-6 grid-cols-1 md:grid-cols-2 xl:grid-cols-4">
                 {destinations &&
                     destinations.map(destination => (
-                        <DestinationCard key={destination.id} data={destination} />
+                        <DestinationCard
+                            key={destination.id}
+                            data={destination}
+                        />
                     ))}
-                {
-                    !!loading && Array.from(Array(8).keys()).map(index => <RecommendSkeletonCard key={index}/>)
-                }
+                {!!loading &&
+                    Array.from(Array(8).keys()).map(index => (
+                        <RecommendSkeletonCard key={index} />
+                    ))}
             </div>
             {pagination.page < pagination.totalPages && (
                 <div className="text-center mt-4">
@@ -41,7 +54,7 @@ function RecommendDestination() {
                         isloading={+loading}
                         onClick={handleLoadMoreClick}
                     >
-                        Load more
+                        {t('loadMore')}
                     </Mybutton>
                 </div>
             )}

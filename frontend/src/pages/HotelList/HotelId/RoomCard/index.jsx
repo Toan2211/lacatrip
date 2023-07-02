@@ -6,8 +6,10 @@ import { FaChild } from 'react-icons/fa'
 import { MdChildCare } from 'react-icons/md'
 import { Link } from 'react-router-dom'
 import _ from 'lodash'
+import { useTranslation } from 'react-i18next'
 
 function RoomCard({ data }) {
+    const { t } = useTranslation()
     const [countRooms, setCountRooms] = useState(1)
     const handleDownCount = () => {
         if (countRooms > 1) setCountRooms(prev => prev - 1)
@@ -43,7 +45,7 @@ function RoomCard({ data }) {
                 <ul className="mt-2 flex gap-2 mx-auto">
                     <li className="text-center">
                         <span className="border-[1px] border-slate-200 p-2 w-10 flex justify-center items-center rounded-lg">
-                            <Tooltip content="Area" style="light">
+                            <Tooltip content={t('area')} style="light">
                                 <BiArea />
                             </Tooltip>
                         </span>
@@ -51,7 +53,7 @@ function RoomCard({ data }) {
                     </li>
                     <li className="text-center">
                         <span className="border-[1px] border-slate-200 p-2 w-10 flex justify-center items-center rounded-lg">
-                            <Tooltip content="Bed" style="light">
+                            <Tooltip content={t('bed')}style="light">
                                 <BiBed />
                             </Tooltip>
                         </span>
@@ -61,7 +63,7 @@ function RoomCard({ data }) {
                     </li>
                     <li className="text-center">
                         <span className="border-[1px] border-slate-200 p-2 w-10 flex justify-center items-center rounded-lg">
-                            <Tooltip content="Adult" style="light">
+                            <Tooltip content={t('adult')} style="light">
                                 <FaChild />
                             </Tooltip>
                         </span>
@@ -71,7 +73,7 @@ function RoomCard({ data }) {
                     </li>
                     <li className="text-center">
                         <span className="border-[1px] border-slate-200 p-2 w-10 flex justify-center items-center rounded-lg">
-                            <Tooltip content="Children" style="light">
+                            <Tooltip content={t('children')} style="light">
                                 <MdChildCare />
                             </Tooltip>
                         </span>
@@ -108,7 +110,9 @@ function RoomCard({ data }) {
                 <Link
                     to={{
                         pathname: path.bookingHotel,
-                        search: `${location.search}&countRooms=${countRooms}&roomId=${
+                        search: `${
+                            location.search
+                        }&countRooms=${countRooms}&roomId=${
                             data.id
                         }&roomDetailIds=${data.roomDetails
                             .map(room => room.id)
@@ -116,7 +120,7 @@ function RoomCard({ data }) {
                     }}
                     className="bg-blue-500 text-white active:bg-blue-800 text-sm font-bold uppercase px-4 py-2 rounded-full shadow hover:shadow-lg outline-none focus:outline-none mb-1 ease-linear transition-all duration-150"
                 >
-                    Book Now
+                    {t('bookNow')}
                 </Link>
             </div>
         </div>

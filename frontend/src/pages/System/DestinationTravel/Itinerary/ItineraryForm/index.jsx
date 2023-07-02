@@ -17,12 +17,14 @@ import {
     currentDestinationSelector,
     getDetail
 } from '../../destination.slice'
+import { useTranslation } from 'react-i18next'
 function ItineraryForm({
     data,
     onClose,
     sheet,
     handleGetAllDestinations
 }) {
+    const { t } = useTranslation()
     const dispatch = useDispatch()
     const currenDestination = useSelector(currentDestinationSelector)
     const form = useForm({
@@ -78,8 +80,12 @@ function ItineraryForm({
             }
             toast.success(
                 data.id
-                    ? 'Update itinerary successfully'
-                    : 'Create itinerary successfully',
+                    ? `${t('update')} ${t('itinerary').toLowerCase()} ${t(
+                        'successfully'
+                    ).toLowerCase()}`
+                    : `${t('create')} ${t('itinerary').toLowerCase()} ${t(
+                        'successfully'
+                    ).toLowerCase()}`,
                 {
                     position: toast.POSITION.BOTTOM_CENTER,
                     autoClose: 1000,
@@ -108,10 +114,10 @@ function ItineraryForm({
             <div className="relative w-full mb-2 flex space-x-4 ">
                 <div className="relative w-1/2">
                     <label className="block uppercase text-xs font-bold mb-2">
-                        Title
+                        {t('name')}
                     </label>
                     <InputField
-                        placeholder="Title"
+                        placeholder={t('name')}
                         type="input"
                         form={form}
                         name="title"
@@ -119,10 +125,10 @@ function ItineraryForm({
                 </div>
                 <div className="relative w-1/2">
                     <label className="block uppercase text-xs font-bold mb-2">
-                        Step
+                        {t('step')}
                     </label>
                     <InputField
-                        placeholder="Step"
+                        placeholder={t('step')}
                         type="number"
                         form={form}
                         name="step"
@@ -132,10 +138,10 @@ function ItineraryForm({
             </div>
             <div className="relative w-full mb-3">
                 <label className="block uppercase text-sm font-bold mb-2">
-                    Description
+                    {t('description')}
                 </label>
                 <TextArea
-                    placeholder="Description Itinerary..."
+                    placeholder={t('description') + ' ' + t('itinerary').toLowerCase()}
                     form={form}
                     name="description"
                     rows={2}
@@ -146,9 +152,9 @@ function ItineraryForm({
                 <Mybutton
                     // isloading={loadingItinerary > 0 ? true : false}
                     type="submit"
-                    className="bg-blue-500 text-white active:bg-blue-800 text-sm font-bold uppercase px-4 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 w-1/5 ease-linear transition-all duration-150"
+                    className="bg-blue-500 text-white active:bg-blue-800 text-sm font-bold uppercase px-4 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 w-1/4 ease-linear transition-all duration-150"
                 >
-                    {!_.isEmpty(data) ? 'Update' : 'Add'}
+                    {!_.isEmpty(data) ? t('update') : t('add')}
                 </Mybutton>
             </div>
         </form>

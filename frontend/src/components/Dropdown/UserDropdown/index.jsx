@@ -6,9 +6,10 @@ import { selectUser } from '@pages/Auth/auth.slice'
 import ROLE from '@constants/ROLE'
 import { useNavigate } from 'react-router-dom'
 import { path } from '@constants/path'
+import { useTranslation } from 'react-i18next'
 
 const UserDropdown = () => {
-    // dropdown props
+    const { t } = useTranslation()
     const user = useSelector(selectUser)
     const dispatch = useDispatch()
     const navigate = useNavigate()
@@ -38,7 +39,9 @@ const UserDropdown = () => {
         setDropdownPopoverShow(false)
     }
     const handleLogOut = () => {
+        navigate(path.signin)
         dispatch(logout())
+
         window.location.reload(true)
     }
     return (
@@ -75,7 +78,7 @@ const UserDropdown = () => {
                     }
                     onClick={handleClickProfile}
                 >
-                    Profile
+                    {t('profile')}
                 </div>
                 {user.role.name === ROLE.AUTHENTICATED && (
                     <div
@@ -84,7 +87,7 @@ const UserDropdown = () => {
                         }
                         onClick={handleClickChangePassword}
                     >
-                        Change Password
+                        {t('changePassword')}
                     </div>
                 )}
 
@@ -95,7 +98,7 @@ const UserDropdown = () => {
                     }
                     onClick={handleLogOut}
                 >
-                    Logout
+                    {t('logout')}
                 </div>
             </div>
         </>

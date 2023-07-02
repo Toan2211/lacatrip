@@ -26,7 +26,9 @@ import Mybutton from '@components/MyButton'
 import ToggleButton from '@components/ToggleButton'
 import Itinerary from './Itinerary'
 import { GiWavyItinerary } from 'react-icons/gi'
+import { useTranslation } from 'react-i18next'
 function DestinationTravel() {
+    const { t } = useTranslation()
     const navigate = useNavigate()
     const dispatch = useDispatch()
     const destinations = useSelector(destinationsSelector)
@@ -69,13 +71,13 @@ function DestinationTravel() {
         try {
             const res = await dispatch(togglePublic(destinationId))
             unwrapResult(res)
-            toast.success('Change status Destination successful', {
+            toast.success(`${t('change')} ${t('status').toLowerCase()} ${t('destinationTravel')} ${t('successfully')}`, {
                 position: toast.POSITION.BOTTOM_CENTER,
                 autoClose: 1000,
                 hideProgressBar: true
             })
         } catch (error) {
-            toast.error(error.message, {
+            toast.error(t(error.message), {
                 position: toast.POSITION.BOTTOM_CENTER,
                 autoClose: 1000,
                 hideProgressBar: true
@@ -105,11 +107,11 @@ function DestinationTravel() {
     }
 
     useEffect(() => {
-        document.title = 'Destination Travel'
+        document.title = t('manageDestiantionTravel')
         dispatch(getServiceManagers({ limit: 1000 }))
         // dispatch(getDestinations({ limit: 1000 }))
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [])
+    }, [t])
     const [openForm, setOpenForm] = useState(false)
     const onClose = () => {
         setOpenForm(false)
@@ -127,13 +129,14 @@ function DestinationTravel() {
                     <div className="flex flex-wrap items-center">
                         <div className="relative w-full px-4 max-w-full flex">
                             <h3 className="font-semibold text-lg text-blue-600">
-                                Manage Destination Travel
+                                {t('manageDestiantionTravel')}
                             </h3>
                             {profile.serviceManagerId && (
                                 <div className="relative flex flex-col items-center group w-10">
                                     <Tooltip
-                                        content="Create"
+                                        content={t('create')}
                                         style="light"
+                                        className='w-[80px]'
                                     >
                                         <button
                                             className="inline-flex items-center justify-center w-6 h-6 mr-2 text-indigo-100 transition-colors duration-150  bg-green-700 rounded-lg focus:shadow-outline hover:bg-green-500 ml-4"
@@ -166,7 +169,9 @@ function DestinationTravel() {
                         >
                             <div className="flex-1">
                                 <InputField
-                                    placeholder="Name Destination Travel"
+                                    placeholder={`${t('name')} ${t(
+                                        'destinationTravel'
+                                    ).toLowerCase()}`}
                                     form={form}
                                     name="key"
                                 />
@@ -174,7 +179,9 @@ function DestinationTravel() {
                             {!profile.serviceManagerId && (
                                 <div className="flex-1">
                                     <MySelect
-                                        placeholder="Service Manager"
+                                        placeholder={t(
+                                            'serviceManager'
+                                        )}
                                         form={form}
                                         name="serviceManagerId"
                                         options={serviceManagers.map(
@@ -194,7 +201,7 @@ function DestinationTravel() {
 
                             <div className="flex-1">
                                 <MySelect
-                                    placeholder="Province"
+                                    placeholder={t('province')}
                                     form={form}
                                     name="provinceId"
                                     options={provinces.map(
@@ -212,7 +219,7 @@ function DestinationTravel() {
                                         type="submit"
                                         className="bg-blue-500 text-white active:bg-blue-800 text-sm font-bold uppercase px-3 py-2 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 w-full ease-linear transition-all duration-150"
                                     >
-                                        Search
+                                        {t('search')}
                                     </Mybutton>
                                 </div>
                                 <div className="flex-1">
@@ -223,7 +230,7 @@ function DestinationTravel() {
                                         }
                                         className="bg-blue-500 text-white active:bg-blue-800 text-sm font-bold uppercase px-3 py-2 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 w-full ease-linear transition-all duration-150"
                                     >
-                                        Reset
+                                        {t('reset')}
                                     </Mybutton>
                                 </div>
                             </div>
@@ -233,14 +240,24 @@ function DestinationTravel() {
                 <div className="block w-full overflow-x-auto h-[66vh]">
                     <Table hoverable={true}>
                         <Table.Head>
-                            <Table.HeadCell>Name</Table.HeadCell>
                             <Table.HeadCell>
-                                Service Manager
+                                {t('name')}
                             </Table.HeadCell>
-                            <Table.HeadCell>Province</Table.HeadCell>
-                            <Table.HeadCell>Rating</Table.HeadCell>
-                            <Table.HeadCell>Public</Table.HeadCell>
-                            <Table.HeadCell>Action</Table.HeadCell>
+                            {!profile.serviceManagerId && (
+                                <Table.HeadCell>
+                                    {t('serviceManager')}
+                                </Table.HeadCell>
+                            )}
+                            <Table.HeadCell>
+                                {t('province')}
+                            </Table.HeadCell>
+                            <Table.HeadCell>
+                                {t('rating')}
+                            </Table.HeadCell>
+                            <Table.HeadCell>
+                                {t('status')}
+                            </Table.HeadCell>
+                            <Table.HeadCell></Table.HeadCell>
                         </Table.Head>
                         <Table.Body className="divide-y">
                             {destinations &&
@@ -252,14 +269,17 @@ function DestinationTravel() {
                                         <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
                                             {destination.name}
                                         </Table.Cell>
-                                        <Table.Cell>
-                                            {destination
-                                                .serviceManager.user
-                                                .firstname +
-                                                destination
+                                        {!profile.serviceManagerId && (
+                                            <Table.Cell>
+                                                {destination
                                                     .serviceManager
-                                                    .user.lastname}
-                                        </Table.Cell>
+                                                    .user.firstname +
+                                                    destination
+                                                        .serviceManager
+                                                        .user
+                                                        .lastname}
+                                            </Table.Cell>
+                                        )}
                                         <Table.Cell>
                                             {
                                                 destination.province
@@ -283,7 +303,7 @@ function DestinationTravel() {
                                         </Table.Cell>
                                         <Table.Cell className="flex gap-4">
                                             <Tooltip
-                                                content="Detail destination"
+                                                content={t('detail')}
                                                 style="light"
                                             >
                                                 <Mybutton
@@ -312,7 +332,7 @@ function DestinationTravel() {
                                             </Tooltip>
 
                                             <Tooltip
-                                                content="Manage Itineraries"
+                                                content={t('manageItineraries')}
                                                 style="light"
                                             >
                                                 <Mybutton

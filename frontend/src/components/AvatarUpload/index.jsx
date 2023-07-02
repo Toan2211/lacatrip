@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 
 function AvatarUpload({ form, name }) {
+    const { t } = useTranslation()
     const [previewSource, setPreviewSource] = useState('')
     const handleChangeImg = e => {
         const file = e.target.files[0]
@@ -16,9 +18,8 @@ function AvatarUpload({ form, name }) {
         }
     }
     useEffect(() => {
-        if (!form.getValues(name))
-            setPreviewSource('')
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+        if (!form.getValues(name)) setPreviewSource('')
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [form.getValues(name), form, name])
     return (
         <div className="text-center">
@@ -50,7 +51,7 @@ function AvatarUpload({ form, name }) {
                     htmlFor="chooseAvatar"
                     className="mt-2 leading-normal px-4 py-2 bg-blue-500 text-white text-sm rounded-full cursor-pointer"
                 >
-                    Select avatar
+                    {t('selectAvatar')}
                 </label>
                 <input
                     type="file"

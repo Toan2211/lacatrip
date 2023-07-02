@@ -21,8 +21,10 @@ import { applyDrag } from '@utils/dragDrop'
 import Mybutton from '@components/MyButton'
 import { unwrapResult } from '@reduxjs/toolkit'
 import { toast } from 'react-toastify'
+import { useTranslation } from 'react-i18next'
 
 function Itinerary({ open, onClose, sheet }) {
+    const { t } = useTranslation()
     const currentDestination = useSelector(currentDestinationSelector)
     const [itineraryData, setItineraryData] = useState({})
     const [showForm, setShowForm] = useState(false)
@@ -100,11 +102,16 @@ function Itinerary({ open, onClose, sheet }) {
         }
         await dispatch(getDetail(currentDestination.id))
         await dispatch(getDestinations(queryParams))
-        toast.success('Update step itinerary successfully', {
-            position: toast.POSITION.BOTTOM_CENTER,
-            autoClose: 1000,
-            hideProgressBar: true
-        })
+        toast.success(
+            `${t('update')} ${t('step').toLowerCase()} ${t(
+                'itinerary'
+            ).toLowerCase()} ${t('successfully').toLowerCase()}`,
+            {
+                position: toast.POSITION.BOTTOM_CENTER,
+                autoClose: 1000,
+                hideProgressBar: true
+            }
+        )
     }
     const handleDeleteItinerary = async idItinerary => {
         try {
@@ -136,11 +143,16 @@ function Itinerary({ open, onClose, sheet }) {
             }
             await dispatch(getDetail(currentDestination.id))
             await dispatch(getDestinations(queryParams))
-            toast.success('Delete itinerary successfully', {
-                position: toast.POSITION.BOTTOM_CENTER,
-                autoClose: 1000,
-                hideProgressBar: true
-            })
+            toast.success(
+                `${t('delete')} ${t('itinerary').toLowerCase()} ${t(
+                    'successfully'
+                ).toLowerCase()}`,
+                {
+                    position: toast.POSITION.BOTTOM_CENTER,
+                    autoClose: 1000,
+                    hideProgressBar: true
+                }
+            )
         } catch (error) {
             toast.error(error.message, {
                 position: toast.POSITION.BOTTOM_CENTER,
@@ -152,7 +164,8 @@ function Itinerary({ open, onClose, sheet }) {
     return (
         <Drawer isOpen={open} onClose={onClose}>
             <header className="font-bold bg-slate-50 p-4">
-                Manage itinerary of {currentDestination.name}
+                {t('manageItineraries')} {t('of')}{' '}
+                {currentDestination.name}
             </header>
             <div className="p-5">
                 {currentDestination?.itineraries?.length > 0 && (
@@ -162,94 +175,100 @@ function Itinerary({ open, onClose, sheet }) {
                             type="button"
                             className="bg-blue-500 text-white active:bg-blue-800 text-sm font-bold uppercase px-1 py-1 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 w-1/3 ease-linear transition-all duration-150"
                         >
-                            Update Step
+                            {t('update')} {t('step')}
                         </Mybutton>
                     </div>
                 )}
 
                 {currentDestination &&
                     currentDestination?.itineraries?.length > 0 && (
-                        <Container
-                            // {...column.props}
-                            // groupName="column"
-                            onDrop={onDropItinerary}
-                            getChildPayload={index =>
-                                currentDestination.itineraries[index]
-                            }
-                            dragClass="card-ghost"
-                            dropClass="card-ghost-drop"
-                            // onDropReady={p => console.log('Drop ready: ', p)}
-                            dropPlaceholder={{
-                                animationDuration: 150,
-                                showOnTop: true,
-                                className: 'card-drop-preview'
-                            }}
-                            dropPlaceholderAnimationDuration={200}
-                        >
-                            {currentDestination.itineraries.map(
-                                (itinerary, index) => (
-                                    <Draggable key={index}>
-                                        <div
-                                            key={itinerary.id}
-                                            className="w-full bg-slate-100 hover:bg-slate-200 font-medium mb-3 p-3 rounded-2xl cursor-pointer flex justify-between items-center"
-                                        >
-                                            <span>
-                                                {itinerary.title}
-                                            </span>
-                                            <div>
-                                                <div className="group relative text-2xl">
-                                                    <button className="bg-gray-300 text-gray-700 rounded inline-flex items-center group">
-                                                        <svg
-                                                            className="fill-current h-4 w-4 group-hover:rotate-180 transition-transform"
-                                                            xmlns="http://www.w3.org/2000/svg"
-                                                            viewBox="0 0 20 20"
-                                                        >
-                                                            <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
-                                                        </svg>
-                                                    </button>
-                                                    <ul className="rounded absolute hidden pt-1 group-hover:block w-20 right-[16px] bottom-[-10px] text-sm overflow-hidden z-auto">
-                                                        <li
-                                                            className="bg-gray-200 hover:bg-gray-400 cursor-pointer p-1 rounded"
-                                                            onClick={() => {
-                                                                setItineraryData(
-                                                                    itinerary
-                                                                )
-                                                                setCurrentItinerary(
-                                                                    itinerary
-                                                                )
-                                                                setShowForm(
-                                                                    true
-                                                                )
-                                                            }}
-                                                        >
-                                                            Update
-                                                        </li>
-                                                        <li
-                                                            className="bg-gray-200 hover:bg-gray-400 cursor-pointer p-1 rounded"
-                                                            onClick={() =>
-                                                                handleDeleteItinerary(
-                                                                    itinerary.id
-                                                                )
-                                                            }
-                                                        >
-                                                            Delete
-                                                        </li>
-                                                    </ul>
-                                                </div>
+                    <Container
+                        // {...column.props}
+                        // groupName="column"
+                        onDrop={onDropItinerary}
+                        getChildPayload={index =>
+                            currentDestination.itineraries[index]
+                        }
+                        dragClass="card-ghost"
+                        dropClass="card-ghost-drop"
+                        // onDropReady={p => console.log('Drop ready: ', p)}
+                        dropPlaceholder={{
+                            animationDuration: 150,
+                            showOnTop: true,
+                            className: 'card-drop-preview'
+                        }}
+                        dropPlaceholderAnimationDuration={200}
+                    >
+                        {currentDestination.itineraries.map(
+                            (itinerary, index) => (
+                                <Draggable key={index}>
+                                    <div
+                                        key={itinerary.id}
+                                        className="w-full bg-slate-100 hover:bg-slate-200 font-medium mb-3 p-3 rounded-2xl cursor-pointer flex justify-between items-center"
+                                    >
+                                        <span>
+                                            {itinerary.title}
+                                        </span>
+                                        <div>
+                                            <div className="group relative text-2xl">
+                                                <button className="bg-gray-300 text-gray-700 rounded inline-flex items-center group">
+                                                    <svg
+                                                        className="fill-current h-4 w-4 group-hover:rotate-180 transition-transform"
+                                                        xmlns="http://www.w3.org/2000/svg"
+                                                        viewBox="0 0 20 20"
+                                                    >
+                                                        <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
+                                                    </svg>
+                                                </button>
+                                                <ul className="rounded absolute hidden pt-1 group-hover:block w-20 right-[16px] bottom-[-10px] text-sm overflow-hidden z-auto">
+                                                    <li
+                                                        className="bg-gray-200 hover:bg-gray-400 cursor-pointer p-1 rounded"
+                                                        onClick={() => {
+                                                            setItineraryData(
+                                                                itinerary
+                                                            )
+                                                            setCurrentItinerary(
+                                                                itinerary
+                                                            )
+                                                            setShowForm(
+                                                                true
+                                                            )
+                                                        }}
+                                                    >
+                                                        {t(
+                                                            'update'
+                                                        )}
+                                                    </li>
+                                                    <li
+                                                        className="bg-gray-200 hover:bg-gray-400 cursor-pointer p-1 rounded"
+                                                        onClick={() =>
+                                                            handleDeleteItinerary(
+                                                                itinerary.id
+                                                            )
+                                                        }
+                                                    >
+                                                        {t(
+                                                            'delete'
+                                                        )}
+                                                    </li>
+                                                </ul>
                                             </div>
                                         </div>
-                                    </Draggable>
-                                )
-                            )}
-                        </Container>
-                    )}
+                                    </div>
+                                </Draggable>
+                            )
+                        )}
+                    </Container>
+                )}
                 <div className="text-right">
                     <Mybutton
                         onClick={addNewItinerary}
                         type="button"
-                        className="bg-blue-500 text-white active:bg-blue-800 text-sm font-bold uppercase px-1 py-2 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 w-1/3 ease-linear transition-all duration-150"
+                        className="bg-blue-500 text-white active:bg-blue-800 text-sm font-bold uppercase px-1 py-2 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 w-1/2 ease-linear transition-all duration-150"
                     >
-                        Add new Itinerary
+                        {`${t('create')} ${t(
+                            'itinerary'
+                        ).toLowerCase()}`}
                     </Mybutton>
                 </div>
                 {showForm && (

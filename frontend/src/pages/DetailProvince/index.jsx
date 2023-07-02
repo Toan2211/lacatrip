@@ -25,8 +25,10 @@ import {
     HOTELTYPE,
     RESTAURANTTYPE
 } from '@constants/instanceType'
+import { useTranslation } from 'react-i18next'
 
 const Card = ({ data, type }) => {
+    const { t } = useTranslation()
     return (
         <div className="h-full">
             <div className="h-[220px] mb-1 relative">
@@ -36,9 +38,22 @@ const Card = ({ data, type }) => {
                 />
                 <LikeToTrip id={data.id} type={type} />
             </div>
-            <Link className=" hover:underline font-semibold">
-                {data.name}
-            </Link>
+            {type === HOTELTYPE && (
+                <Link to={`/hotel/${data.id}`} className=" hover:underline font-semibold">
+                    {data.name}
+                </Link>
+            )}
+            {type === RESTAURANTTYPE && (
+                <Link to={`/restaurant/${data.id}`} className=" hover:underline font-semibold">
+                    {data.name}
+                </Link>
+            )}
+            {type === DESTINATIONTYPE && (
+                <Link to={`/destination-travel/${data.id}`} className=" hover:underline font-semibold">
+                    {data.name}
+                </Link>
+            )}
+
             <div className="flex items-center h-5">
                 {!!data.totalRating && (
                     <>
@@ -58,23 +73,25 @@ const Card = ({ data, type }) => {
             </div>
             {type === HOTELTYPE && (
                 <div className="font-semibold text-sm">
-                    from ${data.cheapestPrice}/night
+                    {t('from')} ${data.cheapestPrice}/{t('night')}
                 </div>
             )}
             {type === RESTAURANTTYPE && (
                 <div className="font-semibold text-sm">
-                    from ${data.minPrice} to ${data.maxPrice}
+                    {t('from')} ${data.minPrice} {t('to')} $
+                    {data.maxPrice}
                 </div>
             )}
             {type === DESTINATIONTYPE && (
                 <div className="font-semibold text-sm">
-                    from ${data.price} per adult
+                    {t('from')} ${data.price} / {t('people')}
                 </div>
             )}
         </div>
     )
 }
 function DetailProvince() {
+    const { t } = useTranslation()
     const provinces = useSelector(provincesSelector)
     const [province, setProvince] = useState('')
     const restaurants = useSelector(restaurantsClientSelector)
@@ -100,7 +117,7 @@ function DetailProvince() {
         <div className="max-w-[1535px] px-8 py-5 md:mt-40 md:px-10 lg:mt-16 lg:px-20 mb-[20vh]">
             <header className=" font-bold text-4xl mb-3">
                 <span className=" text-5xl text-red-500">
-                    Explore{' '}
+                    {t('explore')}{' '}
                 </span>
                 {province.name}
             </header>
@@ -114,24 +131,22 @@ function DetailProvince() {
             </div>
             <div>
                 <header className=" font-bold text-2xl mb-3">
-                    Esstential {province.name}
+                    {t('esstential')} {province.name}
                 </header>
                 {destinations.length > 0 && (
                     <div className="flex gap-3 mb-10 lg:h-[300px] ">
                         <div className="flex flex-col w-1/4 gap-4">
                             <header className="font-semibold text-2xl">
-                                Do
+                                {t('do')}
                             </header>
                             <div className=" text-sm">
-                                Places to see, ways to wander, and
-                                signature experiences that define{' '}
-                                {province.name}
+                                {t('doDescription')} {province.name}
                             </div>
                             <Link
                                 to={`/destination-travels/province/${province.id}`}
                                 className=" underline text-sm font-semibold"
                             >
-                                See all
+                                {t('seeAll')}
                             </Link>
                         </div>
                         <div className="h-full lg:w-[75%]">
@@ -159,17 +174,16 @@ function DetailProvince() {
                     <div className="flex  gap-3 mb-10 lg:h-[300px] ">
                         <div className="flex flex-col w-1/4 flex-grow gap-4">
                             <header className="font-semibold text-2xl">
-                                Stay
+                                {t('stay')}
                             </header>
                             <div className=" text-sm">
-                                A mix of the charming, modern, and
-                                tried and true.
+                                {t('stayDescription')}
                             </div>
                             <Link
                                 to={`/hotels/province/${province.id}`}
                                 className=" underline text-sm font-semibold"
                             >
-                                See all
+                                {t('seeAll')}
                             </Link>
                         </div>
                         <div className="h-full lg:w-[75%]">
@@ -197,7 +211,7 @@ function DetailProvince() {
                     <div className="flex gap-3 mb-10 lg:h-[300px]">
                         <div className="flex flex-col w-1/4 flex-grow gap-4">
                             <header className="font-semibold text-2xl">
-                                Eat
+                                {t('eat')}
                             </header>
                             <div className=" text-sm">
                                 {
@@ -208,7 +222,7 @@ function DetailProvince() {
                                 to={`/restaurants/province/${province.id}`}
                                 className=" underline text-sm font-semibold"
                             >
-                                See all
+                                {t('seeAll')}
                             </Link>
                         </div>
                         <div className="h-full lg:w-[75%]">

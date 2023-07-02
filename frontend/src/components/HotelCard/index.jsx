@@ -3,8 +3,10 @@ import { HOTELTYPE } from '@constants/instanceType'
 import React from 'react'
 import { AiFillStar } from 'react-icons/ai'
 import { NavLink } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 
 function HotelCard({ data }) {
+    const { t } = useTranslation()
     return (
         <div className="relative">
             <NavLink
@@ -43,12 +45,12 @@ function HotelCard({ data }) {
                             {data.rating} / 5
                         </span>
                         <span className="font-normal text-gray-400">
-                            {data.totalRating} Reviews
+                            {data.totalRating} {t('review')}
                         </span>
                     </span>
                     <div className="mt-4">
                         <span className="font-normal text-gray-400">
-                            From:{' '}
+                            {t('from')}:{' '}
                         </span>
                         <span className="font-bold">
                             ${data.cheapestPrice}
@@ -56,7 +58,7 @@ function HotelCard({ data }) {
                     </div>
                 </div>
             </NavLink>
-            <LikeToTrip id = {data.id} type={HOTELTYPE} />
+            <LikeToTrip id={data.id} type={HOTELTYPE} />
         </div>
     )
 }

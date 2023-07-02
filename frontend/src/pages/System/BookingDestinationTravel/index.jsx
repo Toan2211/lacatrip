@@ -22,8 +22,10 @@ import ReactDatePicker from 'react-datepicker'
 import Select from 'react-select'
 import { Pagination } from 'flowbite-react'
 import BookingDestinationCard from './BookingDestinationCard'
+import { useTranslation } from 'react-i18next'
 
 function BookingDestinationTravelSystem() {
+    const { t } = useTranslation()
     const dispatch = useDispatch()
     const location = useLocation()
     const navigate = useNavigate()
@@ -36,7 +38,7 @@ function BookingDestinationTravelSystem() {
     const [date, setDate] = useState(null)
     const [serviceManagerInput, setServiceManagerInput] = useState({
         value: 999,
-        label: 'Filter service manager...'
+        label: `${t('filters')} ${t('serviceManager')}`
     })
     const [keyword, setKeyword] = useState('')
     const handleChangeKeyword = e => {
@@ -84,12 +86,12 @@ function BookingDestinationTravelSystem() {
                 className="flex-1 flex gap-3 items-center cursor-pointer justify-center  border border-slate-300 hover:border-blue-500 rounded-md overflow-hidden bg-white"
                 onClick={onClick}
             >
-                <div className="flex flex-col">
+                <div className="flex flex-col items-center">
                     <span className="font-medium text-md">
-                        Filter by Date
+                        {t('filters')} {t('by')} {t('date')}
                     </span>
                     <span className="text-gray-400 text-sm" ref={ref}>
-                        {value || 'Add Date'}
+                        {value || t('addDate')}
                     </span>
                 </div>
             </div>
@@ -116,20 +118,20 @@ function BookingDestinationTravelSystem() {
         dispatch(getAllBooking(queryParams))
     }, [queryParams, dispatch])
     useEffect(() => {
-        document.title = 'Booking Destination Travels Manage'
+        document.title = t('manageBookingDestinationTravel')
         dispatch(
             getServiceManagers({
                 limit: 100
             })
         )
-    }, [dispatch])
+    }, [dispatch, t])
     return (
         <div className="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded bg-white min-h-[70vh]">
             <div className="rounded-t mb-0 px-4 py-3 border-0">
                 <div className="flex flex-wrap items-center">
                     <div className="relative w-full px-4 max-w-full flex">
                         <h3 className="font-semibold text-lg text-blue-600">
-                            Manage Booking Destination Travel
+                            {t('manageBookingDestinationTravel')}
                         </h3>
                     </div>
                 </div>
@@ -141,7 +143,7 @@ function BookingDestinationTravelSystem() {
                         onChange={handleChangeKeyword}
                         onBlur={handleBlurKeyword}
                         onKeyDown={handleKeyDownKeyword}
-                        placeholder="Search by name destination travel, name client..."
+                        placeholder={`${t('search')} ${t('by')} ${t('name').toLowerCase()} ${t('destinationTravel').toLowerCase()}, ${t('name').toLowerCase()} ${t('client').toLowerCase()}`}
                         className=" border border-gray-300 px-4 py-[10px] bg-white rounded text-sm focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
                     />
                 </div>

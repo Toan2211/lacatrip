@@ -1,6 +1,7 @@
 import { Modal, Tooltip } from 'flowbite-react'
 import moment from 'moment'
 import React, { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { BiBed } from 'react-icons/bi'
 import { FaChild } from 'react-icons/fa'
 import { GoClock } from 'react-icons/go'
@@ -9,6 +10,7 @@ import { Link } from 'react-router-dom'
 //type = 0 => client
 //type = 1 => SVManager
 function BookingCard({ booking }) {
+    const { t } = useTranslation()
     const [showModal, setShowModal] = useState(false)
     const [type, setType] = useState(null)
     const [dataUser, setDataUser] = useState({})
@@ -72,7 +74,7 @@ function BookingCard({ booking }) {
                         ))}
                         <li className="text-center">
                             <span className="border-[1px] border-slate-200 p-2 w-10 flex justify-center items-center rounded-lg">
-                                <Tooltip content="Room" style="light">
+                                <Tooltip content={t('room')} style="light">
                                     <BiBed />
                                 </Tooltip>
                             </span>
@@ -83,7 +85,7 @@ function BookingCard({ booking }) {
                         <li className="text-center">
                             <span className="border-[1px] border-slate-200 p-2 w-10 flex justify-center items-center rounded-lg">
                                 <Tooltip
-                                    content="Adult"
+                                    content={t('adult')}
                                     style="light"
                                 >
                                     <FaChild />
@@ -96,7 +98,7 @@ function BookingCard({ booking }) {
                         <li className="text-center">
                             <span className="border-[1px] border-slate-200 p-2 w-10 flex justify-center items-center rounded-lg">
                                 <Tooltip
-                                    content="Children"
+                                    content={t('children')}
                                     style="light"
                                 >
                                     <MdChildCare />
@@ -111,7 +113,7 @@ function BookingCard({ booking }) {
                 <div className="w-[250px] border-r border-gray-200">
                     <div className="flex gap-2 items-center">
                         <span className="text-sm text-slate-500">
-                            Service Manger:
+                            {t('serviceManager')}:
                         </span>
                         <Tooltip
                             content="Service Manager Hotel"
@@ -136,7 +138,7 @@ function BookingCard({ booking }) {
                     </div>
                     <div className="flex gap-2 items-center">
                         <span className="text-sm text-slate-500">
-                            Client:
+                            {t('client')}:
                         </span>
                         <Tooltip content="Client" style="light">
                             <div
@@ -185,7 +187,7 @@ function BookingCard({ booking }) {
                     <div className="px-14">
                         <div className="flex gap-3">
                             <label className=" font-semibold">
-                                Name:{' '}
+                                {t('name')}:{' '}
                             </label>
                             <div>
                                 {dataUser.firstname}{' '}
@@ -200,13 +202,13 @@ function BookingCard({ booking }) {
                         </div>
                         <div className="flex gap-3">
                             <label className=" font-semibold">
-                                Phone:{' '}
+                                {t('phone')}:{' '}
                             </label>
                             <div>{dataUser.phone}</div>
                         </div>
                         <div className="flex gap-3">
                             <label className=" font-semibold">
-                                Country:{' '}
+                                {t('country')}:{' '}
                             </label>
                             <div>{dataUser.country}</div>
                         </div>

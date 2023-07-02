@@ -10,15 +10,17 @@ import { updatePaymentAccount } from '@pages/System/ServiceManagers/servicemanag
 import { unwrapResult } from '@reduxjs/toolkit'
 import { toast } from 'react-toastify'
 import { setPaymentAccountSV } from '@pages/Auth/auth.slice'
+import { useTranslation } from 'react-i18next'
 function CardPaymentAccount() {
+    const { t } = useTranslation()
     const user = useSelector(selectUser)
     // const loading = useSelector(loadingChangePassSelector)
     const dispatch = useDispatch()
     const schema = yup.object().shape({
         paymentAccount: yup
             .string()
-            .required('Payment Account is required')
-            .email('Invalid Payment Account')
+            .required(t('requiredPaymentAccount'))
+            .email(t('invalidPaymentAccount'))
     })
     const form = useForm({
         defaultValues: {
@@ -31,7 +33,7 @@ function CardPaymentAccount() {
         try {
             const res = await dispatch(updatePaymentAccount(data))
             unwrapResult(res)
-            toast.success('Update user successful', {
+            toast.success(t('updateSuccess'), {
                 position: toast.POSITION.BOTTOM_CENTER,
                 autoClose: 1000,
                 hideProgressBar: true
@@ -51,15 +53,14 @@ function CardPaymentAccount() {
                 <div className="rounded-t bg-white mb-0 px-6 py-6">
                     <div className="text-center flex justify-between ">
                         <h6 className="text-xl font-bold">
-                            Change Payment Account (Payment Receive
-                            Money From Booking)
+                            {t('changePaymentAccount')}
                         </h6>
                         <Mybutton
                             className=" bg-blue-500 text-white active:bg-blue-800 text-sm font-bold uppercase px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 w-1/8 ease-linear transition-all duration-150"
                             type="submit"
                             // isloading={+loading}
                         >
-                            Change
+                            {t('update')}
                         </Mybutton>
                     </div>
                 </div>
@@ -71,10 +72,10 @@ function CardPaymentAccount() {
                                     className="block uppercase text-gray-600 text-xs font-bold mb-2"
                                     htmlFor="grid-password"
                                 >
-                                    Payment Account
+                                    {t('paymentAccount')}
                                 </label>
                                 <InputField
-                                    placeholder="Payment Account"
+                                    placeholder={t('paymentAccount')}
                                     type="email"
                                     form={form}
                                     name="paymentAccount"

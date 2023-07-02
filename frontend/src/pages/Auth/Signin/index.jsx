@@ -11,22 +11,24 @@ import { useDispatch, useSelector } from 'react-redux'
 import { selectLoadingAuth, signin } from '../auth.slice'
 import { unwrapResult } from '@reduxjs/toolkit'
 import { toast } from 'react-toastify'
+import { useTranslation } from 'react-i18next'
 
 function Signin() {
+    const { t } = useTranslation()
     const dispatch = useDispatch()
     const loading = useSelector(selectLoadingAuth)
     const schema = yup.object().shape({
         email: yup
             .string()
-            .required('Email is required')
-            .email('Invalid email'),
+            .required(t('requiredEmail'))
+            .email(t('invalidEmail')),
         password: yup
             .string()
-            .required('Password is required')
+            .required(t('requiredPassword'))
             .matches(
                 // eslint-disable-next-line
                 /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/,
-                'Must Contain 8 Characters, One Uppercase, One Lowercase, One Number and One Special Case Character'
+                t('invalidPassword')
             )
     })
     const form = useForm({
@@ -40,13 +42,13 @@ function Signin() {
         try {
             const res = await dispatch(signin(data))
             unwrapResult(res)
-            toast.success('Singin successfully', {
+            toast.success(t('signinSuccess'), {
                 position: toast.POSITION.BOTTOM_CENTER,
                 autoClose: 1000,
                 hideProgressBar: true
             })
         } catch (error) {
-            toast.error(error.message, {
+            toast.error(t(error.message), {
                 position: toast.POSITION.BOTTOM_CENTER,
                 autoClose: 1000,
                 hideProgressBar: true
@@ -54,8 +56,8 @@ function Signin() {
         }
     }
     useEffect(() => {
-        document.title = 'Signin'
-    }, [])
+        document.title = t('signin')
+    }, [t])
     return (
         <div className="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded-lg bg-slate-50 border-0">
             <div className="rounded-t mb-0 px-6 py-6">
@@ -83,10 +85,10 @@ function Signin() {
                             className="block uppercase text-xs font-bold mb-2"
                             htmlFor="grid-password"
                         >
-                            Password
+                            {t('password')}
                         </label>
                         <InputField
-                            placeholder="Password"
+                            placeholder={t('password')}
                             type="password"
                             form={form}
                             name="password"
@@ -98,7 +100,7 @@ function Signin() {
                             type="submit"
                             isloading={+loading}
                         >
-                            Signin
+                            {t('signin')}
                         </Mybutton>
                     </div>
                 </form>
@@ -108,7 +110,7 @@ function Signin() {
                             className="text-blueGray-200"
                             to={path.forgotPass}
                         >
-                            <small>Forgot password ?</small>
+                            <small>{t('forgotPassword')} ?</small>
                         </Link>
                     </div>
                     <div className="w-1/2 text-right">
@@ -116,7 +118,7 @@ function Signin() {
                             className="text-blueGray-200"
                             to={path.signup}
                         >
-                            <small>Create new account</small>
+                            <small>{t('createNewAccount')}</small>
                         </Link>
                     </div>
                 </div>

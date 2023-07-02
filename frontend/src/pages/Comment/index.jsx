@@ -29,8 +29,10 @@ import {
     currentRestauRantClientSelector,
     setCurrentRestaurant
 } from '@pages/RestaurantList/restaurantclient.slice'
+import { useTranslation } from 'react-i18next'
 
 function Comment({ rating, totalRating }) {
+    const { t } = useTranslation()
     const currentDestination = useSelector(
         currentDestinationClientSelector
     )
@@ -107,7 +109,7 @@ function Comment({ rating, totalRating }) {
                         )
                     }
                 })
-                toast.success('Comment successful', {
+                toast.success(t('reviewSuccess'), {
                     position: toast.POSITION.BOTTOM_CENTER,
                     autoClose: 1000,
                     hideProgressBar: true
@@ -136,7 +138,7 @@ function Comment({ rating, totalRating }) {
             <div className="mt-20">
                 <div className="flex gap-3 items-center">
                     <header className="font-semibold text-lg">
-                        Reviews
+                        {t('review')}
                     </header>
                     <div className="flex items-center">
                         <span>
@@ -146,7 +148,7 @@ function Comment({ rating, totalRating }) {
                             className="hover:underline cursor-pointer hover:text-blue-500"
                             onClick={() => setShowModal(true)}
                         >
-                            Write your review
+                            {t('writeReview')}
                         </span>
                     </div>
                 </div>
@@ -159,16 +161,17 @@ function Comment({ rating, totalRating }) {
                                 </span>
                             </div>
                             <span className="font-normal text-gray-400">
-                                {rating ? rating.toFixed(1) : rating} / 5
+                                {rating ? rating.toFixed(1) : rating}{' '}
+                                / 5
                             </span>
                         </div>
                         <span className="font-normal text-gray-400">
-                            ({totalRating} Reviews)
+                            ({totalRating} {t('review')})
                         </span>
                     </div>
                     <div className="px-20 py-2 basis-2/3 text-gray-500">
                         <div className="flex justify-between items-center">
-                            <span>Excellent</span>
+                            <span>{t('excellent')}</span>
                             <span>
                                 {comments &&
                                     comments.filter(
@@ -177,7 +180,7 @@ function Comment({ rating, totalRating }) {
                             </span>
                         </div>
                         <div className="flex justify-between items-center">
-                            <span>Very Good</span>
+                            <span>{t('veryGood')}</span>
                             <span>
                                 {comments &&
                                     comments.filter(
@@ -186,7 +189,7 @@ function Comment({ rating, totalRating }) {
                             </span>
                         </div>
                         <div className="flex justify-between items-center">
-                            <span>Average</span>
+                            <span>{t('average')}</span>
                             <span>
                                 {comments &&
                                     comments.filter(
@@ -195,7 +198,7 @@ function Comment({ rating, totalRating }) {
                             </span>
                         </div>
                         <div className="flex justify-between items-center">
-                            <span>Poor</span>
+                            <span>{t('poor')}</span>
                             <span>
                                 {comments &&
                                     comments.filter(
@@ -204,7 +207,7 @@ function Comment({ rating, totalRating }) {
                             </span>
                         </div>
                         <div className="flex justify-between items-center">
-                            <span>Terrible</span>
+                            <span>{t('terriable')}</span>
                             <span>
                                 {comments &&
                                     comments.filter(
@@ -228,13 +231,12 @@ function Comment({ rating, totalRating }) {
                 <form
                     onSubmit={form.handleSubmit(handleCreateComment)}
                 >
-                    <Modal.Header>Write a review</Modal.Header>
+                    <Modal.Header>{t('writeReview')}</Modal.Header>
                     <Modal.Body>
                         <div>
                             <div className="relative w-full mb-3">
                                 <label className="block uppercase text-sm font-bold mb-2">
-                                    How would you rate your
-                                    experience?
+                                    {t('reviewExp')}
                                 </label>
                                 <ul className="flex gap-1 text-3xl cursor-pointer text-yellow-400">
                                     {Array.from(
@@ -273,10 +275,10 @@ function Comment({ rating, totalRating }) {
                                     className="block uppercase text-sm font-bold mb-2"
                                     htmlFor="grid-password"
                                 >
-                                    Title your review
+                                    {t('reviewExp')}
                                 </label>
                                 <InputField
-                                    placeholder="Title"
+                                    placeholder={t('reviewExp')}
                                     form={form}
                                     name="title"
                                 />
@@ -286,10 +288,10 @@ function Comment({ rating, totalRating }) {
                                     className="block uppercase text-sm font-bold mb-2"
                                     htmlFor="grid-password"
                                 >
-                                    Your review
+                                    {t('yourReview')}
                                 </label>
                                 <TextArea
-                                    placeholder="Review our servive..."
+                                    placeholder={t('yourReview')}
                                     form={form}
                                     name="content"
                                     rows={2}
@@ -300,7 +302,7 @@ function Comment({ rating, totalRating }) {
                                     className="block uppercase text-sm font-bold mb-2"
                                     htmlFor="grid-password"
                                 >
-                                    Share more moment in here
+                                    {t('sharePhoto')}
                                 </label>
                                 <PhotoUploads
                                     addedPhotos={images}
@@ -310,9 +312,9 @@ function Comment({ rating, totalRating }) {
                         </div>
                     </Modal.Body>
                     <Modal.Footer>
-                        <Button type="submit">Review</Button>
+                        <Button type="submit">{t('review')}</Button>
                         <Button color="gray" onClick={onClose}>
-                            Cancel
+                            {t('cancel')}
                         </Button>
                     </Modal.Footer>
                 </form>

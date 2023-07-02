@@ -1,12 +1,19 @@
 import Mybutton from '@components/MyButton'
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { loadingRestaurantClientSelector, paginationRestaurantClientSelector, restaurantsClientSelector, getRestaurantsClient } from '@pages/RestaurantList/restaurantclient.slice'
+import {
+    loadingRestaurantClientSelector,
+    paginationRestaurantClientSelector,
+    restaurantsClientSelector,
+    getRestaurantsClient
+} from '@pages/RestaurantList/restaurantclient.slice'
 import { getRestaurantsClientLoadMore } from '@pages/RestaurantList/restaurantclient.slice'
 import RestaurantCard from '@components/RestaurantCard'
 import RecommendSkeletonCard from '@components/RecommendSkeletonCard'
+import { useTranslation } from 'react-i18next'
 
 function RecommendRestaurant() {
+    const { t } = useTranslation()
     const dispatch = useDispatch()
     const restaurants = useSelector(restaurantsClientSelector)
     const loading = useSelector(loadingRestaurantClientSelector)
@@ -28,11 +35,15 @@ function RecommendRestaurant() {
             <div className="grid gap-6 grid-cols-1 md:grid-cols-2 xl:grid-cols-4">
                 {restaurants &&
                     restaurants.map(restaurant => (
-                        <RestaurantCard key={restaurant.id} data={restaurant} />
+                        <RestaurantCard
+                            key={restaurant.id}
+                            data={restaurant}
+                        />
                     ))}
-                {
-                    !!loading && Array.from(Array(8).keys()).map(index => <RecommendSkeletonCard key={index}/>)
-                }
+                {!!loading &&
+                    Array.from(Array(8).keys()).map(index => (
+                        <RecommendSkeletonCard key={index} />
+                    ))}
             </div>
             {pagination.page < pagination.totalPages && (
                 <div className="text-center mt-4">
@@ -41,7 +52,7 @@ function RecommendRestaurant() {
                         isloading={+loading}
                         onClick={handleLoadMoreClick}
                     >
-                        Load more
+                        {t('loadMore')}
                     </Mybutton>
                 </div>
             )}

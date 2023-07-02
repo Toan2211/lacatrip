@@ -15,8 +15,10 @@ import { currentRoomClientSelector } from '@pages/HotelList/hotelclient.slice'
 import { createBookingHotel } from './bookinghotelclient.slice'
 import { unwrapResult } from '@reduxjs/toolkit'
 import { getLengthDay } from '@utils/getDates'
+import { useTranslation } from 'react-i18next'
 
 function BookingHotel() {
+    const { t } = useTranslation()
     const location = useLocation()
     const dispatch = useDispatch()
     const currentHotel = useSelector(currentHotelClientSelector)
@@ -86,15 +88,15 @@ function BookingHotel() {
             setCountChildrens(prev => prev - 1)
     }
     useEffect(() => {
-        document.title = 'Booking Hotel'
-    }, [])
+        document.title = t('bookingHotel')
+    }, [t])
     if (_.isEmpty(currentHotel) || _.isEmpty(currentRoom))
         return <div>Loading...</div>
     return (
         <div className="max-w-[1535px] px-8 py-5 mt-[100px] md:mt-40 md:px-10 lg:mt-16 lg:px-20 pb-[100px] bg-slate-50">
             <div className="w-[40%] mx-auto bg-white">
                 <header className=" font-bold text-2xl pb-5 bg-slate-50">
-                    Your booking
+                    {t('yourBooking')}
                 </header>
                 <div className="px-5 py-8 border rounded-md border-gray-300 shadow-md">
                     <div className=" border-b border-slate-300 pb-5">
@@ -138,27 +140,27 @@ function BookingHotel() {
                         </div>
                         <div className="flex justify-between">
                             <div className=" text-gray-500 text-lg">
-                                Room type
+                                {t('roomType')}
                             </div>
                             <div>{currentRoom.title}</div>
                         </div>
                     </div>
                     <div className="mt-5 border-b border-slate-300 pb-5">
                         <div className=" font-bold text-xl">
-                            Your trip
+                            {t('yourTripBooking')}
                         </div>
                         <div className="flex justify-between">
                             <div className=" text-gray-500 text-lg">
-                                Date
+                                {t('date')}
                             </div>
                             <div className="font-semibold">
-                                {queryParams.checkIn} to{' '}
+                                {queryParams.checkIn} {t('to')}{' '}
                                 {queryParams.checkOut}
                             </div>
                         </div>
                         <div className="flex justify-between mb-2">
                             <div className=" text-gray-500 text-lg">
-                                Adults
+                                {t('adult')}
                             </div>
                             <div>
                                 {' '}
@@ -191,7 +193,7 @@ function BookingHotel() {
                         </div>
                         <div className="flex justify-between">
                             <div className=" text-gray-500 text-lg">
-                                Childrens
+                                {t('children')}
                             </div>
                             <div>
                                 <div className="flex gap-1 items-center">
@@ -225,18 +227,18 @@ function BookingHotel() {
                         </div>
                         <div className="flex justify-between">
                             <div className=" text-gray-500 text-lg">
-                                Room
+                                {t('room')}
                             </div>
                             <div>{queryParams.countRooms}</div>
                         </div>
                     </div>
                     <div className="mt-5">
                         <div className=" font-semibold text-xl">
-                            Price
+                            {t('price')}
                         </div>
                         <div className="flex justify-between">
                             <div className=" text-gray-500 text-lg">
-                                Price per night
+                                {t('price')}/ {t('night')}
                             </div>
                             <div className="font-bold text-lg">
                                 {currentRoom.price}
@@ -244,7 +246,7 @@ function BookingHotel() {
                         </div>
                         <div className="flex justify-between">
                             <div className=" text-gray-500 text-lg">
-                                Night
+                                {t('night')}
                             </div>
                             <div className="font-bold text-lg">
                                 {getLengthDay(
@@ -255,7 +257,7 @@ function BookingHotel() {
                         </div>
                         <div className="flex justify-between">
                             <div className=" text-gray-500 text-lg">
-                                Total Price
+                                {t('totalPrice')}
                             </div>
                             <div className="font-bold text-lg">
                                 $
@@ -275,7 +277,7 @@ function BookingHotel() {
                             onClick={() => handleBookingHotel()}
                             className="w-[40%] bg-blue-500 text-white active:bg-blue-800 text-sm font-bold uppercase px-4 py-2 rounded-full shadow hover:shadow-lg outline-none focus:outline-none mb-1 ease-linear transition-all duration-150"
                         >
-                            Banking Now
+                            {t('bookNow')}
                         </button>
                     </div>
                 </div>

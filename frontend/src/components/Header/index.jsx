@@ -10,8 +10,11 @@ import UserDropdown from '@components/Dropdown/UserDropdown'
 import SidebarMobile from '@components/SidebarMobile'
 import { countNotReadedSelector } from '@pages/Notification/notification.slice'
 import { SiGooglecalendar } from 'react-icons/si'
+import { useTranslation } from 'react-i18next'
+import LanguageDropdown from '@components/Dropdown/LanguageDropdown'
 
 function Header() {
+    const { t } = useTranslation()
     const user = useSelector(selectUser)
     const location = useLocation()
     const [openForm, setOpenForm] = useState(false)
@@ -59,7 +62,7 @@ function Header() {
                         </svg>
                     </div>
                 </div>
-                <div className="flex-1 justify-center items-center">
+                <div className="w-[200px] justify-center items-center">
                     <Link
                         to={path.landingPage}
                         className="w-full h-full block lg:hidden"
@@ -77,6 +80,8 @@ function Header() {
                         className={`${
                             location.pathname.includes(
                                 path.bookingmeHotel
+                            ) || location.pathname.includes(
+                                path.bookingmeDestinationTravel
                             )
                                 ? 'bg-slate-100 border-slate-200 '
                                 : 'border-transparent '
@@ -85,7 +90,7 @@ function Header() {
                         <span>
                             <SiGooglecalendar />
                         </span>
-                        <span>Bookings</span>
+                        <span>{t('bookings')}</span>
                     </Link>
                     <Link
                         to={path.clientTrips}
@@ -100,7 +105,7 @@ function Header() {
                         <span>
                             <SlPaperPlane />
                         </span>
-                        <span>Trips</span>
+                        <span>{t('trips')}</span>
                     </Link>
                     <Link
                         to={path.notification}
@@ -121,7 +126,7 @@ function Header() {
                                 </span>
                             )}
                         </span>
-                        <span>Notifications</span>
+                        <span>{t('notifications')}</span>
                     </Link>
                     {user.id ? (
                         <UserDropdown />
@@ -130,9 +135,12 @@ function Header() {
                             to={path.signin}
                             className="flex gap-1 items-center cursor-pointer bg-slate-100 border-slate-200 border-2  border-transparent px-4 py-2 rounded-xl"
                         >
-                            <span>Signin</span>
+                            <span>{t('signin')}</span>
                         </Link>
                     )}
+                    <div className="flex-1 justify-center items-center">
+                        <LanguageDropdown />
+                    </div>
                 </div>
             </div>
             <SidebarMobile isOpen={openForm} onClose={onClose}>

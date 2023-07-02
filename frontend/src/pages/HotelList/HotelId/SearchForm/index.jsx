@@ -14,8 +14,10 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useLocation, useNavigate, useParams } from 'react-router-dom'
 import { getDateString } from '@utils/getDateString'
 import { getRoomAvailable } from '@pages/HotelList/hotelclient.slice'
+import { useTranslation } from 'react-i18next'
 
 function SearchForm() {
+    const { t } = useTranslation()
     const hotelId = useParams().id
     const dispatch = useDispatch()
     const location = useLocation()
@@ -33,7 +35,9 @@ function SearchForm() {
             hotelId: currentHotel.id
         }
     }, [location.search, currentHotel])
-    const [checkIn, setCheckIn] = useState(() => new Date(queryParams.checkIn))
+    const [checkIn, setCheckIn] = useState(
+        () => new Date(queryParams.checkIn)
+    )
     const [checkOut, setCheckOut] = useState(
         new Date(queryParams.checkOut)
     )
@@ -43,12 +47,12 @@ function SearchForm() {
                 className="flex-1 flex gap-3 items-center cursor-pointer justify-center  border-r border-gray-400 p-4"
                 onClick={onClick}
             >
-                <div className="flex flex-col">
+                <div className="flex flex-col items-center">
                     <span className="font-medium text-md">
-                        Check in
+                        {t('checkIn')}
                     </span>
                     <span className="text-gray-400 text-sm" ref={ref}>
-                        {value || 'Add Date'}
+                        {value || t('addDate')}
                     </span>
                 </div>
             </div>
@@ -60,12 +64,12 @@ function SearchForm() {
                 className="flex-1 flex gap-3 items-center cursor-pointer justify-center p-4"
                 onClick={onClick}
             >
-                <div className="flex flex-col">
+                <div className="flex flex-col items-center">
                     <span className="font-medium text-md">
-                        Check out
+                        {t('checkOut')}
                     </span>
                     <span className="text-gray-400 text-sm" ref={ref}>
-                        {value || 'Add Date'}
+                        {value || t('addDate')}
                     </span>
                 </div>
             </div>
@@ -97,7 +101,7 @@ function SearchForm() {
                 <div className="px-4 pb-4 flex justify-between items-center">
                     <div className="mt-4">
                         <span className="font-normal text-gray-400">
-                            From:
+                            {t('from')}:
                         </span>
                         <span className="font-bold text-xl">
                             ${currentHotel.cheapestPrice}
@@ -113,7 +117,7 @@ function SearchForm() {
                             {currentHotel.rating}{' '}
                         </span>
                         <span className="font-normal text-gray-400">
-                            ({currentHotel.totalRating} Reviews)
+                            ({currentHotel.totalRating} {t('review')})
                         </span>
                     </div>
                 </div>
@@ -145,7 +149,7 @@ function SearchForm() {
                         className=" bg-blue-500 text-white active:bg-blue-800 text-base font-semibold px-4 py-2 rounded-full shadow hover:shadow-lg outline-none focus:outline-none w-full ease-linear transition-all duration-150"
                         onClick={handleCheckAvailability}
                     >
-                        Check availability
+                        {t('checkRoom')}
                     </Mybutton>
                 </div>
             </div>

@@ -15,8 +15,10 @@ import { unwrapResult } from '@reduxjs/toolkit'
 import ToggleButton from '@components/ToggleButton'
 import Mybutton from '@components/MyButton'
 import ClientForm from './ClientForm'
+import { useTranslation } from 'react-i18next'
 
 function Clients() {
+    const { t } = useTranslation()
     const dispatch = useDispatch()
     const pagination = useSelector(paginationClientSelector)
     const clients = useSelector(clientsSelector)
@@ -66,8 +68,8 @@ function Clients() {
         dispatch(setCurrentClient({}))
     }
     useEffect(() => {
-        document.title = 'System Clients'
-    }, [])
+        document.title = t('manageClients')
+    }, [t])
     return (
         <div>
             <div className="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded bg-white min-h-[70vh]">
@@ -75,7 +77,7 @@ function Clients() {
                     <div className="flex flex-wrap items-center">
                         <div className="relative w-full px-4 max-w-full flex">
                             <h3 className="font-semibold text-lg text-blue-600">
-                                Manage Clients
+                                {t('manageClients')}
                             </h3>
                         </div>
                     </div>
@@ -83,14 +85,20 @@ function Clients() {
                 <div className="block w-full overflow-x-auto h-[66vh]">
                     <Table hoverable={true}>
                         <Table.Head>
-                            <Table.HeadCell>Fullname</Table.HeadCell>
+                            <Table.HeadCell>
+                                {t('fullname')}
+                            </Table.HeadCell>
                             <Table.HeadCell>Email</Table.HeadCell>
                             <Table.HeadCell>
-                                PhoneNumber
+                                {t('phone')}
                             </Table.HeadCell>
-                            <Table.HeadCell>Gender</Table.HeadCell>
-                            <Table.HeadCell>Status</Table.HeadCell>
-                            <Table.HeadCell>Action</Table.HeadCell>
+                            <Table.HeadCell>
+                                {t('gender')}
+                            </Table.HeadCell>
+                            <Table.HeadCell>
+                                {t('status')}
+                            </Table.HeadCell>
+                            <Table.HeadCell></Table.HeadCell>
                         </Table.Head>
                         <Table.Body className="divide-y">
                             {clients &&
@@ -110,8 +118,8 @@ function Clients() {
                                         </Table.Cell>
                                         <Table.Cell>
                                             {client.gender
-                                                ? 'Male'
-                                                : 'Female'}
+                                                ? t('male')
+                                                : t('female')}
                                         </Table.Cell>
                                         <Table.Cell>
                                             <ToggleButton

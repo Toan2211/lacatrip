@@ -4,6 +4,7 @@ import { MdAirplaneTicket, MdOutlinePayment } from 'react-icons/md'
 import { GoClock } from 'react-icons/go'
 import { Link } from 'react-router-dom'
 import moment from 'moment'
+import { t } from 'i18next'
 function BookingDestinationCard({ booking }) {
     return (
         <div className="w-full min-h-[60px] border-2 border-gray-200 rounded flex p-5 gap-2 items-center">
@@ -44,7 +45,7 @@ function BookingDestinationCard({ booking }) {
                     <li className="text-center w-[40px]">
                         <span className="border-[1px] border-slate-200 p-2 w-10 flex justify-center items-center rounded-lg">
                             <Tooltip
-                                content="Count Ticket"
+                                content={t('ticket')}
                                 style="light"
                             >
                                 <MdAirplaneTicket />

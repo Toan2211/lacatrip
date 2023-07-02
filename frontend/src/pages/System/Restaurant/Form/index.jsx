@@ -13,7 +13,6 @@ import * as yup from 'yup'
 import { phoneRegExp } from '@constants/regex'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { toast } from 'react-toastify'
-import { serviceManagersSelector } from '@pages/System/ServiceManagers/servicemanager.slice'
 import { getServiceManagers } from '@pages/System/ServiceManagers/servicemanager.slice'
 import MySelect from '@components/MySelect'
 import { unwrapResult } from '@reduxjs/toolkit'
@@ -26,15 +25,17 @@ import {
     currentRestauRantSelector,
     getRestaurantDetail,
     loadingRestaurant,
+    setCurrentRestaurant,
     updateRestaurant
 } from '../restaurant.slice'
 import { cusinesRestaurant } from '@constants/cusinesRestaurant'
 import { specialDietsRestaurant } from '@constants/specialDietsRestaurant'
 import { selectUser } from '@pages/Auth/auth.slice'
+import { useTranslation } from 'react-i18next'
 function RestaurantForm() {
+    const { t } = useTranslation()
     const dispatch = useDispatch()
     const profile = useSelector(selectUser)
-    const serviceManagers = useSelector(serviceManagersSelector)
     const currentRestaurant = useSelector(currentRestauRantSelector)
     const provinces = useSelector(provincesSelector)
     const navigate = useNavigate()
@@ -43,75 +44,67 @@ function RestaurantForm() {
     const [images, setImages] = useState(() =>
         currentRestaurant.images
             ? currentRestaurant.images.map(image => ({
-                id: image.id,
-                url: image.url
-            }))
+                  id: image.id,
+                  url: image.url
+              }))
             : []
     )
     const [cusines, setCusines] = useState(() =>
         currentRestaurant.cusines
             ? currentRestaurant.cusines
-                .split(',')
-                .map(item => ({ value: item, label: item }))
+                  .split(',')
+                  .map(item => ({ value: item, label: item }))
             : []
     )
     const [specialDiets, setSpecialDiets] = useState(() =>
         currentRestaurant.specialDiets
             ? currentRestaurant.specialDiets
-                .split(',')
-                .map(item => ({ value: item, label: item }))
+                  .split(',')
+                  .map(item => ({ value: item, label: item }))
             : []
     )
     useEffect(() => {
         if (id && !currentRestaurant.id)
             dispatch(getRestaurantDetail(id))
+        return () => {
+            dispatch(setCurrentRestaurant({}))
+        }
     }, [id, currentRestaurant, dispatch])
     useEffect(() => {
-        document.title = 'Form Restaurant'
+        document.title = _.isEmpty(currentRestaurant)
+            ? `${t('create')} ${t('restaurant').toLocaleLowerCase()}`
+            : `${t('update')} ${t('restaurant').toLocaleLowerCase()}`
         dispatch(getServiceManagers({ limit: 1000 }))
-    }, [dispatch])
+    }, [dispatch, t, currentRestaurant])
     const [isFirstTime, setIsFirstTime] = useState(true)
     const schema = yup.object().shape({
-        name: yup.string().required('Name is required'),
-        description: yup.string().required('Description is required'),
+        name: yup.string().required(t('requiredName')),
+        description: yup.string().required(t('requiredDescription')),
         phone: yup
             .string()
-            .required('Phone number is required')
-            .matches(phoneRegExp, 'Phone number is not valid'),
-        website: yup.string().required('Website is required'),
-        address: yup.string().required('Address is required'),
+            .required(t('requiredPhone'))
+            .matches(phoneRegExp, t('invalidPhone')),
+        address: yup.string().required(t('requiredAddress')),
         longtitude: yup
             .string()
-            .typeError(
-                'Input Address and generate map to get longtitude'
-            )
-            .required(
-                'Input Address and generate map to get longtitude'
-            ),
+            .typeError(t('requiredLongtitude'))
+            .required(t('requiredLongtitude')),
         latitude: yup
             .string()
-            .typeError(
-                'Input Address and generate map to get latitude'
-            )
-            .required(
-                'Input Address and generate map to get latitude'
-            ),
+            .typeError(t('requiredLatitude'))
+            .required(t('requiredLatitude')),
         provinceId: yup
             .string()
-            .typeError('Province is required')
-            .required('Province is required'),
+            .typeError(t('requiredProvince'))
+            .required(t('requiredProvince')),
         minPrice: yup
             .string()
-            .typeError('Min Price is required')
-            .required('Min Price  is required'),
+            .typeError(t('required'))
+            .required(t('required')),
         maxPrice: yup
             .string()
-            .typeError('Max Price is required')
-            .required('Max Price is required'),
-        limitBookPerDay: yup
-            .string()
-            .typeError('Limit book is required')
-            .required('Limit book is required')
+            .typeError(t('required'))
+            .required(t('required'))
     })
     const form = useForm({
         defaultValues: {
@@ -123,9 +116,6 @@ function RestaurantForm() {
                 : '',
             phone: currentRestaurant.phone
                 ? currentRestaurant.phone
-                : '',
-            website: currentRestaurant.website
-                ? currentRestaurant.website
                 : '',
             address: currentRestaurant.address
                 ? currentRestaurant.address
@@ -147,9 +137,6 @@ function RestaurantForm() {
                 : null,
             maxPrice: currentRestaurant.maxPrice
                 ? currentRestaurant.maxPrice
-                : null,
-            limitBookPerDay: currentRestaurant.limitBookPerDay
-                ? currentRestaurant.limitBookPerDay
                 : null
         },
         resolver: yupResolver(schema)
@@ -162,7 +149,6 @@ function RestaurantForm() {
                 currentRestaurant.description
             )
             form.setValue('phone', currentRestaurant.phone)
-            form.setValue('website', currentRestaurant.website)
             form.setValue('address', currentRestaurant.address)
             form.setValue('longtitude', currentRestaurant.longtitude)
             form.setValue('latitude', currentRestaurant.latitude)
@@ -173,10 +159,6 @@ function RestaurantForm() {
             form.setValue('provinceId', currentRestaurant.provinceId)
             form.setValue('minPrice', currentRestaurant.minPrice)
             form.setValue('maxPrice', currentRestaurant.maxPrice)
-            form.setValue(
-                'limitBookPerDay',
-                currentRestaurant.limitBookPerDay
-            )
             setImages(
                 currentRestaurant.images.map(image => ({
                     id: image.id,
@@ -205,22 +187,25 @@ function RestaurantForm() {
             formData.append('name', data.name)
             formData.append('description', data.description)
             formData.append('phone', data.phone)
-            formData.append('website', data.website)
             formData.append('address', data.address)
             formData.append('longtitude', data.longtitude)
             formData.append('latitude', data.latitude)
-            formData.append('serviceManagerId', profile.serviceManagerId)
+            formData.append(
+                'serviceManagerId',
+                profile.serviceManagerId
+            )
             formData.append('provinceId', data.provinceId)
             formData.append('minPrice', data.minPrice)
             formData.append('maxPrice', data.maxPrice)
-            formData.append('limitBookPerDay', data.limitBookPerDay)
             formData.append(
                 'cusines',
                 cusines.map(cusine => cusine.value).toString()
             )
             formData.append(
                 'specialDiets',
-                specialDiets.map(specialDiet => specialDiet.value).toString()
+                specialDiets
+                    .map(specialDiet => specialDiet.value)
+                    .toString()
             )
             for (const image of images) {
                 if (image.file) formData.append('images', image.file)
@@ -238,8 +223,12 @@ function RestaurantForm() {
             }
             toast.success(
                 _.isEmpty(currentRestaurant)
-                    ? 'Create restaurant successfully'
-                    : 'Update restaurant successfully',
+                    ? `${t('create')} ${t(
+                          'restaurant'
+                      ).toLocaleLowerCase()} ${t('successfully')}`
+                    : `${t('update')} ${t(
+                          'restaurant'
+                      ).toLocaleLowerCase()} ${t('successfully')}`,
                 {
                     position: toast.POSITION.BOTTOM_CENTER,
                     autoClose: 1000,
@@ -263,8 +252,12 @@ function RestaurantForm() {
                         <div className="relative w-full px-4 max-w-full flex">
                             <h3 className="font-semibold text-lg text-blue-600">
                                 {_.isEmpty(currentRestaurant)
-                                    ? 'Add Restaurant'
-                                    : 'Update Restaurant'}
+                                    ? `${t('create')} ${t(
+                                          'restaurant'
+                                      ).toLocaleLowerCase()}`
+                                    : `${t('update')} ${t(
+                                          'restaurant'
+                                      ).toLocaleLowerCase()}`}
                             </h3>
                         </div>
                     </div>
@@ -276,10 +269,12 @@ function RestaurantForm() {
                                 className="block uppercase text-sm font-bold mb-2"
                                 htmlFor="grid-password"
                             >
-                                Name
+                                {t('name')}
                             </label>
                             <InputField
-                                placeholder="Name Restaurant"
+                                placeholder={`${t('name')} ${t(
+                                    'restaurant'
+                                ).toLowerCase()}`}
                                 form={form}
                                 name="name"
                             />
@@ -289,10 +284,14 @@ function RestaurantForm() {
                                 className="block uppercase text-sm font-bold mb-2"
                                 htmlFor="grid-password"
                             >
-                                Description
+                                {`${t(
+                                    'description'
+                                ).toUpperCase()} ${t('languageEn')}`}
                             </label>
                             <TextArea
-                                placeholder="Description Restaurant..."
+                                placeholder={`${t('description')} ${t(
+                                    'restaurant'
+                                ).toLowerCase()}  ${t('languageEn')}...`}
                                 form={form}
                                 name="description"
                                 rows={2}
@@ -303,10 +302,28 @@ function RestaurantForm() {
                                 className="block uppercase text-sm font-bold mb-2"
                                 htmlFor="grid-password"
                             >
-                                Phone
+                                {`${t(
+                                    'description'
+                                ).toUpperCase()} ${t('languageVN')}`}
+                            </label>
+                            <TextArea
+                                placeholder={`${t('description')} ${t(
+                                    'languageVN'
+                                )}`}
+                                form={form}
+                                name="description"
+                                rows={2}
+                            />
+                        </div>
+                        <div className="relative w-full mb-3">
+                            <label
+                                className="block uppercase text-sm font-bold mb-2"
+                                htmlFor="grid-password"
+                            >
+                                {t('phone')}
                             </label>
                             <InputField
-                                placeholder="Phone Restaurant to contact"
+                                placeholder={t('phone')}
                                 form={form}
                                 name="phone"
                             />
@@ -316,21 +333,7 @@ function RestaurantForm() {
                                 className="block uppercase text-sm font-bold mb-2"
                                 htmlFor="grid-password"
                             >
-                                Website
-                            </label>
-                            <InputField
-                                placeholder="Website of Restaurant"
-                                form={form}
-                                name="website"
-                                type="input"
-                            />
-                        </div>
-                        <div className="relative w-full mb-3">
-                            <label
-                                className="block uppercase text-sm font-bold mb-2"
-                                htmlFor="grid-password"
-                            >
-                                Cusines Restaurant
+                                {t('cuisines')}
                             </label>
                             <Select
                                 styles={{
@@ -346,9 +349,9 @@ function RestaurantForm() {
                                 onChange={data => setCusines(data)}
                                 value={cusines}
                                 closeMenuOnSelect={false}
-                                placeholder={
-                                    'Cusines of restaurant...'
-                                }
+                                placeholder={`${t('cuisines')} ${t(
+                                    'of'
+                                )} ${t('restaurant').toLowerCase()}`}
                                 components={animatedComponents}
                                 isMulti
                                 options={cusinesRestaurant.map(
@@ -360,8 +363,7 @@ function RestaurantForm() {
                             />
                             {cusines.length === 0 && !isFirstTime && (
                                 <span className="text-[14px] text-red-500 pl-2 mt-1">
-                                    Please select cusines of
-                                    restaurant
+                                    {t('requiredCuisines')}
                                 </span>
                             )}
                         </div>
@@ -370,7 +372,7 @@ function RestaurantForm() {
                                 className="block uppercase text-sm font-bold mb-2"
                                 htmlFor="grid-password"
                             >
-                                SPECIAL DIETS
+                                {t('specialDiets')}
                             </label>
                             <Select
                                 styles={{
@@ -388,9 +390,9 @@ function RestaurantForm() {
                                 }
                                 value={specialDiets}
                                 closeMenuOnSelect={false}
-                                placeholder={
-                                    'SPECIAL DIETS of restaurant...'
-                                }
+                                placeholder={`${t(
+                                    'specialDiets'
+                                )} ${t('of')} ${t('restaurant')}`}
                                 components={animatedComponents}
                                 isMulti
                                 options={specialDietsRestaurant.map(
@@ -402,21 +404,20 @@ function RestaurantForm() {
                             />
                             {specialDiets.length === 0 &&
                                 !isFirstTime && (
-                                <span className="text-[14px] text-red-500 pl-2 mt-1">
-                                        Please select SPECIAL DIETS of
-                                        restaurant
-                                </span>
-                            )}
+                                    <span className="text-[14px] text-red-500 pl-2 mt-1">
+                                        {t('requiredSpecialDiets')}
+                                    </span>
+                                )}
                         </div>
                         <div className="relative w-full mb-3">
                             <label
                                 className="block uppercase text-sm font-bold mb-2"
                                 htmlFor="grid-password"
                             >
-                                Min price
+                                {t('minPrice')}
                             </label>
                             <InputField
-                                placeholder="Min price"
+                                placeholder={t('minPrice')}
                                 form={form}
                                 name="minPrice"
                                 type="number"
@@ -427,26 +428,12 @@ function RestaurantForm() {
                                 className="block uppercase text-sm font-bold mb-2"
                                 htmlFor="grid-password"
                             >
-                                Max price
+                                {t('maxPrice')}
                             </label>
                             <InputField
-                                placeholder="Max price"
+                                placeholder={t('maxPrice')}
                                 form={form}
                                 name="maxPrice"
-                                type="number"
-                            />
-                        </div>
-                        <div className="relative w-full mb-3">
-                            <label
-                                className="block uppercase text-sm font-bold mb-2"
-                                htmlFor="grid-password"
-                            >
-                                Limit book per day
-                            </label>
-                            <InputField
-                                placeholder="Limit book per day"
-                                form={form}
-                                name="limitBookPerDay"
                                 type="number"
                             />
                         </div>
@@ -455,10 +442,10 @@ function RestaurantForm() {
                                 className="block uppercase text-xs font-bold mb-2"
                                 htmlFor="grid-password"
                             >
-                                Province
+                                {t('province')}
                             </label>
                             <MySelect
-                                placeholder="Province"
+                                placeholder={t('province')}
                                 form={form}
                                 name="provinceId"
                                 options={provinces.map(province => ({
@@ -473,7 +460,7 @@ function RestaurantForm() {
                                 className="block uppercase text-sm font-bold mb-2"
                                 htmlFor="grid-password"
                             >
-                                Photos
+                                {t('photo')}
                             </label>
                             <PhotoUploads
                                 addedPhotos={images}
@@ -481,7 +468,7 @@ function RestaurantForm() {
                             />
                             {images.length === 0 && !isFirstTime && (
                                 <span className="text-[14px] text-red-500 pl-2 mt-1">
-                                    Please upload photos of hotel
+                                    {t('requiredPhoto')}
                                 </span>
                             )}
                         </div>
@@ -496,8 +483,8 @@ function RestaurantForm() {
                             className="bg-blue-500 text-white active:bg-blue-800 text-sm font-bold uppercase px-4 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 w-1/5 ease-linear transition-all duration-150"
                         >
                             {_.isEmpty(currentRestaurant)
-                                ? 'Add restaurant'
-                                : 'Update restaurant'}
+                                ? `${t('create')} ${t('restaurant')}`
+                                : `${t('update')} ${t('restaurant')}`}
                         </Mybutton>
                     </div>
                 </form>

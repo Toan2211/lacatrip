@@ -24,8 +24,10 @@ import {
     serviceManagersSelector
 } from '../ServiceManagers/servicemanager.slice'
 import { selectUser } from '@pages/Auth/auth.slice'
+import { useTranslation } from 'react-i18next'
 
 function Hotel() {
+    const { t } = useTranslation()
     const navigate = useNavigate()
     const dispatch = useDispatch()
     const hotels = useSelector(hotelsSelector)
@@ -68,13 +70,13 @@ function Hotel() {
         try {
             const res = await dispatch(togglePublic(hotelId))
             unwrapResult(res)
-            toast.success('Change status hotel successful', {
+            toast.success(t('changeStatusHotel'), {
                 position: toast.POSITION.BOTTOM_CENTER,
                 autoClose: 1000,
                 hideProgressBar: true
             })
         } catch (error) {
-            toast.error(error.message, {
+            toast.error(t(error.message), {
                 position: toast.POSITION.BOTTOM_CENTER,
                 autoClose: 1000,
                 hideProgressBar: true
@@ -104,10 +106,10 @@ function Hotel() {
     }
 
     useEffect(() => {
-        document.title = 'Hotels'
+        document.title = t('manageHotel')
         if (serviceManagers.length === 0)
             dispatch(getServiceManagers({ limit: 1000 }))
-    }, [dispatch, serviceManagers])
+    }, [dispatch, serviceManagers, t])
     return (
         <div>
             <div className="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded bg-white min-h-[70vh]">
@@ -115,32 +117,37 @@ function Hotel() {
                     <div className="flex flex-wrap items-center">
                         <div className="relative w-full px-4 max-w-full flex">
                             <h3 className="font-semibold text-lg text-blue-600">
-                                Manage Hotels
+                                {t('manageHotel')}
                             </h3>
-                            {profile.serviceManagerId && (<div className="relative flex flex-col items-center group w-10">
-                                <Tooltip
-                                    content="Create"
-                                    style="light"
-                                >
-                                    <button
-                                        className="inline-flex items-center justify-center w-6 h-6 mr-2 text-indigo-100 transition-colors duration-150  bg-green-700 rounded-lg focus:shadow-outline hover:bg-green-500 ml-4"
-                                        onClick={() =>
-                                            navigate(path.formHotel)
-                                        }
+                            {profile.serviceManagerId && (
+                                <div className="relative flex flex-col items-center group w-10">
+                                    <Tooltip
+                                        content={t('create')}
+                                        style="light"
+                                        className='w-[80px]'
                                     >
-                                        <svg
-                                            className="w-4 h-4 fill-current"
-                                            viewBox="0 0 20 20"
+                                        <button
+                                            className="inline-flex items-center justify-center w-6 h-6 mr-2 text-indigo-100 transition-colors duration-150  bg-green-700 rounded-lg focus:shadow-outline hover:bg-green-500 ml-4"
+                                            onClick={() =>
+                                                navigate(
+                                                    path.formHotel
+                                                )
+                                            }
                                         >
-                                            <path
-                                                d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z"
-                                                clipRule="evenodd"
-                                                fillRule="evenodd"
-                                            ></path>
-                                        </svg>
-                                    </button>
-                                </Tooltip>
-                            </div>)}
+                                            <svg
+                                                className="w-4 h-4 fill-current"
+                                                viewBox="0 0 20 20"
+                                            >
+                                                <path
+                                                    d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z"
+                                                    clipRule="evenodd"
+                                                    fillRule="evenodd"
+                                                ></path>
+                                            </svg>
+                                        </button>
+                                    </Tooltip>
+                                </div>
+                            )}
                         </div>
                         <form
                             className="flex gap-5 w-full mt-4"
@@ -150,7 +157,9 @@ function Hotel() {
                         >
                             <div className="flex-1">
                                 <InputField
-                                    placeholder="Name Hotel"
+                                    placeholder={
+                                        t('name') + ' ' + t('hotel')
+                                    }
                                     form={form}
                                     name="key"
                                 />
@@ -158,7 +167,9 @@ function Hotel() {
                             {!profile.serviceManagerId && (
                                 <div className="flex-1">
                                     <MySelect
-                                        placeholder="Service Manager"
+                                        placeholder={t(
+                                            'serviceManagers'
+                                        )}
                                         form={form}
                                         name="serviceManagerId"
                                         options={serviceManagers.map(
@@ -178,7 +189,7 @@ function Hotel() {
 
                             <div className="flex-1">
                                 <MySelect
-                                    placeholder="Province"
+                                    placeholder={t('province')}
                                     form={form}
                                     name="provinceId"
                                     options={provinces.map(
@@ -195,7 +206,7 @@ function Hotel() {
                                         type="submit"
                                         className="bg-blue-500 text-white active:bg-blue-800 text-sm font-bold uppercase px-3 py-2 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 w-full ease-linear transition-all duration-150"
                                     >
-                                        Search
+                                        {t('search')}
                                     </Mybutton>
                                 </div>
                                 <div className="flex-1">
@@ -206,7 +217,7 @@ function Hotel() {
                                         }
                                         className="bg-blue-500 text-white active:bg-blue-800 text-sm font-bold uppercase px-3 py-2 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 w-full ease-linear transition-all duration-150"
                                     >
-                                        Reset
+                                        {t('reset')}
                                     </Mybutton>
                                 </div>
                             </div>
@@ -216,14 +227,24 @@ function Hotel() {
                 <div className="block w-full overflow-x-auto h-[66vh]">
                     <Table hoverable={true}>
                         <Table.Head>
-                            <Table.HeadCell>Name</Table.HeadCell>
                             <Table.HeadCell>
-                                Service Manager
+                                {t('name')}
                             </Table.HeadCell>
-                            <Table.HeadCell>Province</Table.HeadCell>
-                            <Table.HeadCell>Rating</Table.HeadCell>
-                            <Table.HeadCell>Public</Table.HeadCell>
-                            <Table.HeadCell>Action</Table.HeadCell>
+                            {!profile.serviceManagerId && (
+                                <Table.HeadCell>
+                                    {t('serviceManagers')}
+                                </Table.HeadCell>
+                            )}
+                            <Table.HeadCell>
+                                {t('province')}
+                            </Table.HeadCell>
+                            <Table.HeadCell>
+                                {t('rating')}
+                            </Table.HeadCell>
+                            <Table.HeadCell>
+                                {t('status')}
+                            </Table.HeadCell>
+                            <Table.HeadCell></Table.HeadCell>
                         </Table.Head>
                         <Table.Body className="divide-y">
                             {hotels &&
@@ -235,12 +256,16 @@ function Hotel() {
                                         <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
                                             {hotel.name}
                                         </Table.Cell>
-                                        <Table.Cell>
-                                            {hotel.serviceManager.user
-                                                .firstname +
-                                                hotel.serviceManager
-                                                    .user.lastname}
-                                        </Table.Cell>
+                                        {!profile.serviceManagerId && (
+                                            <Table.Cell>
+                                                {hotel.serviceManager
+                                                    .user.firstname +
+                                                    hotel
+                                                        .serviceManager
+                                                        .user
+                                                        .lastname}
+                                            </Table.Cell>
+                                        )}
                                         <Table.Cell>
                                             {hotel.province.name}
                                         </Table.Cell>
@@ -259,7 +284,7 @@ function Hotel() {
                                         </Table.Cell>
                                         <Table.Cell className="flex gap-4">
                                             <Tooltip
-                                                content="Detail Hotel"
+                                                content={t('detail')}
                                                 style="light"
                                             >
                                                 <Mybutton
@@ -288,7 +313,9 @@ function Hotel() {
                                             </Tooltip>
 
                                             <Tooltip
-                                                content="Manage Rooms"
+                                                content={t(
+                                                    'manageRooms'
+                                                )}
                                                 style="light"
                                             >
                                                 <Mybutton
