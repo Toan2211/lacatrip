@@ -11,6 +11,7 @@ const create = async data => {
         const dataHotel = {
             name: data.name,
             description: data.description,
+            descriptionVN: data.descriptionVN,
             phone: data.phone,
             hotelClass: data.hotelClass,
             hotelStyle: data.hotelStyle,
