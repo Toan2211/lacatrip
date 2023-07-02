@@ -13,8 +13,10 @@ import {
 import queryString from 'query-string'
 import Mybutton from '@components/MyButton'
 import RoomDetailForm from './RoomDetailForm'
+import { useTranslation } from 'react-i18next'
 
 function Rooms() {
+    const { t } = useTranslation()
     const dispatch = useDispatch()
     const navigate = useNavigate()
     const currentHotel = useSelector(currentHotelSelector)
@@ -76,12 +78,15 @@ function Rooms() {
                     <div className="flex flex-wrap items-center">
                         <div className="relative w-full px-4 max-w-full flex">
                             <h3 className="font-semibold text-lg text-blue-600">
-                                Manage Rooms of {currentHotel.name}
+                                {t('manageRooms')} {t('of')}{' '}
+                                {t('hotel').toLocaleLowerCase()}{' '}
+                                {currentHotel.name}
                             </h3>
                             <div className="relative flex flex-col items-center group w-10">
                                 <Tooltip
-                                    content="Create"
+                                    content={t('create')}
                                     style="light"
+                                    className='w-[80px]'
                                 >
                                     <button
                                         className="inline-flex items-center justify-center w-6 h-6 mr-2 text-indigo-100 transition-colors duration-150  bg-green-700 rounded-lg focus:shadow-outline hover:bg-green-500 ml-4"
@@ -106,16 +111,19 @@ function Rooms() {
                 <div className="block w-full overflow-x-auto h-[66vh]">
                     <Table hoverable={true}>
                         <Table.Head>
-                            {/* <Table.HeadCell>Room ID</Table.HeadCell> */}
-                            <Table.HeadCell>Room type</Table.HeadCell>
                             <Table.HeadCell>
-                                Description
+                                {t('roomType')}
                             </Table.HeadCell>
-                            <Table.HeadCell>Price</Table.HeadCell>
                             <Table.HeadCell>
-                                Original Price
+                                {t('description')}
                             </Table.HeadCell>
-                            <Table.HeadCell>Action</Table.HeadCell>
+                            <Table.HeadCell>
+                                {t('price')}
+                            </Table.HeadCell>
+                            <Table.HeadCell>
+                                {t('originalPrice')}
+                            </Table.HeadCell>
+                            <Table.HeadCell></Table.HeadCell>
                         </Table.Head>
                         <Table.Body className="divide-y">
                             {rooms &&
@@ -141,7 +149,7 @@ function Rooms() {
                                         </Table.Cell>
                                         <Table.Cell className="flex gap-4">
                                             <Tooltip
-                                                content="Detail Room"
+                                                content={t('detail')}
                                                 style="light"
                                             >
                                                 <Mybutton
@@ -169,7 +177,7 @@ function Rooms() {
                                                 </Mybutton>
                                             </Tooltip>
                                             <Tooltip
-                                                content="Detail Rooms Manage"
+                                                content={t('detail')}
                                                 style="light"
                                             >
                                                 <Mybutton

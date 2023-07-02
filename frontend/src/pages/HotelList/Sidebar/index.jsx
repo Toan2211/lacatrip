@@ -7,8 +7,10 @@ import { IoCalendarOutline } from 'react-icons/io5'
 import { useLocation, useNavigate } from 'react-router'
 import { getDateString } from '@utils/getDateString'
 import moment from 'moment'
+import { useTranslation } from 'react-i18next'
 
 function Sidebar() {
+    const { t } = useTranslation()
     const navigate = useNavigate()
     const location = useLocation()
     const queryParams = useMemo(() => {
@@ -35,7 +37,9 @@ function Sidebar() {
         () => queryParams.maxPrice
     )
     const handleOnchangeMaxPrice = e => setMaxPrice(e.target.value)
-    const [checkIn, setCheckIn] = useState(() => new Date(queryParams.checkIn))
+    const [checkIn, setCheckIn] = useState(
+        () => new Date(queryParams.checkIn)
+    )
     const [checkOut, setCheckOut] = useState(
         new Date(queryParams.checkOut)
     )
@@ -50,10 +54,10 @@ function Sidebar() {
                 </span>
                 <div className="flex flex-col">
                     <span className="font-medium text-md">
-                        Check in
+                        {t('checkIn')}
                     </span>
                     <span className="text-gray-400 text-sm" ref={ref}>
-                        {value || 'Add Date'}
+                        {value || t('addDate')}
                     </span>
                 </div>
             </div>
@@ -70,10 +74,10 @@ function Sidebar() {
                 </span>
                 <div className="flex flex-col">
                     <span className="font-medium text-md">
-                        Check out
+                        {t('checkOut')}
                     </span>
                     <span className="text-gray-400 text-sm" ref={ref}>
-                        {value || 'Add Date'}
+                        {value || t('addDate')}
                     </span>
                 </div>
             </div>
@@ -114,18 +118,18 @@ function Sidebar() {
     return (
         <div className="w-full  border-slate-200 border rounded-lg px-2 py-2">
             <header className=" ml-2 font-semibold text-xl text-slate-500">
-                Choose your favorite
+                {t('filters')}
             </header>
             <div className="flex-1 flex gap-3 items-center w-full mb-4">
                 <span className="text-3xl"></span>
                 <div className="flex flex-col w-full">
                     <div className="font-medium text-md ml-2 mb-2">
-                        Name
+                        {t('name')}
                     </div>
                     <input
                         value={keyword}
                         onChange={handleOnchangeKeyWord}
-                        placeholder="Search by name"
+                        placeholder={t('searchByName')}
                         className="border  border-slate-200 outline-none px-2 py-1 rounded-md focus:border-blue-800 "
                     />
                 </div>
@@ -134,7 +138,7 @@ function Sidebar() {
                 <span className="text-3xl"></span>
                 <div className="flex flex-col w-full">
                     <div className="font-medium text-md ml-2 mb-2">
-                        Check In
+                        {t('checkIn')}
                     </div>
                     <ReactDatePicker
                         closeOnScroll={true}
@@ -151,7 +155,7 @@ function Sidebar() {
                 <span className="text-3xl"></span>
                 <div className="flex flex-col w-full">
                     <div className="font-medium text-md ml-2 mb-2">
-                        Check Out
+                        {t('checkOut')}
                     </div>
                     <ReactDatePicker
                         closeOnScroll={true}
@@ -169,7 +173,7 @@ function Sidebar() {
                 <span className="text-3xl"></span>
                 <div className="flex flex-col w-full">
                     <div className="font-medium text-md ml-2 mb-2">
-                        Min Price
+                        {t('minPrice')}
                     </div>
                     <input
                         value={minPrice}
@@ -183,7 +187,7 @@ function Sidebar() {
                 <span className="text-3xl"></span>
                 <div className="flex flex-col w-full">
                     <div className="font-medium text-md ml-2 mb-2">
-                        MaxPrice
+                        {t('maxPrice')}
                     </div>
                     <input
                         value={maxPrice}
@@ -198,13 +202,13 @@ function Sidebar() {
                 <div className="flex flex-col w-full">
                     <div className="flex items-center gap-4">
                         <div className="font-medium text-md ml-2">
-                            Star
+                            {t('star')}
                         </div>
                         <div
                             onClick={() => handleChangeStar('')}
                             className=" hover:underline hover:text-blue-500 text-sm cursor-pointer"
                         >
-                            All
+                            {t('all')}
                         </div>
                     </div>
 
@@ -261,7 +265,7 @@ function Sidebar() {
                         <span className="text-2xl">
                             <AiOutlineSearch />
                         </span>
-                        <span>Search</span>
+                        <span>{t('search')}</span>
                     </div>
                 </Mybutton>
             </div>

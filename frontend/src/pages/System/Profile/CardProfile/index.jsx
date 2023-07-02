@@ -14,23 +14,25 @@ import Mybutton from '@components/MyButton'
 import { unwrapResult } from '@reduxjs/toolkit'
 import { toast } from 'react-toastify'
 import { updateUser } from '@pages/Auth/auth.slice'
+import { useTranslation } from 'react-i18next'
 function CardProfile() {
+    const { t } = useTranslation()
     const loading = useSelector(selectLoadingAuth)
     const user = useSelector(selectUser)
     const dispatch = useDispatch()
     const schema = yup.object().shape({
         email: yup
             .string()
-            .required('Email is required')
-            .email('Invalid email'),
-        firstname: yup.string().required('Firstname is required'),
-        lastname: yup.string().required('Lastname is required'),
-        gender: yup.string().required('Gender is required'),
-        country: yup.string().required('Country is required'),
+            .required(t('requiredEmail'))
+            .email(t('invalidEmail')),
+        firstname: yup.string().required(t('requiredFirstName')),
+        lastname: yup.string().required(t('requiredLastname')),
+        gender: yup.string().required(t('requiredGender')),
+        country: yup.string().required(t('requiredCountry')),
         phone: yup
             .string()
-            .required('Phone number is required')
-            .matches(phoneRegExp, 'Phone number is not valid')
+            .required(t('requiredPhone'))
+            .matches(phoneRegExp, t('invalidPhone'))
     })
     const form = useForm({
         defaultValues: {
@@ -60,7 +62,7 @@ function CardProfile() {
         try {
             const res = await dispatch(updateUser(formData))
             unwrapResult(res)
-            toast.success('Update user successful', {
+            toast.success(t('updateSuccess'), {
                 position: toast.POSITION.BOTTOM_CENTER,
                 autoClose: 1000,
                 hideProgressBar: true
@@ -79,20 +81,20 @@ function CardProfile() {
                 <div className="rounded-t bg-white mb-7 px-6 py-6">
                     <div className="text-center flex justify-between ">
                         <h6 className="text-xl font-bold">
-                            My account
+                            {t('accountInfo')}
                         </h6>
                         <Mybutton
                             className=" bg-blue-500 text-white active:bg-blue-800 text-sm font-bold uppercase px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 w-1/8 ease-linear transition-all duration-150"
                             type="submit"
                             isloading={+loading}
                         >
-                            Edit
+                            {t('update')}
                         </Mybutton>
                     </div>
                 </div>
                 <div className="flex px-4 lg:px-10 py-10 pt-0">
                     <h6 className="text-blueGray-400 text-sm mt-3 mb-6 font-bold uppercase">
-                        User Information
+                        {t('userInfo')}
                     </h6>
                     <div className="flex flex-wrap">
                         <div className="w-full lg:w-6/12 px-4">
@@ -101,10 +103,10 @@ function CardProfile() {
                                     className="block uppercase text-gray-600 text-xs font-bold mb-2"
                                     htmlFor="grid-password"
                                 >
-                                    Phone Number
+                                    {t('phone')}
                                 </label>
                                 <InputField
-                                    placeholder="Phone Number"
+                                    placeholder={t('phone')}
                                     type="input"
                                     form={form}
                                     name="phone"
@@ -117,7 +119,7 @@ function CardProfile() {
                                     className="block uppercase text-gray-600  text-xs font-bold mb-2"
                                     htmlFor="grid-password"
                                 >
-                                    Email address
+                                    Email
                                 </label>
                                 <InputField
                                     placeholder="Email"
@@ -134,10 +136,10 @@ function CardProfile() {
                                     className="block uppercase text-gray-600  text-xs font-bold mb-2"
                                     htmlFor="grid-password"
                                 >
-                                    First Name
+                                    {t('firstName')}
                                 </label>
                                 <InputField
-                                    placeholder="Firstname"
+                                    placeholder={t('firstName')}
                                     type="input"
                                     form={form}
                                     name="firstname"
@@ -150,10 +152,10 @@ function CardProfile() {
                                     className="block uppercase text-gray-600  text-xs font-bold mb-2"
                                     htmlFor="grid-password"
                                 >
-                                    Last Name
+                                    {t('lastName')}
                                 </label>
                                 <InputField
-                                    placeholder="Lastname"
+                                    placeholder={t('lastName')}
                                     type="input"
                                     form={form}
                                     name="lastname"
@@ -166,7 +168,7 @@ function CardProfile() {
                                     className="block uppercase text-gray-600  text-xs font-bold mb-2"
                                     htmlFor="grid-password"
                                 >
-                                    Gender
+                                    {t('gender')}
                                 </label>
                                 <div className="flex space-x-4">
                                     <label
@@ -181,7 +183,7 @@ function CardProfile() {
                                             value="1"
                                             id="male"
                                         />
-                                        Male
+                                        {t('male')}
                                     </label>
                                     <label
                                         htmlFor="female"
@@ -195,7 +197,7 @@ function CardProfile() {
                                             value="0"
                                             id="female"
                                         />
-                                        Female
+                                        {t('female')}
                                     </label>
                                 </div>
                                 {form.formState.errors['gender'] && (
@@ -215,10 +217,10 @@ function CardProfile() {
                                     className="block uppercase text-gray-600  text-xs font-bold mb-2"
                                     htmlFor="grid-password"
                                 >
-                                    Country
+                                    {t('country')}
                                 </label>
                                 <MySelect
-                                    placeholder="Country"
+                                    placeholder={t('country')}
                                     form={form}
                                     name="country"
                                     options={countrys.map(country =>

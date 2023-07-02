@@ -9,8 +9,10 @@ import moment from 'moment'
 import queryString from 'query-string'
 import { useNavigate } from 'react-router'
 import { path } from '@constants/path'
+import { useTranslation } from 'react-i18next'
 
 function SearchDestinationForm() {
+    const { t } = useTranslation()
     const currentDestination = useSelector(
         currentDestinationClientSelector
     )
@@ -55,7 +57,7 @@ function SearchDestinationForm() {
             <div className="px-4 pb-4 flex justify-between items-center">
                 <div className="mt-4">
                     <span className="font-normal text-gray-400">
-                        From:
+                        {t('from')}
                     </span>
                     <span className="font-bold text-xl">
                         ${currentDestination.price}
@@ -71,7 +73,8 @@ function SearchDestinationForm() {
                         {currentDestination.rating}{' '}
                     </span>
                     <span className="font-normal text-gray-400">
-                        ({currentDestination.totalRating} Reviews)
+                        ({currentDestination.totalRating}{' '}
+                        {t('review')})
                     </span>
                 </div>
             </div>
@@ -79,7 +82,7 @@ function SearchDestinationForm() {
                 <div className="border-gray-100 border-[1px] w-full px-4 py-2 flex justify-between items-center">
                     <div className="flex flex-col">
                         <span className=" font-medium text-md">
-                            Date
+                            {t('date')}
                         </span>
                         <span className="text-sm">
                             {getDateString(date)}
@@ -100,7 +103,7 @@ function SearchDestinationForm() {
                 <div className="border-gray-100 border-[1px] w-full px-4 py-2 flex justify-between items-center">
                     <div className="flex flex-col">
                         <span className=" font-medium text-md">
-                            People
+                            {t('people')}
                         </span>
                         <span className="text-sm">{people}</span>
                     </div>
@@ -126,7 +129,7 @@ function SearchDestinationForm() {
                 </div>
             </div>
             <div className="flex justify-between items-center font-semibold text-2xl mt-5">
-                <span>Total</span>
+                <span>{t('total')}</span>
                 <span>${currentDestination.price * people}</span>
             </div>
             <div className="text-center mt-4">
@@ -134,7 +137,7 @@ function SearchDestinationForm() {
                     onClick={handleBookingDestinationTravel}
                     className=" bg-blue-500 text-white active:bg-blue-800 text-sm font-semibold px-4 py-2 rounded-full shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 w-3/4 ease-linear transition-all duration-150"
                 >
-                    Book Now
+                    {t('bookNow')}
                 </Mybutton>
             </div>
         </div>

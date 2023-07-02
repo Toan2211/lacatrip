@@ -15,8 +15,10 @@ import { unwrapResult } from '@reduxjs/toolkit'
 import { socketSelector } from './socket.slice'
 import { createNotification } from '@pages/Notification/notification.slice'
 import { readNotification } from '@pages/Notification/notification.slice'
+import { useTranslation } from 'react-i18next'
 
 function Chat() {
+    const { t } = useTranslation()
     const dispatch = useDispatch()
     const socket = useSelector(socketSelector)
     const currentTrip = useSelector(currentTripSelector)
@@ -130,7 +132,10 @@ function Chat() {
         }
     }, [conversations])
     const onScroll = e => {
-        if (e.currentTarget.scrollTop === 0 && conversations.length > 0) {
+        if (
+            e.currentTarget.scrollTop === 0 &&
+            conversations.length > 0
+        ) {
             dispatch(
                 getConversationByTripId({
                     tripId: currentTrip.id,
@@ -144,7 +149,7 @@ function Chat() {
     return (
         <div className="h-full flex flex-col">
             <header className=" font-semibold bg-slate-200 p-4 text-lg uppercase rounded-md">
-                Chat between tripmate
+                {t('chat')}
             </header>
             <div
                 className="overflow-y-scroll flex-1  gap-2 p-2 h-[calc(100%-200px)]"
@@ -231,7 +236,7 @@ function Chat() {
                     onClick={handleSendMessage}
                     className=" bg-blue-500 text-white active:bg-blue-800 text-sm font-bold  px-6 py-2 rounded shadow hover:shadow-lg outline-none focus:outline-none ease-linear transition-all duration-150"
                 >
-                    Send
+                    {t('send')}
                 </button>
             </div>
         </div>

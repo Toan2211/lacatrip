@@ -13,24 +13,26 @@ import AvatarUpload from '@components/AvatarUpload'
 import { toast } from 'react-toastify'
 import { updateUser } from '@pages/Auth/auth.slice'
 import { unwrapResult } from '@reduxjs/toolkit'
+import { useTranslation } from 'react-i18next'
 
 function Profile() {
+    const { t } = useTranslation()
     const loading = useSelector(selectLoadingAuth)
     const user = useSelector(selectUser)
     const dispatch = useDispatch()
     const schema = yup.object().shape({
         email: yup
             .string()
-            .required('Email is required')
-            .email('Invalid email'),
-        firstname: yup.string().required('Firstname is required'),
-        lastname: yup.string().required('Lastname is required'),
-        gender: yup.string().required('Gender is required'),
-        country: yup.string().required('Country is required'),
+            .required(t('requiredEmail'))
+            .email(t('invalidEmail')),
+        firstname: yup.string().required(t('requiredFirstName')),
+        lastname: yup.string().required(t('requiredLastname')),
+        gender: yup.string().required(t('requiredGender')),
+        country: yup.string().required(t('requiredCountry')),
         phone: yup
             .string()
-            .required('Phone number is required')
-            .matches(phoneRegExp, 'Phone number is not valid')
+            .required(t('requiredPhone'))
+            .matches(phoneRegExp, t('invalidPhone'))
     })
     const form = useForm({
         defaultValues: {
@@ -60,7 +62,7 @@ function Profile() {
             try {
                 const res = await dispatch(updateUser(formData))
                 unwrapResult(res)
-                toast.success('Update user successful', {
+                toast.success(t('updateSuccess'), {
                     position: toast.POSITION.BOTTOM_CENTER,
                     autoClose: 1000,
                     hideProgressBar: true
@@ -72,8 +74,7 @@ function Profile() {
                     hideProgressBar: true
                 })
             }
-        }
-        catch (error) {
+        } catch (error) {
             toast.error(error.message, {
                 position: toast.POSITION.BOTTOM_CENTER,
                 autoClose: 1000,
@@ -84,7 +85,7 @@ function Profile() {
     return (
         <div className="ml-[16%] w-[50%] pt-5">
             <header className="font-bold text-2xl mb-3 mt-5">
-                Account Information
+                {t('accountInfo')}
             </header>
             <form onSubmit={form.handleSubmit(handleSubmit)}>
                 <div className="relative w-full mb-8">
@@ -96,10 +97,10 @@ function Profile() {
                             className="block uppercase text-xs font-bold mb-2"
                             htmlFor="grid-password"
                         >
-                            Firstname
+                            {t('firstName')}
                         </label>
                         <InputField
-                            placeholder="Firstname"
+                            placeholder={t('firstName')}
                             type="input"
                             form={form}
                             name="firstname"
@@ -110,10 +111,10 @@ function Profile() {
                             className="block uppercase text-xs font-bold mb-2"
                             htmlFor="grid-password"
                         >
-                            Lastname
+                            {t('lastName')}
                         </label>
                         <InputField
-                            placeholder="Lastname"
+                            placeholder={t('lastName')}
                             type="input"
                             form={form}
                             name="lastname"
@@ -125,7 +126,7 @@ function Profile() {
                         className="block uppercase text-xs font-bold mb-2"
                         htmlFor="grid-password"
                     >
-                        Gender
+                        {t('gender')}
                     </label>
                     <div className="flex space-x-4">
                         <label
@@ -138,7 +139,7 @@ function Profile() {
                                 value="1"
                                 id="male"
                             />
-                            Male
+                            {t('male')}
                         </label>
                         <label
                             htmlFor="female"
@@ -150,7 +151,7 @@ function Profile() {
                                 value="0"
                                 id="female"
                             />
-                            Female
+                            {t('female')}
                         </label>
                     </div>
                     {form.formState.errors['gender'] && (
@@ -179,10 +180,10 @@ function Profile() {
                         className="block uppercase text-xs font-bold mb-2"
                         htmlFor="grid-password"
                     >
-                        PhoneNumber
+                        {t('phone')}
                     </label>
                     <InputField
-                        placeholder="Phone Number"
+                        placeholder={t('phone')}
                         type="input"
                         form={form}
                         name="phone"
@@ -193,10 +194,10 @@ function Profile() {
                         className="block uppercase text-xs font-bold mb-2"
                         htmlFor="grid-password"
                     >
-                        Country
+                        {t('country')}
                     </label>
                     <MySelect
-                        placeholder="Country"
+                        placeholder={t('country')}
                         form={form}
                         name="country"
                         options={countrys.map(country =>
@@ -213,7 +214,7 @@ function Profile() {
                         type="submit"
                         isloading={+loading}
                     >
-                        Edit
+                        {t('update')}
                     </Mybutton>
                 </div>
             </form>

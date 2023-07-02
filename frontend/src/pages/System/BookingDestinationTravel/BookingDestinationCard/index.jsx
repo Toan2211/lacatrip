@@ -1,11 +1,13 @@
 import { Modal, Tooltip } from 'flowbite-react'
 import moment from 'moment'
 import React, { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { GoClock } from 'react-icons/go'
 import { MdAirplaneTicket, MdOutlinePayment } from 'react-icons/md'
 import { Link } from 'react-router-dom'
 
 function BookingDestinationCard({ booking }) {
+    const { t } = useTranslation()
     const [showModal, setShowModal] = useState(false)
     const [type, setType] = useState(null)
     const [dataUser, setDataUser] = useState({})
@@ -55,7 +57,7 @@ function BookingDestinationCard({ booking }) {
                         <li className="text-center w-[40px]">
                             <span className="border-[1px] border-slate-200 p-2 w-10 flex justify-center items-center rounded-lg">
                                 <Tooltip
-                                    content="Count Ticket"
+                                    content={t('ticket')}
                                     style="light"
                                 >
                                     <MdAirplaneTicket />
@@ -70,10 +72,10 @@ function BookingDestinationCard({ booking }) {
                 <div className="w-[250px] border-r border-gray-200">
                     <div className="flex gap-2 items-center">
                         <span className="text-sm text-slate-500">
-                            Service Manger:
+                            {t('serviceManager')}:
                         </span>
                         <Tooltip
-                            content="Service Manager"
+                            content={t('serviceManager')}
                             style="light"
                         >
                             <div
@@ -95,9 +97,9 @@ function BookingDestinationCard({ booking }) {
                     </div>
                     <div className="flex gap-2 items-center">
                         <span className="text-sm text-slate-500">
-                            Client:
+                            {t('client')}:
                         </span>
-                        <Tooltip content="Client" style="light">
+                        <Tooltip content={t('client')} style="light">
                             <div
                                 className=" hover:underline hover:text-blue-500 cursor-pointer"
                                 onClick={() =>
@@ -131,8 +133,8 @@ function BookingDestinationCard({ booking }) {
             >
                 <Modal.Header className=" bg-slate-100">
                     {type
-                        ? 'Information about Service Manager'
-                        : 'Information about Client'}
+                        ? `${t('information')} ${t('about')} ${t('serviceManager')}`
+                        : `${t('information')} ${t('about')} ${t('client')}`}
                 </Modal.Header>
                 <Modal.Body>
                     <div className="my-2 text-center">
@@ -144,7 +146,7 @@ function BookingDestinationCard({ booking }) {
                     <div className="px-14">
                         <div className="flex gap-3">
                             <label className=" font-semibold">
-                                Name:{' '}
+                                {t('name')}:{' '}
                             </label>
                             <div>
                                 {dataUser.firstname}{' '}
@@ -159,13 +161,13 @@ function BookingDestinationCard({ booking }) {
                         </div>
                         <div className="flex gap-3">
                             <label className=" font-semibold">
-                                Phone:{' '}
+                                {t('phone')}:{' '}
                             </label>
                             <div>{dataUser.phone}</div>
                         </div>
                         <div className="flex gap-3">
                             <label className=" font-semibold">
-                                Country:{' '}
+                                {t('country')}:{' '}
                             </label>
                             <div>{dataUser.country}</div>
                         </div>

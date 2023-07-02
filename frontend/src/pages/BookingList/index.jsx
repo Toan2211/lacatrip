@@ -13,7 +13,9 @@ import { Pagination } from 'flowbite-react'
 import { path } from '@constants/path'
 import { FaHotel } from 'react-icons/fa'
 import { BsFillTicketFill } from 'react-icons/bs'
+import { useTranslation } from 'react-i18next'
 function BookingList() {
+    const { t } = useTranslation()
     const location = useLocation()
     const dispatch = useDispatch()
     const navigate = useNavigate()
@@ -44,8 +46,8 @@ function BookingList() {
         <div className="max-w-[1535px] px-8 py-5 mt-[100px] md:mt-40 md:px-10 lg:mt-16 lg:px-80 mb-[20vh] pb-[100px] min-h-[100vh]">
             <div className="flex justify-between items-center mb-3">
                 <header className=" text-2xl font-semibold mb-4 flex gap-5 items-center">
-                    <span>Bookings</span>
-                    <ul className='flex gap-2'>
+                    <span>{t('bookings')}</span>
+                    <ul className="flex gap-2">
                         <NavLink
                             to={path.bookingmeHotel}
                             className={`${
@@ -59,7 +61,7 @@ function BookingList() {
                             <span>
                                 <FaHotel />
                             </span>
-                            <span>Booking Hotel</span>
+                            <span>{t('bookingHotel')}</span>
                         </NavLink>
                         <NavLink
                             to={path.bookingmeDestinationTravel}
@@ -74,7 +76,9 @@ function BookingList() {
                             <span>
                                 <BsFillTicketFill />
                             </span>
-                            <span>Booking Destination Travel</span>
+                            <span>
+                                {t('bookingDestinationTravel')}
+                            </span>
                         </NavLink>
                     </ul>
                 </header>

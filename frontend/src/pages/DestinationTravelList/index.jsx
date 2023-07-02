@@ -10,8 +10,10 @@ import {
 import { DESTINATIONTYPE } from '@constants/instanceType'
 import queryString from 'query-string'
 import Sidebar from './Sidebar'
+import { useTranslation } from 'react-i18next'
 
 function DestinationList() {
+    const { t } = useTranslation()
     const location = useLocation()
     const provinces = useSelector(provincesSelector)
     const [province, setProvince] = useState('')
@@ -51,7 +53,7 @@ function DestinationList() {
             <div className="flex items-center h-[330px] pb-4 relative">
                 <div className="flex justify-center items-center absolute z-10 w-full">
                     <div className="font-semibold text-2xl text-white">
-                        Destinations Travel in {province.name}
+                        {t('tour')} {t('in')} {province.name}
                     </div>
                 </div>
                 <div className="w-full h-full">
@@ -63,10 +65,12 @@ function DestinationList() {
             </div>
 
             <div className="flex gap-3">
-                <div className="w-1/4"><Sidebar /></div>
+                <div className="w-1/4">
+                    <Sidebar />
+                </div>
                 <div className="flex-1">
                     <ul className="flex flex-col gap-4">
-                        {destinations.map((destination) => (
+                        {destinations.map(destination => (
                             <ItemListInstance
                                 item={destination}
                                 key={destination.id}

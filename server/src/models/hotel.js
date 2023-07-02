@@ -64,7 +64,6 @@ module.exports = (sequelize, DataTypes) => {
             name: DataTypes.STRING,
             description: DataTypes.STRING,
             phone: DataTypes.STRING,
-            website: DataTypes.STRING,
             address: DataTypes.STRING,
             hotelClass: DataTypes.INTEGER,
             hotelStyle: DataTypes.STRING,

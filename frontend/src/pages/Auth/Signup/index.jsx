@@ -13,34 +13,34 @@ import { useDispatch, useSelector } from 'react-redux'
 import { selectLoadingAuth, signup } from '../auth.slice'
 import { unwrapResult } from '@reduxjs/toolkit'
 import { toast } from 'react-toastify'
+import { useTranslation } from 'react-i18next'
 function Signup() {
+    const { t } = useTranslation()
     const dispatch = useDispatch()
     const navigate = useNavigate()
     const loading = useSelector(selectLoadingAuth)
     const schema = yup.object().shape({
         email: yup
             .string()
-            .required('Email is required')
-            .email('Invalid email'),
+            .required(t('requiredEmail'))
+            .email(t('invalidEmail')),
         password: yup
             .string()
-            .required('Password is required')
+            .required(t('requiredPassword'))
             .matches(
                 // eslint-disable-next-line
                 /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/,
-                'Must Contain 8 Characters, One Uppercase, One Lowercase, One Number and One Special Case Character'
+                t('invalidPassword')
             ),
-        firstname: yup.string().required('Firstname is required'),
-        lastname: yup.string().required('Lastname is required'),
-        gender: yup.string().required('Gender is required'),
-        country: yup.string().required('Country is required'),
+        firstname: yup.string().required(t('requiredFirstName')),
+        lastname: yup.string().required(t('requiredLastname')),
+        gender: yup.string().required(t('requiredGender')),
+        country: yup.string().required(t('requiredCountry')),
         confirmpassword: yup
             .string()
-            .required('ConfirmPassword is required')
-            .oneOf(
-                [yup.ref('password'), null],
-                'Passwords must match'
-            )
+            .required(t('requiredConfirmPassword'))
+            .oneOf([yup.ref('password'), null], t('paswordNotMatch')),
+        roleId: yup.string().required(t('requiredRole'))
     })
     const form = useForm({
         defaultValues: {
@@ -50,13 +50,15 @@ function Signup() {
             lastname: '',
             gender: '',
             country: '',
-            confirmpassword: ''
+            confirmpassword: '',
+            roleId: '4'
         },
         resolver: yupResolver(schema)
     })
     const [dialog, setDialog] = useState(false)
     const handleSubmit = async data => {
         try {
+            console.log(data)
             const res = await dispatch(signup(data))
             unwrapResult(res)
             setDialog(true)
@@ -69,8 +71,8 @@ function Signup() {
         }
     }
     useEffect(() => {
-        document.title = 'Signup'
-    }, [])
+        document.title = t('signup')
+    }, [t])
     return (
         <div className="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded-lg bg-slate-50 border-0">
             <div className="rounded-t mb-0 px-6 py-6">
@@ -78,6 +80,48 @@ function Signup() {
                     <img alt="logo" src={logo} className=" w-6/12" />
                 </div>
                 <form onSubmit={form.handleSubmit(handleSubmit)}>
+                    <div className="relative w-full mb-2">
+                        <label
+                            className="block uppercase text-xs font-bold mb-2"
+                            htmlFor="grid-password"
+                        >
+                            {t('role')}
+                        </label>
+                        <div className="flex space-x-4 items-center">
+                            <label
+                                htmlFor="normalUser"
+                                className="cursor-pointer"
+                            >
+                                <input
+                                    {...form.register('roleId')}
+                                    type="radio"
+                                    value="4"
+                                    id="normalUser"
+                                />
+                                {t('normalUser')}
+                            </label>
+                            <label
+                                htmlFor="serviceManager"
+                                className="cursor-pointer  items-center"
+                            >
+                                <input
+                                    {...form.register('roleId')}
+                                    type="radio"
+                                    value="3"
+                                    id="serviceManager"
+                                />
+                                {t('serviceManager')}
+                            </label>
+                        </div>
+                        {form.formState.errors['roleId'] && (
+                            <span className="text-[14px] text-red-500 pl-2 mt-1">
+                                {
+                                    form.formState.errors['roleId']
+                                        .message
+                                }
+                            </span>
+                        )}
+                    </div>
                     <div className="relative w-full mb-3">
                         <label
                             className="block uppercase text-xs font-bold mb-2"
@@ -99,10 +143,10 @@ function Signup() {
                                 className="block uppercase text-xs font-bold mb-2"
                                 htmlFor="grid-password"
                             >
-                                Firstname
+                                {t('firstName')}
                             </label>
                             <InputField
-                                placeholder="Firstname"
+                                placeholder={t('firstName')}
                                 type="input"
                                 form={form}
                                 name="firstname"
@@ -113,10 +157,10 @@ function Signup() {
                                 className="block uppercase text-xs font-bold mb-2"
                                 htmlFor="grid-password"
                             >
-                                Lastname
+                                {t('lastName')}
                             </label>
                             <InputField
-                                placeholder="Lastname"
+                                placeholder={t('lastName')}
                                 type="input"
                                 form={form}
                                 name="lastname"
@@ -128,7 +172,7 @@ function Signup() {
                             className="block uppercase text-xs font-bold mb-2"
                             htmlFor="grid-password"
                         >
-                            Gender
+                            {t('gender')}
                         </label>
                         <div className="flex space-x-4">
                             <label
@@ -141,7 +185,7 @@ function Signup() {
                                     value="1"
                                     id="male"
                                 />
-                                Male
+                                {t('male')}
                             </label>
                             <label
                                 htmlFor="female"
@@ -153,7 +197,7 @@ function Signup() {
                                     value="0"
                                     id="female"
                                 />
-                                Female
+                                {t('female')}
                             </label>
                         </div>
                         {form.formState.errors['gender'] && (
@@ -170,7 +214,7 @@ function Signup() {
                             className="block uppercase text-xs font-bold mb-2"
                             htmlFor="grid-password"
                         >
-                            Country
+                            {t('country')}
                         </label>
                         <MySelect
                             placeholder="Country"
@@ -189,10 +233,10 @@ function Signup() {
                             className="block uppercase text-xs font-bold mb-2"
                             htmlFor="grid-password"
                         >
-                            Password
+                            {t('password')}
                         </label>
                         <InputField
-                            placeholder="Password"
+                            placeholder={t('password')}
                             type="password"
                             form={form}
                             name="password"
@@ -203,10 +247,10 @@ function Signup() {
                             className="block uppercase text-xs font-bold mb-2"
                             htmlFor="grid-password"
                         >
-                            Confirm Password
+                            {t('confirmPassword')}
                         </label>
                         <InputField
-                            placeholder="Confirm Password"
+                            placeholder={t('confirmPassword')}
                             type="password"
                             form={form}
                             name="confirmpassword"
@@ -218,7 +262,7 @@ function Signup() {
                             type="submit"
                             isloading={+loading}
                         >
-                            Signup
+                            {t('signup')}
                         </Mybutton>
                     </div>
                 </form>
@@ -228,7 +272,7 @@ function Signup() {
                             className="text-blueGray-200"
                             to={path.forgotPass}
                         >
-                            <small>Forgot password ?</small>
+                            <small>{t('forgotPassword')} ?</small>
                         </Link>
                     </div>
                     <div className="w-1/2 text-right">
@@ -236,7 +280,7 @@ function Signup() {
                             className="text-blueGray-200"
                             to={path.signin}
                         >
-                            <small>Signin</small>
+                            <small>{t('signin')}</small>
                         </Link>
                     </div>
                 </div>

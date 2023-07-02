@@ -15,8 +15,10 @@ import RoomCard from './RoomCard'
 import LikeAndShare from '@components/LikeAndShare'
 import Comment from '@pages/Comment'
 import SearchForm from './SearchForm'
+import { useTranslation } from 'react-i18next'
 
 function HotelId() {
+    const { t, i18n } = useTranslation()
     const dispatch = useDispatch()
     const id = useParams().id
     const currentHotel = useSelector(currentHotelClientSelector)
@@ -28,6 +30,7 @@ function HotelId() {
     useEffect(() => {
         document.title = currentHotel.name
     }, [currentHotel])
+    console.log(i18n.language)
     if (!Object.keys(currentHotel).length) return <LoadingPage />
     return (
         <div className="max-w-[1535px] px-8 py-5 mt-[100px] md:mt-40 md:px-10 lg:mt-16 lg:px-20 mb-[20vh] pb-[100px]">
@@ -126,14 +129,14 @@ function HotelId() {
                 <div className="flex-1">
                     <div>
                         <header className="font-semibold text-xl mb-3">
-                            About this hotel
+                            {t('descriptionHotel')}
                         </header>
                         <span>{currentHotel.description}</span>
                     </div>
                     <div className="border-t-2 border-slate-200 my-4"></div>
                     <div>
                         <header className="font-semibold text-xl mb-3">
-                            Property amenities
+                            {t('amenities')}
                         </header>
                         <ul className="grid gap-1 grid-cols-2 lg:grid-cols-3">
                             {currentHotel.amenitieshotel.map(item => (
@@ -144,7 +147,11 @@ function HotelId() {
                                     <span>
                                         <img src={item.image} />
                                     </span>
-                                    <span>{item.name}</span>
+                                    <span>
+                                        {i18n.language === 'vn'
+                                            ? item.name.split('-')[1]
+                                            : item.name.split('-')[0]}
+                                    </span>
                                 </li>
                             ))}
                         </ul>
@@ -152,7 +159,7 @@ function HotelId() {
                     <div className="border-t-2 border-slate-200 my-4"></div>
                     <div>
                         <header className="font-semibold text-xl mb-3">
-                            Hotel Style
+                            {t('hotelStyle')}
                         </header>
                         <ul className="flex flex-col">
                             {currentHotel.hotelStyle
@@ -162,7 +169,11 @@ function HotelId() {
                                         key={item.id}
                                         className="flex gap-2 items-center"
                                     >
-                                        <span>{item}</span>
+                                        <span>
+                                            {i18n.language === 'vn'
+                                                ? item.split('-')[1]
+                                                : item.split('-')[0]}
+                                        </span>
                                     </li>
                                 ))}
                         </ul>
@@ -170,7 +181,7 @@ function HotelId() {
                     <div className="border-t-2 border-slate-200 my-4"></div>
                     <div>
                         <header className="font-semibold text-xl mb-3">
-                            Availability
+                            {t('detailRoom')}
                         </header>
                         <div className="flex flex-col gap-5">
                             {roomAvailable &&

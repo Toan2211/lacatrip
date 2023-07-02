@@ -20,7 +20,9 @@ import { phoneRegExp } from '@constants/regex'
 import { toast } from 'react-toastify'
 import { unwrapResult } from '@reduxjs/toolkit'
 import _ from 'lodash'
+import { useTranslation } from 'react-i18next'
 function EmployeeForm({ onClose, open }) {
+    const { t } = useTranslation()
     const loading = useSelector(loadingEmployees)
     const currentEmployee = useSelector(currentEmployeeSelector)
     const dispatch = useDispatch()
@@ -28,16 +30,16 @@ function EmployeeForm({ onClose, open }) {
     const schema = yup.object().shape({
         email: yup
             .string()
-            .required('Email is required')
-            .email('Invalid email'),
-        firstname: yup.string().required('Firstname is required'),
-        lastname: yup.string().required('Lastname is required'),
-        gender: yup.string().required('Gender is required'),
-        country: yup.string().required('Country is required'),
+            .required(t('requiredEmail'))
+            .email(t('invalidEmail')),
+        firstname: yup.string().required(t('requiredFirstName')),
+        lastname: yup.string().required(t('requiredLastname')),
+        gender: yup.string().required(t('requiredGender')),
+        country: yup.string().required(t('requiredCountry')),
         phone: yup
             .string()
-            .required('Phone number is required')
-            .matches(phoneRegExp, 'Phone number is not valid')
+            .required(t('requiredPhone'))
+            .matches(phoneRegExp, t('invalidPhone'))
     })
     const form = useForm({
         defaultValues: {
@@ -63,7 +65,9 @@ function EmployeeForm({ onClose, open }) {
             form.setValue('country', currentEmployee.country)
             form.setValue(
                 'avatar',
-                currentEmployee.avatar ? currentEmployee.avatar : undefined
+                currentEmployee.avatar
+                    ? currentEmployee.avatar
+                    : undefined
             )
             form.setValue('phone', currentEmployee.phone)
         }
@@ -95,8 +99,8 @@ function EmployeeForm({ onClose, open }) {
             unwrapResult(res)
             toast.success(
                 _.isEmpty(currentEmployee)
-                    ? 'Create employee successfully'
-                    : 'Update employee successfully',
+                    ? t('createEmployeeSuccessful')
+                    : t('updateEmployeeSuccessful'),
                 {
                     position: toast.POSITION.BOTTOM_CENTER,
                     autoClose: 1000,
@@ -116,7 +120,6 @@ function EmployeeForm({ onClose, open }) {
     return (
         <Drawer isOpen={open} onClose={onClose}>
             <header className="font-bold bg-slate-50 p-4">
-                Add Employee
             </header>
             <div className="p-5">
                 <form onSubmit={form.handleSubmit(handleSubmit)}>
@@ -129,10 +132,10 @@ function EmployeeForm({ onClose, open }) {
                                 className="block uppercase text-xs font-bold mb-2"
                                 htmlFor="grid-password"
                             >
-                                Firstname
+                                {t('firstName')}
                             </label>
                             <InputField
-                                placeholder="Firstname"
+                                placeholder={t('firstName')}
                                 type="input"
                                 form={form}
                                 name="firstname"
@@ -143,10 +146,10 @@ function EmployeeForm({ onClose, open }) {
                                 className="block uppercase text-xs font-bold mb-2"
                                 htmlFor="grid-password"
                             >
-                                Lastname
+                                {t('lastName')}
                             </label>
                             <InputField
-                                placeholder="Lastname"
+                                placeholder={t('lastName')}
                                 type="input"
                                 form={form}
                                 name="lastname"
@@ -158,7 +161,7 @@ function EmployeeForm({ onClose, open }) {
                             className="block uppercase text-xs font-bold mb-2"
                             htmlFor="grid-password"
                         >
-                            Gender
+                            {t('gender')}
                         </label>
                         <div className="flex space-x-4">
                             <label
@@ -171,7 +174,7 @@ function EmployeeForm({ onClose, open }) {
                                     value="1"
                                     id="male"
                                 />
-                                Male
+                                {t('male')}
                             </label>
                             <label
                                 htmlFor="female"
@@ -183,7 +186,7 @@ function EmployeeForm({ onClose, open }) {
                                     value="0"
                                     id="female"
                                 />
-                                Female
+                                 {t('female')}
                             </label>
                         </div>
                         {form.formState.errors['gender'] && (
@@ -207,7 +210,11 @@ function EmployeeForm({ onClose, open }) {
                             type="email"
                             form={form}
                             name="email"
-                            disabled = {_.isEmpty(currentEmployee) ? false : true}
+                            disabled={
+                                _.isEmpty(currentEmployee)
+                                    ? false
+                                    : true
+                            }
                         />
                     </div>
                     <div className="relative w-full mb-3">
@@ -215,10 +222,10 @@ function EmployeeForm({ onClose, open }) {
                             className="block uppercase text-xs font-bold mb-2"
                             htmlFor="grid-password"
                         >
-                            PhoneNumber
+                            {t('phone')}
                         </label>
                         <InputField
-                            placeholder="Phone Number"
+                            placeholder={t('phone')}
                             type="input"
                             form={form}
                             name="phone"
@@ -229,10 +236,10 @@ function EmployeeForm({ onClose, open }) {
                             className="block uppercase text-xs font-bold mb-2"
                             htmlFor="grid-password"
                         >
-                            Country
+                            {t('country')}
                         </label>
                         <MySelect
-                            placeholder="Country"
+                            placeholder={t('country')}
                             form={form}
                             name="country"
                             options={countrys.map(country =>
@@ -243,17 +250,17 @@ function EmployeeForm({ onClose, open }) {
                             )}
                         />
                     </div>
-                    <div className="mt-6 text-right">
-                        <Mybutton
-                            className=" bg-blue-500 text-white active:bg-blue-800 text-sm font-bold uppercase px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 w-1/4 ease-linear transition-all duration-150"
-                            type="submit"
-                            isloading={+loading}
-                        >
-                            {_.isEmpty(currentEmployee)
-                                ? 'Create'
-                                : 'Update'}
-                        </Mybutton>
-                    </div>
+                    {_.isEmpty(currentEmployee) && (
+                        <div className="mt-6 text-right">
+                            <Mybutton
+                                className=" bg-blue-500 text-white active:bg-blue-800 text-sm font-bold uppercase px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 w-1/4 ease-linear transition-all duration-150"
+                                type="submit"
+                                isloading={+loading}
+                            >
+                                {t('create')}
+                            </Mybutton>
+                        </div>
+                    )}
                 </form>
             </div>
         </Drawer>

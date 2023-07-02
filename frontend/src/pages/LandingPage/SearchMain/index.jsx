@@ -4,15 +4,17 @@ import { provincesSelector } from '@pages/CommonProperty/baseproperty'
 import SearchHotel from './SearchHotel'
 import SearchRestaurant from './SearchRestaurant'
 import SearchDestination from './SearchDestination'
+import { useTranslation } from 'react-i18next'
 // type = 1 => Hotel
 // type = 2 => Restaurant
 // type = 3 => Tour
 function SearchMain() {
+    const { t } = useTranslation()
     const provinces = useSelector(provincesSelector)
     const [type, setType] = useState(1)
     const [searchProvince, setSearchProvince] = useState({
         value: 9999,
-        label: 'Where are you going?'
+        label: t('locationQuestion')
     })
     const [options, setOptions] = useState([])
 
@@ -27,10 +29,10 @@ function SearchMain() {
         }))
         _options.push({
             value: 9999,
-            label: 'Where are you going?'
+            label: t('locationQuestion')
         })
         setOptions(_options)
-    }, [provinces])
+    }, [provinces, t])
     return (
         <div className="relative">
             <div className="flex bg-white w-[80%] lg:w-[40%] mx-auto rounded-full cursor-pointer font-medium mb-2 overflow-hidden">
@@ -40,7 +42,7 @@ function SearchMain() {
                     }basis-1/3 text-center border-r hover:bg-blue-500 p-2 hover:text-white`}
                     onClick={() => handleSetType(1)}
                 >
-                    Hotels
+                    {t('hotel')}
                 </div>
 
                 <div
@@ -49,7 +51,7 @@ function SearchMain() {
                     }basis-1/3 text-center border-r hover:bg-blue-500 p-2 hover:text-white`}
                     onClick={() => handleSetType(2)}
                 >
-                    Restaurants
+                    {t('restaurant')}
                 </div>
                 <div
                     className={`${
@@ -57,7 +59,7 @@ function SearchMain() {
                     }basis-1/3 text-center border-r hover:bg-blue-500 p-2 hover:text-white`}
                     onClick={() => handleSetType(3)}
                 >
-                    Tours
+                    {t('tour')}
                 </div>
             </div>
             {type === 1 && (

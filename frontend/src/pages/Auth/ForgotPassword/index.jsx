@@ -11,7 +11,9 @@ import { useDispatch, useSelector } from 'react-redux'
 import { forgotPassword, selectLoadingAuth } from '../auth.slice'
 import { unwrapResult } from '@reduxjs/toolkit'
 import { toast } from 'react-toastify'
+import { useTranslation } from 'react-i18next'
 function ForgotPassword() {
+    const { t } = useTranslation()
     const dispatch = useDispatch()
     const loading = useSelector(selectLoadingAuth)
     const navigate = useNavigate()
@@ -19,8 +21,8 @@ function ForgotPassword() {
     const schema = yup.object().shape({
         email: yup
             .string()
-            .required('Email is required')
-            .email('Invalid email')
+            .required(t('requiredEmail'))
+            .email(t('invalidEmail'))
     })
     const form = useForm({
         defaultValues: {
@@ -42,8 +44,8 @@ function ForgotPassword() {
         }
     }
     useEffect(() => {
-        document.title = 'Forgot Password'
-    }, [])
+        document.title = t('forgotPassword')
+    }, [t])
     return (
         <div className="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded-lg bg-slate-50 border-0">
             <div className="rounded-t mb-0 px-6 py-6">
@@ -71,7 +73,7 @@ function ForgotPassword() {
                             type="submit"
                             isloading={+loading}
                         >
-                            Get password
+                            {t('getPassword')}
                         </Mybutton>
                     </div>
                 </form>
@@ -81,7 +83,7 @@ function ForgotPassword() {
                             className="text-blueGray-200"
                             to={path.signin}
                         >
-                            <small>Signin</small>
+                            <small>{t('signin')}</small>
                         </Link>
                     </div>
                     <div className="w-1/2 text-right">
@@ -89,7 +91,7 @@ function ForgotPassword() {
                             className="text-blueGray-200"
                             to={path.signup}
                         >
-                            <small>Create new account</small>
+                            <small>{t('createNewAccount')}</small>
                         </Link>
                     </div>
                 </div>
@@ -102,7 +104,8 @@ function ForgotPassword() {
                                 Reset Password Successfully
                             </h1>
                             <h2>
-                                Please check inbox mail and signin to Application. Thanks you !
+                                Please check inbox mail and signin to
+                                Application. Thanks you !
                             </h2>
                         </div>
                         <div className="mt-4 flex justify-end">

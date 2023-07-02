@@ -19,8 +19,10 @@ import { selectUser } from '@pages/Auth/auth.slice'
 import Select from 'react-select'
 import BookingCard from './BookingCard'
 import { Pagination } from 'flowbite-react'
+import { useTranslation } from 'react-i18next'
 
 function BookingHotelListSystem() {
+    const { t } = useTranslation()
     const dispatch = useDispatch()
     const location = useLocation()
     const navigate = useNavigate()
@@ -32,7 +34,7 @@ function BookingHotelListSystem() {
     const [checkOut, setCheckOut] = useState(null)
     const [serviceManagerInput, setServiceManagerInput] = useState({
         value: 999,
-        label: 'Filter service manager...'
+        label: `${t('filters')} ${t('serviceManager')}`
     })
     const [keyword, setKeyword] = useState('')
     const handleChangeKeyword = e => {
@@ -81,12 +83,12 @@ function BookingHotelListSystem() {
                 className="flex-1 flex gap-3 items-center cursor-pointer justify-center  border border-slate-300 hover:border-blue-500 rounded-md overflow-hidden bg-white"
                 onClick={onClick}
             >
-                <div className="flex flex-col">
+                <div className="flex flex-col items-center">
                     <span className="font-medium text-md">
-                        Check in
+                        {t('checkIn')}
                     </span>
                     <span className="text-gray-400 text-sm" ref={ref}>
-                        {value || 'Add Date'}
+                        {value || t('addDate')}
                     </span>
                 </div>
             </div>
@@ -98,12 +100,12 @@ function BookingHotelListSystem() {
                 className=" bg-white flex-1 flex gap-3 items-center cursor-pointer justify-center border border-slate-300 hover:border-blue-500 rounded-md overflow-hidden"
                 onClick={onClick}
             >
-                <div className="flex flex-col">
+                <div className="flex flex-col items-center">
                     <span className="font-medium text-md">
-                        Check out
+                        {t('checkOut')}
                     </span>
                     <span className="text-gray-400 text-sm" ref={ref}>
-                        {value || 'Add Date'}
+                        {value || t('addDate')}
                     </span>
                 </div>
             </div>
@@ -137,8 +139,8 @@ function BookingHotelListSystem() {
         dispatch(getAllBooking(queryParams))
     }, [queryParams, dispatch])
     useEffect(() => {
-        document.title = 'Booking Hotel'
-    }, [])
+        document.title = t('manageBookingHotel')
+    }, [t])
     return (
         <div>
             <div className="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded bg-white min-h-[70vh]">
@@ -146,7 +148,7 @@ function BookingHotelListSystem() {
                     <div className="flex flex-wrap items-center">
                         <div className="relative w-full px-4 max-w-full flex">
                             <h3 className="font-semibold text-lg text-blue-600">
-                                Manage Booking Hotel
+                                {t('manageBookingHotel')}
                             </h3>
                         </div>
                     </div>
@@ -158,7 +160,7 @@ function BookingHotelListSystem() {
                             onChange={handleChangeKeyword}
                             onBlur={handleBlurKeyword}
                             onKeyDown={handleKeyDownKeyword}
-                            placeholder="Search by name hotel, name client..."
+                            placeholder={`${t('search')} ${t('by')} ${t('name').toLowerCase()} ${t('hotel').toLowerCase()} ${t('name').toLowerCase()}, ${t('name').toLowerCase()} ${t('client').toLowerCase()}`}
                             className=" border border-gray-300 px-4 py-[10px] bg-white rounded text-sm focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
                         />
                     </div>
@@ -194,13 +196,15 @@ function BookingHotelListSystem() {
                                 }}
                                 onChange={handleChaneServiceManager}
                                 value={serviceManagerInput}
-                                placeholder={
-                                    'Filter by service manager...'
-                                }
+                                placeholder={`${t('filters')} ${t(
+                                    'serviceManager'
+                                )}`}
                                 options={[
                                     {
                                         value: 999,
-                                        label: 'Filter by service manager...'
+                                        label: `${t('filters')} ${t(
+                                            'serviceManager'
+                                        )}`
                                     },
                                     ...serviceManagers.map(
                                         servicemanager => ({

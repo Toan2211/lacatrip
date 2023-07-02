@@ -16,7 +16,8 @@
       "@pages/*": ["src/pages/*"],
       "@routes/*": ["src/routes/*"],
       "@store/*": ["src/store/*"],
-      "@utils/*": ["src/utils/*"]
+      "@utils/*": ["src/utils/*"],
+      "@i18n/*": ["src/i18n/*"]
     }
   },
   "include": ["src/**/*.js", "src/**/*.jsx"],

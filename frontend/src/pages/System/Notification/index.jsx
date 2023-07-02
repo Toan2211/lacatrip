@@ -7,14 +7,16 @@ import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import NotificationCard from './NotificationCard'
 import { Pagination } from 'flowbite-react'
+import { useTranslation } from 'react-i18next'
 
 function NotificationSystem() {
+    const { t } = useTranslation()
     const notifications = useSelector(notificationsSelector)
     const pagination = useSelector(notificationPaginationSelector)
     const dispatch = useDispatch()
     useEffect(() => {
-        document.title = 'Notifications'
-    }, [])
+        document.title = t('notifications')
+    }, [t])
     const handlePageChange = page => {
         if (!page <= 1 || !page >= pagination.totalPages) {
             dispatch(
@@ -30,7 +32,7 @@ function NotificationSystem() {
                 <div className="flex flex-wrap items-center">
                     <div className="relative w-full px-4 max-w-full flex justify-center">
                         <h3 className="font-semibold text-lg text-blue-600">
-                            Notifications
+                            {t('notifications')}
                         </h3>
                     </div>
                 </div>

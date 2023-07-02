@@ -16,8 +16,10 @@ import {
     HOTELTYPE
 } from '@constants/instanceType'
 import _ from 'lodash'
+import { useTranslation } from 'react-i18next'
 
 function TripOrganize({ isOpen, onClose }) {
+    const { t } = useTranslation()
     const dispatch = useDispatch()
     const currentTrip = useSelector(currentTripSelector)
     const [startDate, setStartDate] = useState(new Date())
@@ -33,8 +35,8 @@ function TripOrganize({ isOpen, onClose }) {
                 <span>
                     <MdOutlineCalendarMonth />
                 </span>
-                <div className="flex flex-col">
-                    <span className="font-semibold">Start date</span>
+                <div className="flex flex-col items-center">
+                    <span className="font-semibold">{t('startDate')}</span>
                     <span
                         className="cursor-pointer text-sm font-semibold"
                         ref={ref}
@@ -54,8 +56,8 @@ function TripOrganize({ isOpen, onClose }) {
                 <span>
                     <MdOutlineCalendarMonth />
                 </span>
-                <div className="flex flex-col">
-                    <span className="font-semibold">End date</span>
+                <div className="flex flex-col items-center">
+                    <span className="font-semibold">{t('endDate')}</span>
                     <span
                         className="cursor-pointer text-sm font-semibold"
                         ref={ref}
@@ -127,7 +129,6 @@ function TripOrganize({ isOpen, onClose }) {
                 })
         }
         setDataItineraries(rawDataFromDate)
-
     }, [startDate, endDate, currentTrip])
     useEffect(() => {
         if (currentTrip.startDate) {
@@ -157,20 +158,20 @@ function TripOrganize({ isOpen, onClose }) {
             <div className="w-full h-[300vh] pb-[500px]">
                 <div className=" mt-[80px] h-[60px] bg-slate-50 flex justify-between px-3 py-3">
                     <div className="font-semibold">
-                        Organize Your Trip
+                        {t('organizeYourTrip')}
                     </div>
-                    <div className="flex gap-2">
+                    <div className="flex gap-2 w-[200px]">
                         <button
                             onClick={handleUpdate}
                             className="bg-blue-500 text-white active:bg-blue-800 text-sm font-bold uppercase px-2 py-1 rounded-lg shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 w-full ease-linear transition-all duration-150"
                         >
-                            Save
+                            {t('save')}
                         </button>
                         <button
                             onClick={handleCancel}
                             className=" bg-gray-300 text-white active:bg-gray-400 text-sm font-bold uppercase px-2 py-1 rounded-lg shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 w-full ease-linear transition-all duration-150"
                         >
-                            Cancel
+                            {t('cancel')}
                         </button>
                     </div>
                 </div>

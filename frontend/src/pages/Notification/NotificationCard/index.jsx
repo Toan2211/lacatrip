@@ -2,8 +2,10 @@ import React, { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { deleteNotify, readNotification } from '../notification.slice'
+import { useTranslation } from 'react-i18next'
 
 function NotificationCard({ notification }) {
+    const { t } = useTranslation()
     const dispatch = useDispatch()
     const handleActionClick = event => {
         event.preventDefault()
@@ -29,7 +31,10 @@ function NotificationCard({ notification }) {
             to={notification.url}
             className="flex py-4 px-2 border-b border-gray-300 cursor-pointer gap-4 hover:bg-slate-50"
         >
-            <div className="flex w-14 h-14" onClick={handleReadNotify}>
+            <div
+                className="flex w-14 h-14"
+                onClick={handleReadNotify}
+            >
                 <img
                     src={notification.trip.image}
                     className="w-full h-full rounded-full"
@@ -37,7 +42,7 @@ function NotificationCard({ notification }) {
             </div>
             <div className="flex-1" onClick={handleReadNotify}>
                 <div className=" font-bold text-lg">
-                    From {notification.trip.name}
+                    {t('fromNotify')} {notification.trip.name}
                 </div>
                 <div>
                     <span className="font-bold text-sm">
@@ -66,18 +71,21 @@ function NotificationCard({ notification }) {
                             className="hover:bg-slate-100 p-1"
                             onClick={handleReadNotify}
                         >
-                            Mark already read
+                            {t('markReaded')}
                         </li>
                         <li
                             className="hover:bg-slate-100 p-1"
                             onClick={handleDeleteNotify}
                         >
-                            Delete
+                            {t('delete')}
                         </li>
                     </ul>
                 )}
             </div>
-            <div className="w-10 flex justify-center items-center" onClick={handleReadNotify}>
+            <div
+                className="w-10 flex justify-center items-center"
+                onClick={handleReadNotify}
+            >
                 {!notification.isReaded && (
                     <div className="w-4 h-4 rounded-full bg-blue-500"></div>
                 )}

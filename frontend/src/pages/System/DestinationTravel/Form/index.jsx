@@ -21,10 +21,13 @@ import {
     currentDestinationSelector,
     getDetail,
     loadingDestinationSelector,
+    setCurrentDestination,
     updateDestination
 } from '../destination.slice'
 import { selectUser } from '@pages/Auth/auth.slice'
+import { useTranslation } from 'react-i18next'
 function DestinationForm() {
+    const { t } = useTranslation()
     const dispatch = useDispatch()
     const profile = useSelector(selectUser)
 
@@ -37,47 +40,48 @@ function DestinationForm() {
         if (id && !currentDestination.id) dispatch(getDetail(id))
     }, [id, currentDestination, dispatch])
     useEffect(() => {
-        document.title = 'Form Destination'
+        document.title = _.isEmpty(currentDestination)
+            ? `${t('create')} ${t(
+                'destinationTravel'
+            ).toLocaleLowerCase()} ${t('successfully')}`
+            : `${t('update')} ${t(
+                'destinationTravel'
+            ).toLocaleLowerCase()} ${t('successfully')}`
         dispatch(getServiceManagers({ limit: 1000 }))
-    }, [dispatch])
+        return () => {
+            dispatch(setCurrentDestination({}))
+        }
+    }, [dispatch, currentDestination, t])
     const [images, setImages] = useState(() =>
         currentDestination.images
             ? currentDestination.images.map(image => ({
-                  id: image.id,
-                  url: image.url
-              }))
+                id: image.id,
+                url: image.url
+            }))
             : []
     )
     const [isFirstTime, setIsFirstTime] = useState(true)
     const schema = yup.object().shape({
-        name: yup.string().required('Name is required'),
-        description: yup.string().required('Description is required'),
+        name: yup.string().required(t('requiredName')),
+        description: yup.string().required(t('requiredDescription')),
         price: yup
             .number()
-            .typeError('Price must be number')
-            .required('Price is required'),
+            .typeError(t('invalidPrice'))
+            .required(t('requiredPrice')),
         originalPrice: yup
             .number()
-            .typeError('originalPrice must be number')
-            .required('originalPrice is required'),
-        address: yup.string().required('Address is required'),
+            .typeError(t('invalidOriginalPrice'))
+            .required(t('requiredOriginalPrice')),
+        address: yup.string().required(t('requiredAddress')),
         longtitude: yup
             .string()
-            .typeError(
-                'Input Address and generate map to get longtitude'
-            )
-            .required(
-                'Input Address and generate map to get longtitude'
-            ),
+            .typeError(t('requiredLongtitude'))
+            .required(t('requiredLongtitude')),
         latitude: yup
             .number()
-            .typeError(
-                'Input Address and generate map to get latitude'
-            )
-            .required(
-                'Input Address and generate map to get latitude'
-            ),
-        provinceId: yup.string().required('Province is required')
+            .typeError(t('requiredLatitude'))
+            .required(t('requiredLatitude')),
+        provinceId: yup.string().required(t('requiredProvince'))
     })
     const form = useForm({
         defaultValues: {
@@ -134,7 +138,10 @@ function DestinationForm() {
                 currentDestination.serviceManagerId
             )
             form.setValue('provinceId', currentDestination.provinceId)
-            form.setValue('commissionPercent', currentDestination.commissionPercent)
+            form.setValue(
+                'commissionPercent',
+                currentDestination.commissionPercent
+            )
             setImages(
                 currentDestination.images.map(image => ({
                     id: image.id,
@@ -162,7 +169,10 @@ function DestinationForm() {
                 profile.serviceManagerId
             )
             formData.append('provinceId', data.provinceId)
-            formData.append('commissionPercent', data.commissionPercent)
+            formData.append(
+                'commissionPercent',
+                data.commissionPercent
+            )
             for (const image of images) {
                 if (image.file) formData.append('images', image.file)
             }
@@ -179,8 +189,12 @@ function DestinationForm() {
             }
             toast.success(
                 _.isEmpty(currentDestination)
-                    ? 'Create Destination successfully'
-                    : 'Update Destination successfully',
+                    ? `${t('create')} ${t(
+                        'destinationTravel'
+                    ).toLocaleLowerCase()} ${t('successfully')}`
+                    : `${t('update')} ${t(
+                        'destinationTravel'
+                    ).toLocaleLowerCase()} ${t('successfully')}`,
                 {
                     position: toast.POSITION.BOTTOM_CENTER,
                     autoClose: 1000,
@@ -204,8 +218,12 @@ function DestinationForm() {
                         <div className="relative w-full px-4 max-w-full flex">
                             <h3 className="font-semibold text-lg text-blue-600">
                                 {_.isEmpty(currentDestination)
-                                    ? 'Add Destination Travel'
-                                    : 'Update Destination Travel'}
+                                    ? `${t('create')} ${t(
+                                        'destinationTravel'
+                                    ).toLocaleLowerCase()}`
+                                    : `${t('update')} ${t(
+                                        'destinationTravel'
+                                    ).toLocaleLowerCase()}`}
                             </h3>
                         </div>
                     </div>
@@ -217,10 +235,12 @@ function DestinationForm() {
                                 className="block uppercase text-sm font-bold mb-2"
                                 htmlFor="grid-password"
                             >
-                                Name
+                                {t('name')}
                             </label>
                             <InputField
-                                placeholder="Name Destination Travel"
+                                placeholder={`${t('name')} ${t(
+                                    'destiantionTravel'
+                                ).toLowerCase()}`}
                                 form={form}
                                 name="name"
                             />
@@ -230,10 +250,18 @@ function DestinationForm() {
                                 className="block uppercase text-sm font-bold mb-2"
                                 htmlFor="grid-password"
                             >
-                                Description
+                                {`${t(
+                                    'description'
+                                ).toUpperCase()} ${t('languageEn')}`}
                             </label>
                             <TextArea
-                                placeholder="Description Destination Travel..."
+                                placeholder={
+                                    t('description') +
+                                    ' ' +
+                                    t(
+                                        'destinationTravel'
+                                    ).toLowerCase() + ' ' + t('languageEn')
+                                }
                                 form={form}
                                 name="description"
                                 rows={2}
@@ -244,10 +272,28 @@ function DestinationForm() {
                                 className="block uppercase text-sm font-bold mb-2"
                                 htmlFor="grid-password"
                             >
-                                Original Price ($)
+                                {`${t(
+                                    'description'
+                                ).toUpperCase()} ${t('languageVN')}`}
+                            </label>
+                            <TextArea
+                                placeholder={`${t('description')} ${t(
+                                    'languageVN'
+                                )}`}
+                                form={form}
+                                name="description"
+                                rows={2}
+                            />
+                        </div>
+                        <div className="relative w-full mb-3">
+                            <label
+                                className="block uppercase text-sm font-bold mb-2"
+                                htmlFor="grid-password"
+                            >
+                                {t('originalPrice')} ($)
                             </label>
                             <InputField
-                                placeholder="Price"
+                                placeholder={t('originalPrice')}
                                 form={form}
                                 name="originalPrice"
                                 type="number"
@@ -259,10 +305,10 @@ function DestinationForm() {
                                 className="block uppercase text-sm font-bold mb-2"
                                 htmlFor="grid-password"
                             >
-                                Price ($)
+                                {t('price')} ($)
                             </label>
                             <InputField
-                                placeholder="Price"
+                                placeholder={t('price')}
                                 form={form}
                                 name="price"
                                 type="number"
@@ -274,10 +320,10 @@ function DestinationForm() {
                                 className="block uppercase text-xs font-bold mb-2"
                                 htmlFor="grid-password"
                             >
-                                Province
+                                {t('province')}
                             </label>
                             <MySelect
-                                placeholder="Province"
+                                placeholder={t('province')}
                                 form={form}
                                 name="provinceId"
                                 options={provinces.map(province => ({
@@ -292,7 +338,7 @@ function DestinationForm() {
                                 className="block uppercase text-sm font-bold mb-2"
                                 htmlFor="grid-password"
                             >
-                                Photos
+                                {t('photo')}
                             </label>
                             <PhotoUploads
                                 addedPhotos={images}
@@ -300,8 +346,11 @@ function DestinationForm() {
                             />
                             {images.length === 0 && !isFirstTime && (
                                 <span className="text-[14px] text-red-500 pl-2 mt-1">
-                                    Please upload photos of
-                                    Destination Travel
+                                    {t('requiredPhoto') +
+                                        ' ' +
+                                        t(
+                                            'destinationTravel'
+                                        ).toLowerCase()}
                                 </span>
                             )}
                         </div>
@@ -310,12 +359,12 @@ function DestinationForm() {
                                 className="block uppercase text-sm font-bold mb-2"
                                 htmlFor="grid-password"
                             >
-                                Commission Percent (If you want to
-                                marketing your hotel and it on top.
-                                Please increse percent)
+                                {t('commissionPercent')}
                             </label>
                             <InputField
-                                placeholder="System will get 10% per booking if you not set"
+                                placeholder={t(
+                                    'commissionPercentPlaceHolder'
+                                )}
                                 form={form}
                                 name="commissionPercent"
                                 type="number"
@@ -334,8 +383,8 @@ function DestinationForm() {
                             className="bg-blue-500 text-white active:bg-blue-800 text-sm font-bold uppercase px-4 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 w-1/5 ease-linear transition-all duration-150"
                         >
                             {_.isEmpty(currentDestination)
-                                ? 'Add'
-                                : 'Update'}
+                                ? t('create')
+                                : t('update')}
                         </Mybutton>
                     </div>
                 </form>

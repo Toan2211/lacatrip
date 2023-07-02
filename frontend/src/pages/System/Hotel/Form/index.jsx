@@ -22,6 +22,7 @@ import {
     currentHotelSelector,
     getHotelById,
     loadingHotel,
+    setCurrentHotel,
     updateHotel
 } from '../hotel.slice'
 import { unwrapResult } from '@reduxjs/toolkit'
@@ -31,7 +32,9 @@ import { useNavigate, useParams } from 'react-router-dom'
 import { path } from '@constants/path'
 import { selectUser } from '@pages/Auth/auth.slice'
 import ROLE from '@constants/ROLE'
+import { useTranslation } from 'react-i18next'
 function FormHotel() {
+    const { t } = useTranslation()
     const dispatch = useDispatch()
     const profile = useSelector(selectUser)
     const amenitiesHotel = useSelector(amenitiesHotelSelector)
@@ -42,69 +45,71 @@ function FormHotel() {
     const id = useParams().id
     useEffect(() => {
         if (id && !currentHotel.id) dispatch(getHotelById(id))
-    }, [id, currentHotel, dispatch])
+        document.title = _.isEmpty(currentHotel)
+            ? t('create') + ' ' + t('hotel')
+            : t('update') + ' ' + t('hotel')
+        return () => {
+            dispatch(setCurrentHotel({}))
+        }
+    }, [id, currentHotel, dispatch, t])
     useEffect(() => {
-        document.title = 'Form Hotel'
         dispatch(getServiceManagers({ limit: 1000 }))
     }, [dispatch])
     const [amenityIds, setAmenityIds] = useState(() =>
         currentHotel.amenitieshotel
             ? currentHotel.amenitieshotel.map(item => ({
-                  value: item.id,
-                  label: item.name
-              }))
+                value: item.id,
+                label: item.name
+            }))
             : []
     )
     const [hotelStyles, setHotelStyles] = useState(() =>
         currentHotel.hotelStyle
             ? currentHotel.hotelStyle
-                  .split(',')
-                  .map(item => ({ value: item, label: item }))
+                .split(',')
+                .map(item => ({ value: item, label: item }))
             : []
     )
     const [images, setImages] = useState(() =>
         currentHotel.images
             ? currentHotel.images.map(image => ({
-                  id: image.id,
-                  url: image.url
-              }))
+                id: image.id,
+                url: image.url
+            }))
             : []
     )
     const [isFirstTime, setIsFirstTime] = useState(true)
     const schema = yup.object().shape({
-        name: yup.string().required('Name is required'),
-        description: yup.string().required('Description is required'),
+        name: yup.string().required(t('requiredName')),
+        description: yup
+            .string()
+            .required(
+                `${t('requiredDescription')} ${t(
+                    'hotel'
+                ).toLowerCase()}`
+            ),
         phone: yup
             .string()
-            .required('Phone number is required')
-            .matches(phoneRegExp, 'Phone number is not valid'),
-        website: yup.string().required('Website is required'),
+            .required(t('requiredPhone'))
+            .matches(phoneRegExp, t('invalidPhone')),
         hotelClass: yup
             .number()
-            .typeError('Hotel class must be number')
-            .required('Website is required'),
+            .typeError(t('requiredHotelClass'))
+            .required(t('requiredHotelClass')),
         cheapestPrice: yup
             .number()
-            .typeError('Staring Price must be number')
-            .required('Staring Price is required'),
-        address: yup.string().required('Address is required'),
+            .typeError(t('requiredStartPrice'))
+            .required(t('requiredStartPrice')),
+        address: yup.string().required(t('requiredAddress')),
         longtitude: yup
             .string()
-            .typeError(
-                'Input Address and generate map to get longtitude'
-            )
-            .required(
-                'Input Address and generate map to get longtitude'
-            ),
+            .typeError(t('requiredLongtitude'))
+            .required(t('requiredLongtitude')),
         latitude: yup
             .number()
-            .typeError(
-                'Input Address and generate map to get latitude'
-            )
-            .required(
-                'Input Address and generate map to get latitude'
-            ),
-        provinceId: yup.string().required('Province is required')
+            .typeError(t('requiredLatitude'))
+            .required(t('requiredLatitude')),
+        provinceId: yup.string().required(t('requiredProvince'))
     })
     const form = useForm({
         defaultValues: {
@@ -113,7 +118,6 @@ function FormHotel() {
                 ? currentHotel.description
                 : '',
             phone: currentHotel.phone ? currentHotel.phone : '',
-            website: currentHotel.website ? currentHotel.website : '',
             hotelClass: currentHotel.hotelClass
                 ? currentHotel.hotelClass
                 : null,
@@ -145,7 +149,6 @@ function FormHotel() {
             form.setValue('name', currentHotel.name)
             form.setValue('description', currentHotel.description)
             form.setValue('phone', currentHotel.phone)
-            form.setValue('website', currentHotel.website)
             form.setValue('hotelClass', currentHotel.hotelClass)
             form.setValue('cheapestPrice', currentHotel.cheapestPrice)
             form.setValue('address', currentHotel.address)
@@ -194,7 +197,6 @@ function FormHotel() {
             formData.append('name', data.name)
             formData.append('description', data.description)
             formData.append('phone', data.phone)
-            formData.append('website', data.website)
             formData.append('hotelClass', data.hotelClass)
             formData.append('cheapestPrice', data.cheapestPrice)
             formData.append('address', data.address)
@@ -232,8 +234,12 @@ function FormHotel() {
             }
             toast.success(
                 _.isEmpty(currentHotel)
-                    ? 'Create hotel successfully'
-                    : 'Update hotel successfully',
+                    ? `${t('create')} ${t('hotel').toLowerCase()} ${t(
+                        'successfully'
+                    )}`
+                    : `${t('update')} ${t('hotel').toLowerCase()} ${t(
+                        'successfully'
+                    )}`,
                 {
                     position: toast.POSITION.BOTTOM_CENTER,
                     autoClose: 1000,
@@ -257,8 +263,8 @@ function FormHotel() {
                         <div className="relative w-full px-4 max-w-full flex">
                             <h3 className="font-semibold text-lg text-blue-600">
                                 {_.isEmpty(currentHotel)
-                                    ? 'Add Hotel'
-                                    : 'Update Hotel'}
+                                    ? t('create') + ' ' + t('hotel')
+                                    : t('update') + ' ' + t('hotel')}
                             </h3>
                         </div>
                     </div>
@@ -270,10 +276,10 @@ function FormHotel() {
                                 className="block uppercase text-sm font-bold mb-2"
                                 htmlFor="grid-password"
                             >
-                                Name
+                                {t('name')}
                             </label>
                             <InputField
-                                placeholder="Name Hotel"
+                                placeholder={t('name')}
                                 form={form}
                                 name="name"
                             />
@@ -283,10 +289,10 @@ function FormHotel() {
                                 className="block uppercase text-sm font-bold mb-2"
                                 htmlFor="grid-password"
                             >
-                                Description
+                                {t('descriptionHotel')} {t('languageEn')}
                             </label>
                             <TextArea
-                                placeholder="Description Hotel..."
+                                placeholder={`${t('descriptionHotel')} ${t('languageEn')}`}
                                 form={form}
                                 name="description"
                                 rows={2}
@@ -297,40 +303,44 @@ function FormHotel() {
                                 className="block uppercase text-sm font-bold mb-2"
                                 htmlFor="grid-password"
                             >
-                                Phone
+                                {`${t('descriptionHotel')} ${t('languageVN')}`}
+                            </label>
+                            <TextArea
+                                placeholder={`${t('descriptionHotel')} ${t('languageVN')}`}
+                                form={form}
+                                name="descriptionVN"
+                                rows={2}
+                            />
+                        </div>
+                        <div className="relative w-full mb-3">
+                            <label
+                                className="block uppercase text-sm font-bold mb-2"
+                                htmlFor="grid-password"
+                            >
+                                {t('phone')}
                             </label>
                             <InputField
-                                placeholder="Phone hotel to contact"
+                                placeholder={
+                                    t('phone') + ' ' + t('hotel')
+                                }
                                 form={form}
                                 name="phone"
                             />
                         </div>
-                        <div className="relative w-full mb-3">
+                        <div className="relative w-1/4 mb-3">
                             <label
                                 className="block uppercase text-sm font-bold mb-2"
                                 htmlFor="grid-password"
                             >
-                                Website
-                            </label>
-                            <InputField
-                                placeholder="Website of hotel"
-                                form={form}
-                                name="website"
-                                type="input"
-                            />
-                        </div>
-                        <div className="relative w-full mb-3">
-                            <label
-                                className="block uppercase text-sm font-bold mb-2"
-                                htmlFor="grid-password"
-                            >
-                                Hotel Class
+                                {t('hotelClass')}
                             </label>
                             <InputField
                                 type="number"
                                 min="1"
                                 max="5"
-                                placeholder="Range Hotel from 1 to 5 stars"
+                                placeholder={t(
+                                    'hotelClassPlaceHolder'
+                                )}
                                 form={form}
                                 name="hotelClass"
                             />
@@ -340,7 +350,7 @@ function FormHotel() {
                                 className="block uppercase text-sm font-bold mb-2"
                                 htmlFor="grid-password"
                             >
-                                Hotel Style
+                                {t('hotelStyle')}
                             </label>
                             <Select
                                 styles={{
@@ -358,9 +368,9 @@ function FormHotel() {
                                 }
                                 value={hotelStyles}
                                 closeMenuOnSelect={false}
-                                placeholder={
-                                    'Style of Hotel. Ex: Romantic, Loves,...'
-                                }
+                                placeholder={t(
+                                    'hotelStylePlaceholder'
+                                )}
                                 components={animatedComponents}
                                 isMulti
                                 options={hotelStyle.map(style => ({
@@ -370,20 +380,22 @@ function FormHotel() {
                             />
                             {hotelStyles.length === 0 &&
                                 !isFirstTime && (
-                                    <span className="text-[14px] text-red-500 pl-2 mt-1">
-                                        Please select styles of hotel
-                                    </span>
-                                )}
+                                <span className="text-[14px] text-red-500 pl-2 mt-1">
+                                    {t('requiredHotelStyle')}
+                                </span>
+                            )}
                         </div>
                         <div className="relative w-full mb-3">
                             <label
                                 className="block uppercase text-sm font-bold mb-2"
                                 htmlFor="grid-password"
                             >
-                                Staring Price ($)
+                                {t('startPrice')}
                             </label>
                             <InputField
-                                placeholder="Staring Price (Price of normal room)"
+                                placeholder={t(
+                                    'startPricePlaceHolder'
+                                )}
                                 form={form}
                                 name="cheapestPrice"
                                 type="number"
@@ -395,7 +407,7 @@ function FormHotel() {
                                 className="block uppercase text-sm font-bold mb-2"
                                 htmlFor="grid-password"
                             >
-                                Amenities Of Hotel
+                                {t('amenities')}
                             </label>
                             <Select
                                 styles={{
@@ -411,9 +423,7 @@ function FormHotel() {
                                 onChange={data => setAmenityIds(data)}
                                 value={amenityIds}
                                 closeMenuOnSelect={false}
-                                placeholder={
-                                    'Select amenity of hotel...'
-                                }
+                                placeholder={t('amenities')}
                                 components={animatedComponents}
                                 isMulti
                                 options={amenitiesHotel.map(
@@ -425,21 +435,20 @@ function FormHotel() {
                             />
                             {amenityIds.length === 0 &&
                                 !isFirstTime && (
-                                    <span className="text-[14px] text-red-500 pl-2 mt-1">
-                                        Please select amenities of
-                                        hotel
-                                    </span>
-                                )}
+                                <span className="text-[14px] text-red-500 pl-2 mt-1">
+                                    {t('requiredAmenities')}
+                                </span>
+                            )}
                         </div>
                         <div className="relative w-full mb-2">
                             <label
                                 className="block uppercase text-xs font-bold mb-2"
                                 htmlFor="grid-password"
                             >
-                                Province
+                                {t('province')}
                             </label>
                             <MySelect
-                                placeholder="Province"
+                                placeholder={t('province')}
                                 form={form}
                                 name="provinceId"
                                 options={provinces.map(province => ({
@@ -454,7 +463,7 @@ function FormHotel() {
                                 className="block uppercase text-sm font-bold mb-2"
                                 htmlFor="grid-password"
                             >
-                                Photos
+                                {t('photo')}
                             </label>
                             <PhotoUploads
                                 addedPhotos={images}
@@ -462,7 +471,9 @@ function FormHotel() {
                             />
                             {images.length === 0 && !isFirstTime && (
                                 <span className="text-[14px] text-red-500 pl-2 mt-1">
-                                    Please upload photos of hotel
+                                    {t('requiredPhoto') +
+                                        ' ' +
+                                        t('hotel')}
                                 </span>
                             )}
                         </div>
@@ -471,12 +482,12 @@ function FormHotel() {
                                 className="block uppercase text-sm font-bold mb-2"
                                 htmlFor="grid-password"
                             >
-                                Commission Percent (If you want to
-                                marketing your hotel and it on top.
-                                Please increse percent)
+                                {t('commissionPercent')}
                             </label>
                             <InputField
-                                placeholder="System will get 10% per booking if you not set"
+                                placeholder={t(
+                                    'commissionPercentPlaceHolder'
+                                )}
                                 form={form}
                                 name="commissionPercent"
                                 type="number"
@@ -497,8 +508,8 @@ function FormHotel() {
                                 className="bg-blue-500 text-white active:bg-blue-800 text-sm font-bold uppercase px-4 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 w-1/5 ease-linear transition-all duration-150"
                             >
                                 {_.isEmpty(currentHotel)
-                                    ? 'Add hotel'
-                                    : 'Update hotel'}
+                                    ? t('create')
+                                    : t('update')}
                             </Mybutton>
                         </div>
                     )}

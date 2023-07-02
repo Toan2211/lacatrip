@@ -12,7 +12,9 @@ import {
     MdOutlineAttachMoney,
     MdOutlineTravelExplore
 } from 'react-icons/md'
+import { useTranslation } from 'react-i18next'
 export default function Sidebar() {
+    const { t } = useTranslation()
     const [collapseShow, setCollapseShow] = React.useState('hidden')
     const currentUser = useSelector(selectUser)
     return (
@@ -47,7 +49,7 @@ export default function Sidebar() {
                             <>
                                 <hr className="my-2 md:min-w-full" />
                                 <h6 className="md:min-w-full text-blueGray-500 text-xs uppercase font-bold block pt-1 pb-4 no-underline">
-                                    Manage Users
+                                    {t('manageUser')}
                                 </h6>
                                 <ul className="md:flex-col md:min-w-full flex flex-col list-none text-bl">
                                     <li className="items-center ">
@@ -64,7 +66,7 @@ export default function Sidebar() {
                                             <span className="mr-2">
                                                 <BsFillPersonFill />
                                             </span>
-                                            Employees
+                                            {t('employees')}
                                         </NavLink>
                                     </li>
                                     <li className="items-center ">
@@ -81,7 +83,7 @@ export default function Sidebar() {
                                             <span className="mr-2">
                                                 <BsFillPersonFill />
                                             </span>
-                                            Clients
+                                            {t('clients')}
                                         </NavLink>
                                     </li>
                                     <li className="items-center ">
@@ -98,7 +100,7 @@ export default function Sidebar() {
                                             <span className="mr-2">
                                                 <BsFillPersonFill />
                                             </span>
-                                            ServiceManagers
+                                            {t('serviceManagers')}
                                         </NavLink>
                                     </li>
                                 </ul>
@@ -106,7 +108,7 @@ export default function Sidebar() {
                         )}
                         <hr className="my-2 md:min-w-full" />
                         <h6 className="md:min-w-full text-blueGray-500 text-xs uppercase font-bold block pt-1 pb-4 no-underline">
-                            Manage Property
+                            {t('manageTravelService')}
                         </h6>
                         <ul className="md:flex-col md:min-w-full flex flex-col list-none text-bl">
                             <li className="items-center ">
@@ -121,7 +123,7 @@ export default function Sidebar() {
                                     <span className="mr-2">
                                         <FaHotel />
                                     </span>
-                                    Hotels
+                                    {t('hotel')}
                                 </NavLink>
                             </li>
                             <li className="items-center ">
@@ -136,7 +138,7 @@ export default function Sidebar() {
                                     <span className="mr-2">
                                         <BiRestaurant />
                                     </span>
-                                    Restaurants
+                                    {t('restaurant')}
                                 </NavLink>
                             </li>
                             <li className="items-center ">
@@ -151,13 +153,13 @@ export default function Sidebar() {
                                     <span className="mr-2">
                                         <MdOutlineTravelExplore />
                                     </span>
-                                    Destinations Travel
+                                    {t('tour')}
                                 </NavLink>
                             </li>
                         </ul>
                         <hr className="my-2 md:min-w-full" />
                         <h6 className="md:min-w-full text-blueGray-500 text-xs uppercase font-bold block pt-1 pb-4 no-underline">
-                            Manage Booking
+                            {t('manageBooking')}
                         </h6>
                         <ul className="md:flex-col md:min-w-full flex flex-col list-none text-bl">
                             <li className="items-center ">
@@ -172,7 +174,7 @@ export default function Sidebar() {
                                     <span className="mr-2">
                                         <FaHotel />
                                     </span>
-                                    Booking Hotel
+                                    {t('bookingHotel')}
                                 </NavLink>
                             </li>
                             <li className="items-center ">
@@ -189,48 +191,61 @@ export default function Sidebar() {
                                     <span className="mr-2">
                                         <BsFillTicketFill />
                                     </span>
-                                    Booking Destination Travel
+                                    {t('bookingDestinationTravel')}
                                 </NavLink>
                             </li>
                         </ul>
-                        <hr className="my-2 md:min-w-full" />
-                        <h6 className="md:min-w-full text-blueGray-500 text-xs uppercase font-bold block pt-1 pb-4 no-underline">
-                            Manage Revenue
-                        </h6>
-                        <ul className="md:flex-col md:min-w-full flex flex-col list-none text-bl">
-                            <li className="items-center ">
-                                <NavLink
-                                    className={({ isActive }) =>
-                                        isActive
-                                            ? 'text-blue-600 hover:opacity-75 text-xs uppercase py-3 font-bold flex'
-                                            : 'hover:text-blue-600 text-xs uppercase py-3 font-bold flex'
-                                    }
-                                    to={path.revenue}
-                                >
-                                    <span className="mr-2">
-                                        <MdOutlineAttachMoney />
-                                    </span>
-                                    Revenue Booking
-                                </NavLink>
-                            </li>
-                            {currentUser.role.name === ROLE.ADMIN && (
-                                <li className="items-center ">
-                                    <NavLink
-                                        className={({ isActive }) =>
-                                            isActive
-                                                ? 'text-blue-600 hover:opacity-75 text-xs uppercase py-3 font-bold flex'
-                                                : 'hover:text-blue-600 text-xs uppercase py-3 font-bold flex'
-                                        }
-                                        to={path.trackingPayment}
-                                    >
-                                        <span className="mr-2">
-                                            <MdOutlineAttachMoney />
-                                        </span>
-                                        Tracking Payment
-                                    </NavLink>
-                                </li>
-                            )}
-                        </ul>
+                        {(currentUser.role.name === ROLE.ADMIN ||
+                            currentUser.role.name ===
+                                ROLE.SERVICEMANAGER) && (
+                            <>
+                                <hr className="my-2 md:min-w-full" />
+                                <h6 className="md:min-w-full text-blueGray-500 text-xs uppercase font-bold block pt-1 pb-4 no-underline">
+                                    {t('manageRevenue')}
+                                </h6>
+                                <ul className="md:flex-col md:min-w-full flex flex-col list-none text-bl">
+                                    <li className="items-center ">
+                                        <NavLink
+                                            className={({
+                                                isActive
+                                            }) =>
+                                                isActive
+                                                    ? 'text-blue-600 hover:opacity-75 text-xs uppercase py-3 font-bold flex'
+                                                    : 'hover:text-blue-600 text-xs uppercase py-3 font-bold flex'
+                                            }
+                                            to={path.revenue}
+                                        >
+                                            <span className="mr-2">
+                                                <MdOutlineAttachMoney />
+                                            </span>
+                                            {t('revenueBooking')}
+                                        </NavLink>
+                                    </li>
+                                    {currentUser.role.name ===
+                                        ROLE.ADMIN && (
+                                        <li className="items-center ">
+                                            <NavLink
+                                                className={({
+                                                    isActive
+                                                }) =>
+                                                    isActive
+                                                        ? 'text-blue-600 hover:opacity-75 text-xs uppercase py-3 font-bold flex'
+                                                        : 'hover:text-blue-600 text-xs uppercase py-3 font-bold flex'
+                                                }
+                                                to={
+                                                    path.trackingPayment
+                                                }
+                                            >
+                                                <span className="mr-2">
+                                                    <MdOutlineAttachMoney />
+                                                </span>
+                                                {t('trackingPayment')}
+                                            </NavLink>
+                                        </li>
+                                    )}
+                                </ul>
+                            </>
+                        )}
                     </div>
                 </div>
             </nav>

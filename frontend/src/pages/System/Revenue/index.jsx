@@ -18,7 +18,9 @@ import ReactDatePicker from 'react-datepicker'
 import { getAllRevenue, revenuesSelector } from './revenue.slice'
 import moment from 'moment'
 import { Table } from 'flowbite-react'
+import { useTranslation } from 'react-i18next'
 function Revenue() {
+    const { t } = useTranslation()
     const serviceManagers = useSelector(serviceManagersSelector)
     const dispatch = useDispatch()
     const location = useLocation()
@@ -27,7 +29,7 @@ function Revenue() {
     const [month, setMonth] = useState(null)
     const [serviceManagerInput, setServiceManagerInput] = useState({
         value: 999,
-        label: 'Filter service manager...'
+        label: `${t('filters')} ${t('serviceManager')}`
     })
     const revenues = useSelector(revenuesSelector)
     const queryParams = useMemo(() => {
@@ -38,9 +40,7 @@ function Revenue() {
             monthDate: params.monthDate || '',
             page: Number.parseInt(params.page) || 1,
             limit: Number.parseInt(params.limit) || 10,
-            serviceManagerId: profile.serviceManagerId
-                ? profile.serviceManagerId
-                : params.serviceManagerId || ''
+            serviceManagerId: params.serviceManagerId || ''
         }
     }, [location.search, profile])
     const ExampleCustomstartDate = forwardRef(
@@ -50,9 +50,11 @@ function Revenue() {
                 onClick={onClick}
             >
                 <div className="flex flex-col items-center">
-                    <span className="font-medium text-md">Month</span>
+                    <span className="font-medium text-md">
+                        {t('month')}
+                    </span>
                     <span className="text-gray-400 text-sm" ref={ref}>
-                        {value || 'Add Date'}
+                        {value || t('addMonth')}
                     </span>
                 </div>
             </div>
@@ -77,7 +79,9 @@ function Revenue() {
 
     useEffect(() => {
         const params = {
-            serviceManagerId: queryParams.serviceManagerId,
+            serviceManagerId: profile.serviceManagerId
+                ? profile.serviceManagerId
+                : queryParams.serviceManagerId,
             startDate: queryParams.monthDate,
             endDate: queryParams.monthDate
                 ? moment(queryParams.monthDate)
@@ -85,24 +89,24 @@ function Revenue() {
                     .format('YYYY-MM')
                 : ''
         }
-        dispatch(getAllRevenue(params))
+        dispatch(getAllRevenue({ ...params }))
         dispatch(
             getServiceManagers({
                 limit: 100
             })
         )
-    }, [queryParams, dispatch])
+    }, [queryParams, dispatch, profile])
 
     useEffect(() => {
-        document.title = 'Manage Revenue'
-    }, [])
+        document.title = t('manageRevenue')
+    }, [t])
     return (
         <div className="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded bg-white min-h-[70vh]">
             <div className="rounded-t mb-0 px-4 py-3 border-0">
                 <div className="flex flex-wrap items-center">
                     <div className="relative w-full px-4 max-w-full flex">
                         <h3 className="font-semibold text-lg text-blue-600">
-                            Manage Revenue
+                            {t('manageRevenue')}
                         </h3>
                     </div>
                 </div>
@@ -130,13 +134,15 @@ function Revenue() {
                             }}
                             onChange={handleChaneServiceManager}
                             value={serviceManagerInput}
-                            placeholder={
-                                'Filter by service manager...'
-                            }
+                            placeholder={`${t('filters')} ${t(
+                                'serviceManager'
+                            )}`}
                             options={[
                                 {
                                     value: 999,
-                                    label: 'Filter by service manager...'
+                                    label: `${t('filters')} ${t(
+                                        'serviceManager'
+                                    )}`
                                 },
                                 ...serviceManagers.map(
                                     servicemanager => ({
@@ -154,23 +160,27 @@ function Revenue() {
                 )}
             </div>
             <div className="block w-full overflow-x-auto h-[66vh]">
-                <Table hoverable={true}>
+                <Table hoverable={true} className="text-center">
                     <Table.Head>
                         <Table.HeadCell>Email</Table.HeadCell>
-                        <Table.HeadCell>Name</Table.HeadCell>
-                        <Table.HeadCell>PhoneNumber</Table.HeadCell>
                         <Table.HeadCell>
-                            Total Revenue ($)
+                            {t('serviceManager')}
+                        </Table.HeadCell>
+                        <Table.HeadCell>{t('phone')}</Table.HeadCell>
+                        <Table.HeadCell>
+                            {t('totalRevenue')} ($)
                         </Table.HeadCell>
                         <Table.HeadCell>
-                            Total Commission ($)
+                            {t('totalCommission')} ($)
                         </Table.HeadCell>
                         <Table.HeadCell>
-                            System Unpaid ($)
+                            {t('systemUnpaid')} ($)
                         </Table.HeadCell>
                         {(queryParams.monthDate ||
                             queryParams.serviceManagerId) && (
-                            <Table.HeadCell>Month</Table.HeadCell>
+                            <Table.HeadCell>
+                                {t('month')}
+                            </Table.HeadCell>
                         )}
                     </Table.Head>
                     <Table.Body className="divide-y">

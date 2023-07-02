@@ -1,5 +1,6 @@
 import Mybutton from '@components/MyButton'
 import React, { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { AiOutlineSearch } from 'react-icons/ai'
 import { BsSearch } from 'react-icons/bs'
 import { IoLocationOutline } from 'react-icons/io5'
@@ -18,6 +19,7 @@ function SearchDestination({
     searchProvince,
     handleOnChangeProvince
 }) {
+    const { t } = useTranslation()
     const navigate = useNavigate()
     const [keyword, setKeyword] = useState('')
     const handleOnchangeKeyWord = e => setKeyword(e.target.value)
@@ -35,11 +37,11 @@ function SearchDestination({
                 </span>
                 <div className="flex flex-col w-full">
                     <div className="font-medium text-md ml-2">
-                        Location
+                        {t('location')}
                     </div>
                     <Select
                         styles={style}
-                        placeholder={'Where are you going?'}
+                        placeholder={t('locationQuestion')}
                         options={options}
                         value={searchProvince}
                         onChange={handleOnChangeProvince}
@@ -53,7 +55,7 @@ function SearchDestination({
                 </span>
                 <div className="flex flex-col w-full">
                     <div className="font-medium text-md ml-2">
-                        Name
+                        {t('name')}
                     </div>
                     <input
                         value={keyword}
@@ -72,7 +74,7 @@ function SearchDestination({
                         <span className="text-2xl">
                             <AiOutlineSearch />
                         </span>
-                        <span>Search</span>
+                        <span>{t('search')}</span>
                     </div>
                 </Mybutton>
             </div>

@@ -1,9 +1,11 @@
 import { RESTAURANTTYPE } from '@constants/instanceType'
 import LikeToTrip from '@page-components/LikeToTrip'
 import React from 'react'
+import { useTranslation } from 'react-i18next'
 import { NavLink } from 'react-router-dom'
 
 function RestaurantCard({ data }) {
+    const { t } = useTranslation()
     return (
         <div className="relative">
             <NavLink
@@ -35,12 +37,12 @@ function RestaurantCard({ data }) {
                             {data.rating} / 5
                         </span>
                         <span className="font-normal text-gray-400">
-                            {data.totalRating} Reviews
+                            {data.totalRating} {t('review')}
                         </span>
                     </span>
                     <div className="mt-4">
                         <span className="font-normal text-gray-400">
-                            From:{' '}
+                            {t('from')}:{' '}
                         </span>
                         <span className="font-bold">
                             ${data.minPrice} - ${data.maxPrice}
