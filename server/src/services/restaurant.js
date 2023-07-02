@@ -12,7 +12,6 @@ const create = async data => {
             name: data.name,
             description: data.description,
             phone: data.phone,
-            website: data.website,
             longtitude: data.longtitude,
             latitude: data.latitude,
             address: data.address,

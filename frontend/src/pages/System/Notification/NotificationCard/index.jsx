@@ -2,13 +2,14 @@ import {
     deleteNotify,
     readNotification
 } from '@pages/Notification/notification.slice'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch } from 'react-redux'
 import { Link } from 'react-router-dom'
 
 function NotificationCard({ notification }) {
-    const { t } = useTranslation()
+    const [message, setMessage] = useState('')
+    const { t, i18n } = useTranslation()
     const dispatch = useDispatch()
     const handleActionClick = event => {
         event.preventDefault()
@@ -29,6 +30,16 @@ function NotificationCard({ notification }) {
 
         setShowActionForm(false)
     }
+    useEffect(() => {
+        if (i18n.language === 'vn') {
+            let temp = notification.message
+            temp = temp.replace('already booked rooms in', 'đã đặt phòng tại khách sạn')
+            temp = temp.replace('Please check', 'Hãy kiểm tra')
+            temp = temp.replace('already booked', 'đã đặt ')
+            temp = temp.replace('ticket', 'vé ')
+            setMessage(temp)
+        }
+    }, [i18n, notification])
     return (
         <Link
             to={`/${notification.url}`}
@@ -54,7 +65,7 @@ function NotificationCard({ notification }) {
                     </span>
                     <span className=" text-gray-700">
                         {' '}
-                        {notification.message}
+                        {i18n.language === 'vn' ? message : notification.message}
                     </span>
                 </div>
             </div>

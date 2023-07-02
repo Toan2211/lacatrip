@@ -48,7 +48,7 @@ function Signin() {
                 hideProgressBar: true
             })
         } catch (error) {
-            toast.error(error.message, {
+            toast.error(t(error.message), {
                 position: toast.POSITION.BOTTOM_CENTER,
                 autoClose: 1000,
                 hideProgressBar: true

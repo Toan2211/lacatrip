@@ -195,44 +195,57 @@ export default function Sidebar() {
                                 </NavLink>
                             </li>
                         </ul>
-                        <hr className="my-2 md:min-w-full" />
-                        <h6 className="md:min-w-full text-blueGray-500 text-xs uppercase font-bold block pt-1 pb-4 no-underline">
-                            {t('manageRevenue')}
-                        </h6>
-                        <ul className="md:flex-col md:min-w-full flex flex-col list-none text-bl">
-                            <li className="items-center ">
-                                <NavLink
-                                    className={({ isActive }) =>
-                                        isActive
-                                            ? 'text-blue-600 hover:opacity-75 text-xs uppercase py-3 font-bold flex'
-                                            : 'hover:text-blue-600 text-xs uppercase py-3 font-bold flex'
-                                    }
-                                    to={path.revenue}
-                                >
-                                    <span className="mr-2">
-                                        <MdOutlineAttachMoney />
-                                    </span>
-                                    {t('revenueBooking')}
-                                </NavLink>
-                            </li>
-                            {currentUser.role.name === ROLE.ADMIN && (
-                                <li className="items-center ">
-                                    <NavLink
-                                        className={({ isActive }) =>
-                                            isActive
-                                                ? 'text-blue-600 hover:opacity-75 text-xs uppercase py-3 font-bold flex'
-                                                : 'hover:text-blue-600 text-xs uppercase py-3 font-bold flex'
-                                        }
-                                        to={path.trackingPayment}
-                                    >
-                                        <span className="mr-2">
-                                            <MdOutlineAttachMoney />
-                                        </span>
-                                        {t('trackingPayment')}
-                                    </NavLink>
-                                </li>
-                            )}
-                        </ul>
+                        {(currentUser.role.name === ROLE.ADMIN ||
+                            currentUser.role.name ===
+                                ROLE.SERVICEMANAGER) && (
+                            <>
+                                <hr className="my-2 md:min-w-full" />
+                                <h6 className="md:min-w-full text-blueGray-500 text-xs uppercase font-bold block pt-1 pb-4 no-underline">
+                                    {t('manageRevenue')}
+                                </h6>
+                                <ul className="md:flex-col md:min-w-full flex flex-col list-none text-bl">
+                                    <li className="items-center ">
+                                        <NavLink
+                                            className={({
+                                                isActive
+                                            }) =>
+                                                isActive
+                                                    ? 'text-blue-600 hover:opacity-75 text-xs uppercase py-3 font-bold flex'
+                                                    : 'hover:text-blue-600 text-xs uppercase py-3 font-bold flex'
+                                            }
+                                            to={path.revenue}
+                                        >
+                                            <span className="mr-2">
+                                                <MdOutlineAttachMoney />
+                                            </span>
+                                            {t('revenueBooking')}
+                                        </NavLink>
+                                    </li>
+                                    {currentUser.role.name ===
+                                        ROLE.ADMIN && (
+                                        <li className="items-center ">
+                                            <NavLink
+                                                className={({
+                                                    isActive
+                                                }) =>
+                                                    isActive
+                                                        ? 'text-blue-600 hover:opacity-75 text-xs uppercase py-3 font-bold flex'
+                                                        : 'hover:text-blue-600 text-xs uppercase py-3 font-bold flex'
+                                                }
+                                                to={
+                                                    path.trackingPayment
+                                                }
+                                            >
+                                                <span className="mr-2">
+                                                    <MdOutlineAttachMoney />
+                                                </span>
+                                                {t('trackingPayment')}
+                                            </NavLink>
+                                        </li>
+                                    )}
+                                </ul>
+                            </>
+                        )}
                     </div>
                 </div>
             </nav>

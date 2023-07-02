@@ -197,10 +197,24 @@ function RoomForm({ onClose, open }) {
                             className="block uppercase text-sm font-bold mb-2"
                             htmlFor="grid-password"
                         >
-                            {t('description')}
+                            {`${t('description')} ${t('languageEn')}`}
                         </label>
                         <TextArea
-                            placeholder={t('description')}
+                            placeholder={`${t('description').toUpperCase()} ${t('languageEn')}`}
+                            form={form}
+                            name="description"
+                            rows={2}
+                        />
+                    </div>
+                    <div className="relative w-full mb-3">
+                        <label
+                            className="block uppercase text-sm font-bold mb-2"
+                            htmlFor="grid-password"
+                        >
+                            {`${t('description').toUpperCase()} ${t('languageVN')}`}
+                        </label>
+                        <TextArea
+                            placeholder={`${t('description')} ${t('languageVN')}`}
                             form={form}
                             name="description"
                             rows={2}

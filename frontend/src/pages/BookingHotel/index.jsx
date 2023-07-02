@@ -140,27 +140,27 @@ function BookingHotel() {
                         </div>
                         <div className="flex justify-between">
                             <div className=" text-gray-500 text-lg">
-                                Room type
+                                {t('roomType')}
                             </div>
                             <div>{currentRoom.title}</div>
                         </div>
                     </div>
                     <div className="mt-5 border-b border-slate-300 pb-5">
                         <div className=" font-bold text-xl">
-                            Your trip
+                            {t('yourTripBooking')}
                         </div>
                         <div className="flex justify-between">
                             <div className=" text-gray-500 text-lg">
-                                Date
+                                {t('date')}
                             </div>
                             <div className="font-semibold">
-                                {queryParams.checkIn} to{' '}
+                                {queryParams.checkIn} {t('to')}{' '}
                                 {queryParams.checkOut}
                             </div>
                         </div>
                         <div className="flex justify-between mb-2">
                             <div className=" text-gray-500 text-lg">
-                                Adults
+                                {t('adult')}
                             </div>
                             <div>
                                 {' '}
@@ -193,7 +193,7 @@ function BookingHotel() {
                         </div>
                         <div className="flex justify-between">
                             <div className=" text-gray-500 text-lg">
-                                Childrens
+                                {t('children')}
                             </div>
                             <div>
                                 <div className="flex gap-1 items-center">
@@ -227,18 +227,18 @@ function BookingHotel() {
                         </div>
                         <div className="flex justify-between">
                             <div className=" text-gray-500 text-lg">
-                                Room
+                                {t('room')}
                             </div>
                             <div>{queryParams.countRooms}</div>
                         </div>
                     </div>
                     <div className="mt-5">
                         <div className=" font-semibold text-xl">
-                            Price
+                            {t('price')}
                         </div>
                         <div className="flex justify-between">
                             <div className=" text-gray-500 text-lg">
-                                Price per night
+                                {t('price')}/ {t('night')}
                             </div>
                             <div className="font-bold text-lg">
                                 {currentRoom.price}
@@ -246,7 +246,7 @@ function BookingHotel() {
                         </div>
                         <div className="flex justify-between">
                             <div className=" text-gray-500 text-lg">
-                                Night
+                                {t('night')}
                             </div>
                             <div className="font-bold text-lg">
                                 {getLengthDay(
@@ -257,7 +257,7 @@ function BookingHotel() {
                         </div>
                         <div className="flex justify-between">
                             <div className=" text-gray-500 text-lg">
-                                Total Price
+                                {t('totalPrice')}
                             </div>
                             <div className="font-bold text-lg">
                                 $
@@ -277,7 +277,7 @@ function BookingHotel() {
                             onClick={() => handleBookingHotel()}
                             className="w-[40%] bg-blue-500 text-white active:bg-blue-800 text-sm font-bold uppercase px-4 py-2 rounded-full shadow hover:shadow-lg outline-none focus:outline-none mb-1 ease-linear transition-all duration-150"
                         >
-                            Banking Now
+                            {t('bookNow')}
                         </button>
                     </div>
                 </div>

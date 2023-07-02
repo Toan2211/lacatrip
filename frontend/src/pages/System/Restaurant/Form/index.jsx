@@ -44,23 +44,23 @@ function RestaurantForm() {
     const [images, setImages] = useState(() =>
         currentRestaurant.images
             ? currentRestaurant.images.map(image => ({
-                id: image.id,
-                url: image.url
-            }))
+                  id: image.id,
+                  url: image.url
+              }))
             : []
     )
     const [cusines, setCusines] = useState(() =>
         currentRestaurant.cusines
             ? currentRestaurant.cusines
-                .split(',')
-                .map(item => ({ value: item, label: item }))
+                  .split(',')
+                  .map(item => ({ value: item, label: item }))
             : []
     )
     const [specialDiets, setSpecialDiets] = useState(() =>
         currentRestaurant.specialDiets
             ? currentRestaurant.specialDiets
-                .split(',')
-                .map(item => ({ value: item, label: item }))
+                  .split(',')
+                  .map(item => ({ value: item, label: item }))
             : []
     )
     useEffect(() => {
@@ -187,7 +187,6 @@ function RestaurantForm() {
             formData.append('name', data.name)
             formData.append('description', data.description)
             formData.append('phone', data.phone)
-            formData.append('website', data.website)
             formData.append('address', data.address)
             formData.append('longtitude', data.longtitude)
             formData.append('latitude', data.latitude)
@@ -225,11 +224,11 @@ function RestaurantForm() {
             toast.success(
                 _.isEmpty(currentRestaurant)
                     ? `${t('create')} ${t(
-                        'restaurant'
-                    ).toLocaleLowerCase()} ${t('successfully')}`
+                          'restaurant'
+                      ).toLocaleLowerCase()} ${t('successfully')}`
                     : `${t('update')} ${t(
-                        'restaurant'
-                    ).toLocaleLowerCase()} ${t('successfully')}`,
+                          'restaurant'
+                      ).toLocaleLowerCase()} ${t('successfully')}`,
                 {
                     position: toast.POSITION.BOTTOM_CENTER,
                     autoClose: 1000,
@@ -254,11 +253,11 @@ function RestaurantForm() {
                             <h3 className="font-semibold text-lg text-blue-600">
                                 {_.isEmpty(currentRestaurant)
                                     ? `${t('create')} ${t(
-                                        'restaurant'
-                                    ).toLocaleLowerCase()}`
+                                          'restaurant'
+                                      ).toLocaleLowerCase()}`
                                     : `${t('update')} ${t(
-                                        'restaurant'
-                                    ).toLocaleLowerCase()}`}
+                                          'restaurant'
+                                      ).toLocaleLowerCase()}`}
                             </h3>
                         </div>
                     </div>
@@ -285,12 +284,32 @@ function RestaurantForm() {
                                 className="block uppercase text-sm font-bold mb-2"
                                 htmlFor="grid-password"
                             >
-                                {t('description')}
+                                {`${t(
+                                    'description'
+                                ).toUpperCase()} ${t('languageEn')}`}
                             </label>
                             <TextArea
                                 placeholder={`${t('description')} ${t(
                                     'restaurant'
-                                ).toLowerCase()}...`}
+                                ).toLowerCase()}  ${t('languageEn')}...`}
+                                form={form}
+                                name="description"
+                                rows={2}
+                            />
+                        </div>
+                        <div className="relative w-full mb-3">
+                            <label
+                                className="block uppercase text-sm font-bold mb-2"
+                                htmlFor="grid-password"
+                            >
+                                {`${t(
+                                    'description'
+                                ).toUpperCase()} ${t('languageVN')}`}
+                            </label>
+                            <TextArea
+                                placeholder={`${t('description')} ${t(
+                                    'languageVN'
+                                )}`}
                                 form={form}
                                 name="description"
                                 rows={2}
@@ -385,10 +404,10 @@ function RestaurantForm() {
                             />
                             {specialDiets.length === 0 &&
                                 !isFirstTime && (
-                                <span className="text-[14px] text-red-500 pl-2 mt-1">
-                                    {t('requiredSpecialDiets')}
-                                </span>
-                            )}
+                                    <span className="text-[14px] text-red-500 pl-2 mt-1">
+                                        {t('requiredSpecialDiets')}
+                                    </span>
+                                )}
                         </div>
                         <div className="relative w-full mb-3">
                             <label

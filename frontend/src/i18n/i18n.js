@@ -155,7 +155,7 @@ const resources = {
             markReaded: 'Mark already read',
             delete: 'Delete',
             bookingDestinationTravel:
-                'Booking List Destination Travel',
+                'Booking List Tours',
             ticket: 'Ticket',
             destinationTravel: 'Destination Travel',
             // system
@@ -257,6 +257,8 @@ const resources = {
             paymentAccount: 'Payment Account',
             datePayment: 'Date Payment',
             systemProfile: 'System Profile',
+            totalPrice: 'Total Price',
+            yourTripBooking: 'Your Trip',
             //status
             'Forbidden: required Admin or Employee !': 'Forbidden: required Admin or Employee !',
             'This email already exists.': 'This email already exists.',
@@ -264,7 +266,10 @@ const resources = {
             userInfo: 'User Information',
             requiredPaymentAccount: 'Payment Account is required',
             invalidPaymentAccount: 'Invalid Payment Account',
-            changePaymentAccount: 'Change Payment Account (Payment Receive Money From Booking)'
+            changePaymentAccount: 'Change Payment Account (Payment Receive Money From Booking)',
+            'Invalid email or password': 'Invalid email or password',
+            'languageEn': 'WITH ENGLISH',
+            'languageVN': 'WITH VIETNAMESE'
         }
     },
     vn: {
@@ -526,6 +531,8 @@ const resources = {
             totalPayment: 'Tổng tiền',
             paymentAccount: 'Tài khoản thanh toán',
             datePayment: 'Ngày thanh toán',
+            totalPrice: 'Tổng tiền',
+            yourTripBooking: 'Chuyến đi của bạn',
             //status
             'Forbidden: required Admin or Employee !': 'Yêu cầu quản trị viên hoặc nhân viên',
             'This email already exists.': 'Địa chỉ Email đã tồn tại.',
@@ -534,7 +541,10 @@ const resources = {
             userInfo: 'Thông tin cá nhân',
             requiredPaymentAccount: 'Hãy nhập tài khoản thanh toán',
             invalidPaymentAccount: 'Tài khoản thanh toán không hợp lệ',
-            changePaymentAccount: 'Cập nhật tài khoản thanh toán(Tài khoản nhận tiền từ đơn đặt lịch)'
+            changePaymentAccount: 'Cập nhật tài khoản thanh toán(Tài khoản nhận tiền từ đơn đặt lịch)',
+            'Invalid email or password': 'Email hoặc mật khẩu không đúng',
+            'languageEn': 'VỚI NGÔN NGỮ ANH',
+            'languageVN':'VỚI NGÔN NGỮ VIỆT'
         }
     }
 }

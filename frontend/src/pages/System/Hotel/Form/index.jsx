@@ -118,7 +118,6 @@ function FormHotel() {
                 ? currentHotel.description
                 : '',
             phone: currentHotel.phone ? currentHotel.phone : '',
-            website: currentHotel.website ? currentHotel.website : '',
             hotelClass: currentHotel.hotelClass
                 ? currentHotel.hotelClass
                 : null,
@@ -150,7 +149,6 @@ function FormHotel() {
             form.setValue('name', currentHotel.name)
             form.setValue('description', currentHotel.description)
             form.setValue('phone', currentHotel.phone)
-            form.setValue('website', currentHotel.website)
             form.setValue('hotelClass', currentHotel.hotelClass)
             form.setValue('cheapestPrice', currentHotel.cheapestPrice)
             form.setValue('address', currentHotel.address)
@@ -199,7 +197,6 @@ function FormHotel() {
             formData.append('name', data.name)
             formData.append('description', data.description)
             formData.append('phone', data.phone)
-            formData.append('website', data.website)
             formData.append('hotelClass', data.hotelClass)
             formData.append('cheapestPrice', data.cheapestPrice)
             formData.append('address', data.address)
@@ -292,12 +289,26 @@ function FormHotel() {
                                 className="block uppercase text-sm font-bold mb-2"
                                 htmlFor="grid-password"
                             >
-                                {t('descriptionHotel')}
+                                {t('descriptionHotel')} {t('languageEn')}
                             </label>
                             <TextArea
-                                placeholder={t('descriptionHotel')}
+                                placeholder={`${t('descriptionHotel')} ${t('languageEn')}`}
                                 form={form}
                                 name="description"
+                                rows={2}
+                            />
+                        </div>
+                        <div className="relative w-full mb-3">
+                            <label
+                                className="block uppercase text-sm font-bold mb-2"
+                                htmlFor="grid-password"
+                            >
+                                {`${t('descriptionHotel')} ${t('languageVN')}`}
+                            </label>
+                            <TextArea
+                                placeholder={`${t('descriptionHotel')} ${t('languageVN')}`}
+                                form={form}
+                                name="descriptionVN"
                                 rows={2}
                             />
                         </div>

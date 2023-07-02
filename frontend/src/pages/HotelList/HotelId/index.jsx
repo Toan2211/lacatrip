@@ -18,7 +18,7 @@ import SearchForm from './SearchForm'
 import { useTranslation } from 'react-i18next'
 
 function HotelId() {
-    const { t } = useTranslation()
+    const { t, i18n } = useTranslation()
     const dispatch = useDispatch()
     const id = useParams().id
     const currentHotel = useSelector(currentHotelClientSelector)
@@ -30,6 +30,7 @@ function HotelId() {
     useEffect(() => {
         document.title = currentHotel.name
     }, [currentHotel])
+    console.log(i18n.language)
     if (!Object.keys(currentHotel).length) return <LoadingPage />
     return (
         <div className="max-w-[1535px] px-8 py-5 mt-[100px] md:mt-40 md:px-10 lg:mt-16 lg:px-20 mb-[20vh] pb-[100px]">
@@ -146,7 +147,11 @@ function HotelId() {
                                     <span>
                                         <img src={item.image} />
                                     </span>
-                                    <span>{item.name}</span>
+                                    <span>
+                                        {i18n.language === 'vn'
+                                            ? item.name.split('-')[1]
+                                            : item.name.split('-')[0]}
+                                    </span>
                                 </li>
                             ))}
                         </ul>
@@ -164,7 +169,11 @@ function HotelId() {
                                         key={item.id}
                                         className="flex gap-2 items-center"
                                     >
-                                        <span>{item}</span>
+                                        <span>
+                                            {i18n.language === 'vn'
+                                                ? item.split('-')[1]
+                                                : item.split('-')[0]}
+                                        </span>
                                     </li>
                                 ))}
                         </ul>
