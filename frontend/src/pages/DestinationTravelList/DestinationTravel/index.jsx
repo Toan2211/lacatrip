@@ -19,8 +19,10 @@ import GoogleMaps from '@components/GoogleMap'
 import LikeAndShare from '@components/LikeAndShare'
 import Comment from '@pages/Comment'
 import SearchDestinationForm from '../SearchDestinationForm'
+import { useTranslation } from 'react-i18next'
 
 function DestinationTravelClient() {
+    const { t, i18n } = useTranslation()
     const dispatch = useDispatch()
     const id = useParams().id
     const currentDestination = useSelector(
@@ -77,7 +79,13 @@ function DestinationTravelClient() {
                 {currentDestination.name}
             </div>
             <div className="mt-4 lg:pr-20 min-h-[60px]">
-                <span>{currentDestination.description}</span>
+                <span>
+                    {' '}
+                    {i18n.language === 'vn' &&
+                    currentDestination.descriptionVN
+                        ? currentDestination.descriptionVN
+                        : currentDestination.description}
+                </span>
             </div>
             <div className="flex w-full flex-col lg:flex-row">
                 <div className="h-[75vh]  w-full lg:w-[60%] bg-white lg:px-10 lg:pb-10 p-4">
@@ -151,7 +159,7 @@ function DestinationTravelClient() {
             {currentDestination.itineraries.length > 0 && (
                 <div className="mt-20 min-h-[400px]">
                     <header className="font-semibold text-lg mb-5">
-                        Itinerary
+                        {t('itinerary')}
                     </header>
                     <div className="flex flex-col lg:flex-row">
                         <div className="w-full lg:basis-1/3 cursor-pointer">
@@ -171,7 +179,7 @@ function DestinationTravelClient() {
                                 </div>
                                 <div>
                                     <span className="font-semibold text-lg">
-                                        You will get picked up
+                                        {t('itineraryStart')}
                                     </span>
                                 </div>
                             </div>
@@ -200,9 +208,11 @@ function DestinationTravelClient() {
                                                 {itinerary.title}
                                             </span>
                                             <span className="text-sm text-gray-400">
-                                                {
-                                                    itinerary.description
-                                                }
+                                                {i18n.language ===
+                                                    'vn' &&
+                                                itinerary.descriptionVN
+                                                    ? itinerary.descriptionVN
+                                                    : itinerary.description}
                                             </span>
                                         </div>
                                     </div>
@@ -223,8 +233,7 @@ function DestinationTravelClient() {
                                 </div>
                                 <div>
                                     <span className="font-semibold text-lg">
-                                        You will return to the
-                                        starting point
+                                        {t('itineraryEnd')}
                                     </span>
                                 </div>
                             </div>

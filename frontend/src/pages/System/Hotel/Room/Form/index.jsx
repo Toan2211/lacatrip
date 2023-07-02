@@ -67,6 +67,7 @@ function RoomForm({ onClose, open }) {
             // form.setValue('roomNo', currentRoom.roomNo)
             form.setValue('title', currentRoom.title)
             form.setValue('description', currentRoom.description)
+            form.setValue('descriptionVN', currentRoom.descriptionVN)
             form.setValue('price', currentRoom.price)
             form.setValue('originalPrice', currentRoom.originalPrice)
             form.setValue('childrenCount', currentRoom.childrenCount)
@@ -79,6 +80,7 @@ function RoomForm({ onClose, open }) {
             form.setValue('roomNo', '')
             form.setValue('title', '')
             form.setValue('description', '')
+            form.setValue('descriptionVN', '')
             form.setValue('price', '')
             form.setValue('originalPrice', '')
             form.setValue('childrenCount', '')
@@ -94,6 +96,7 @@ function RoomForm({ onClose, open }) {
                 const formData = new FormData()
                 formData.append('title', data.title)
                 formData.append('description', data.description)
+                formData.append('descriptionVN', data.descriptionVN)
                 formData.append('price', data.price)
                 formData.append('originalPrice', data.originalPrice)
                 formData.append('hotelId', currentHotel.id)
@@ -216,7 +219,7 @@ function RoomForm({ onClose, open }) {
                         <TextArea
                             placeholder={`${t('description')} ${t('languageVN')}`}
                             form={form}
-                            name="description"
+                            name="descriptionVN"
                             rows={2}
                         />
                     </div>

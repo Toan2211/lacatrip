@@ -31,6 +31,7 @@ function ItineraryForm({
         defaultValues: {
             title: '',
             description: '',
+            descriptionVN: '',
             address: '',
             longtitude: '',
             latitude: '',
@@ -44,6 +45,7 @@ function ItineraryForm({
         if (!_.isEmpty(data)) {
             form.setValue('title', data.title)
             form.setValue('description', data.description)
+            form.setValue('descriptionVN', data.descriptionVN)
             form.setValue('address', data.address)
             form.setValue('longtitude', data.longtitude)
             form.setValue('latitude', data.latitude)
@@ -59,6 +61,7 @@ function ItineraryForm({
             const formdata = new FormData()
             formdata.append('title', dataSubmit.title)
             formdata.append('description', dataSubmit.description)
+            formdata.append('descriptionVN', dataSubmit.descriptionVN)
             formdata.append('address', dataSubmit.address)
             formdata.append('longtitude', dataSubmit.longtitude)
             formdata.append('latitude', dataSubmit.latitude)
@@ -138,12 +141,23 @@ function ItineraryForm({
             </div>
             <div className="relative w-full mb-3">
                 <label className="block uppercase text-sm font-bold mb-2">
-                    {t('description')}
+                    {t('description') + ' '+ t('languageEn')}
                 </label>
                 <TextArea
-                    placeholder={t('description') + ' ' + t('itinerary').toLowerCase()}
+                    placeholder={t('description') + ' ' + t('itinerary').toLowerCase()+ ' '+ t('languageEn').toLowerCase()}
                     form={form}
                     name="description"
+                    rows={2}
+                />
+            </div>
+            <div className="relative w-full mb-3">
+                <label className="block uppercase text-sm font-bold mb-2">
+                    {t('description') + ' '+ t('languageVN')}
+                </label>
+                <TextArea
+                    placeholder={t('description') + ' ' + t('itinerary').toLowerCase()+ ' '+ t('languageVN').toLowerCase()}
+                    form={form}
+                    name="descriptionVN"
                     rows={2}
                 />
             </div>

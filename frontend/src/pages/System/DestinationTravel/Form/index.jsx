@@ -42,11 +42,11 @@ function DestinationForm() {
     useEffect(() => {
         document.title = _.isEmpty(currentDestination)
             ? `${t('create')} ${t(
-                'destinationTravel'
-            ).toLocaleLowerCase()} ${t('successfully')}`
+                  'destinationTravel'
+              ).toLocaleLowerCase()} ${t('successfully')}`
             : `${t('update')} ${t(
-                'destinationTravel'
-            ).toLocaleLowerCase()} ${t('successfully')}`
+                  'destinationTravel'
+              ).toLocaleLowerCase()} ${t('successfully')}`
         dispatch(getServiceManagers({ limit: 1000 }))
         return () => {
             dispatch(setCurrentDestination({}))
@@ -55,9 +55,9 @@ function DestinationForm() {
     const [images, setImages] = useState(() =>
         currentDestination.images
             ? currentDestination.images.map(image => ({
-                id: image.id,
-                url: image.url
-            }))
+                  id: image.id,
+                  url: image.url
+              }))
             : []
     )
     const [isFirstTime, setIsFirstTime] = useState(true)
@@ -90,6 +90,9 @@ function DestinationForm() {
                 : '',
             description: currentDestination.description
                 ? currentDestination.description
+                : '',
+            descriptionVN: currentDestination.descriptionVN
+                ? currentDestination.descriptionVN
                 : '',
             price: currentDestination.price
                 ? currentDestination.price
@@ -125,6 +128,10 @@ function DestinationForm() {
                 'description',
                 currentDestination.description
             )
+            form.setValue(
+                'descriptionVN',
+                currentDestination.descriptionVN
+            )
             form.setValue('price', currentDestination.price)
             form.setValue(
                 'originalPrice',
@@ -159,6 +166,7 @@ function DestinationForm() {
             const formData = new FormData()
             formData.append('name', data.name)
             formData.append('description', data.description)
+            formData.append('descriptionVN', data.descriptionVN)
             formData.append('price', data.price)
             formData.append('originalPrice', data.originalPrice)
             formData.append('address', data.address)
@@ -190,11 +198,11 @@ function DestinationForm() {
             toast.success(
                 _.isEmpty(currentDestination)
                     ? `${t('create')} ${t(
-                        'destinationTravel'
-                    ).toLocaleLowerCase()} ${t('successfully')}`
+                          'destinationTravel'
+                      ).toLocaleLowerCase()} ${t('successfully')}`
                     : `${t('update')} ${t(
-                        'destinationTravel'
-                    ).toLocaleLowerCase()} ${t('successfully')}`,
+                          'destinationTravel'
+                      ).toLocaleLowerCase()} ${t('successfully')}`,
                 {
                     position: toast.POSITION.BOTTOM_CENTER,
                     autoClose: 1000,
@@ -219,11 +227,11 @@ function DestinationForm() {
                             <h3 className="font-semibold text-lg text-blue-600">
                                 {_.isEmpty(currentDestination)
                                     ? `${t('create')} ${t(
-                                        'destinationTravel'
-                                    ).toLocaleLowerCase()}`
+                                          'destinationTravel'
+                                      ).toLocaleLowerCase()}`
                                     : `${t('update')} ${t(
-                                        'destinationTravel'
-                                    ).toLocaleLowerCase()}`}
+                                          'destinationTravel'
+                                      ).toLocaleLowerCase()}`}
                             </h3>
                         </div>
                     </div>
@@ -260,7 +268,9 @@ function DestinationForm() {
                                     ' ' +
                                     t(
                                         'destinationTravel'
-                                    ).toLowerCase() + ' ' + t('languageEn')
+                                    ).toLowerCase() +
+                                    ' ' +
+                                    t('languageEn')
                                 }
                                 form={form}
                                 name="description"
@@ -281,7 +291,7 @@ function DestinationForm() {
                                     'languageVN'
                                 )}`}
                                 form={form}
-                                name="description"
+                                name="descriptionVN"
                                 rows={2}
                             />
                         </div>

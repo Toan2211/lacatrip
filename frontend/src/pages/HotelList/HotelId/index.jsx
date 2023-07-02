@@ -131,7 +131,12 @@ function HotelId() {
                         <header className="font-semibold text-xl mb-3">
                             {t('descriptionHotel')}
                         </header>
-                        <span>{currentHotel.description}</span>
+                        <span>
+                            {i18n.language === 'vn' &&
+                            currentHotel.descriptionVN
+                                ? currentHotel.descriptionVN
+                                : currentHotel.description}
+                        </span>
                     </div>
                     <div className="border-t-2 border-slate-200 my-4"></div>
                     <div>
