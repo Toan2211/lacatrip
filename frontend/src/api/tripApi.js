@@ -27,6 +27,9 @@ const tripApi = {
     },
     inviteMember(data) {
         return http.post('/trip/invite-member', data)
+    },
+    deleteMember(data) {
+        return http.post('/trip/delete-member', data)
     }
 }
 export default tripApi

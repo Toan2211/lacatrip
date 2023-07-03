@@ -60,6 +60,10 @@ export const inviteMember = createAsyncThunk(
     'trips/inviteMember',
     payloadCreator(tripApi.inviteMember)
 )
+export const deleteMember = createAsyncThunk(
+    'trips/deleteMember',
+    payloadCreator(tripApi.deleteMember)
+)
 const handleUpdateItinerariesFulfilled = (state, action) => {
     state.currentTrip = action.payload.data
 }
@@ -126,6 +130,14 @@ const handleUpdateTripFulfilled = (state, action) => {
     tripsClone.push(action.payload.data)
     state.trips = [...tripsClone]
 }
+const handleDeleteTripMember = (state, action) => {
+    let members = [...state.currentTrip.members]
+    members = members.filter(member => member.id !== action.payload.data)
+    state.currentTrip = {
+        ...state.currentTrip,
+        members: [...members]
+    }
+}
 
 const tripSlice = createSlice({
     name: 'trips',
@@ -157,6 +169,10 @@ const tripSlice = createSlice({
             .addCase(
                 updateItineraries.fulfilled,
                 handleUpdateItinerariesFulfilled
+            )
+            .addCase(
+                deleteMember.fulfilled,
+                handleDeleteTripMember
             )
             .addMatcher(
                 action => action.type.endsWith('/pending'),

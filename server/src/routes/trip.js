@@ -57,5 +57,10 @@ router.post(
     verifyToken,
     controller.inviteToTrip
 )
+router.post(
+    '/delete-member',
+    verifyToken,
+    controller.deleteMember
+)
 
 module.exports = router

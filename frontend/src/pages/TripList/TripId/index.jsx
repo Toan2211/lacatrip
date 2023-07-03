@@ -21,6 +21,7 @@ import { socketSelector } from '@pages/Chat/socket.slice'
 import Chat from '@pages/Chat'
 import { setCurrentOnline } from '@pages/Chat/message.slice'
 import { useTranslation } from 'react-i18next'
+import ListMember from './ListMember'
 var options = {
     weekday: 'long',
     year: 'numeric',
@@ -107,6 +108,10 @@ function TripId() {
     }
     const [showModal, setShowModal] = useState(false)
     const onClose = () => setShowModal(false)
+    const [showModalListMember, setShowModalListMember] =
+        useState(false)
+    const onCloseShowModalListMember = () =>
+        setShowModalListMember(false)
     const [isOpen, setIsOpen] = useState(false)
     const onCloseDrawer = () => setIsOpen(false)
     const onChangeNameTrip = e => setNameTrip(e.target.value)
@@ -250,6 +255,7 @@ function TripId() {
                                     <Tooltip
                                         content={t('editTrip')}
                                         style="light"
+                                        className="w-[160px]"
                                     >
                                         <AiFillSetting />
                                     </Tooltip>
@@ -287,14 +293,21 @@ function TripId() {
                                 </div>
 
                                 <div className="flex gap-5 items-center">
-                                    <div className="flex -space-x-4">
+                                    <div
+                                        className="flex -space-x-4 cursor-pointer"
+                                        onClick={() =>
+                                            setShowModalListMember(
+                                                true
+                                            )
+                                        }
+                                    >
                                         {currentTrip.members.map(
                                             member => (
                                                 <Tooltip
                                                     content={`${member.firstname} ${member.lastname}`}
                                                     style="light"
                                                     key={member.id}
-                                                    className="cursor-pointer"
+                                                    className="cursor-pointer "
                                                 >
                                                     <img
                                                         key={
@@ -303,7 +316,7 @@ function TripId() {
                                                         className="w-10 h-10 border-2 border-white rounded-full dark:border-gray-800"
                                                         src={
                                                             member.avatar ||
-                                                            'https://itin-dev.sfo2.cdn.digitaloceanspaces.com/freeImage/ItdeP0WWcQ6NhVHGPJIPDFtU36du76JG'
+                                                            'https://res.cloudinary.com/djgkj9nli/image/upload/v1681614915/lacatrip/lhwrnxjhgw5uhrvinh6r.jpg'
                                                         }
                                                         alt=""
                                                     />
@@ -314,6 +327,7 @@ function TripId() {
                                     <Tooltip
                                         content={t('addMember')}
                                         style="light"
+                                        className="w-[120px]"
                                     >
                                         <span
                                             className="block w-5 h-5 cursor-pointer"
@@ -508,7 +522,7 @@ function TripId() {
                     </div>
                 </div>
                 <div className="lg:basis-1/3 lg:h-[100vh] hidden lg:fixed lg:w-[66%] lg:right-0 lg:flex">
-                    <div className="flex-1 w-full">
+                    {/* <div className="flex-1 w-full">
                         <GoogleMap
                             center={center}
                             markers={markers}
@@ -518,13 +532,17 @@ function TripId() {
                         <div className="flex-1 lg:h-[90vh] shadow-lg">
                             <Chat />
                         </div>
-                    )}
+                    )} */}
                 </div>
             </div>
             <InviteTripForm
                 showModal={showModal}
                 onClose={onClose}
                 tripId={currentTrip.id}
+            />
+            <ListMember
+                showModal={showModalListMember}
+                onClose={onCloseShowModalListMember}
             />
             <TripOrganize onClose={onCloseDrawer} isOpen={isOpen} />
         </>
