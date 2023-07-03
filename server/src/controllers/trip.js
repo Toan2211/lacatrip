@@ -178,6 +178,30 @@ const inviteToTrip = async (req, res) => {
         return res.status(500).json({ message: error.message })
     }
 }
+const deleteMember = async (req, res) => {
+    try {
+        const trip = await tripservice.findOne(req.body.tripId)
+        if (trip.createdby !== req.user.id)
+            return res.status(403).json({
+                message:
+                    'Forbidden: Only createdby user can delete member'
+            })
+        const result = await tripservice.deleteMember(
+            req.body.tripId,
+            req.body.userId
+        )
+        if (!result)
+            return res.status(401).json({
+                message: 'DELETE MEMBER FAIL'
+            })
+        return res.status(200).json({
+            message: 'DELETE MEMBER SUCCESSFULLY',
+            data: result
+        })
+    } catch (error) {
+        return res.status(500).json({ message: error.message })
+    }
+}
 module.exports = {
     create,
     update,
@@ -186,5 +210,6 @@ module.exports = {
     addInstanceToTripList,
     removeInstanceFromTripList,
     handleUpdateTripDate,
-    inviteToTrip
+    inviteToTrip,
+    deleteMember
 }

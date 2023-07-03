@@ -51,6 +51,9 @@ function App() {
             })
         }
     }, [])
+    useEffect(() => {
+        document.title = 'Lacatrip'
+    }, [])
     return (
         <div>
             {profile.id && socket && <SocketClient />}
