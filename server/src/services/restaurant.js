@@ -44,7 +44,9 @@ const find = async params => {
             limit,
             serviceManagerId,
             provinceId,
-            roleId
+            roleId,
+            minPrice,
+            maxPrice
         } = params
         key = key ? key : ''
         page = page ? +page : 1
@@ -123,6 +125,22 @@ const find = async params => {
                 },
                 public: 1
             }
+        if (minPrice) {
+            whereParams = {
+                ...whereParams,
+                minPrice: {
+                    [Op.gte]: Number(minPrice)
+                }
+            }
+        }
+        if (maxPrice) {
+            whereParams = {
+                ...whereParams,
+                maxPrice: {
+                    [Op.lte]: Number(maxPrice)
+                }
+            }
+        }
         const { count, rows } = await db.Restaurant.findAndCountAll({
             offset: (page - 1) * limit,
             limit: +limit,

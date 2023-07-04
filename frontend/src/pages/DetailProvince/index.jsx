@@ -26,6 +26,7 @@ import {
     RESTAURANTTYPE
 } from '@constants/instanceType'
 import { useTranslation } from 'react-i18next'
+import { formatMoney } from '@utils/formatMoney'
 
 const Card = ({ data, type }) => {
     const { t } = useTranslation()
@@ -73,18 +74,17 @@ const Card = ({ data, type }) => {
             </div>
             {type === HOTELTYPE && (
                 <div className="font-semibold text-sm">
-                    {t('from')} ${data.cheapestPrice}/{t('night')}
+                    {t('from')} {formatMoney(data.cheapestPrice, t('moneyType'))}/{t('night')}
                 </div>
             )}
             {type === RESTAURANTTYPE && (
                 <div className="font-semibold text-sm">
-                    {t('from')} ${data.minPrice} {t('to')} $
-                    {data.maxPrice}
+                    {t('from')} {formatMoney(data.minPrice, t('moneyType'))} {t('to')} {formatMoney(data.maxPrice, t('moneyType'))}
                 </div>
             )}
             {type === DESTINATIONTYPE && (
                 <div className="font-semibold text-sm">
-                    {t('from')} ${data.price} / {t('people')}
+                    {t('from')} {formatMoney(data.price, t('moneyType'))} / {t('people')}
                 </div>
             )}
         </div>

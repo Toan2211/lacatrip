@@ -57,7 +57,7 @@ const findOne = async (req, res) => {
         const destinationTravel =
             await destinationTravelService.findOne(req.params.id)
         if (destinationTravel) {
-            if(!req.user)
+            if (!req.user || req?.user?.role?.id === 4)
                 await destinationTravelService.update(req.params.id, {
                     clickCount: destinationTravel.get({ plain: true }).clickCount + 1
                 })

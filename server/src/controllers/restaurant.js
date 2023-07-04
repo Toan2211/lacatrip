@@ -19,7 +19,7 @@ const findOne = async (req, res) => {
             req.params.id
         )
         if (restaurant) {
-            if (!req.user)
+            if (!req.user || req?.user?.role?.id === 4)
                 await restaurantService.update(req.params.id, {
                     clickCount:
                         restaurant.get({ plain: true }).clickCount + 1

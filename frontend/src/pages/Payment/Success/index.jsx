@@ -7,7 +7,6 @@ import { getDetailNotify } from '@pages/Notification/notification.slice'
 import { useLocation } from 'react-router-dom'
 import { unwrapResult } from '@reduxjs/toolkit'
 import queryString from 'query-string'
-import _ from 'lodash'
 
 const PaymentSuccess = () => {
     const dispatch = useDispatch()

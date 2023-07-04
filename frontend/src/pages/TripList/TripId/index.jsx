@@ -522,7 +522,7 @@ function TripId() {
                     </div>
                 </div>
                 <div className="lg:basis-1/3 lg:h-[100vh] hidden lg:fixed lg:w-[66%] lg:right-0 lg:flex">
-                    {/* <div className="flex-1 w-full">
+                    <div className="flex-1 w-full">
                         <GoogleMap
                             center={center}
                             markers={markers}
@@ -532,7 +532,7 @@ function TripId() {
                         <div className="flex-1 lg:h-[90vh] shadow-lg">
                             <Chat />
                         </div>
-                    )} */}
+                    )}
                 </div>
             </div>
             <InviteTripForm

@@ -101,11 +101,16 @@ const find = async params => {
             limit,
             serviceManagerId,
             provinceId,
-            roleId
+            roleId,
+            minPrice,
+            maxPrice,
+            star
         } = params
         key = key ? key : ''
         page = page ? +page : 1
-        limit = limit ? +limit : 10
+        limit = limit ? +limit : 10,
+        minPrice = minPrice ? +minPrice : 0
+        maxPrice = maxPrice ? +maxPrice : 99999999
         const includeModels = [
             {
                 model: db.AmenitiesHotel,
@@ -158,7 +163,19 @@ const find = async params => {
                 model: db.Province,
                 as: 'province'
             })
-        let whereParams
+        let whereParams = {
+            cheapestPrice: {
+                [Op.between]: [minPrice, maxPrice]
+            }
+        }
+        if (star) {
+            whereParams = {
+                ...whereParams,
+                hotelClass: {
+                    [Op.eq]: Number(star)
+                } 
+            }
+        }
         if (
             +roleId === ADMINID ||
             +roleId === EMPLOYEEID ||
@@ -171,6 +188,7 @@ const find = async params => {
             }
         else
             whereParams = {
+                ...whereParams,
                 name: {
                     [Op.like]: `%${key}%`
                 },
@@ -185,6 +203,7 @@ const find = async params => {
             distinct: true,
             order: [
                 ['commissionPercent', 'DESC'],
+                ['clickCount', 'DESC']
             ]
         })
         return {

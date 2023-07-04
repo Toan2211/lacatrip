@@ -12,7 +12,7 @@ var options = {
 }
 // date.toLocaleDateString('en-US', options)
 function TripOrganizeCard({ dataOfDate, handleUpdateDataOfDate }) {
-    const {t} = useTranslation()
+    const { t } = useTranslation()
     const currentTrip = useSelector(currentTripSelector)
     const [listItemOpen, setListItemOpen] = useState(false)
     const onCloseListItem = () => setListItemOpen(false)

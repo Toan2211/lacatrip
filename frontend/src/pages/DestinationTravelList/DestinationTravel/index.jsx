@@ -6,8 +6,6 @@ import 'swiper/css/effect-fade'
 import 'swiper/css/navigation'
 import 'swiper/css/pagination'
 import { EffectFade, Navigation, Thumbs, Autoplay } from 'swiper'
-import { AiFillStar } from 'react-icons/ai'
-import Mybutton from '@components/MyButton'
 import { useParams } from 'react-router'
 import { useDispatch, useSelector } from 'react-redux'
 import {

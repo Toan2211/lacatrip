@@ -13,7 +13,7 @@ import Sidebar from './Sidebar'
 import { useTranslation } from 'react-i18next'
 
 function RestaurantList() {
-    const { t } = useTranslation()
+    const { t, i18n } = useTranslation()
     const location = useLocation()
     const provinces = useSelector(provincesSelector)
     const [province, setProvince] = useState('')
@@ -26,7 +26,9 @@ function RestaurantList() {
         return {
             page: Number.parseInt(params.page) || 1,
             limit: Number.parseInt(params.limit) || 10,
-            key: params.key || ''
+            key: params.key || '',
+            minPrice: params.minPrice || '',
+            maxPrice: params.maxPrice || ''
         }
     }, [location.search])
     useEffect(() => {
@@ -38,6 +40,12 @@ function RestaurantList() {
         }
     }, [provinceId, provinces])
     useEffect(() => {
+        if (queryParams.minPrice && i18n.language === 'vn') {
+            queryParams.minPrice = queryParams.minPrice /23000
+        }
+        if (queryParams.maxPrice && i18n.language === 'vn') {
+            queryParams.maxPrice = queryParams.maxPrice /23000
+        }
         if (province) {
             dispatch(
                 getRestaurantsClient({
@@ -46,7 +54,7 @@ function RestaurantList() {
                 })
             )
         }
-    }, [provinceId, province, dispatch, queryParams])
+    }, [provinceId, province, dispatch, queryParams, i18n.language])
 
     return (
         <div className="max-w-[1535px] px-8 py-5 md:mt-40 md:px-10 lg:mt-16 lg:px-20 mb-[20vh] pb-[100px] min-h-[200vh]">

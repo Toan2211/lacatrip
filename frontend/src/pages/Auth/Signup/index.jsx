@@ -58,7 +58,6 @@ function Signup() {
     const [dialog, setDialog] = useState(false)
     const handleSubmit = async data => {
         try {
-            console.log(data)
             const res = await dispatch(signup(data))
             unwrapResult(res)
             setDialog(true)

@@ -10,6 +10,7 @@ import queryString from 'query-string'
 import { useNavigate } from 'react-router'
 import { path } from '@constants/path'
 import { useTranslation } from 'react-i18next'
+import { formatMoney } from '@utils/formatMoney'
 
 function SearchDestinationForm() {
     const { t } = useTranslation()
@@ -25,6 +26,7 @@ function SearchDestinationForm() {
         if (people <= 1) return
         setPeople(prev => prev - 1)
     }
+    // eslint-disable-next-line no-unused-vars
     const ExampleCustomDate = forwardRef(({ onClick }, ref) => (
         <div className="" onClick={onClick}>
             <div className="flex flex-col">
@@ -60,7 +62,10 @@ function SearchDestinationForm() {
                         {t('from')}
                     </span>
                     <span className="font-bold text-xl">
-                        ${currentDestination.price}
+                        {formatMoney(
+                            currentDestination.price,
+                            t('moneyType')
+                        )}
                     </span>
                 </div>
                 <div className="flex items-center gap-1">
@@ -130,7 +135,12 @@ function SearchDestinationForm() {
             </div>
             <div className="flex justify-between items-center font-semibold text-2xl mt-5">
                 <span>{t('total')}</span>
-                <span>${currentDestination.price * people}</span>
+                <span>
+                    {formatMoney(
+                        currentDestination.price * people,
+                        t('moneyType')
+                    )}
+                </span>
             </div>
             <div className="text-center mt-4">
                 <Mybutton

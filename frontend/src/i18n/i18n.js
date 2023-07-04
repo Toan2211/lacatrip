@@ -275,7 +275,10 @@ const resources = {
             itineraryEnd: 'You will return to the starting point',
             pleaseSignin: 'PLEASE SIGN IN',
             deleteMember: 'Delete Member',
-            deleteUserSuccessful: 'Delete user successfuly'
+            deleteUserSuccessful: 'Delete user successfuly',
+            moneyType: 'dollar',
+            pleasereturndashboard: 'Please return main dashboard, we not allow change language in this page',
+            money: '$'
         }
     },
     vn: {
@@ -556,7 +559,10 @@ const resources = {
             itineraryEnd: 'Bạn sẽ được trả về điểm xuất phát',
             pleaseSignin: 'Vui lòng đăng nhập để thực hiện',
             deleteMember: 'Xoá thành viên',
-            deleteUserSuccessful: 'Xoá thành viên thành công'
+            deleteUserSuccessful: 'Xoá thành viên thành công',
+            moneyType: 'vi',
+            pleasereturndashboard: 'Hãy trở về trang chính sau đó thay đổi ngôn ngữ, chúng tôi không cho phép tại trang này',
+            money: 'VNĐ'
         }
     }
 }
