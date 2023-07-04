@@ -9,7 +9,6 @@ import Mybutton from '@components/MyButton'
 import * as yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { toast } from 'react-toastify'
-import { getServiceManagers } from '@pages/System/ServiceManagers/servicemanager.slice'
 import MySelect from '@components/MySelect'
 import { unwrapResult } from '@reduxjs/toolkit'
 import _ from 'lodash'
@@ -27,7 +26,7 @@ import {
 import { selectUser } from '@pages/Auth/auth.slice'
 import { useTranslation } from 'react-i18next'
 function DestinationForm() {
-    const { t } = useTranslation()
+    const { t, i18n } = useTranslation()
     const dispatch = useDispatch()
     const profile = useSelector(selectUser)
 
@@ -42,22 +41,23 @@ function DestinationForm() {
     useEffect(() => {
         document.title = _.isEmpty(currentDestination)
             ? `${t('create')} ${t(
-                  'destinationTravel'
-              ).toLocaleLowerCase()} ${t('successfully')}`
+                'destinationTravel'
+            ).toLocaleLowerCase()} ${t('successfully')}`
             : `${t('update')} ${t(
-                  'destinationTravel'
-              ).toLocaleLowerCase()} ${t('successfully')}`
-        dispatch(getServiceManagers({ limit: 1000 }))
+                'destinationTravel'
+            ).toLocaleLowerCase()} ${t('successfully')}`
+    }, [dispatch, currentDestination, t])
+    useEffect(() => {
         return () => {
             dispatch(setCurrentDestination({}))
         }
-    }, [dispatch, currentDestination, t])
+    }, [dispatch])
     const [images, setImages] = useState(() =>
         currentDestination.images
             ? currentDestination.images.map(image => ({
-                  id: image.id,
-                  url: image.url
-              }))
+                id: image.id,
+                url: image.url
+            }))
             : []
     )
     const [isFirstTime, setIsFirstTime] = useState(true)
@@ -132,10 +132,17 @@ function DestinationForm() {
                 'descriptionVN',
                 currentDestination.descriptionVN
             )
-            form.setValue('price', currentDestination.price)
+            form.setValue(
+                'price',
+                i18n.language === 'vn'
+                    ? currentDestination.price * 23000
+                    : currentDestination.price
+            )
             form.setValue(
                 'originalPrice',
-                currentDestination.originalPrice
+                i18n.language === 'vn'
+                    ? currentDestination.originalPrice * 23000
+                    : currentDestination.originalPrice
             )
             form.setValue('address', currentDestination.address)
             form.setValue('longtitude', currentDestination.longtitude)
@@ -156,7 +163,7 @@ function DestinationForm() {
                 }))
             )
         }
-    }, [form, currentDestination, profile])
+    }, [form, currentDestination, profile, i18n.language])
     const handleOnChangeImage = data => {
         setImages(data)
     }
@@ -167,8 +174,8 @@ function DestinationForm() {
             formData.append('name', data.name)
             formData.append('description', data.description)
             formData.append('descriptionVN', data.descriptionVN)
-            formData.append('price', data.price)
-            formData.append('originalPrice', data.originalPrice)
+            formData.append('price', i18n.language ==='vn' ? data.price/23000 : data.price)
+            formData.append('originalPrice', i18n.language ==='vn' ? data.originalPrice/23000 : data.originalPrice)
             formData.append('address', data.address)
             formData.append('longtitude', data.longtitude)
             formData.append('latitude', data.latitude)
@@ -198,11 +205,11 @@ function DestinationForm() {
             toast.success(
                 _.isEmpty(currentDestination)
                     ? `${t('create')} ${t(
-                          'destinationTravel'
-                      ).toLocaleLowerCase()} ${t('successfully')}`
+                        'destinationTravel'
+                    ).toLocaleLowerCase()} ${t('successfully')}`
                     : `${t('update')} ${t(
-                          'destinationTravel'
-                      ).toLocaleLowerCase()} ${t('successfully')}`,
+                        'destinationTravel'
+                    ).toLocaleLowerCase()} ${t('successfully')}`,
                 {
                     position: toast.POSITION.BOTTOM_CENTER,
                     autoClose: 1000,
@@ -227,11 +234,11 @@ function DestinationForm() {
                             <h3 className="font-semibold text-lg text-blue-600">
                                 {_.isEmpty(currentDestination)
                                     ? `${t('create')} ${t(
-                                          'destinationTravel'
-                                      ).toLocaleLowerCase()}`
+                                        'destinationTravel'
+                                    ).toLocaleLowerCase()}`
                                     : `${t('update')} ${t(
-                                          'destinationTravel'
-                                      ).toLocaleLowerCase()}`}
+                                        'destinationTravel'
+                                    ).toLocaleLowerCase()}`}
                             </h3>
                         </div>
                     </div>
@@ -300,7 +307,7 @@ function DestinationForm() {
                                 className="block uppercase text-sm font-bold mb-2"
                                 htmlFor="grid-password"
                             >
-                                {t('originalPrice')} ($)
+                                {t('originalPrice')}  ({t('money')})
                             </label>
                             <InputField
                                 placeholder={t('originalPrice')}
@@ -315,7 +322,7 @@ function DestinationForm() {
                                 className="block uppercase text-sm font-bold mb-2"
                                 htmlFor="grid-password"
                             >
-                                {t('price')} ($)
+                                {t('price')}  ({t('money')})
                             </label>
                             <InputField
                                 placeholder={t('price')}

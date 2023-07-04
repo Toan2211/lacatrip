@@ -27,5 +27,5 @@ const revenueSlice = createSlice({
     }
 })
 export const revenuesSelector = state => state.revenues.revenues
-const { actions, reducer } = revenueSlice
+const { reducer } = revenueSlice
 export default reducer

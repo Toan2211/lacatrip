@@ -13,7 +13,7 @@ import Sidebar from './Sidebar'
 import { useTranslation } from 'react-i18next'
 
 function DestinationList() {
-    const { t } = useTranslation()
+    const { t, i18n } = useTranslation()
     const location = useLocation()
     const provinces = useSelector(provincesSelector)
     const [province, setProvince] = useState('')
@@ -39,6 +39,12 @@ function DestinationList() {
         }
     }, [provinceId, provinces])
     useEffect(() => {
+        if (queryParams.minPrice && i18n.language === 'vn') {
+            queryParams.minPrice = queryParams.minPrice /23000
+        }
+        if (queryParams.maxPrice && i18n.language === 'vn') {
+            queryParams.maxPrice = queryParams.maxPrice /23000
+        }
         if (province) {
             dispatch(
                 getDestinations({
@@ -47,7 +53,7 @@ function DestinationList() {
                 })
             )
         }
-    }, [provinceId, province, dispatch, queryParams])
+    }, [provinceId, province, dispatch, queryParams, i18n.language])
     return (
         <div className="max-w-[1535px] px-8 py-5 md:mt-40 md:px-10 lg:mt-16 lg:px-20 mb-[20vh] pb-[100px] min-h-[200vh]">
             <div className="flex items-center h-[330px] pb-4 relative">

@@ -4,6 +4,7 @@ import React from 'react'
 import { AiFillStar } from 'react-icons/ai'
 import { NavLink } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
+import { formatMoney } from '@utils/formatMoney'
 
 function HotelCard({ data }) {
     const { t } = useTranslation()
@@ -53,7 +54,7 @@ function HotelCard({ data }) {
                             {t('from')}:{' '}
                         </span>
                         <span className="font-bold">
-                            ${data.cheapestPrice}
+                            {formatMoney(data.cheapestPrice, t('moneyType'))}
                         </span>
                     </div>
                 </div>

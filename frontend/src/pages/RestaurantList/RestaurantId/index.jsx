@@ -12,6 +12,7 @@ import GoogleMap from '@components/GoogleMap'
 import LikeAndShare from '@components/LikeAndShare'
 import Comment from '@pages/Comment'
 import { useTranslation } from 'react-i18next'
+import { formatMoney } from '@utils/formatMoney'
 function RestaurantId() {
     const { t, i18n } = useTranslation()
     const dispatch = useDispatch()
@@ -134,8 +135,15 @@ function RestaurantId() {
                             {t('priceRange')}
                         </span>
                         <span className="flex flex-col">
-                            ${currentRestaurant.minPrice} - $
-                            {currentRestaurant.maxPrice}
+                            {formatMoney(
+                                currentRestaurant.minPrice,
+                                t('moneyType')
+                            )}{' '}
+                            -{' '}
+                            {formatMoney(
+                                currentRestaurant.maxPrice,
+                                t('moneyType')
+                            )}
                         </span>
                     </span>
                     <span className="flex flex-col text-sm mb-2">

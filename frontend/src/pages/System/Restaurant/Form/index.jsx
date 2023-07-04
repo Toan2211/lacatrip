@@ -13,7 +13,6 @@ import * as yup from 'yup'
 import { phoneRegExp } from '@constants/regex'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { toast } from 'react-toastify'
-import { getServiceManagers } from '@pages/System/ServiceManagers/servicemanager.slice'
 import MySelect from '@components/MySelect'
 import { unwrapResult } from '@reduxjs/toolkit'
 import _ from 'lodash'
@@ -33,7 +32,7 @@ import { specialDietsRestaurant } from '@constants/specialDietsRestaurant'
 import { selectUser } from '@pages/Auth/auth.slice'
 import { useTranslation } from 'react-i18next'
 function RestaurantForm() {
-    const { t } = useTranslation()
+    const { t, i18n } = useTranslation()
     const dispatch = useDispatch()
     const profile = useSelector(selectUser)
     const currentRestaurant = useSelector(currentRestauRantSelector)
@@ -44,37 +43,38 @@ function RestaurantForm() {
     const [images, setImages] = useState(() =>
         currentRestaurant.images
             ? currentRestaurant.images.map(image => ({
-                  id: image.id,
-                  url: image.url
-              }))
+                id: image.id,
+                url: image.url
+            }))
             : []
     )
     const [cusines, setCusines] = useState(() =>
         currentRestaurant.cusines
             ? currentRestaurant.cusines
-                  .split(',')
-                  .map(item => ({ value: item, label: item }))
+                .split(',')
+                .map(item => ({ value: item, label: item }))
             : []
     )
     const [specialDiets, setSpecialDiets] = useState(() =>
         currentRestaurant.specialDiets
             ? currentRestaurant.specialDiets
-                  .split(',')
-                  .map(item => ({ value: item, label: item }))
+                .split(',')
+                .map(item => ({ value: item, label: item }))
             : []
     )
     useEffect(() => {
         if (id && !currentRestaurant.id)
             dispatch(getRestaurantDetail(id))
+    }, [id, currentRestaurant, dispatch])
+    useEffect(() => {
         return () => {
             dispatch(setCurrentRestaurant({}))
         }
-    }, [id, currentRestaurant, dispatch])
+    }, [dispatch])
     useEffect(() => {
         document.title = _.isEmpty(currentRestaurant)
             ? `${t('create')} ${t('restaurant').toLocaleLowerCase()}`
             : `${t('update')} ${t('restaurant').toLocaleLowerCase()}`
-        dispatch(getServiceManagers({ limit: 1000 }))
     }, [dispatch, t, currentRestaurant])
     const [isFirstTime, setIsFirstTime] = useState(true)
     const schema = yup.object().shape({
@@ -165,8 +165,8 @@ function RestaurantForm() {
                 currentRestaurant.serviceManagerId
             )
             form.setValue('provinceId', currentRestaurant.provinceId)
-            form.setValue('minPrice', currentRestaurant.minPrice)
-            form.setValue('maxPrice', currentRestaurant.maxPrice)
+            form.setValue('minPrice', i18n.language === 'vn' ? currentRestaurant.minPrice*23000 : currentRestaurant.minPrice)
+            form.setValue('maxPrice', i18n.language === 'vn' ? currentRestaurant.maxPrice*23000 : currentRestaurant.maxPrice)
             setImages(
                 currentRestaurant.images.map(image => ({
                     id: image.id,
@@ -184,12 +184,11 @@ function RestaurantForm() {
                     .map(item => ({ value: item, label: item }))
             )
         }
-    }, [form, currentRestaurant])
+    }, [form, currentRestaurant, i18n.language])
     const handleOnChangeImage = data => {
         setImages(data)
     }
     const handleButtonForm = async data => {
-        console.log(data)
         try {
             if (!images.length) return
             const formData = new FormData()
@@ -205,8 +204,8 @@ function RestaurantForm() {
                 profile.serviceManagerId
             )
             formData.append('provinceId', data.provinceId)
-            formData.append('minPrice', data.minPrice)
-            formData.append('maxPrice', data.maxPrice)
+            formData.append('minPrice', i18n.language === 'vn' ? data.minPrice/23000 : data.minPrice )
+            formData.append('maxPrice', i18n.language === 'vn' ? data.maxPrice/23000 : data.maxPrice)
             formData.append(
                 'cusines',
                 cusines.map(cusine => cusine.value).toString()
@@ -234,11 +233,11 @@ function RestaurantForm() {
             toast.success(
                 _.isEmpty(currentRestaurant)
                     ? `${t('create')} ${t(
-                          'restaurant'
-                      ).toLocaleLowerCase()} ${t('successfully')}`
+                        'restaurant'
+                    ).toLocaleLowerCase()} ${t('successfully')}`
                     : `${t('update')} ${t(
-                          'restaurant'
-                      ).toLocaleLowerCase()} ${t('successfully')}`,
+                        'restaurant'
+                    ).toLocaleLowerCase()} ${t('successfully')}`,
                 {
                     position: toast.POSITION.BOTTOM_CENTER,
                     autoClose: 1000,
@@ -263,11 +262,11 @@ function RestaurantForm() {
                             <h3 className="font-semibold text-lg text-blue-600">
                                 {_.isEmpty(currentRestaurant)
                                     ? `${t('create')} ${t(
-                                          'restaurant'
-                                      ).toLocaleLowerCase()}`
+                                        'restaurant'
+                                    ).toLocaleLowerCase()}`
                                     : `${t('update')} ${t(
-                                          'restaurant'
-                                      ).toLocaleLowerCase()}`}
+                                        'restaurant'
+                                    ).toLocaleLowerCase()}`}
                             </h3>
                         </div>
                     </div>
@@ -416,17 +415,17 @@ function RestaurantForm() {
                             />
                             {specialDiets.length === 0 &&
                                 !isFirstTime && (
-                                    <span className="text-[14px] text-red-500 pl-2 mt-1">
-                                        {t('requiredSpecialDiets')}
-                                    </span>
-                                )}
+                                <span className="text-[14px] text-red-500 pl-2 mt-1">
+                                    {t('requiredSpecialDiets')}
+                                </span>
+                            )}
                         </div>
                         <div className="relative w-full mb-3">
                             <label
                                 className="block uppercase text-sm font-bold mb-2"
                                 htmlFor="grid-password"
                             >
-                                {t('minPrice')}
+                                {t('minPrice')} ({t('money')})
                             </label>
                             <InputField
                                 placeholder={t('minPrice')}
@@ -440,7 +439,7 @@ function RestaurantForm() {
                                 className="block uppercase text-sm font-bold mb-2"
                                 htmlFor="grid-password"
                             >
-                                {t('maxPrice')}
+                                {t('maxPrice')} ({t('money')})
                             </label>
                             <InputField
                                 placeholder={t('maxPrice')}

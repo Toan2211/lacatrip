@@ -10,6 +10,7 @@ import { Pagination } from 'swiper'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import { AiFillStar } from 'react-icons/ai'
 import { useTranslation } from 'react-i18next'
+import { formatMoney } from '@utils/formatMoney'
 
 function ItemListInstance({ item, type }) {
     const { t, i18n } = useTranslation()
@@ -80,7 +81,10 @@ function ItemListInstance({ item, type }) {
                                 {type === DESTINATIONTYPE && (
                                     <>
                                         <div className=" font-semibold text-xl">
-                                            ${item.price}
+                                            {formatMoney(
+                                                item.price,
+                                                t('moneyType')
+                                            )}
                                         </div>
                                         <div className="text-sm text-gray-500">
                                             / {t('people')}
@@ -90,7 +94,10 @@ function ItemListInstance({ item, type }) {
                                 {type === HOTELTYPE && (
                                     <>
                                         <div className=" font-semibold text-xl">
-                                            ${item.cheapestPrice}
+                                            {formatMoney(
+                                                item.cheapestPrice,
+                                                t('moneyType')
+                                            )}
                                         </div>
                                         <div className="text-sm text-gray-500">
                                             / {t('room')}
@@ -100,13 +107,19 @@ function ItemListInstance({ item, type }) {
                                 {type === RESTAURANTTYPE && (
                                     <>
                                         <div className=" font-semibold text-xl">
-                                            ${item.minPrice}
+                                            {formatMoney(
+                                                item.minPrice,
+                                                t('moneyType')
+                                            )}
                                         </div>
                                         <div className="text-sm text-gray-500">
                                             {t('to')}
                                         </div>
                                         <div className=" font-semibold text-xl">
-                                            ${item.maxPrice}
+                                            {formatMoney(
+                                                item.maxPrice,
+                                                t('moneyType')
+                                            )}
                                         </div>
                                         <div className=" text-sm text-gray-500">
                                             / {t('dish')}

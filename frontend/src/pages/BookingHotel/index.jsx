@@ -16,6 +16,7 @@ import { createBookingHotel } from './bookinghotelclient.slice'
 import { unwrapResult } from '@reduxjs/toolkit'
 import { getLengthDay } from '@utils/getDates'
 import { useTranslation } from 'react-i18next'
+import { formatMoney } from '@utils/formatMoney'
 
 function BookingHotel() {
     const { t } = useTranslation()
@@ -241,7 +242,10 @@ function BookingHotel() {
                                 {t('price')}/ {t('night')}
                             </div>
                             <div className="font-bold text-lg">
-                                {currentRoom.price}
+                                {formatMoney(
+                                    currentRoom.price,
+                                    t('moneyType')
+                                )}
                             </div>
                         </div>
                         <div className="flex justify-between">
@@ -260,15 +264,17 @@ function BookingHotel() {
                                 {t('totalPrice')}
                             </div>
                             <div className="font-bold text-lg">
-                                $
-                                {currentRoom.price *
-                                    Number.parseInt(
-                                        queryParams.countRooms
-                                    ) *
-                                    getLengthDay(
-                                        queryParams.checkIn,
-                                        queryParams.checkOut
-                                    )}
+                                {formatMoney(
+                                    currentRoom.price *
+                                        Number.parseInt(
+                                            queryParams.countRooms
+                                        ) *
+                                        getLengthDay(
+                                            queryParams.checkIn,
+                                            queryParams.checkOut
+                                        ),
+                                    t('moneyType')
+                                )}
                             </div>
                         </div>
                     </div>

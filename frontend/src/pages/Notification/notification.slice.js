@@ -71,5 +71,5 @@ export const countNotReadedSelector = state =>
     state.notifications.countNotReaded
 export const notificationPaginationSelector = state =>
     state.notifications.pagination
-const { actions, reducer } = notificationSlice
+const { reducer } = notificationSlice
 export default reducer

@@ -33,5 +33,5 @@ export const bookingHotelListPaginationSelector = state =>
     state.bookingHotels.pagination
 export const bookingHotelLoadingSelector = state =>
     state.bookingHotels.loading
-const { actions, reducer } = bookingHotelSlice
+const { reducer } = bookingHotelSlice
 export default reducer

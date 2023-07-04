@@ -66,7 +66,7 @@ const findOne = async (req, res) => {
             req.query
         )
         if (hotel) {
-            if (!req.user)
+            if (!req.user || req?.user?.role?.id === 4)
                 await hotelService.update(req.params.id, {
                     clickCount: hotel.clickCount + 1
                 })

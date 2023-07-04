@@ -12,8 +12,11 @@ import { Autoplay, Pagination } from 'swiper'
 import { SwiperSlide, Swiper } from 'swiper/react'
 import { createBookingDestinationTravel } from './bookingdestinationtravel.slice'
 import { unwrapResult } from '@reduxjs/toolkit'
+import { formatMoney } from '@utils/formatMoney'
+import { useTranslation } from 'react-i18next'
 
 function BookingDestinationTravel() {
+    const { t } = useTranslation()
     const location = useLocation()
     const dispatch = useDispatch()
     const currentDestiantionTravel = useSelector(
@@ -39,12 +42,12 @@ function BookingDestinationTravel() {
                 serviceManagerId:
                     currentDestiantionTravel.serviceManagerId
             }
-            await dispatch(createBookingDestinationTravel(dataBooking)).then(
-                res => {
-                    const data = unwrapResult(res)
-                    window.location.replace(data.linkPayment)
-                }
-            )
+            await dispatch(
+                createBookingDestinationTravel(dataBooking)
+            ).then(res => {
+                const data = unwrapResult(res)
+                window.location.replace(data.linkPayment)
+            })
         } catch (error) {
             alert(error.message)
         }
@@ -63,7 +66,7 @@ function BookingDestinationTravel() {
         <div className="max-w-[1535px] px-8 py-5 mt-[100px] md:mt-40 md:px-10 lg:mt-16 lg:px-20 pb-[100px] bg-slate-50">
             <div className="w-[40%] mx-auto bg-white">
                 <header className=" font-bold text-2xl pb-5 bg-slate-50">
-                    Your booking
+                    {t('yourBooking')}
                 </header>
                 <div className="px-5 py-8 border rounded-md border-gray-300 shadow-md">
                     <div className=" border-b border-slate-300 pb-5">
@@ -111,11 +114,11 @@ function BookingDestinationTravel() {
                     </div>
                     <div className="mt-5 border-b border-slate-300 pb-5">
                         <div className=" font-bold text-xl">
-                            Your trip
+                            {t('yourBooking')}
                         </div>
                         <div className="flex justify-between">
                             <div className=" text-gray-500 text-lg">
-                                Date
+                                {t('date')}
                             </div>
                             <div className="font-semibold">
                                 {queryParams.date}
@@ -123,33 +126,38 @@ function BookingDestinationTravel() {
                         </div>
                         <div className="flex justify-between">
                             <div className=" text-gray-500 text-lg">
-                                People
+                                {t('people')}
                             </div>
                             <div>{queryParams.countPeople}</div>
                         </div>
                     </div>
                     <div className="mt-5">
                         <div className=" font-semibold text-xl">
-                            Price
+                            {t('price')}
                         </div>
                         <div className="flex justify-between">
                             <div className=" text-gray-500 text-lg">
-                                Price per night
+                                {t('price')}/ {t('people')}
                             </div>
                             <div className="font-bold text-lg">
-                                {currentDestiantionTravel.price}
+                                {formatMoney(
+                                    currentDestiantionTravel.price,
+                                    t('moneyType')
+                                )}
                             </div>
                         </div>
                         <div className="flex justify-between">
                             <div className=" text-gray-500 text-lg">
-                                Total Price
+                                {t('totalPrice')}
                             </div>
                             <div className="font-bold text-lg">
-                                $
-                                {currentDestiantionTravel.price *
-                                    Number.parseInt(
-                                        queryParams.countPeople
-                                    )}
+                                {formatMoney(
+                                    currentDestiantionTravel.price *
+                                        Number.parseInt(
+                                            queryParams.countPeople
+                                        ),
+                                    t('moneyType')
+                                )}
                             </div>
                         </div>
                     </div>
@@ -158,7 +166,7 @@ function BookingDestinationTravel() {
                             onClick={() => handleBooking()}
                             className="w-[40%] bg-blue-500 text-white active:bg-blue-800 text-sm font-bold uppercase px-4 py-2 rounded-full shadow hover:shadow-lg outline-none focus:outline-none mb-1 ease-linear transition-all duration-150"
                         >
-                            Banking Now
+                            {t('bookNow')}
                         </button>
                     </div>
                 </div>
