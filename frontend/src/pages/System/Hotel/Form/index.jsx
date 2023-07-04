@@ -15,7 +15,6 @@ import * as yup from 'yup'
 import { phoneRegExp } from '@constants/regex'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { toast } from 'react-toastify'
-import { getServiceManagers } from '@pages/System/ServiceManagers/servicemanager.slice'
 import MySelect from '@components/MySelect'
 import {
     createHotel,
@@ -34,7 +33,7 @@ import { selectUser } from '@pages/Auth/auth.slice'
 import ROLE from '@constants/ROLE'
 import { useTranslation } from 'react-i18next'
 function FormHotel() {
-    const { t } = useTranslation()
+    const { t, i18n } = useTranslation()
     const dispatch = useDispatch()
     const profile = useSelector(selectUser)
     const amenitiesHotel = useSelector(amenitiesHotelSelector)
@@ -48,34 +47,33 @@ function FormHotel() {
         document.title = _.isEmpty(currentHotel)
             ? t('create') + ' ' + t('hotel')
             : t('update') + ' ' + t('hotel')
+    }, [id, currentHotel, dispatch, t])
+    useEffect(() => {
         return () => {
             dispatch(setCurrentHotel({}))
         }
-    }, [id, currentHotel, dispatch, t])
-    useEffect(() => {
-        dispatch(getServiceManagers({ limit: 1000 }))
     }, [dispatch])
     const [amenityIds, setAmenityIds] = useState(() =>
         currentHotel.amenitieshotel
             ? currentHotel.amenitieshotel.map(item => ({
-                  value: item.id,
-                  label: item.name
-              }))
+                value: item.id,
+                label: item.name
+            }))
             : []
     )
     const [hotelStyles, setHotelStyles] = useState(() =>
         currentHotel.hotelStyle
             ? currentHotel.hotelStyle
-                  .split(',')
-                  .map(item => ({ value: item, label: item }))
+                .split(',')
+                .map(item => ({ value: item, label: item }))
             : []
     )
     const [images, setImages] = useState(() =>
         currentHotel.images
             ? currentHotel.images.map(image => ({
-                  id: image.id,
-                  url: image.url
-              }))
+                id: image.id,
+                url: image.url
+            }))
             : []
     )
     const [isFirstTime, setIsFirstTime] = useState(true)
@@ -154,7 +152,7 @@ function FormHotel() {
             form.setValue('descriptionVN', currentHotel.descriptionVN)
             form.setValue('phone', currentHotel.phone)
             form.setValue('hotelClass', currentHotel.hotelClass)
-            form.setValue('cheapestPrice', currentHotel.cheapestPrice)
+            form.setValue('cheapestPrice', i18n.language === 'vn' ? currentHotel.cheapestPrice*23000 : currentHotel.cheapestPrice)
             form.setValue('address', currentHotel.address)
             form.setValue('longtitude', currentHotel.longtitude)
             form.setValue('latitude', currentHotel.latitude)
@@ -185,7 +183,7 @@ function FormHotel() {
                     .map(item => ({ value: item, label: item }))
             )
         }
-    }, [form, currentHotel, profile])
+    }, [form, currentHotel, profile, i18n.language])
     const handleOnChangeImage = data => {
         setImages(data)
     }
@@ -203,7 +201,8 @@ function FormHotel() {
             formData.append('descriptionVN', data.descriptionVN)
             formData.append('phone', data.phone)
             formData.append('hotelClass', data.hotelClass)
-            formData.append('cheapestPrice', data.cheapestPrice)
+
+            formData.append('cheapestPrice', i18n.language==='vn' ? data.cheapestPrice/23000 : data.cheapestPrice)
             formData.append('address', data.address)
             formData.append('longtitude', data.longtitude)
             formData.append('latitude', data.latitude)
@@ -240,11 +239,11 @@ function FormHotel() {
             toast.success(
                 _.isEmpty(currentHotel)
                     ? `${t('create')} ${t('hotel').toLowerCase()} ${t(
-                          'successfully'
-                      )}`
+                        'successfully'
+                    )}`
                     : `${t('update')} ${t('hotel').toLowerCase()} ${t(
-                          'successfully'
-                      )}`,
+                        'successfully'
+                    )}`,
                 {
                     position: toast.POSITION.BOTTOM_CENTER,
                     autoClose: 1000,
@@ -392,17 +391,17 @@ function FormHotel() {
                             />
                             {hotelStyles.length === 0 &&
                                 !isFirstTime && (
-                                    <span className="text-[14px] text-red-500 pl-2 mt-1">
-                                        {t('requiredHotelStyle')}
-                                    </span>
-                                )}
+                                <span className="text-[14px] text-red-500 pl-2 mt-1">
+                                    {t('requiredHotelStyle')}
+                                </span>
+                            )}
                         </div>
                         <div className="relative w-full mb-3">
                             <label
                                 className="block uppercase text-sm font-bold mb-2"
                                 htmlFor="grid-password"
                             >
-                                {t('startPrice')}
+                                {t('startPrice')} ({t('money')})
                             </label>
                             <InputField
                                 placeholder={t(
@@ -447,10 +446,10 @@ function FormHotel() {
                             />
                             {amenityIds.length === 0 &&
                                 !isFirstTime && (
-                                    <span className="text-[14px] text-red-500 pl-2 mt-1">
-                                        {t('requiredAmenities')}
-                                    </span>
-                                )}
+                                <span className="text-[14px] text-red-500 pl-2 mt-1">
+                                    {t('requiredAmenities')}
+                                </span>
+                            )}
                         </div>
                         <div className="relative w-full mb-2">
                             <label

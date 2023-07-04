@@ -20,7 +20,7 @@ import OnePhotoUpload from '@components/OnePhotoUpload'
 import { useTranslation } from 'react-i18next'
 // eslint-disable-next-line no-useless-escape
 function RoomForm({ onClose, open }) {
-    const { t } = useTranslation()
+    const { t, i18n } = useTranslation()
     const currentHotel = useSelector(currentHotelSelector)
     const currentRoom = useSelector(currentRoomSelector)
     const dispatch = useDispatch()
@@ -68,8 +68,8 @@ function RoomForm({ onClose, open }) {
             form.setValue('title', currentRoom.title)
             form.setValue('description', currentRoom.description)
             form.setValue('descriptionVN', currentRoom.descriptionVN)
-            form.setValue('price', currentRoom.price)
-            form.setValue('originalPrice', currentRoom.originalPrice)
+            form.setValue('price', i18n.language === 'vn' ? currentRoom.price*23000 : currentRoom.price)
+            form.setValue('originalPrice', i18n.language === 'vn' ? currentRoom.originalPrice*23000 : currentRoom.originalPrice)
             form.setValue('childrenCount', currentRoom.childrenCount)
             form.setValue('adultCount', currentRoom.adultCount)
             form.setValue('bedCount', currentRoom.bedCount)
@@ -89,7 +89,7 @@ function RoomForm({ onClose, open }) {
             form.setValue('area', '')
             // form.setValue('image', '')
         }
-    }, [currentRoom, form, dispatch])
+    }, [currentRoom, form, dispatch, i18n.language])
     const handleSubmit = async data => {
         try {
             if (currentHotel) {
@@ -97,8 +97,8 @@ function RoomForm({ onClose, open }) {
                 formData.append('title', data.title)
                 formData.append('description', data.description)
                 formData.append('descriptionVN', data.descriptionVN)
-                formData.append('price', data.price)
-                formData.append('originalPrice', data.originalPrice)
+                formData.append('price', i18n.language === 'vn' ? data.price/23000 : data.price)
+                formData.append('originalPrice', i18n.language === 'vn' ? data.originalPrice/23000 : data.originalPrice)
                 formData.append('hotelId', currentHotel.id)
                 formData.append('childrenCount', data.childrenCount)
                 formData.append('adultCount', data.adultCount)
@@ -229,7 +229,7 @@ function RoomForm({ onClose, open }) {
                                 className="block uppercase text-xs font-bold mb-2"
                                 htmlFor="grid-password"
                             >
-                                {t('price')}
+                                {t('price')} ({t('money')})
                             </label>
                             <InputField
                                 placeholder={t('price')}
@@ -243,7 +243,7 @@ function RoomForm({ onClose, open }) {
                                 className="block uppercase text-xs font-bold mb-2"
                                 htmlFor="grid-password"
                             >
-                                {t('originalPrice')}
+                                {t('originalPrice')} ({t('money')})
                             </label>
                             <InputField
                                 placeholder={t('originalPrice')}

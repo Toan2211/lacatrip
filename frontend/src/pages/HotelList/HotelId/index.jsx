@@ -30,7 +30,6 @@ function HotelId() {
     useEffect(() => {
         document.title = currentHotel.name
     }, [currentHotel])
-    console.log(i18n.language)
     if (!Object.keys(currentHotel).length) return <LoadingPage />
     return (
         <div className="max-w-[1535px] px-8 py-5 mt-[100px] md:mt-40 md:px-10 lg:mt-16 lg:px-20 mb-[20vh] pb-[100px]">

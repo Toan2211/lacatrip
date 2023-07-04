@@ -7,6 +7,7 @@ import { MdChildCare } from 'react-icons/md'
 import { Link } from 'react-router-dom'
 import _ from 'lodash'
 import { useTranslation } from 'react-i18next'
+import { formatMoney } from '@utils/formatMoney'
 
 function RoomCard({ data }) {
     const { t } = useTranslation()
@@ -45,7 +46,10 @@ function RoomCard({ data }) {
                 <ul className="mt-2 flex gap-2 mx-auto">
                     <li className="text-center">
                         <span className="border-[1px] border-slate-200 p-2 w-10 flex justify-center items-center rounded-lg">
-                            <Tooltip content={t('area')} style="light">
+                            <Tooltip
+                                content={t('area')}
+                                style="light"
+                            >
                                 <BiArea />
                             </Tooltip>
                         </span>
@@ -53,7 +57,7 @@ function RoomCard({ data }) {
                     </li>
                     <li className="text-center">
                         <span className="border-[1px] border-slate-200 p-2 w-10 flex justify-center items-center rounded-lg">
-                            <Tooltip content={t('bed')}style="light">
+                            <Tooltip content={t('bed')} style="light">
                                 <BiBed />
                             </Tooltip>
                         </span>
@@ -63,7 +67,10 @@ function RoomCard({ data }) {
                     </li>
                     <li className="text-center">
                         <span className="border-[1px] border-slate-200 p-2 w-10 flex justify-center items-center rounded-lg">
-                            <Tooltip content={t('adult')} style="light">
+                            <Tooltip
+                                content={t('adult')}
+                                style="light"
+                            >
                                 <FaChild />
                             </Tooltip>
                         </span>
@@ -73,7 +80,10 @@ function RoomCard({ data }) {
                     </li>
                     <li className="text-center">
                         <span className="border-[1px] border-slate-200 p-2 w-10 flex justify-center items-center rounded-lg">
-                            <Tooltip content={t('children')} style="light">
+                            <Tooltip
+                                content={t('children')}
+                                style="light"
+                            >
                                 <MdChildCare />
                             </Tooltip>
                         </span>
@@ -106,7 +116,7 @@ function RoomCard({ data }) {
                         </div>
                     </div>
                 )}
-                ${data.price} / night
+                {formatMoney(data.price, t('moneyType'))} / night
                 <Link
                     to={{
                         pathname: path.bookingHotel,

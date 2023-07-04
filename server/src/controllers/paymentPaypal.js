@@ -112,7 +112,10 @@ const payOutToServiceManager = async (req, res) => {
             await paymentService.getAmountToPayServiceManager()
         if (dataAmount.length > 0) {
             dataAmount.forEach(payment => {
-                console.log(payment)
+                if (!payment.email) {
+                    console.log(payment)
+                    return
+                }
                 const payout = {
                     sender_batch_header: {
                         sender_batch_id:

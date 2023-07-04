@@ -3,9 +3,10 @@ import LikeToTrip from '@page-components/LikeToTrip'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { NavLink } from 'react-router-dom'
+import { formatMoney } from '@utils/formatMoney'
 
 function DestinationCard({ data }) {
-    const {t} = useTranslation()
+    const { t } = useTranslation()
     return (
         <div className="relative">
             <NavLink
@@ -46,7 +47,7 @@ function DestinationCard({ data }) {
                             {t('from')}:{' '}
                         </span>
                         <span className="font-bold">
-                            ${data.price}
+                            {formatMoney(data.price, t('moneyType'))}
                         </span>
                     </div>
                 </div>

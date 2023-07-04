@@ -16,7 +16,9 @@ const find = async query => {
         key = key ? key : ''
         page = page ? +page : 1
         limit = limit ? +limit : 10
-        const tripIds = await tripMemberService.getTripIdsByUserId(createdby)
+        const tripIds = await tripMemberService.getTripIdsByUserId(
+            createdby
+        )
         const { count, rows } = await db.Trip.findAndCountAll({
             offset: (page - 1) * limit,
             limit: +limit,
@@ -47,7 +49,7 @@ const find = async query => {
             ],
             where: {
                 [Op.or]: [
-                    {createdby: createdby},
+                    { createdby: createdby },
                     {
                         id: {
                             [Op.in]: tripIds
@@ -104,7 +106,7 @@ const update = async (id, data) => {
 const findOne = async id => {
     try {
         const members = await tripMemberService.getMembersByTripId(id)
-        const trip =  await db.Trip.findByPk(id, {
+        const trip = await db.Trip.findByPk(id, {
             include: [
                 {
                     model: db.User,
@@ -154,8 +156,7 @@ const findOne = async id => {
                 }
             ]
         })
-        if (!trip)
-            return false
+        if (!trip) return false
         const result = {
             ...trip.toJSON(),
             members: [...members]
@@ -302,25 +303,24 @@ const inviteMember = async (email, tripId, editable) => {
         const user = await userService.findAuthenUserByEmail(email)
         const trip = await findOne(tripId)
         if (user) {
-            const check = await tripMemberService.checkMemberInTrip(tripId, user.id)
-            if (check)
-                return true
+            const check = await tripMemberService.checkMemberInTrip(
+                tripId,
+                user.id
+            )
+            if (check) return true
             await tripMemberService.addTripMember({
                 tripId: tripId,
                 userId: user.id,
                 editable: editable
             })
             return true
-        }
-        else
-        {
+        } else {
             const result = await mailService.sendMailInviteToTrip({
                 email: email,
                 redirectLink: `${process.env.REACT_API}/create/user-invite?email=${email}`,
                 trip: trip
             })
-            if (!result)
-                return false
+            if (!result) return false
             const user = await db.User.create({
                 email: email,
                 password: '',
@@ -342,6 +342,27 @@ const inviteMember = async (email, tripId, editable) => {
         throw new Error(error)
     }
 }
+const deleteMember = async (tripId, userId) => {
+    try {
+        const [member] = await db.TripMember.findAll({
+            where: {
+                tripId: tripId,
+                userId: userId
+            }
+        })
+        if (member) {
+            await db.TripMember.destroy({
+                where: {
+                    id: member.id
+                }
+            })
+            return userId
+        }
+        return false
+    } catch (error) {
+        throw new Error(error)
+    }
+}
 module.exports = {
     create,
     update,
@@ -350,5 +371,6 @@ module.exports = {
     addInstanceToTripList,
     removeInstanceFromTripList,
     handleUpdateTripDate,
-    inviteMember
+    inviteMember,
+    deleteMember
 }

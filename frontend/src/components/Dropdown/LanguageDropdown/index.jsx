@@ -1,13 +1,29 @@
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { useLocation } from 'react-router-dom'
+import { toast } from 'react-toastify'
 
 const LanguageDropdown = () => {
-    const { i18n } = useTranslation()
-    const [selectedLanguage, setSelectedLanguage] = useState(() => i18n.language)
-
+    const { i18n, t } = useTranslation()
+    const [selectedLanguage, setSelectedLanguage] = useState(
+        () => i18n.language
+    )
+    const location = useLocation()
     const handleLanguageChange = language => {
-        setSelectedLanguage(language)
-        i18n.changeLanguage(language)
+        if (
+            location.pathname.includes('system') &&
+            location.pathname.includes('form')
+        ) {
+
+            toast.error(t('pleasereturndashboard'), {
+                position: toast.POSITION.BOTTOM_CENTER,
+                autoClose: 1000,
+                hideProgressBar: true
+            })
+        } else {
+            setSelectedLanguage(language)
+            i18n.changeLanguage(language)
+        }
     }
 
     return (

@@ -16,7 +16,7 @@ import { BsFillTicketFill } from 'react-icons/bs'
 import BookingDestinationCard from '../BookingDestinationCard'
 import { useTranslation } from 'react-i18next'
 function BookingListDestinationTravel() {
-    const {t} = useTranslation()
+    const { t } = useTranslation()
     const location = useLocation()
     const dispatch = useDispatch()
     const navigate = useNavigate()

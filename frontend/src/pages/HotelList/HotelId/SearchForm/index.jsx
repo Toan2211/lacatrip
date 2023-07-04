@@ -15,6 +15,7 @@ import { useLocation, useNavigate, useParams } from 'react-router-dom'
 import { getDateString } from '@utils/getDateString'
 import { getRoomAvailable } from '@pages/HotelList/hotelclient.slice'
 import { useTranslation } from 'react-i18next'
+import { formatMoney } from '@utils/formatMoney'
 
 function SearchForm() {
     const { t } = useTranslation()
@@ -104,7 +105,7 @@ function SearchForm() {
                             {t('from')}:
                         </span>
                         <span className="font-bold text-xl">
-                            ${currentHotel.cheapestPrice}
+                            {formatMoney(currentHotel.cheapestPrice, t('moneyType'))}
                         </span>
                     </div>
                     <div className="flex items-center gap-1">

@@ -3,6 +3,7 @@ import LikeToTrip from '@page-components/LikeToTrip'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { NavLink } from 'react-router-dom'
+import { formatMoney } from '@utils/formatMoney'
 
 function RestaurantCard({ data }) {
     const { t } = useTranslation()
@@ -45,7 +46,7 @@ function RestaurantCard({ data }) {
                             {t('from')}:{' '}
                         </span>
                         <span className="font-bold">
-                            ${data.minPrice} - ${data.maxPrice}
+                            {formatMoney(data.minPrice, t('moneyType'))} - {formatMoney(data.maxPrice, t('moneyType'))}
                         </span>
                     </div>
                 </div>

@@ -186,7 +186,7 @@ function EmployeeForm({ onClose, open }) {
                                     value="0"
                                     id="female"
                                 />
-                                 {t('female')}
+                                {t('female')}
                             </label>
                         </div>
                         {form.formState.errors['gender'] && (

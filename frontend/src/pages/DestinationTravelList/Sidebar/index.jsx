@@ -4,6 +4,7 @@ import React, { useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { AiOutlineSearch } from 'react-icons/ai'
 import { useLocation, useNavigate } from 'react-router'
+import { formatMoney } from '@utils/formatMoney'
 
 function Sidebar() {
     const { t } = useTranslation()
@@ -62,7 +63,7 @@ function Sidebar() {
                     <input
                         value={minPrice}
                         onChange={handleOnchangeMinPrice}
-                        placeholder="1$"
+                        placeholder={formatMoney(1, t('moneyType'))}
                         className="border  border-slate-200 outline-none px-2 py-1 rounded-md focus:border-blue-800 "
                     />
                 </div>
@@ -76,7 +77,7 @@ function Sidebar() {
                     <input
                         value={maxPrice}
                         onChange={handleOnchangeMaxPrice}
-                        placeholder="10000$"
+                        placeholder={formatMoney(10000, t('moneyType'))}
                         className="border border-slate-200 outline-none px-2 py-1 rounded-md focus:border-blue-800 "
                     />
                 </div>

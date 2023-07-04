@@ -124,6 +124,7 @@ const resources = {
             yourTrip: 'Your Plan Trip',
             createTrip: 'Plan New Trip',
             tripName: 'Trip Name',
+            tripMember: 'Trip Member',
             notes: 'Notes',
             itinerary: 'Itineraries',
             allItem: 'All Item',
@@ -272,7 +273,12 @@ const resources = {
             'languageVN': 'WITH VIETNAMESE',
             itineraryStart: 'You will get picked up',
             itineraryEnd: 'You will return to the starting point',
-            pleaseSignin: 'PLEASE SIGN IN'
+            pleaseSignin: 'PLEASE SIGN IN',
+            deleteMember: 'Delete Member',
+            deleteUserSuccessful: 'Delete user successfuly',
+            moneyType: 'dollar',
+            pleasereturndashboard: 'Please return main dashboard, we not allow change language in this page',
+            money: '$'
         }
     },
     vn: {
@@ -536,6 +542,7 @@ const resources = {
             datePayment: 'Ngày thanh toán',
             totalPrice: 'Tổng tiền',
             yourTripBooking: 'Chuyến đi của bạn',
+            tripMember: 'THÀNH VIÊN CHUYẾN DU LỊCH',
             //status
             'Forbidden: required Admin or Employee !': 'Yêu cầu quản trị viên hoặc nhân viên',
             'This email already exists.': 'Địa chỉ Email đã tồn tại.',
@@ -550,7 +557,12 @@ const resources = {
             'languageVN':'VỚI NGÔN NGỮ VIỆT',
             itineraryStart: 'Bạn sẽ được đón',
             itineraryEnd: 'Bạn sẽ được trả về điểm xuất phát',
-            pleaseSignin: 'Vui lòng đăng nhập để thực hiện'
+            pleaseSignin: 'Vui lòng đăng nhập để thực hiện',
+            deleteMember: 'Xoá thành viên',
+            deleteUserSuccessful: 'Xoá thành viên thành công',
+            moneyType: 'vi',
+            pleasereturndashboard: 'Hãy trở về trang chính sau đó thay đổi ngôn ngữ, chúng tôi không cho phép tại trang này',
+            money: 'VNĐ'
         }
     }
 }
