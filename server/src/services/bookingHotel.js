@@ -1,9 +1,9 @@
-const { Sequelize, Op } = require('sequelize')
+const { Sequelize, Op, QueryTypes } = require('sequelize')
 const db = require('../models')
 const paymentService = require('./payment')
 const roomDetailService = require('./roomdetail')
 const notificationService = require('./notification')
-
+const roomService = require('./room')
 const getAllBookings = async ({
     userId,
     checkIn,
@@ -34,7 +34,7 @@ const getAllBookings = async ({
                     }
                 },
                 {
-                    'id': {
+                    id: {
                         [Op.like]: `%${keyword}%`
                     }
                 }
@@ -62,49 +62,47 @@ const getAllBookings = async ({
                 ...whereParams,
                 serviceManagerId: serviceManagerId
             }
-        const rows = await db.BookingHotel.findAll(
-            {
-                offset: (page - 1) * limit,
-                limit: +limit,
-                include: [
-                    {
-                        model: db.Hotel,
-                        as: 'hotel'
-                    },
-                    { model: db.Room, as: 'roomType' },
-                    {
-                        model: db.Payment,
-                        as: 'payment',
-                        where: {
-                            payerId: {
-                                [Op.not]: null
-                            }
-                        }
-                    },
-                    {
-                        model: db.User,
-                        as: 'user'
-                    },
-                    { model: db.RoomDetail, as: 'roomDetails' },
-                    {
-                        model: db.ServiceManager,
-                        as: 'serviceManager',
-                        include: {
-                            model: db.User,
-                            required: true,
-                            as: 'user',
-                            attributes: {
-                                exclude: ['password', 'confirmtoken']
-                            }
+        const rows = await db.BookingHotel.findAll({
+            offset: (page - 1) * limit,
+            limit: +limit,
+            include: [
+                {
+                    model: db.Hotel,
+                    as: 'hotel'
+                },
+                { model: db.Room, as: 'roomType' },
+                {
+                    model: db.Payment,
+                    as: 'payment',
+                    where: {
+                        payerId: {
+                            [Op.not]: null
                         }
                     }
-                ],
-                where: whereParams,
-                order: [['checkIn', 'DESC']],
-                distinct: true,
-                subQuery: false,
-            }
-        )
+                },
+                {
+                    model: db.User,
+                    as: 'user'
+                },
+                { model: db.RoomDetail, as: 'roomDetails' },
+                {
+                    model: db.ServiceManager,
+                    as: 'serviceManager',
+                    include: {
+                        model: db.User,
+                        required: true,
+                        as: 'user',
+                        attributes: {
+                            exclude: ['password', 'confirmtoken']
+                        }
+                    }
+                }
+            ],
+            where: whereParams,
+            order: [['checkIn', 'DESC']],
+            distinct: true,
+            subQuery: false
+        })
         return {
             bookingHotels: rows,
             pagination: {
@@ -121,11 +119,45 @@ const getAllBookings = async ({
 
 const createBooking = async bookingData => {
     try {
+        const RoomDetailList = await db.sequelize.query(
+            `SELECT BookingHotel_RoomDetail.RoomDetailId FROM BookingHotels
+            left join BookingHotel_RoomDetail on BookingHotels.id=BookingHotel_RoomDetail.BookingHotelId
+            left join RoomDetails on RoomDetails.id=BookingHotel_RoomDetail.RoomDetailId
+            where BookingHotels.hotelId=:hotelId
+            and checkIn>=:checkIn
+            and checkOut<=:checkOut
+            and BookingHotels.roomTypeId=:roomTypeId
+            and BookingHotel_RoomDetail.RoomDetailId is not null
+            `,
+            {
+                replacements: {
+                    hotelId: bookingData.hotelId,
+                    checkIn: bookingData.checkIn,
+                    checkOut: bookingData.checkOut,
+                    roomTypeId: bookingData.roomTypeId
+                },
+                type: QueryTypes.SELECT
+            }
+        )
+        const roomDetailIdBusy = RoomDetailList.map(
+            item => item.RoomDetailId
+        )
+        let roomType = await roomService.findOne(
+            bookingData.roomTypeId
+        )
+        roomType = roomType.toJSON()
+        const roomAvailable = roomType.roomDetails
+            .map(room => room.id)
+            .filter(id => !roomDetailIdBusy.includes(id))
+
+        if (roomAvailable.length < bookingData.countRooms)
+            return false
+        bookingData.amount = roomType.price * Number(bookingData.lengthDay) *Number(bookingData.countRooms)
         let booking = await db.BookingHotel.create(bookingData)
-        for (const roomDetailId of bookingData.roomDetailIds) {
+        for(let i = 0; i < bookingData.countRooms; i++) {
             const roomDetail =
                 await roomDetailService.getRoomDetailById(
-                    roomDetailId
+                    roomAvailable[i]
                 )
             await booking.addRoomDetail(roomDetail)
         }

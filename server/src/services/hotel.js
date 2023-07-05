@@ -345,6 +345,7 @@ const getAvailableRooms = async query => {
             const roomDetailIdBusy = RoomDetailList.map(
                 item => item.RoomDetailId
             )
+    
             includeParams.push({
                 model: db.Room,
                 as: 'rooms',

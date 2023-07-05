@@ -13,6 +13,12 @@ const create = async (req, res) => {
         const booking = await bookingHotelService.createBooking(
             req.body
         )
+        if (!booking)
+            return res.status(402).json({ message: 'Booking Failed. The Room Of Hotel Is Full' })
+        // return res.status(200).json({
+        //     message: 'Booking successful - Please payment !'
+        //     data: booking
+        // })
         const description = `Payment ${booking.countRooms} ${booking?.roomType?.title} in ${booking.hotel.name}`
         const payment = {
             intent: 'sale',
