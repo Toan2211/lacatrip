@@ -562,7 +562,8 @@ const resources = {
             deleteUserSuccessful: 'Xoá thành viên thành công',
             moneyType: 'vi',
             pleasereturndashboard: 'Hãy trở về trang chính sau đó thay đổi ngôn ngữ, chúng tôi không cho phép tại trang này',
-            money: 'VNĐ'
+            money: 'VNĐ',
+            'Booking Failed. The Room Of Hotel Is Full': 'Đặt lịch thất bại. Phòng bạn chọn đã hết phòng trống.'
         }
     }
 }
