@@ -141,12 +141,21 @@ const find = async params => {
                 }
             }
         }
+        let orderBy = [
+            ['clickCount', 'DESC']
+        ]
+        if (roleId === ADMINID || roleId === EMPLOYEEID) {
+            orderBy = [
+                ['createdAt', 'DESC']
+            ]
+        }
         const { count, rows } = await db.Restaurant.findAndCountAll({
             offset: (page - 1) * limit,
             limit: +limit,
             include: [...includeModels],
             where: whereParams,
-            distinct: true
+            distinct: true,
+            order: orderBy
         })
         return {
             restaurants: rows,

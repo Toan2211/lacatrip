@@ -194,17 +194,22 @@ const find = async params => {
                 },
                 public: 1
             }
-
+        let orderBy = [
+            ['commissionPercent', 'DESC'],
+            ['clickCount', 'DESC']
+        ]
+        if (roleId === ADMINID || roleId === EMPLOYEEID) {
+            orderBy = [
+                ['createdAt', 'DESC']
+            ]
+        }
         const { count, rows } = await db.Hotel.findAndCountAll({
             offset: (page - 1) * limit,
             limit: +limit,
             include: [...includeModels],
             where: whereParams,
             distinct: true,
-            order: [
-                ['commissionPercent', 'DESC'],
-                ['clickCount', 'DESC']
-            ]
+            order: orderBy
         })
         return {
             hotels: rows,
