@@ -169,7 +169,25 @@ const find = async params => {
                 },
                 public: 1
             }
-
+        let orderBy = [
+            ['commissionPercent', 'DESC'],
+            ['clickCount', 'DESC'],
+            [
+                { model: db.Itinerary, as: 'itineraries' },
+                'step',
+                'asc'
+            ]
+        ]
+        if (roleId === ADMINID || roleId === EMPLOYEEID) {
+            orderBy = [
+                ['createdAt', 'DESC'],
+                [
+                    { model: db.Itinerary, as: 'itineraries' },
+                    'step',
+                    'asc'
+                ]
+            ]
+        }
         const { count, rows } =
             await db.DestinationTravel.findAndCountAll({
                 offset: (page - 1) * limit,
@@ -177,14 +195,7 @@ const find = async params => {
                 include: [...includeModels],
                 where: whereParams,
                 distinct: true,
-                order: [
-                    [
-                        { model: db.Itinerary, as: 'itineraries' },
-                        'step',
-                        'asc'
-                    ],
-                    ['commissionPercent', 'DESC'],
-                ]
+                order: orderBy
             })
         return {
             destinationTravels: rows,
