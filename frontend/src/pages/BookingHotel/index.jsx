@@ -17,6 +17,7 @@ import { unwrapResult } from '@reduxjs/toolkit'
 import { getLengthDay } from '@utils/getDates'
 import { useTranslation } from 'react-i18next'
 import { formatMoney } from '@utils/formatMoney'
+import { toast } from 'react-toastify'
 
 function BookingHotel() {
     const { t } = useTranslation()
@@ -49,7 +50,7 @@ function BookingHotel() {
             const roomDetailIdsParams =
                 queryParams.roomDetailIds.split(',')
             for (let i = 1; i <= queryParams.countRooms; i = i + 1)
-                roomDetailIds.push(roomDetailIdsParams[i])
+                roomDetailIds.push(roomDetailIdsParams[i-1])
             const dataBooking = {
                 checkIn: queryParams.checkIn,
                 checkOut: queryParams.checkOut,
@@ -60,6 +61,10 @@ function BookingHotel() {
                 roomTypeId: queryParams.roomId,
                 roomDetailIds: roomDetailIds,
                 serviceManagerId: currentHotel.serviceManagerId,
+                lengthDay: getLengthDay(
+                    queryParams.checkIn,
+                    queryParams.checkOut
+                ),
                 amount:
                     currentRoom.price *
                     Number.parseInt(queryParams.countRooms) *
@@ -75,7 +80,11 @@ function BookingHotel() {
                 }
             )
         } catch (error) {
-            alert(error.message)
+            toast.error(t(error.message), {
+                position: toast.POSITION.BOTTOM_CENTER,
+                autoClose: 1000,
+                hideProgressBar: true
+            })
         }
     }
     const handleUpCount = type => {
