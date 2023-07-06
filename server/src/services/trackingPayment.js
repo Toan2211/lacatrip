@@ -54,7 +54,10 @@ const find = async ({
                         // ]
                     }
                 },
-                where: whereParams
+                where: whereParams,
+                order: [
+                    ['createdAt', 'DESC']
+                ]
             })
         return {
             trackingPayments: rows,

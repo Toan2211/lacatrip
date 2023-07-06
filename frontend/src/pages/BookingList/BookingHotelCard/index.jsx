@@ -7,6 +7,7 @@ import { GoClock } from 'react-icons/go'
 import { Link } from 'react-router-dom'
 import moment from 'moment'
 import { useTranslation } from 'react-i18next'
+import { formatMoney } from '@utils/formatMoney'
 function BookingHotelCard({ booking }) {
     const { t } = useTranslation()
     return (
@@ -62,7 +63,10 @@ function BookingHotelCard({ booking }) {
                 <ul className="mt-2 flex gap-2 mx-auto">
                     <li className="text-center">
                         <span className="border-[1px] border-slate-200 p-2 w-10 flex justify-center items-center rounded-lg">
-                            <Tooltip content={t('room')} style="light">
+                            <Tooltip
+                                content={t('room')}
+                                style="light"
+                            >
                                 <BiBed />
                             </Tooltip>
                         </span>
@@ -72,7 +76,10 @@ function BookingHotelCard({ booking }) {
                     </li>
                     <li className="text-center">
                         <span className="border-[1px] border-slate-200 p-2 w-10 flex justify-center items-center rounded-lg">
-                            <Tooltip content={t('adult')} style="light">
+                            <Tooltip
+                                content={t('adult')}
+                                style="light"
+                            >
                                 <FaChild />
                             </Tooltip>
                         </span>
@@ -95,9 +102,9 @@ function BookingHotelCard({ booking }) {
                     </li>
                 </ul>
             </div>
-            <div className="w-[100px] flex flex-col items-center justify-center">
+            <div className="w-[150px] flex flex-col items-center justify-center">
                 <div className=" font-bold text-2xl">
-                    ${booking.amount}
+                    {formatMoney(booking.amount, t('moneyType'))}
                 </div>
                 <div className=" text-sm text-gray-400">
                     {moment

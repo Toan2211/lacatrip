@@ -4,8 +4,10 @@ import { MdAirplaneTicket, MdOutlinePayment } from 'react-icons/md'
 import { GoClock } from 'react-icons/go'
 import { Link } from 'react-router-dom'
 import moment from 'moment'
-import { t } from 'i18next'
+import { formatMoney } from '@utils/formatMoney'
+import { useTranslation } from 'react-i18next'
 function BookingDestinationCard({ booking }) {
+    const { t } = useTranslation()
     return (
         <div className="w-full min-h-[60px] border-2 border-gray-200 rounded flex p-5 gap-2 items-center">
             <div className="flex flex-col gap-1 font-bold w-[100px] text-3xl items-center justify-center border-r border-gray-200">
@@ -57,9 +59,9 @@ function BookingDestinationCard({ booking }) {
                     </li>
                 </ul>
             </div>
-            <div className="w-[100px] flex flex-col items-center justify-center">
+            <div className="w-[150px] flex flex-col items-center justify-center">
                 <div className=" font-bold text-2xl">
-                    ${booking.amount}
+                    {formatMoney(booking.amount, t('moneyType'))}
                 </div>
                 <div className=" text-sm text-gray-400">
                     {moment
