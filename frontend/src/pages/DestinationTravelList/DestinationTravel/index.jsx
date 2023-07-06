@@ -18,6 +18,7 @@ import LikeAndShare from '@components/LikeAndShare'
 import Comment from '@pages/Comment'
 import SearchDestinationForm from '../SearchDestinationForm'
 import { useTranslation } from 'react-i18next'
+import { DESTINATIONTYPE } from '@constants/instanceType'
 
 function DestinationTravelClient() {
     const { t, i18n } = useTranslation()
@@ -70,7 +71,7 @@ function DestinationTravelClient() {
     return (
         <div className="max-w-[1535px] px-8 py-5 mt-[100px] md:mt-40 md:px-10 lg:mt-16 lg:px-20 mb-[20vh] pb-[100px]">
             <div className="flex justify-end mr-[10%]">
-                <LikeAndShare />
+                <LikeAndShare id = {currentDestination.id} type = {DESTINATIONTYPE} />
             </div>
             <div className="font-semibold text-xl text-blue-600">
                 {currentDestination.province.name} <span>•</span>{' '}

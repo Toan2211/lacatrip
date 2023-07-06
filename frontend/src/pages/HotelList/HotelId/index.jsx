@@ -16,6 +16,7 @@ import LikeAndShare from '@components/LikeAndShare'
 import Comment from '@pages/Comment'
 import SearchForm from './SearchForm'
 import { useTranslation } from 'react-i18next'
+import { HOTELTYPE } from '@constants/instanceType'
 
 function HotelId() {
     const { t, i18n } = useTranslation()
@@ -34,7 +35,7 @@ function HotelId() {
     return (
         <div className="max-w-[1535px] px-8 py-5 mt-[100px] md:mt-40 md:px-10 lg:mt-16 lg:px-20 mb-[20vh] pb-[100px]">
             <div className="flex justify-end mr-[14%]">
-                <LikeAndShare />
+                <LikeAndShare id={currentHotel.id} type={HOTELTYPE} />
             </div>
             <div className=" ml-[12%]">
                 <div className="font-semibold text-2xl">
