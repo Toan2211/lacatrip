@@ -95,7 +95,8 @@ const resources = {
             cuisines: 'CUISINES',
             specialDiets: 'SPECIAL DIETS',
             requiredCuisines: 'Please select cusines of restaurant',
-            requiredSpecialDiets: 'Please select SPECIAL DIETS of restaurant',
+            requiredSpecialDiets:
+                'Please select SPECIAL DIETS of restaurant',
             locationAndContact: 'Location and contact',
             priceRange: 'Price Range',
             descriptionHotel: 'DETAIL ABOUT HOTEL',
@@ -155,8 +156,7 @@ const resources = {
             fromNotify: 'Sended From',
             markReaded: 'Mark already read',
             delete: 'Delete',
-            bookingDestinationTravel:
-                'Booking List Tours',
+            bookingDestinationTravel: 'Booking List Tours',
             ticket: 'Ticket',
             destinationTravel: 'Destination Travel',
             // system
@@ -261,24 +261,36 @@ const resources = {
             totalPrice: 'Total Price',
             yourTripBooking: 'Your Trip',
             //status
-            'Forbidden: required Admin or Employee !': 'Forbidden: required Admin or Employee !',
-            'This email already exists.': 'This email already exists.',
+            'Forbidden: required Admin or Employee !':
+                'Forbidden: required Admin or Employee !',
+            'This email already exists.':
+                'This email already exists.',
             selectAvatar: 'Select Avatar',
             userInfo: 'User Information',
             requiredPaymentAccount: 'Payment Account is required',
             invalidPaymentAccount: 'Invalid Payment Account',
-            changePaymentAccount: 'Change Payment Account (Payment Receive Money From Booking)',
+            changePaymentAccount:
+                'Change Payment Account (Payment Receive Money From Booking)',
             'Invalid email or password': 'Invalid email or password',
-            'languageEn': 'WITH ENGLISH',
-            'languageVN': 'WITH VIETNAMESE',
+            languageEn: 'WITH ENGLISH',
+            languageVN: 'WITH VIETNAMESE',
             itineraryStart: 'You will get picked up',
             itineraryEnd: 'You will return to the starting point',
             pleaseSignin: 'PLEASE SIGN IN',
             deleteMember: 'Delete Member',
             deleteUserSuccessful: 'Delete user successfuly',
             moneyType: 'dollar',
-            pleasereturndashboard: 'Please return main dashboard, we not allow change language in this page',
-            money: '$'
+            pleasereturndashboard:
+                'Please return main dashboard, we not allow change language in this page',
+            money: '$',
+            'You can not update Trip': 'You can not update Trip',
+            addToTripSuccessfully: 'Add To Trip Succussfully',
+            removeFromTripSuccessfully:
+                'Remove From Trip Successfully',
+            createTripPlan: 'Create Trip Plan',
+            createNewTrip: 'Create New Trip',
+            copiedLink: 'Copy Link Successfully',
+            share: 'Share'
         }
     },
     vn: {
@@ -519,11 +531,14 @@ const resources = {
             invalidOriginalPrice: 'Gía ban đầu không hợp lệ',
             required: '* Bắt buộc',
             invalid: 'Giá trị không hợp lệ',
-            roomNoPlaceHolder: 'Chia mỗi phòng bằng dấu (,) để tạo nhiều phòng',
+            roomNoPlaceHolder:
+                'Chia mỗi phòng bằng dấu (,) để tạo nhiều phòng',
             limit: 'Tối đa',
             add: 'Thêm',
-            requiredCuisines: 'Hãy chọn phong cách ẩm thực của nhà hàng',
-            requiredSpecialDiets: 'Hãy chọn chế độ ăn đặt biệt của nhà hàng',
+            requiredCuisines:
+                'Hãy chọn phong cách ẩm thực của nhà hàng',
+            requiredSpecialDiets:
+                'Hãy chọn chế độ ăn đặt biệt của nhà hàng',
             destinationTravel: 'Tour du lịch',
             manageItineraries: 'Quản lý hành trình',
             step: 'Thứ Tự',
@@ -544,26 +559,41 @@ const resources = {
             yourTripBooking: 'Chuyến đi của bạn',
             tripMember: 'THÀNH VIÊN CHUYẾN DU LỊCH',
             //status
-            'Forbidden: required Admin or Employee !': 'Yêu cầu quản trị viên hoặc nhân viên',
+            'Forbidden: required Admin or Employee !':
+                'Yêu cầu quản trị viên hoặc nhân viên',
             'This email already exists.': 'Địa chỉ Email đã tồn tại.',
             systemProfile: 'Quản lý trang cá nhân',
             selectAvatar: 'Chọn ảnh',
             userInfo: 'Thông tin cá nhân',
             requiredPaymentAccount: 'Hãy nhập tài khoản thanh toán',
-            invalidPaymentAccount: 'Tài khoản thanh toán không hợp lệ',
-            changePaymentAccount: 'Cập nhật tài khoản thanh toán(Tài khoản nhận tiền từ đơn đặt lịch)',
-            'Invalid email or password': 'Email hoặc mật khẩu không đúng',
-            'languageEn': 'VỚI NGÔN NGỮ ANH',
-            'languageVN':'VỚI NGÔN NGỮ VIỆT',
+            invalidPaymentAccount:
+                'Tài khoản thanh toán không hợp lệ',
+            changePaymentAccount:
+                'Cập nhật tài khoản thanh toán(Tài khoản nhận tiền từ đơn đặt lịch)',
+            'Invalid email or password':
+                'Email hoặc mật khẩu không đúng',
+            languageEn: 'VỚI NGÔN NGỮ ANH',
+            languageVN: 'VỚI NGÔN NGỮ VIỆT',
             itineraryStart: 'Bạn sẽ được đón',
             itineraryEnd: 'Bạn sẽ được trả về điểm xuất phát',
             pleaseSignin: 'Vui lòng đăng nhập để thực hiện',
             deleteMember: 'Xoá thành viên',
             deleteUserSuccessful: 'Xoá thành viên thành công',
             moneyType: 'vi',
-            pleasereturndashboard: 'Hãy trở về trang chính sau đó thay đổi ngôn ngữ, chúng tôi không cho phép tại trang này',
+            pleasereturndashboard:
+                'Hãy trở về trang chính sau đó thay đổi ngôn ngữ, chúng tôi không cho phép tại trang này',
             money: 'VNĐ',
-            'Booking Failed. The Room Of Hotel Is Full': 'Đặt lịch thất bại. Phòng bạn chọn đã hết phòng trống.'
+            'Booking Failed. The Room Of Hotel Is Full':
+                'Đặt lịch thất bại. Phòng bạn chọn đã hết phòng trống.',
+            'You can not update Trip':
+                'Bạn không có quyền cập nhật lịch trình.',
+            addToTripSuccessfully: 'Thêm vào lịch trình thành công',
+            removeFromTripSuccessfully:
+                'Xoá khỏi lịch trình thành công',
+            createTripPlan: 'Tạo lịch trình du lịch',
+            createNewTrip: 'Tạo lịch trình du lịch mới',
+            copiedLink: 'Sao chép liên kết thành công',
+            share: 'Chia sẻ'
         }
     }
 }

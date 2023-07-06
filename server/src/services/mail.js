@@ -15,8 +15,17 @@ const sendEmailConfirm = async data => {
     await transporter.sendMail({
         from: '"LACATRIP" <nguyenthanhtoan2211@gmail.com>',
         to: data.receive,
-        subject: 'Confirm register',
+        subject: 'Confirm register - Xác nhận đăng ký!',
         html: `
+        <h3> Xin chào  ${data.name},</h3>
+        <p>Cảm ơn bạn đã đăng ký dịch vụ của chúng tôi ! Hãy nhấn vào link bên dưới để xác nhận đăng ký !</p>
+        <div>
+        <a href="${data.redirectLink}" target="_blank">Xác nhận đăng ký</a>
+        </div>
+        <p>Xin cảm ơn!</p>
+        <br/>
+        <div>-----  -----  -----</div>
+        <br/>
         <h3>Hello ${data.name}, </h3>
         <p>Thanks you for your register our app ! To confirm register please click in link here !</p>
         <div>
@@ -118,8 +127,17 @@ const sendMailInviteToTrip = async (data) => {
     const result = await transporter.sendMail({
         from: '"LACATRIP" <nguyenthanhtoan2211@gmail.com>',
         to: data.email,
-        subject: `Invite to trip ${data.trip.name}`,
+        subject: `Invite to trip ${data.trip.name} - Mời tham gia lịch trình du lịch ${data.trip.name}`,
         html: `
+        <h3>Xin chào bạn, </h3>
+        <p>Bạn vừa nhận được lời mời tham gia 1 lịch trình du lịch ${data.trip.name} từ bạn bè.</p>
+        <div>
+            <a href="${data.redirectLink}" target="_blank">Hãy tạo tài khoản đăng nhập vào hệ thống để khám phá lịch trình của mình</a>
+        </div>
+        <p>Chân thành cảm ơn !</p>
+        <br/>
+        <div>-----  -----  -----</div>
+        <br/>
         <h3>Hello, </h3>
         <p>Your friend was invite you to his/her trip ${data.trip.name}</p>
         <div>

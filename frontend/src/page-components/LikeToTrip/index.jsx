@@ -17,8 +17,10 @@ import {
     removeInstaceFromTripList
 } from '@pages/TripList/trip.slice'
 import { unwrapResult } from '@reduxjs/toolkit'
+import { useTranslation } from 'react-i18next'
 
 function LikeToTrip({ id, type }) {
+    const { t } = useTranslation()
     const dispatch = useDispatch()
     const navigate = useNavigate()
     const trips = useSelector(allTripsSelector)
@@ -34,8 +36,8 @@ function LikeToTrip({ id, type }) {
     const handleCLickTym = () => {
         if (!profile.id) {
             navigate(path.signin)
-            toast.success('Please sign to create trip :D', {
-                position: toast.POSITION.TOP_CENTER,
+            toast.error(t('pleaseSignin'), {
+                position: toast.POSITION.BOTTOM_CENTER,
                 autoClose: 1000,
                 hideProgressBar: true
             })
@@ -95,20 +97,20 @@ function LikeToTrip({ id, type }) {
                             destinationTravel.id === id
                     ) !== -1)
             ) {
-                await dispatch(removeInstaceFromTripList(data)).then(res =>
-                    unwrapResult(res)
+                await dispatch(removeInstaceFromTripList(data)).then(
+                    res => unwrapResult(res)
                 )
-                toast.success('Remove From Trip Successfully', {
-                    position: toast.POSITION.TOP_CENTER,
+                toast.success(t('removeFromTripSuccessfully'), {
+                    position: toast.POSITION.BOTTOM_CENTER,
                     autoClose: 1000,
                     hideProgressBar: true
                 })
             } else {
-                await dispatch(addInstanceToTripList(data)).then(res =>
-                    unwrapResult(res)
+                await dispatch(addInstanceToTripList(data)).then(
+                    res => unwrapResult(res)
                 )
-                toast.success('Add To Trip Successfully', {
-                    position: toast.POSITION.TOP_CENTER,
+                toast.success(t('addToTripSuccessfully'), {
+                    position: toast.POSITION.BOTTOM_CENTER,
                     autoClose: 1000,
                     hideProgressBar: true
                 })
@@ -116,8 +118,8 @@ function LikeToTrip({ id, type }) {
             }
             onClose()
         } catch (error) {
-            toast.error(error.message, {
-                position: toast.POSITION.TOP_CENTER,
+            toast.error(t(error.message), {
+                position: toast.POSITION.BOTTOM_CENTER,
                 autoClose: 1000,
                 hideProgressBar: true
             })
@@ -151,7 +153,7 @@ function LikeToTrip({ id, type }) {
             </div>
             <Modal show={showModal} onClose={onClose} size="md">
                 <Modal.Header className=" bg-slate-100">
-                    Create Trip Plan
+                    {t('createTripPlan')}
                 </Modal.Header>
                 <Modal.Body>
                     {trips &&
@@ -228,7 +230,7 @@ function LikeToTrip({ id, type }) {
                         </div>
                         <div className="flex-1 flex items-center">
                             <div className="font-bold p-1">
-                                Create new trip
+                                {t('createNewTrip')}
                             </div>
                         </div>
                     </div>
