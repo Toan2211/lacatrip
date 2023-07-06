@@ -23,6 +23,7 @@ import {
     trackingPaymentPaginationSelector
 } from './trackingpayment.slice'
 import { useTranslation } from 'react-i18next'
+import { formatMoney } from '@utils/formatMoney'
 function TrackingPayment() {
     const { t } = useTranslation()
     const serviceManagers = useSelector(serviceManagersSelector)
@@ -224,7 +225,7 @@ function TrackingPayment() {
                                             {tracking.paymentAccount}
                                         </Table.Cell>
                                         <Table.Cell>
-                                            {tracking.amount}
+                                            {formatMoney(tracking.amount, t('moneyType'))}
                                         </Table.Cell>
                                         <Table.Cell>
                                             {new Date(

@@ -19,6 +19,7 @@ import { getAllRevenue, revenuesSelector } from './revenue.slice'
 import moment from 'moment'
 import { Table } from 'flowbite-react'
 import { useTranslation } from 'react-i18next'
+import { formatMoney } from '@utils/formatMoney'
 function Revenue() {
     const { t } = useTranslation()
     const serviceManagers = useSelector(serviceManagersSelector)
@@ -198,17 +199,22 @@ function Revenue() {
                                         {revenue.phone}
                                     </Table.Cell>
                                     <Table.Cell>
-                                        {revenue.totalAmount}
+                                        {formatMoney(
+                                            revenue.totalAmount,
+                                            t('moneyType')
+                                        )}
                                     </Table.Cell>
                                     <Table.Cell>
-                                        {
-                                            revenue.totalCommissionAmount
-                                        }
+                                        {formatMoney(
+                                            revenue.totalCommissionAmount,
+                                            t('moneyType')
+                                        )}
                                     </Table.Cell>
                                     <Table.Cell className="font-bold text-blue-400">
-                                        {
-                                            revenue.totalCommissionAmountNotYet
-                                        }
+                                        {formatMoney(
+                                            revenue.totalCommissionAmountNotYet,
+                                            t('moneyType')
+                                        )}
                                     </Table.Cell>
                                     {(queryParams.monthDate ||
                                         queryParams.serviceManagerId) && (

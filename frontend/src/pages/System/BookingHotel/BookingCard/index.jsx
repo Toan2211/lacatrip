@@ -7,6 +7,7 @@ import { FaChild } from 'react-icons/fa'
 import { GoClock } from 'react-icons/go'
 import { MdChildCare, MdOutlinePayment } from 'react-icons/md'
 import { Link } from 'react-router-dom'
+import { formatMoney } from '@utils/formatMoney'
 //type = 0 => client
 //type = 1 => SVManager
 function BookingCard({ booking }) {
@@ -153,9 +154,9 @@ function BookingCard({ booking }) {
                         </Tooltip>
                     </div>
                 </div>
-                <div className="w-[100px] flex flex-col items-center justify-center">
+                <div className="w-[150px] flex flex-col items-center justify-center">
                     <div className=" font-bold text-2xl">
-                        ${booking.amount}
+                        {formatMoney(booking.amount, t('moneyType'))}
                     </div>
                     <div className=" text-sm text-gray-400">
                         {moment
