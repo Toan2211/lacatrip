@@ -33,7 +33,7 @@ function RoomCard({ data }) {
                 <span className="text-sm text-blue-700 font-semibold">
                     {data.title}
                 </span>
-                <ul className="flex gap-2">
+                <ul className="flex gap-2 flex-wrap">
                     {data.roomDetails.map(roomDetail => (
                         <li
                             key={roomDetail.id}
@@ -93,7 +93,7 @@ function RoomCard({ data }) {
                     </li>
                 </ul>
             </div>
-            <div className="flex-1  justify-center flex items-center font-medium lg:text-lg text-sm flex-col">
+            <div className="w-[200px] justify-center flex items-center font-medium lg:text-lg text-sm flex-col">
                 {data.roomDetails.length > 0 && (
                     <div>
                         {' '}

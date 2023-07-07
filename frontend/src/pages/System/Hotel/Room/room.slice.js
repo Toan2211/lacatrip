@@ -47,6 +47,15 @@ const getAllFulfilled = (state, action) => {
 const getDetailRoomFulfilled = (state, action) => {
     state.currentRoom = action.payload.data
 }
+export const addRoomDetail = createAsyncThunk(
+    'hotels/addRoomDetail',
+    payloadCreator(roomApi.addRoomDetail)
+)
+const handleAddRoomDetailFullfilled = (state, action) => {
+    const room = { ...state.currentRoom }
+    room.roomDetails.push(action.payload.data)
+    state.currentRoom = room
+}
 const roomSlice = createSlice({
     name: 'rooms',
     initialState: {
@@ -64,6 +73,7 @@ const roomSlice = createSlice({
         builder
             .addCase(getRooms.fulfilled, getAllFulfilled)
             .addCase(getDetailRoom.fulfilled, getDetailRoomFulfilled)
+            .addCase(addRoomDetail.fulfilled, handleAddRoomDetailFullfilled)
             .addMatcher(
                 action => action.type.endsWith('/pending'),
                 state => {

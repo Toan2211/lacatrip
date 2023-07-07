@@ -14,10 +14,12 @@ import queryString from 'query-string'
 import Mybutton from '@components/MyButton'
 import RoomDetailForm from './RoomDetailForm'
 import { useTranslation } from 'react-i18next'
+import { selectUser } from '@pages/Auth/auth.slice'
 
 function Rooms() {
     const { t } = useTranslation()
     const dispatch = useDispatch()
+    const profile = useSelector(selectUser)
     const navigate = useNavigate()
     const currentHotel = useSelector(currentHotelSelector)
 
@@ -82,29 +84,31 @@ function Rooms() {
                                 {t('hotel').toLocaleLowerCase()}{' '}
                                 {currentHotel.name}
                             </h3>
-                            <div className="relative flex flex-col items-center group w-10">
-                                <Tooltip
-                                    content={t('create')}
-                                    style="light"
-                                    className='w-[80px]'
-                                >
-                                    <button
-                                        className="inline-flex items-center justify-center w-6 h-6 mr-2 text-indigo-100 transition-colors duration-150  bg-green-700 rounded-lg focus:shadow-outline hover:bg-green-500 ml-4"
-                                        onClick={showDrawer}
+                            {profile.serviceManagerId && (
+                                <div className="relative flex flex-col items-center group w-10">
+                                    <Tooltip
+                                        content={t('create')}
+                                        style="light"
+                                        className="w-[80px]"
                                     >
-                                        <svg
-                                            className="w-4 h-4 fill-current"
-                                            viewBox="0 0 20 20"
+                                        <button
+                                            className="inline-flex items-center justify-center w-6 h-6 mr-2 text-indigo-100 transition-colors duration-150  bg-green-700 rounded-lg focus:shadow-outline hover:bg-green-500 ml-4"
+                                            onClick={showDrawer}
                                         >
-                                            <path
-                                                d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z"
-                                                clipRule="evenodd"
-                                                fillRule="evenodd"
-                                            ></path>
-                                        </svg>
-                                    </button>
-                                </Tooltip>
-                            </div>
+                                            <svg
+                                                className="w-4 h-4 fill-current"
+                                                viewBox="0 0 20 20"
+                                            >
+                                                <path
+                                                    d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z"
+                                                    clipRule="evenodd"
+                                                    fillRule="evenodd"
+                                                ></path>
+                                            </svg>
+                                        </button>
+                                    </Tooltip>
+                                </div>
+                            )}
                         </div>
                     </div>
                 </div>

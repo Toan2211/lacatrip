@@ -290,7 +290,9 @@ const resources = {
             createTripPlan: 'Create Trip Plan',
             createNewTrip: 'Create New Trip',
             copiedLink: 'Copy Link Successfully',
-            share: 'Share'
+            share: 'Share',
+            roomDetailerror: 'Room Exists',
+            roomDetailsuccess: 'Add Room Successfully'
         }
     },
     vn: {
@@ -593,7 +595,9 @@ const resources = {
             createTripPlan: 'Tạo lịch trình du lịch',
             createNewTrip: 'Tạo lịch trình du lịch mới',
             copiedLink: 'Sao chép liên kết thành công',
-            share: 'Chia sẻ'
+            share: 'Chia sẻ',
+            roomDetailerror: 'Đã tồn tại phòng hiện có',
+            roomDetailsuccess: 'Thêm phòng thành công'
         }
     }
 }
