@@ -12,6 +12,9 @@ const roomApi = {
     },
     update(data, config) {
         return http.put(`/room/${data.get('id')}`, data, config)
+    },
+    addRoomDetail(data) {
+        return http.post('/room/room-detail', data)
     }
 }
 export default roomApi

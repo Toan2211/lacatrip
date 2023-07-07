@@ -1,8 +1,9 @@
 const { SERVICEMANAGERID } = require('../constants/variable')
 const roomService = require('../services/room')
+const roomDetailService = require('../services/roomdetail')
 const create = async (req, res) => {
     try {
-        if(req.file) {
+        if (req.file) {
             req.body.image = req.file.path
         }
         const room = await roomService.create(req.body)
@@ -15,7 +16,7 @@ const create = async (req, res) => {
 }
 const update = async (req, res) => {
     try {
-        if(req.file) {
+        if (req.file) {
             req.body.image = req.file.path
         }
         const room = await roomService.findOne(req.params.id)
@@ -96,10 +97,24 @@ const findOne = async (req, res) => {
         return res.status(500).json({ message: error.message })
     }
 }
+const addRoomDetail = async (req, res) => {
+    try {
+        const roomDetail = await roomDetailService.create(req.body)
+        return res
+            .status(200)
+            .json({
+                message: 'Add room successful',
+                data: roomDetail
+            })
+    } catch (error) {
+        return res.status(500).json({ message: error.message })
+    }
+}
 module.exports = {
     create,
     findByHotelId,
     destroy,
     findOne,
-    update
+    update,
+    addRoomDetail
 }

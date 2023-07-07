@@ -438,7 +438,10 @@ const findOne = async id => {
                     as: 'rooms',
                     include: {
                         model: db.RoomDetail,
-                        as: 'roomDetails'
+                        as: 'roomDetails',
+                        order: [[
+                            'roomNo', 'ASC'
+                        ]]
                     }
                 }
             ]

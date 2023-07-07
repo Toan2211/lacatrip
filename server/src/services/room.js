@@ -86,7 +86,10 @@ const findByHotelId = async (hotelId, page, limit) => {
                 },
                 {
                     model: db.RoomDetail,
-                    as: 'roomDetails'
+                    as: 'roomDetails',
+                    order: [[
+                        'roomNo', 'DESC'
+                    ]]
                 }
             ],
             where: {
