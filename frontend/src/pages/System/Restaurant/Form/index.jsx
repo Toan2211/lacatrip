@@ -80,7 +80,9 @@ function RestaurantForm() {
     const schema = yup.object().shape({
         name: yup.string().required(t('requiredName')),
         description: yup.string().required(t('requiredDescription')),
-        descriptionVN: yup.string().required(t('requiredDescription')),
+        descriptionVN: yup
+            .string()
+            .required(t('requiredDescription')),
         phone: yup
             .string()
             .required(t('requiredPhone'))
@@ -165,8 +167,18 @@ function RestaurantForm() {
                 currentRestaurant.serviceManagerId
             )
             form.setValue('provinceId', currentRestaurant.provinceId)
-            form.setValue('minPrice', i18n.language === 'vn' ? currentRestaurant.minPrice*23000 : currentRestaurant.minPrice)
-            form.setValue('maxPrice', i18n.language === 'vn' ? currentRestaurant.maxPrice*23000 : currentRestaurant.maxPrice)
+            form.setValue(
+                'minPrice',
+                i18n.language === 'vn'
+                    ? currentRestaurant.minPrice * 23000
+                    : currentRestaurant.minPrice
+            )
+            form.setValue(
+                'maxPrice',
+                i18n.language === 'vn'
+                    ? currentRestaurant.maxPrice * 23000
+                    : currentRestaurant.maxPrice
+            )
             setImages(
                 currentRestaurant.images.map(image => ({
                     id: image.id,
@@ -204,8 +216,18 @@ function RestaurantForm() {
                 profile.serviceManagerId
             )
             formData.append('provinceId', data.provinceId)
-            formData.append('minPrice', i18n.language === 'vn' ? data.minPrice/23000 : data.minPrice )
-            formData.append('maxPrice', i18n.language === 'vn' ? data.maxPrice/23000 : data.maxPrice)
+            formData.append(
+                'minPrice',
+                i18n.language === 'vn'
+                    ? data.minPrice / 23000
+                    : data.minPrice
+            )
+            formData.append(
+                'maxPrice',
+                i18n.language === 'vn'
+                    ? data.maxPrice / 23000
+                    : data.maxPrice
+            )
             formData.append(
                 'cusines',
                 cusines.map(cusine => cusine.value).toString()
@@ -484,20 +506,27 @@ function RestaurantForm() {
                             )}
                         </div>
                     </div>
-                    <div className="mt-10 text-right pr-4">
-                        <Mybutton
-                            isloading={loading > 0 ? true : false}
-                            type="submit"
-                            onClick={() => {
-                                if (isFirstTime) setIsFirstTime(false)
-                            }}
-                            className="bg-blue-500 text-white active:bg-blue-800 text-sm font-bold uppercase px-4 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 w-1/5 ease-linear transition-all duration-150"
-                        >
-                            {_.isEmpty(currentRestaurant)
-                                ? `${t('create')} ${t('restaurant')}`
-                                : `${t('update')} ${t('restaurant')}`}
-                        </Mybutton>
-                    </div>
+                    {profile.serviceManagerId && (
+                        <div className="mt-10 text-right pr-4">
+                            <Mybutton
+                                isloading={loading > 0 ? true : false}
+                                type="submit"
+                                onClick={() => {
+                                    if (isFirstTime)
+                                        setIsFirstTime(false)
+                                }}
+                                className="bg-blue-500 text-white active:bg-blue-800 text-sm font-bold uppercase px-4 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 w-1/5 ease-linear transition-all duration-150"
+                            >
+                                {_.isEmpty(currentRestaurant)
+                                    ? `${t('create')} ${t(
+                                        'restaurant'
+                                    )}`
+                                    : `${t('update')} ${t(
+                                        'restaurant'
+                                    )}`}
+                            </Mybutton>
+                        </div>
+                    )}
                 </form>
             </div>
         </div>

@@ -41,11 +41,11 @@ function DestinationForm() {
     useEffect(() => {
         document.title = _.isEmpty(currentDestination)
             ? `${t('create')} ${t(
-                'destinationTravel'
-            ).toLocaleLowerCase()} ${t('successfully')}`
+                  'destinationTravel'
+              ).toLocaleLowerCase()} ${t('successfully')}`
             : `${t('update')} ${t(
-                'destinationTravel'
-            ).toLocaleLowerCase()} ${t('successfully')}`
+                  'destinationTravel'
+              ).toLocaleLowerCase()} ${t('successfully')}`
     }, [dispatch, currentDestination, t])
     useEffect(() => {
         return () => {
@@ -55,9 +55,9 @@ function DestinationForm() {
     const [images, setImages] = useState(() =>
         currentDestination.images
             ? currentDestination.images.map(image => ({
-                id: image.id,
-                url: image.url
-            }))
+                  id: image.id,
+                  url: image.url
+              }))
             : []
     )
     const [isFirstTime, setIsFirstTime] = useState(true)
@@ -174,8 +174,18 @@ function DestinationForm() {
             formData.append('name', data.name)
             formData.append('description', data.description)
             formData.append('descriptionVN', data.descriptionVN)
-            formData.append('price', i18n.language ==='vn' ? data.price/23000 : data.price)
-            formData.append('originalPrice', i18n.language ==='vn' ? data.originalPrice/23000 : data.originalPrice)
+            formData.append(
+                'price',
+                i18n.language === 'vn'
+                    ? data.price / 23000
+                    : data.price
+            )
+            formData.append(
+                'originalPrice',
+                i18n.language === 'vn'
+                    ? data.originalPrice / 23000
+                    : data.originalPrice
+            )
             formData.append('address', data.address)
             formData.append('longtitude', data.longtitude)
             formData.append('latitude', data.latitude)
@@ -205,11 +215,11 @@ function DestinationForm() {
             toast.success(
                 _.isEmpty(currentDestination)
                     ? `${t('create')} ${t(
-                        'destinationTravel'
-                    ).toLocaleLowerCase()} ${t('successfully')}`
+                          'destinationTravel'
+                      ).toLocaleLowerCase()} ${t('successfully')}`
                     : `${t('update')} ${t(
-                        'destinationTravel'
-                    ).toLocaleLowerCase()} ${t('successfully')}`,
+                          'destinationTravel'
+                      ).toLocaleLowerCase()} ${t('successfully')}`,
                 {
                     position: toast.POSITION.BOTTOM_CENTER,
                     autoClose: 1000,
@@ -307,7 +317,7 @@ function DestinationForm() {
                                 className="block uppercase text-sm font-bold mb-2"
                                 htmlFor="grid-password"
                             >
-                                {t('originalPrice')}  ({t('money')})
+                                {t('originalPrice')} ({t('money')})
                             </label>
                             <InputField
                                 placeholder={t('originalPrice')}
@@ -322,7 +332,7 @@ function DestinationForm() {
                                 className="block uppercase text-sm font-bold mb-2"
                                 htmlFor="grid-password"
                             >
-                                {t('price')}  ({t('money')})
+                                {t('price')} ({t('money')})
                             </label>
                             <InputField
                                 placeholder={t('price')}
@@ -390,20 +400,23 @@ function DestinationForm() {
                             />
                         </div>
                     </div>
-                    <div className="mt-10 text-right pr-4">
-                        <Mybutton
-                            isloading={loading > 0 ? true : false}
-                            type="submit"
-                            onClick={() => {
-                                if (isFirstTime) setIsFirstTime(false)
-                            }}
-                            className="bg-blue-500 text-white active:bg-blue-800 text-sm font-bold uppercase px-4 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 w-1/5 ease-linear transition-all duration-150"
-                        >
-                            {_.isEmpty(currentDestination)
-                                ? t('create')
-                                : t('update')}
-                        </Mybutton>
-                    </div>
+                    {profile.serviceManagerId && (
+                        <div className="mt-10 text-right pr-4">
+                            <Mybutton
+                                isloading={loading > 0 ? true : false}
+                                type="submit"
+                                onClick={() => {
+                                    if (isFirstTime)
+                                        setIsFirstTime(false)
+                                }}
+                                className="bg-blue-500 text-white active:bg-blue-800 text-sm font-bold uppercase px-4 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 w-1/5 ease-linear transition-all duration-150"
+                            >
+                                {_.isEmpty(currentDestination)
+                                    ? t('create')
+                                    : t('update')}
+                            </Mybutton>
+                        </div>
+                    )}
                 </form>
             </div>
         </div>

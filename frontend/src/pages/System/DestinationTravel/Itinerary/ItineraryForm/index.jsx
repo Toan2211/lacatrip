@@ -18,6 +18,7 @@ import {
     getDetail
 } from '../../destination.slice'
 import { useTranslation } from 'react-i18next'
+import { selectUser } from '@pages/Auth/auth.slice'
 function ItineraryForm({
     data,
     onClose,
@@ -27,6 +28,7 @@ function ItineraryForm({
     const { t } = useTranslation()
     const dispatch = useDispatch()
     const currenDestination = useSelector(currentDestinationSelector)
+    const profile = useSelector(selectUser)
     const form = useForm({
         defaultValues: {
             title: '',
@@ -162,15 +164,17 @@ function ItineraryForm({
                 />
             </div>
             <AddressGenMap form={form} />
-            <div className="mt-10 text-right pr-4">
-                <Mybutton
-                    // isloading={loadingItinerary > 0 ? true : false}
-                    type="submit"
-                    className="bg-blue-500 text-white active:bg-blue-800 text-sm font-bold uppercase px-4 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 w-1/4 ease-linear transition-all duration-150"
-                >
-                    {!_.isEmpty(data) ? t('update') : t('add')}
-                </Mybutton>
-            </div>
+            {
+                profile.serviceManagerId &&             <div className="mt-10 text-right pr-4">
+                    <Mybutton
+                        // isloading={loadingItinerary > 0 ? true : false}
+                        type="submit"
+                        className="bg-blue-500 text-white active:bg-blue-800 text-sm font-bold uppercase px-4 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 w-1/4 ease-linear transition-all duration-150"
+                    >
+                        {!_.isEmpty(data) ? t('update') : t('add')}
+                    </Mybutton>
+                </div>
+            }
         </form>
     )
 }
