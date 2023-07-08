@@ -168,7 +168,8 @@ function Itinerary({ open, onClose, sheet }) {
                 {currentDestination.name}
             </header>
             <div className="p-5">
-                {currentDestination?.itineraries?.length > 0 && (
+                {profile.serviceManagerId &&
+                    currentDestination?.itineraries?.length > 0 && (
                     <div className="text-right">
                         <Mybutton
                             onClick={handleUpdateStep}
@@ -260,17 +261,19 @@ function Itinerary({ open, onClose, sheet }) {
                         )}
                     </Container>
                 )}
-                <div className="text-right">
-                    <Mybutton
-                        onClick={addNewItinerary}
-                        type="button"
-                        className="bg-blue-500 text-white active:bg-blue-800 text-sm font-bold uppercase px-1 py-2 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 w-1/2 ease-linear transition-all duration-150"
-                    >
-                        {`${t('create')} ${t(
-                            'itinerary'
-                        ).toLowerCase()}`}
-                    </Mybutton>
-                </div>
+                {profile.serviceManagerId && (
+                    <div className="text-right">
+                        <Mybutton
+                            onClick={addNewItinerary}
+                            type="button"
+                            className="bg-blue-500 text-white active:bg-blue-800 text-sm font-bold uppercase px-1 py-2 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 w-1/2 ease-linear transition-all duration-150"
+                        >
+                            {`${t('create')} ${t(
+                                'itinerary'
+                            ).toLowerCase()}`}
+                        </Mybutton>
+                    </div>
+                )}
                 {showForm && (
                     <ItineraryForm
                         data={itineraryData}
