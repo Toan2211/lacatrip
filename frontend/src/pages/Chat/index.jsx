@@ -113,11 +113,11 @@ function Chat() {
                     tripId: currentTrip.id
                 })
             )
-            dispatch(
-                readNotification({
-                    tripId: currentTrip.id
-                })
-            )
+            // dispatch(
+            //     readNotification({
+            //         tripId: currentTrip.id
+            //     })
+            // )
         }
         return () => {
             dispatch(setCurrentConversation([]))
