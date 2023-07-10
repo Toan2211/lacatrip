@@ -74,7 +74,8 @@ function TripId() {
                 unwrapResult(res)
             )
         } catch (error) {
-            setNameTrip(currentTrip.name)
+            if (!_.isEmpty(currentTrip))
+                setNameTrip(currentTrip.name)
             toast.error(error.message, {
                 position: toast.POSITION.BOTTOM_CENTER,
                 autoClose: 1000,
@@ -98,7 +99,8 @@ function TripId() {
                 )
             }
         } catch (error) {
-            setTripdescription(currentTrip.description)
+            if (!_.isEmpty(currentTrip))
+                setTripdescription(currentTrip.description)
             toast.error(error.message, {
                 position: toast.POSITION.BOTTOM_CENTER,
                 autoClose: 1000,

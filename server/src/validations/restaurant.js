@@ -8,10 +8,10 @@ const create = () => [
     body('longtitude').notEmpty().isFloat(),
     body('latitude').notEmpty().isFloat(),
     body('address').notEmpty().isString(),
-    body('minPrice').notEmpty().isInt(),
+    body('minPrice').notEmpty().isFloat(),
     body('cusines').notEmpty().isString(),
     body('specialDiets').notEmpty().isString(),
-    body('maxPrice').notEmpty().isInt(),
+    body('maxPrice').notEmpty().isFloat(),
     // body('images').notEmpty()
 ]
 const update = () => [
@@ -23,10 +23,10 @@ const update = () => [
     body('longtitude').optional().isFloat(),
     body('latitude').optional().isFloat(),
     body('address').optional().isString(),
-    body('minPrice').optional().isInt(),
+    body('minPrice').optional().isFloat(),
     body('cusines').optional().isString(),
     body('specialDiets').optional().isString(),
-    body('maxPrice').optional().isInt(),
+    body('maxPrice').optional().isFloat(),
     // body('images').notEmpty()
 ]
 const findOne = () => [param('id').notEmpty().isUUID()]
